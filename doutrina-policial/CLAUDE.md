@@ -180,15 +180,26 @@ seção em uso nem adicionar seção nova sem necessidade real):
   aplicar, avaliar, executar, diferenciar).
 - `## Pré-requisitos` — repete, no corpo, o mesmo pré-requisito do cabeçalho.
 - `## Conteúdo programático` — subdividido em **Fundamentos**, **Teoria** e
-  **Aplicação prática**.
-- `## Casos práticos` — 2 casos concretos, situados em contexto operacional real.
-- `## Referências técnicas` — obras e normas citadas por nome completo/edição;
-  inclui legislação quando pertinente ao tema (não há seção separada de
-  legislação).
+  **Aplicação prática**, cada uma desenvolvida com profundidade doutrinária/
+  técnica/pericial real (mecanismo, protocolo, fundamento normativo — não só
+  nomear o tópico), ancorada nos autores e normas de referência já declarados
+  na seção "Critérios de rigor técnico" deste `CLAUDE.md`.
+- `## Casos práticos` — 3-4 casos concretos situados em contexto operacional
+  real, incluindo ao menos um multivariável (mais de uma causa/hipótese
+  concorrente a diferenciar por protocolo).
+- `## Referências técnicas` — 4-6 obras e normas citadas por nome completo/
+  edição; inclui legislação quando pertinente ao tema (não há seção separada
+  de legislação); nunca inventar título ou atribuir citação sem fonte
+  verificável.
+- `## Estado da arte e debates em aberto` — 2-4 pontos distinguindo
+  explicitamente doutrina/protocolo policial consolidado, achado pericial
+  cientificamente validado, e prática de ofício ou posição doutrinária ainda
+  sem validação forte ou em debate ativo — formaliza como seção própria o
+  mesmo rigor de atribuição que este `CLAUDE.md` já exige difusamente.
 - `## Perguntas avançadas` — 2 perguntas abertas, cada uma marcada com a área de
   raciocínio entre parênteses (ex.: *doutrina policial*, *perícia criminal*).
-- `## Exercícios` — 2 exercícios que exigem elaboração de protocolo, checklist,
-  parecer ou análise, nunca só memorização.
+- `## Exercícios` — 3-4 exercícios que exigem elaboração de protocolo,
+  checklist, parecer ou análise, nunca só memorização.
 - `## Tags` — hashtags específicas do tema da disciplina.
 - Apenas na disciplina capstone de toda a trilha (hoje `D07.03`): seção adicional
   `## Referências bibliográficas gerais da trilha`, consolidando a bibliografia
