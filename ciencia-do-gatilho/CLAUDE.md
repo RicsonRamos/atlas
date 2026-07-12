@@ -139,14 +139,26 @@ Corpo, nesta ordem:
 - `## Objetivos` — lista de capacidades esperadas ao final da disciplina
 - `## Pré-requisitos` — repete/expande o pré-requisito do cabeçalho
 - `## Conteúdo programático` — sempre com três subseções em negrito:
-  **Fundamentos**, **Teoria**, **Aplicação prática**
-- `## Casos práticos` — 2+ cenários concretos de análise/diagnóstico
-- `## Referências técnicas` — obras reais, com autor/título/edição/editora
+  **Fundamentos**, **Teoria**, **Aplicação prática** — cada uma desenvolvida
+  em profundidade mecanística/fisiológica real (mecanismos, modelos
+  quantitativos quando aplicável, não só nomear o tópico), ancorada nos
+  autores de referência já declarados na seção "Critérios de rigor técnico"
+  deste `CLAUDE.md`
+- `## Casos práticos` — 3-4 cenários concretos de análise/diagnóstico,
+  incluindo ao menos um multivariável (mais de uma causa provável a
+  diferenciar)
+- `## Referências técnicas` — 4-6 obras reais, com autor/título/edição/
+  editora; nunca inventar título ou atribuir citação sem fonte verificável
+- `## Estado da arte e debates em aberto` — 2-4 pontos distinguindo
+  explicitamente o que é consenso técnico/científico consolidado do que é
+  modelo aplicado/doutrinário ainda sem validação forte ou em debate ativo na
+  literatura (aplica o critério de "Rigor de atribuição" já declarado acima,
+  agora como seção própria em vez de só um critério difuso)
 - `## Perguntas avançadas` — perguntas abertas, cada uma podendo levar uma
   marcação de perfil entre parênteses (ex.: *instrutor*, *armeiro*,
   *engenharia*, *pesquisa*)
-- `## Exercícios` — tarefas que exigem análise, diagnóstico ou elaboração de
-  protocolo, nunca memorização trivial
+- `## Exercícios` — 3-4 tarefas que exigem análise, diagnóstico ou elaboração
+  de protocolo, nunca memorização trivial
 - `## Tags` — hashtags dos conceitos centrais da disciplina
 
 Não adicionar seções fora desse padrão (ex.: "Bibliografia complementar",
