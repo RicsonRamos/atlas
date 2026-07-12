@@ -110,26 +110,44 @@ Apresentar:
 
 # Estrutura desejada
 
-Cada disciplina criada deve conter:
+Esta seção descreve a estrutura **realmente praticada** nas 32 disciplinas
+publicadas em `disciplinas/` — confirmada por auditoria em `D01.01` e
+`D05.01`/`D09.01` — e não uma lista aspiracional. Toda disciplina nova ou
+revisão deve seguir exatamente este formato de 12 elementos, nesta ordem,
+para manter uniformidade com o restante do domínio:
 
-- Nome
-- Justificativa curricular
-- Nível
-- Carga horária
-- Pré-requisitos
-- Objetivos
-- Competências desenvolvidas
-- Ementa
-- Conteúdo programático
-- Questões controversas
-- Doutrina fundamental
-- Legislação relacionada
-- Jurisprudência essencial
-- Casos práticos
-- Exercícios
-- Avaliação sugerida
-- Bibliografia básica
-- Bibliografia complementar
+Cabeçalho (logo após o título `# D{domínio}.{disciplina} — Nome`):
+- `**Domínio:**` número + nome do domínio pedagógico
+- `**Carga horária:**` faixa mínima-máxima em horas
+- `**Nível:**` Foundation / Intermediate / Advanced / Specialist
+- `**Pré-requisitos:**` nome completo + ID da(s) disciplina(s) antecedente(s)
+
+Corpo, nesta ordem:
+1. `## Ementa` — parágrafo denso cobrindo os grandes blocos de conteúdo.
+2. `## Objetivos` — lista de capacidades esperadas ao final da disciplina.
+3. `## Conteúdo programático` — subdividido em **Fundamentos**, **Teoria**,
+   **Legislação**, **Doutrina**, **Jurisprudência** e **Aplicação prática**
+   (todas como parágrafos em negrito dentro da mesma seção, não subtítulos
+   `###`).
+4. `## Casos práticos` — cenários concretos de análise/argumentação.
+5. `## Jurisprudência` — tabela `Tribunal/Tema | Entendimento | Impacto`.
+6. `## Doutrina` — obras de referência, autor/título.
+7. `## Legislação relacionada` — dispositivos citados por número/artigo.
+8. `## Prática profissional` — tarefas de atuação real (petição, parecer,
+   simulação).
+9. `## Questões avançadas` — perguntas abertas, cada uma podendo levar uma
+   marcação de perfil entre parênteses (ex.: *magistratura/MP*,
+   *advocacia criminal*, *concursos*).
+10. `## Exercícios` — tarefas que exigem redação, análise ou elaboração,
+    nunca memorização trivial.
+11. `## Tags` — hashtags dos conceitos centrais da disciplina.
+
+Não existe, nas disciplinas publicadas, seção própria de "Justificativa
+curricular", "Competências desenvolvidas", "Avaliação sugerida",
+"Bibliografia básica" ou "Bibliografia complementar" separadas de
+"Doutrina" — não introduzir essas seções sem alinhar antes com o usuário,
+já que isso mudaria a estrutura das 32 disciplinas existentes por
+consistência.
 
 ---
 
@@ -172,6 +190,27 @@ Antes de gerar disciplinas:
 5. Aguarde aprovação.
 
 Não gere conteúdo definitivo antes dessa etapa.
+
+---
+
+# Relação com outras trilhas do Atlas
+
+Este domínio é a **referência dogmática central** de Direito Penal e
+Processual Penal para todo o Atlas. As trilhas `direito-operacional/` e
+`doutrina-policial/` já tratam este domínio como tal: quando abordam um
+instituto jurídico-penal (ex.: legítima defesa, cadeia de custódia, dogmática
+de crimes específicos), elas deliberadamente não repetem a fundamentação
+completa — apenas delimitam o próprio escopo operacional/pericial e deferem a
+`direito-penal/` via "nota de escopo" na Ementa, com referência cruzada ao ID
+da disciplina daqui que trata o tema em profundidade (ex.: `doutrina-policial/`
+já declara D02.02 e D02.03 como referência de todo o Atlas para o Estatuto do
+Desarmamento e a legítima defesa aplicada ao tiro policial, respectivamente).
+
+Ao editar ou expandir qualquer disciplina deste domínio, verificar se o tema
+já foi delimitado por nota de escopo em `direito-operacional/` ou
+`doutrina-policial/` — isso não impede aprofundar o conteúdo aqui (é
+justamente o papel deste domínio), mas evita que uma futura edição duplique,
+sem saber, conteúdo que essas trilhas já declaram delegar a este domínio.
 
 ---
 

@@ -137,6 +137,17 @@ de "Notas de escopo" explícitas na Ementa. Padrão observado a preservar:
 - Cadeia de custódia como instituto processual penal geral e dogmática penal
   aprofundada além do necessário à ação policial → trilha `direito-penal/`.
 
+Nota de simetria documental (sem sobreposição de escopo hoje): a trilha
+`ciencia-do-gatilho/` tem proximidade temática com este domínio por também
+tratar de armas de fogo, mas sem sobreposição — `doutrina-policial/` cobre a
+classificação técnica e o uso institucional/operacional da arma, enquanto
+`ciencia-do-gatilho/` cobre a mecânica de disparo e a biomecânica do
+acionamento (engenharia do conjunto de disparo, neurofisiologia do controle
+motor do dedo). Não há, até o momento, necessidade de nota de escopo cruzada
+entre as duas trilhas; esta nota existe apenas para registrar a proximidade e
+evitar que uma futura disciplina de qualquer uma das duas duplique a outra
+sem perceber.
+
 Ao criar ou revisar disciplina desta trilha, preservar esse padrão: manter o foco
 no *uso, decisão e procedimento operacional*, e referenciar — nunca duplicar — a
 trilha que trata do fundamento científico/jurídico em profundidade, usando uma
@@ -217,7 +228,9 @@ reorganizar qualquer disciplina:
 2. **Identificar inconsistências** — conceito duplicado dentro da trilha,
    pré-requisito quebrado na cadeia linear do `INDICE.md`, sobreposição com outro
    domínio deste projeto ou com outra trilha do Atlas (`engenharia-armamento/`,
-   `neurociencia-cognitiva/`, `direito-penal/`, `direito-operacional/`).
+   `neurociencia-cognitiva/`, `direito-penal/`, `direito-operacional/`,
+   `ciencia-do-gatilho/` — ver nota de simetria documental na seção "Regra de
+   não-duplicação entre trilhas do Atlas" acima).
 3. **Montar um plano explícito** e apresentá-lo ao usuário, explicando: por que a
    mudança é necessária, o impacto nas demais disciplinas/domínios (lembrando que
    o DAG desta trilha é uma cadeia estritamente linear — inserir ou remover um

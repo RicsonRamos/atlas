@@ -192,7 +192,16 @@ reorganização de domínio:
    pré-requisito quebrado, sobreposição com outro domínio deste projeto ou com
    outros projetos do Atlas — em especial `engenharia-armamento/` e
    `neurociencia-cognitiva/`, que têm interseção temática natural com este
-   domínio).
+   domínio, e `doutrina-policial/`, que também trata de armas de fogo).
+
+   Nota de simetria documental (sem sobreposição de escopo hoje): a proximidade
+   com `doutrina-policial/` é apenas temática — aquela trilha cobre a
+   classificação técnica e o uso institucional/operacional da arma de fogo,
+   enquanto este domínio cobre a mecânica de disparo e a biomecânica do
+   acionamento (engenharia do conjunto de disparo, neurofisiologia do controle
+   motor do dedo). Não há hoje necessidade de nota de escopo cruzada entre as
+   duas trilhas; esta nota existe apenas para registrar a proximidade e evitar
+   duplicação futura não percebida.
 3. Montar um plano explícito e apresentá-lo, explicando: por que a mudança é
    necessária, o impacto nas demais disciplinas/domínios, e possíveis efeitos
    colaterais.

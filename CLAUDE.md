@@ -147,6 +147,33 @@ define:
 - Toda disciplina nova deve declarar pré-requisitos reais e respeitá-los no
   DAG do `INDICE.md`.
 
+### Divergência terminológica entre domínios (decisão consciente, não pendência)
+
+Uma auditoria identificou três pontos em que os `CLAUDE.md` de domínio usam
+nomenclatura diferente para o mesmo elemento estrutural. Isso é registrado
+aqui como **decisão consciente**, não como inconsistência a corrigir:
+
+- **Nome da seção de perguntas abertas**: `## Perguntas avançadas`
+  (`ciencia-do-gatilho/`, `doutrina-policial/`, `engenharia-armamento/`,
+  `neurociencia-cognitiva/`) vs. `## Questões avançadas`
+  (`direito-operacional/`, `direito-penal/`).
+- **Escala de Nível**: `Foundation/Intermediate/Advanced`
+  (`ciencia-do-gatilho/`, `neurociencia-cognitiva/`) vs.
+  `Foundation/Intermediate/Advanced/Specialist` (`direito-operacional/`,
+  `direito-penal/`, `doutrina-policial/`, `engenharia-armamento/`).
+- **Sufixo de capstone**: `(capstone)` (`ciencia-do-gatilho/`,
+  `direito-penal/`) vs. `(capstone do domínio)` / `(capstone da trilha)`
+  (`direito-operacional/`, `doutrina-policial/`, `engenharia-armamento/`,
+  `neurociencia-cognitiva/`).
+
+Essas divergências **não serão padronizadas retroativamente** — o custo de
+reescrever os 88 arquivos de disciplina já publicados é alto e o benefício,
+baixo (nenhuma delas quebra o viewer, o fetch de markdown ou o DAG de
+pré-requisitos; cada domínio é internamente consistente). Ao criar um domínio
+novo, escolher uma das convenções acima (ou uma nova) e documentá-la
+explicitamente no `CLAUDE.md` daquele domínio, mantendo consistência interna
+com as próprias disciplinas.
+
 ## Como rodar localmente
 
 - Hub + domínios estáticos: `iniciar-servidor.bat` (sobe

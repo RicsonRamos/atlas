@@ -86,8 +86,10 @@ toda disciplina usa todas as seções — ver inconsistências abaixo) é:
 11. **Bibliografia Básica** e **Bibliografia Complementar** (autor, obra;
     priorizar referências clássicas/reconhecidas, como já ocorre)
 
-Este é o "formato completo" (visto em D01.01, D02.01, D02.02, D02.03,
-D03.01-D03.03). Toda disciplina **nova** deve seguir este formato completo.
+Este é o "formato completo" (visto em D01.01, D02.01, D02.02, D02.03). Toda
+disciplina **nova** deve seguir este formato completo. D03.01-D03.03 chegam
+perto (têm Habilidades) mas não têm Avaliação — ver item 6 de
+"Inconsistências observadas" abaixo.
 
 ## Estrutura desejada por disciplina — exceção do Projeto Final Integrador
 
@@ -102,12 +104,12 @@ diferença — não forçar D04.04 ao formato padrão de 11 seções.
 Registradas aqui para não se perderem, seguindo a mesma lógica do backlog do
 `CLAUDE.md` raiz. Ao investigar cada uma contra `outros/pos-Engenharia de
 Dados.md` (o rascunho-fonte), ficou claro que só uma delas era um defeito de
-promoção; as outras três são lacunas do próprio PPC institucional, presentes
+promoção; as demais são lacunas do próprio PPC institucional, presentes
 já no rascunho-fonte — corrigi-las exigiria inventar conteúdo acadêmico
 (carga horária, competências, habilidades, critérios de avaliação) sem
 nenhuma fonte, o que viola o princípio de fidelidade ao PPC deste domínio.
-Por isso só o item 4 foi corrigido; os itens 1-3 seguem documentados como
-gaps conhecidos do PPC original, não como bugs de arquivo:
+Por isso só o item 4 foi corrigido; os itens 1-3, 5 e 6 seguem documentados
+como gaps conhecidos do PPC original, não como bugs de arquivo:
 
 1. **Carga horária do Módulo I "200h" no rascunho-fonte vs. 120h reais.**
    O rascunho declara "Módulo I – Fundamentos da Engenharia de Dados (200h)",
@@ -139,6 +141,21 @@ gaps conhecidos do PPC original, não como bugs de arquivo:
    corporativos reais." O conteúdo removido continua disponível em
    `outros/pos-Engenharia de Dados.md` para quem quiser reaproveitá-lo como
    material de apoio extracurricular (não PPC).
+5. **Habilidades ausente em D01.02 e D01.03.** Diferente das outras 11
+   disciplinas do curso, `D01.02-banco-de-dados-relacional.md` (Disciplina 2
+   no rascunho-fonte) e `D01.03-administração-de-banco-de-dados-dba.md`
+   (Disciplina 3) não têm seção "Habilidades". Confirmado contra o
+   rascunho-fonte: nenhuma das duas tem essa seção lá — o rascunho pula
+   direto de Competências para Conteúdo Programático em ambos os casos.
+   **Não corrigido**: escrever a seção do zero seria fabricar conteúdo
+   curricular ("o aluno será capaz de...") sem base institucional.
+6. **Avaliação ausente em 5 disciplinas (D01.02, D01.03, D03.01, D03.02,
+   D03.03).** D01.01, D02.01, D02.02 e D02.03 têm seção "Avaliação" com
+   critérios e pesos percentuais; estas cinco não têm. Confirmado contra o
+   rascunho-fonte: nas Disciplinas 2, 3, 7, 8 e 9 do PPC original a seção
+   "Avaliação" já não existe — a promoção foi fiel. **Não corrigido**:
+   definir pesos e critérios de avaliação sem fonte institucional seria
+   inventar conteúdo curricular, o mesmo motivo do item 3.
 
 ## Processo obrigatório para editar conteúdo deste domínio
 
