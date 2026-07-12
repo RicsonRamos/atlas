@@ -97,33 +97,48 @@ negócio, arquitetura, implementação, governança, entrega final) em vez de
 Conteúdo Programático por Unidade, Ferramentas, Bibliografia. Preservar essa
 diferença — não forçar D04.04 ao formato padrão de 11 seções.
 
-## Inconsistências observadas (não corrigir sem aprovação)
+## Inconsistências observadas
 
 Registradas aqui para não se perderem, seguindo a mesma lógica do backlog do
-`CLAUDE.md` raiz — nenhuma foi corrigida nesta rodada, pois exigiria alterar
-`disciplinas/*.md` (fora do escopo desta tarefa) e o fluxo obrigatório abaixo:
+`CLAUDE.md` raiz. Ao investigar cada uma contra `outros/pos-Engenharia de
+Dados.md` (o rascunho-fonte), ficou claro que só uma delas era um defeito de
+promoção; as outras três são lacunas do próprio PPC institucional, presentes
+já no rascunho-fonte — corrigi-las exigiria inventar conteúdo acadêmico
+(carga horária, competências, habilidades, critérios de avaliação) sem
+nenhuma fonte, o que viola o princípio de fidelidade ao PPC deste domínio.
+Por isso só o item 4 foi corrigido; os itens 1-3 seguem documentados como
+gaps conhecidos do PPC original, não como bugs de arquivo:
 
-1. **Carga horária do Módulo I inconsistente.** O rascunho-fonte declara
-   "Módulo I – Fundamentos da Engenharia de Dados (200h)", mas as 3
-   disciplinas do módulo (D01.01-D01.03) somam apenas 120h. Não há uma 4ª
-   disciplina "perdida" identificável no rascunho-fonte.
-2. **Carga horária do Projeto Final Integrador (D04.04) não declarada.** O
-   campo "Carga Horária" existe no arquivo mas está vazio.
-3. **Módulo IV com seções incompletas em relação aos módulos I-III.** As
-   disciplinas D04.01, D04.02 e D04.03 não têm as seções Competências,
-   Habilidades, Laboratórios nem Avaliação (presentes nas demais 9
-   disciplinas), e usam "Bibliografia" única em vez de
-   Básica/Complementar separadas. Pode ser lacuna do PPC original ou
-   material ainda não finalizado.
-4. **D04.04 contém conteúdo fora do escopo PPC.** Após a seção
-   "Competências finais do curso completo", o arquivo
-   `disciplinas/D04.04-projeto-final-integrador.md` inclui um extenso bloco
-   informal de "gap para nível pleno" e "6 projetos de portfólio" (com
-   emojis e tom de conselho de carreira) que não é ementa/PPC — parece
-   conteúdo do rascunho-fonte que vazou para o arquivo promovido. Isso viola
-   o princípio de fidelidade ao formato PPC deste domínio e o padrão "sem
-   emojis" do `CLAUDE.md` raiz. Fica registrado como candidato a limpeza
-   futura (mover para `outros/` ou remover), mediante aprovação.
+1. **Carga horária do Módulo I "200h" no rascunho-fonte vs. 120h reais.**
+   O rascunho declara "Módulo I – Fundamentos da Engenharia de Dados (200h)",
+   mas as 3 disciplinas do módulo (D01.01-D01.03) somam 120h — no próprio
+   rascunho, não só na promoção. Não há uma 4ª disciplina "perdida"
+   identificável em nenhuma fonte. **Não corrigido**: não há base para somar
+   80h a nenhuma disciplina existente sem inventar carga. `INDICE.md` já usa
+   o valor real (120h) e documenta a divergência.
+2. **Carga horária do Projeto Final Integrador (D04.04) não declarada.**
+   O campo "Carga Horária" já está vazio no rascunho-fonte (linha
+   correspondente a "Disciplina 13"), não é um campo perdido na promoção.
+   **Não corrigido**: preencher exigiria estimar um número sem fonte
+   institucional.
+3. **Módulo IV com seções incompletas em relação aos módulos I-III.**
+   Confirmado contra o rascunho-fonte: D04.01, D04.02 e D04.03 já não têm
+   Competências/Habilidades/Laboratórios/Avaliação nem
+   Bibliografia Básica/Complementar separadas no PPC original — a promoção
+   foi fiel. **Não corrigido**: escrever essas seções do zero seria
+   fabricar conteúdo curricular não credenciado, não uma correção de
+   transcrição.
+4. **D04.04 continha conteúdo fora do escopo PPC — CORRIGIDO.** Após a
+   seção "Competências finais do curso completo",
+   `disciplinas/D04.04-projeto-final-integrador.md` tinha um extenso bloco
+   informal de "mapa de gap para nível pleno" e "6 projetos de portfólio"
+   (emojis, tom de conselho de carreira) que vazou do rascunho-fonte para o
+   arquivo promovido — isso violava tanto a fidelidade ao formato PPC deste
+   domínio quanto o padrão "sem emojis" do `CLAUDE.md` raiz. Removido; o
+   arquivo agora termina em "atuar como Engenheiro de Dados em ambientes
+   corporativos reais." O conteúdo removido continua disponível em
+   `outros/pos-Engenharia de Dados.md` para quem quiser reaproveitá-lo como
+   material de apoio extracurricular (não PPC).
 
 ## Processo obrigatório para editar conteúdo deste domínio
 
