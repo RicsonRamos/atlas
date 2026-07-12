@@ -31,7 +31,9 @@
     "catalog-versioning",
     "conflict-detection"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "rest-catalog"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

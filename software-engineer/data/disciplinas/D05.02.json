@@ -32,7 +32,9 @@
     "schema-compatibility-check",
     "outbox-relay"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "outbox-pattern"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

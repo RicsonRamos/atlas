@@ -34,9 +34,15 @@
     "actor-critic",
     "proximal-policy-optimization"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "deep-q-network",
+    "actor-critic"
+  ],
   "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "modelos_matematicos": [
+    "processos-de-decisao-de-markov",
+    "equacoes-de-bellman"
+  ],
   "protocolos": [],
   "livros": [
     "Sutton & Barto, Reinforcement Learning: An Introduction"

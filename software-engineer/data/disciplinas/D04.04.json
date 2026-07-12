@@ -33,7 +33,12 @@
     "snapshotting",
     "point-in-time-tables"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "star-schema",
+    "snowflake-schema",
+    "data-vault-2-0",
+    "anchor-modeling"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

@@ -33,9 +33,17 @@
     "lww-register"
   ],
   "arquiteturas": [],
-  "estruturas_dados": [],
+  "estruturas_dados": [
+    "crdt",
+    "g-counter",
+    "or-set",
+    "lww-register",
+    "vector-clocks"
+  ],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "causal-broadcast"
+  ],
   "livros": [
     "Kleppmann, Designing Data-Intensive Applications",
     "Lynch, Distributed Algorithms"

@@ -32,10 +32,15 @@
     "exponential-backoff",
     "dead-letter-replay"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "transactional-outbox",
+    "circuit-breaker"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "exactly-once-sink-protocol"
+  ],
   "livros": [
     "Kleppmann, Designing Data-Intensive Applications",
     "Nygard, Release It!"

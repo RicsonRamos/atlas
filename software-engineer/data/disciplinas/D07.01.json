@@ -32,7 +32,9 @@
     "partition-pruning",
     "manifest-pruning"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "lakehouse"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

@@ -43,8 +43,13 @@
     "pca"
   ],
   "arquiteturas": [],
-  "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "estruturas_dados": [
+    "sparse-matrices"
+  ],
+  "modelos_matematicos": [
+    "svd",
+    "pca"
+  ],
   "protocolos": [],
   "livros": [
     "Strang, Linear Algebra and Learning from Data",

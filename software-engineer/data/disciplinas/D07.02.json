@@ -32,7 +32,9 @@
     "manifest-pruning",
     "merge-on-read-delete-planning"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "open-table-format"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

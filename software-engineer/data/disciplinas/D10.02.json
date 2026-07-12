@@ -31,7 +31,9 @@
     "ttl-eviction",
     "freshness-monitoring"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "feature-store"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

@@ -52,7 +52,9 @@
   ],
   "arquiteturas": [],
   "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "modelos_matematicos": [
+    "cadeias-de-markov"
+  ],
   "protocolos": [],
   "livros": [
     "Ross, A First Course in Probability",

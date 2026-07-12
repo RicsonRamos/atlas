@@ -43,7 +43,12 @@
     "locality-sensitive-hashing"
   ],
   "arquiteturas": [],
-  "estruturas_dados": [],
+  "estruturas_dados": [
+    "bloom-filters",
+    "hyperloglog",
+    "count-min-sketch",
+    "minhash"
+  ],
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [

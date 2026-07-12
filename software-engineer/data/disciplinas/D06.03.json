@@ -33,9 +33,13 @@
     "gossip"
   ],
   "arquiteturas": [],
-  "estruturas_dados": [],
+  "estruturas_dados": [
+    "merkle-trees"
+  ],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "gossip"
+  ],
   "livros": [
     "Kleppmann, Designing Data-Intensive Applications",
     "Tanenbaum & van Steen, Distributed Systems"

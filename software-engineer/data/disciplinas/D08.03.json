@@ -35,7 +35,10 @@
   ],
   "arquiteturas": [],
   "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "modelos_matematicos": [
+    "k-anonymity",
+    "differential-privacy-introdutoria"
+  ],
   "protocolos": [],
   "livros": [
     "Dwork & Roth, The Algorithmic Foundations of Differential Privacy",

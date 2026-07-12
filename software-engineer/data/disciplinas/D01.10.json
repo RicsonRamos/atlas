@@ -60,8 +60,12 @@
     "pagerank"
   ],
   "arquiteturas": [],
-  "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "estruturas_dados": [
+    "union-find"
+  ],
+  "modelos_matematicos": [
+    "pagerank"
+  ],
   "protocolos": [],
   "livros": [
     "Diestel, Graph Theory",

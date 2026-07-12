@@ -32,7 +32,9 @@
     "drift-detection-infraestrutura",
     "topological-provisioning"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "gitops"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

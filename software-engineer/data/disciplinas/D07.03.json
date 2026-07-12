@@ -32,7 +32,9 @@
     "compaction-scheduling",
     "index-lookup"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "delta-transaction-log"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

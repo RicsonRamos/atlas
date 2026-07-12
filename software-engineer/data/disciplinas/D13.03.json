@@ -28,9 +28,14 @@
     "alternating-least-squares",
     "neural-collaborative-filtering"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "neural-collaborative-filtering"
+  ],
   "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "modelos_matematicos": [
+    "singular-value-decomposition-svd",
+    "alternating-least-squares"
+  ],
   "protocolos": [],
   "livros": [
     "Aggarwal, Recommender Systems: The Textbook"

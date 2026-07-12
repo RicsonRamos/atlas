@@ -31,7 +31,11 @@
     "attribute-matching",
     "access-graph-traversal"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "rbac",
+    "abac",
+    "pbac"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

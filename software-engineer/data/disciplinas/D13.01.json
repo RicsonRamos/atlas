@@ -41,7 +41,15 @@
     "mask-r-cnn",
     "deepsort"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "rede-neural-convolucional",
+    "vision-transformer",
+    "r-cnn",
+    "faster-r-cnn",
+    "yolo",
+    "u-net",
+    "mask-r-cnn"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

@@ -39,10 +39,17 @@
     "merkle-proof",
     "hkdf"
   ],
-  "arquiteturas": [],
-  "estruturas_dados": [],
+  "arquiteturas": [
+    "pki",
+    "envelope-encryption"
+  ],
+  "estruturas_dados": [
+    "merkle-trees"
+  ],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "tls"
+  ],
   "livros": [
     "Katz & Lindell, Introduction to Modern Cryptography",
     "Menezes, van Oorschot & Vanstone, Handbook of Applied Cryptography"

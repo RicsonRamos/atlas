@@ -30,7 +30,10 @@
     "model-comparison",
     "canary-analysis"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "canary",
+    "shadow-deployment"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

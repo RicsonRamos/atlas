@@ -40,7 +40,16 @@
   "arquiteturas": [],
   "estruturas_dados": [],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "tcp",
+    "udp",
+    "http-2",
+    "http-3",
+    "grpc",
+    "tls",
+    "mtls",
+    "dns"
+  ],
   "livros": [
     "Stevens, TCP/IP Illustrated",
     "Kleppmann, Designing Data-Intensive Applications"

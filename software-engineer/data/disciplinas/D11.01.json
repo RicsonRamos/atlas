@@ -33,7 +33,9 @@
     "mean-pooling",
     "approximate-nearest-neighbors"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "transformers"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

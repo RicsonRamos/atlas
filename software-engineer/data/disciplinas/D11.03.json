@@ -34,9 +34,13 @@
     "mmr",
     "rag-fusion"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "rag"
+  ],
   "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "modelos_matematicos": [
+    "bm25"
+  ],
   "protocolos": [],
   "livros": [
     "Manning et al., Introduction to Information Retrieval",

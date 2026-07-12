@@ -33,7 +33,9 @@
     "leader-election",
     "reconciliation-loop"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "operators"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

@@ -37,7 +37,12 @@
   "arquiteturas": [],
   "estruturas_dados": [],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "paxos",
+    "raft",
+    "zab",
+    "two-phase-commit"
+  ],
   "livros": [
     "Lynch, Distributed Algorithms",
     "Kleppmann, Designing Data-Intensive Applications"

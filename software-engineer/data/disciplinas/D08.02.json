@@ -30,7 +30,9 @@
     "compatibility-matrix",
     "slo-burn-rate"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "data-mesh"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

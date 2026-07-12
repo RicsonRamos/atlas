@@ -40,7 +40,10 @@
   ],
   "arquiteturas": [],
   "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "modelos_matematicos": [
+    "programacao-linear",
+    "gradient-descent"
+  ],
   "protocolos": [],
   "livros": [
     "Boyd & Vandenberghe, Convex Optimization",

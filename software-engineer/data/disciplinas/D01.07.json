@@ -41,7 +41,9 @@
   ],
   "arquiteturas": [],
   "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "modelos_matematicos": [
+    "glm"
+  ],
   "protocolos": [],
   "livros": [
     "Casella & Berger, Statistical Inference",

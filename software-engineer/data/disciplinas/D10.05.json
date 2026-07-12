@@ -32,10 +32,15 @@
     "mixed-precision-training",
     "dynamic-batching"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "data-parallelism",
+    "model-parallelism"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "all-reduce"
+  ],
   "livros": [
     "Goodfellow, Bengio & Courville, Deep Learning",
     "Kleppmann, Designing Data-Intensive Applications"

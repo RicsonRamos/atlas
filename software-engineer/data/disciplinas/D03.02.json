@@ -31,7 +31,9 @@
     "validation-pipeline",
     "schema-negotiation"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "ports-and-adapters"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

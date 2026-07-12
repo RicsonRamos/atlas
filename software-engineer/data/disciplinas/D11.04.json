@@ -34,8 +34,12 @@
     "speculative-decoding",
     "dynamic-batching"
   ],
-  "arquiteturas": [],
-  "estruturas_dados": [],
+  "arquiteturas": [
+    "pagedattention"
+  ],
+  "estruturas_dados": [
+    "kv-cache"
+  ],
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [

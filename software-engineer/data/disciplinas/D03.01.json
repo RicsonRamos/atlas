@@ -33,8 +33,12 @@
     "serde",
     "lazy-evaluation"
   ],
-  "arquiteturas": [],
-  "estruturas_dados": [],
+  "arquiteturas": [
+    "jvm"
+  ],
+  "estruturas_dados": [
+    "dataframes"
+  ],
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [

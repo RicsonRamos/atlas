@@ -35,9 +35,15 @@
     "aries-recovery"
   ],
   "arquiteturas": [],
-  "estruturas_dados": [],
+  "estruturas_dados": [
+    "b-trees",
+    "lsm-trees"
+  ],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "two-phase-locking",
+    "aries"
+  ],
   "livros": [
     "Hellerstein, Stonebraker & Hamilton, Architecture of a Database System",
     "Petrov, Database Internals"

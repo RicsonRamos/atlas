@@ -31,7 +31,9 @@
     "maturity-model",
     "adoption-funnel"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "data-mesh"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

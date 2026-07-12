@@ -35,8 +35,13 @@
     "reciprocal-rank-fusion"
   ],
   "arquiteturas": [],
-  "estruturas_dados": [],
-  "modelos_matematicos": [],
+  "estruturas_dados": [
+    "hnsw",
+    "ivf"
+  ],
+  "modelos_matematicos": [
+    "bm25"
+  ],
   "protocolos": [],
   "livros": [
     "Manning, Raghavan & Schütze, Introduction to Information Retrieval",

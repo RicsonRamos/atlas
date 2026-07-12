@@ -38,7 +38,9 @@
     "data-flow-analysis"
   ],
   "arquiteturas": [],
-  "estruturas_dados": [],
+  "estruturas_dados": [
+    "ast"
+  ],
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [

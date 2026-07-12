@@ -33,10 +33,17 @@
     "quorum-reads-writes",
     "vectorized-mpp-execution"
   ],
-  "arquiteturas": [],
-  "estruturas_dados": [],
+  "arquiteturas": [
+    "separation-of-storage-and-compute",
+    "mpp-warehouses"
+  ],
+  "estruturas_dados": [
+    "lsm-trees"
+  ],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "two-phase-commit"
+  ],
   "livros": [
     "Sadalage & Fowler, NoSQL Distilled",
     "Kleppmann, Designing Data-Intensive Applications"

@@ -37,8 +37,16 @@
     "sort-merge-join",
     "dynamic-partition-coalescing"
   ],
-  "arquiteturas": [],
-  "estruturas_dados": [],
+  "arquiteturas": [
+    "catalyst-optimizer",
+    "project-tungsten",
+    "adaptive-query-execution",
+    "dag-scheduler"
+  ],
+  "estruturas_dados": [
+    "rdd",
+    "dataframes-e-datasets"
+  ],
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [

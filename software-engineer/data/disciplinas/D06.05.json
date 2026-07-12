@@ -35,7 +35,10 @@
   "arquiteturas": [],
   "estruturas_dados": [],
   "modelos_matematicos": [],
-  "protocolos": [],
+  "protocolos": [
+    "chandy-lamport-snapshot",
+    "two-phase-commit-sink"
+  ],
   "livros": [
     "Hueske & Kalavri, Stream Processing with Apache Flink",
     "Kleppmann, Designing Data-Intensive Applications"

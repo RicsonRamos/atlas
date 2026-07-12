@@ -31,7 +31,10 @@
     "progressive-rollout",
     "topological-deployment-order"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "blue-green",
+    "canary"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

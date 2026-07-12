@@ -28,7 +28,9 @@
     "risk-matrix",
     "cost-benefit-model"
   ],
-  "arquiteturas": [],
+  "arquiteturas": [
+    "evolutionary-architecture"
+  ],
   "estruturas_dados": [],
   "modelos_matematicos": [],
   "protocolos": [],

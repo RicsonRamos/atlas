@@ -34,8 +34,12 @@
     "lock-free-queue",
     "actor-supervision"
   ],
-  "arquiteturas": [],
-  "estruturas_dados": [],
+  "arquiteturas": [
+    "modelo-de-atores"
+  ],
+  "estruturas_dados": [
+    "lock-free-queue"
+  ],
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
