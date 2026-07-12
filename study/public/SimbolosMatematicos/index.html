@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Símbolos Matemáticos — Dicionário Interativo</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- MathJax for rendering advanced math formulas -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' },
+            startup: { typeset: false } // We'll typeset manually
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+    <style>
+        /* Base Variables */
+        :root {
+            --bg-primary: #0A0F1A;
+            --bg-secondary: #121A2F;
+            --bg-tertiary: #1E293B;
+            --accent-glow: #00E5FF;
+            --accent-purple: #9D4EDD;
+            --accent-blue: #3A86FF;
+            --accent-green: #00FFB2;
+            --accent-red: #FF4081;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(18, 26, 47, 0.7);
+            --font-ui: 'Inter', sans-serif;
+            --font-math: 'Fira Code', monospace;
+            --transition: 0.3s ease;
+        }
+
+        /* Reset & Base */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-ui);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 229, 255, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(157, 78, 221, 0.05), transparent 25%);
+            background-attachment: fixed;
+        }
+
+        /* Layout */
+        .app-container { display: flex; height: 100vh; overflow: hidden; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .logo {
+            font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(90deg, var(--accent-glow), var(--accent-blue));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .sidebar-nav { flex: 1; overflow-y: auto; padding: 1rem 0; }
+        .nav-item {
+            width: 100%; text-align: left; background: transparent; border: none;
+            color: var(--text-secondary); padding: 0.75rem 1.5rem;
+            font-size: 0.95rem; font-weight: 500; font-family: var(--font-ui);
+            cursor: pointer; transition: var(--transition);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-item:hover { color: var(--text-primary); background: rgba(255, 255, 255, 0.03); }
+        .nav-item.active {
+            color: var(--accent-glow); background: rgba(0, 229, 255, 0.05);
+            border-right: 3px solid var(--accent-glow);
+        }
+        .nav-count { background: var(--bg-tertiary); padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.75rem; color: var(--text-secondary); }
+
+        /* Main Content */
+        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; }
+
+        /* Header / Search */
+        .header {
+            padding: 1.5rem 3rem; background: var(--glass-bg);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between; z-index: 10;
+        }
+        .search-container { position: relative; width: 100%; max-width: 600px; }
+        .search-input {
+            width: 100%; padding: 1rem 1.5rem 1rem 3rem; background: var(--bg-secondary);
+            border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-primary);
+            font-size: 1rem; font-family: var(--font-ui); transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .search-input:focus { outline: none; border-color: var(--accent-glow); box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.2); }
+        .search-icon { position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+        /* Content Area */
+        .content-scroll { flex: 1; overflow-y: auto; padding: 2rem 3rem; }
+        .category-section { margin-bottom: 3rem; }
+        .category-title {
+            font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.5rem;
+        }
+        
+        /* Grid & Cards */
+        .symbols-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        
+        .symbol-card {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: 12px; display: flex; flex-direction: column;
+            transition: var(--transition); position: relative; overflow: hidden;
+        }
+        
+        .symbol-card:hover {
+            transform: translateY(-4px); border-color: var(--accent-glow);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 0 15px rgba(0, 229, 255, 0.1);
+            background: var(--bg-tertiary);
+        }
+
+        /* Top part of card (Main info) */
+        .card-main {
+            padding: 1.5rem; display: flex; align-items: flex-start; gap: 1.25rem;
+            cursor: pointer; flex: 1;
+        }
+
+        .card-main::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: linear-gradient(180deg, var(--accent-glow), var(--accent-purple));
+            opacity: 0; transition: var(--transition);
+        }
+        .symbol-card:hover .card-main::before { opacity: 1; }
+
+        .symbol-visual {
+            width: 60px; height: 60px; background: rgba(0, 229, 255, 0.05);
+            border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 2rem; font-family: var(--font-math); color: var(--accent-glow);
+            flex-shrink: 0; transition: var(--transition);
+        }
+        .symbol-card:hover .symbol-visual { background: var(--accent-glow); color: #000; }
+
+        .symbol-info { flex: 1; min-width: 0; }
+        .symbol-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--text-primary); }
+        .symbol-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; }
+
+        .copy-hint {
+            position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.7rem;
+            background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px;
+            opacity: 0; transition: var(--transition); pointer-events: none;
+        }
+        .symbol-card:hover .copy-hint { opacity: 1; }
+
+        /* Interactive Example Area */
+        .card-example-toggle {
+            width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.2); border: none;
+            border-top: 1px solid var(--border-color); color: var(--accent-glow);
+            font-weight: 600; font-family: var(--font-ui); cursor: pointer;
+            transition: var(--transition); display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+        }
+        .card-example-toggle:hover { background: rgba(0, 229, 255, 0.1); }
+        
+        .card-example-content {
+            display: none; padding: 1.5rem; background: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+        }
+        .card-example-content.open { display: block; animation: slideDown 0.3s ease; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Generic Interactive Controls Styles */
+        .engine-io-row { display: flex; align-items: center; gap: 0.75rem; justify-content: center; flex-wrap: wrap;}
+        .engine-input {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            color: var(--text-primary); padding: 0.5rem; border-radius: 6px;
+            font-family: var(--font-math); text-align: center; max-width: 80px;
+        }
+        .engine-input:focus { outline: none; border-color: var(--accent-glow); }
+        .engine-select {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            color: var(--text-primary); padding: 0.5rem; border-radius: 6px; font-family: var(--font-math);
+        }
+        .engine-sym { font-family: var(--font-math); color: var(--accent-glow); font-size: 1.2rem; font-weight: bold; }
+        .engine-res {
+            background: rgba(255,255,255,0.05); padding: 0.5rem 1rem; border-radius: 6px;
+            font-family: var(--font-math); font-weight: bold; min-width: 60px; text-align: center;
+        }
+        .engine-res.success { color: var(--accent-green); border: 1px solid rgba(0,255,178,0.3); }
+        .engine-res.danger { color: var(--accent-red); border: 1px solid rgba(255,64,129,0.3); }
+        
+        .engine-range { width: 100%; margin: 1rem 0; accent-color: var(--accent-glow); }
+        .engine-mathjax-container { text-align: center; margin: 1rem 0; min-height: 40px; overflow-x: auto; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; background: var(--accent-glow);
+            color: #000; padding: 1rem 1.5rem; border-radius: 8px; font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3); transform: translateY(100px);
+            opacity: 0; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        
+        .empty-state { text-align: center; padding: 4rem; color: var(--text-secondary); }
+        .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        @media (max-width: 768px) {
+            .app-container { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; max-height: 200px; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .header { padding: 1rem; }
+            .content-scroll { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 14l6-6 3 3 7-7"/><path d="M4 14v7h16v-7"/>
+                    </svg>
+                    Simboliza
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="category-nav"></nav>
+            <a href="/" class="nav-item back-to-roadmap" style="margin-top: auto; border-top: 1px solid var(--border-color); color: var(--accent-red); display: flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 1.25rem 1.5rem; font-weight: 600;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Voltar ao Roadmap
+            </a>
+        </aside>
+
+        <!-- Main Area -->
+        <main class="main-content">
+            <header class="header">
+                <div class="search-container">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="search-input" class="search-input" placeholder="Buscar por símbolo, nome ou significado...">
+                </div>
+            </header>
+
+            <div class="content-scroll" id="main-scroll">
+                <div id="content-area"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+        <span id="toast-msg">Copiado!</span>
+    </div>
+
+    <script>
+        const symbolsData = [
+            // Básicos
+            { cat: "Básicos", sym: "=", name: "Igual", desc: "Igualdade" },
+            { cat: "Básicos", sym: "≠", name: "Diferente", desc: "Não é igual" },
+            { cat: "Básicos", sym: "≈", name: "Aproximadamente", desc: "Valor aproximado" },
+            { cat: "Básicos", sym: "≅", name: "Congruente", desc: "Equivalente/congruente" },
+            { cat: "Básicos", sym: "≡", name: "Identicamente igual", desc: "Igualdade por definição ou congruência modular" },
+            { cat: "Básicos", sym: "<", name: "Menor que", desc: "Comparação" },
+            { cat: "Básicos", sym: ">", name: "Maior que", desc: "Comparação" },
+            { cat: "Básicos", sym: "≤", name: "Menor ou igual", desc: "Comparação" },
+            { cat: "Básicos", sym: "≥", name: "Maior ou igual", desc: "Comparação" },
+            { cat: "Básicos", sym: "±", name: "Mais ou menos", desc: "Dois valores possíveis" },
+            { cat: "Básicos", sym: "∓", name: "Menos ou mais", desc: "Complemento do ±" },
+            { cat: "Básicos", sym: "∝", name: "Proporcional", desc: "Proporcionalidade" },
+            { cat: "Básicos", sym: "∞", name: "Infinito", desc: "Quantidade ilimitada" },
+            { cat: "Básicos", sym: "∴", name: "Portanto", desc: "Conclusão lógica" },
+            { cat: "Básicos", sym: "∵", name: "Porque", desc: "Justificativa" },
+
+            // Operações
+            { cat: "Operações", sym: "+", name: "Soma", desc: "Adição" },
+            { cat: "Operações", sym: "−", name: "Subtração", desc: "Diferença" },
+            { cat: "Operações", sym: "×", name: "Multiplicação", desc: "Produto" },
+            { cat: "Operações", sym: "÷", name: "Divisão", desc: "Quociente" },
+            { cat: "Operações", sym: "·", name: "Produto escalar", desc: "Multiplicação" },
+            { cat: "Operações", sym: "/", name: "Barra", desc: "Divisão" },
+            { cat: "Operações", sym: "%", name: "Porcentagem", desc: "Percentual" },
+            { cat: "Operações", sym: "√", name: "Raiz quadrada", desc: "Radical" },
+            { cat: "Operações", sym: "∛", name: "Raiz cúbica", desc: "Radical" },
+            { cat: "Operações", sym: "^", name: "Potência", desc: "Exponenciação" },
+
+            // Somatórios e Produtos
+            { cat: "Somatórios e Produtos", sym: "Σ", name: "Sigma maiúsculo", desc: "Somatório" },
+            { cat: "Somatórios e Produtos", sym: "σ", name: "Sigma minúsculo", desc: "Desvio padrão, função, variável" },
+            { cat: "Somatórios e Produtos", sym: "Π", name: "Pi maiúsculo", desc: "Produtório" },
+            { cat: "Somatórios e Produtos", sym: "π", name: "Pi minúsculo", desc: "Constante π" },
+            { cat: "Somatórios e Produtos", sym: "∑", name: "Somatório", desc: "Soma de uma sequência" },
+            { cat: "Somatórios e Produtos", sym: "∏", name: "Produtório", desc: "Produto de uma sequência" },
+            { cat: "Somatórios e Produtos", sym: "∐", name: "Coproduto", desc: "União categórica" },
+
+            // Teoria dos Conjuntos
+            { cat: "Teoria dos Conjuntos", sym: "∈", name: "Pertence", desc: "Elemento pertence ao conjunto" },
+            { cat: "Teoria dos Conjuntos", sym: "∉", name: "Não pertence", desc: "Não pertence" },
+            { cat: "Teoria dos Conjuntos", sym: "∋", name: "Contém", desc: "Contém o elemento" },
+            { cat: "Teoria dos Conjuntos", sym: "∅", name: "Conjunto vazio", desc: "Sem elementos" },
+            { cat: "Teoria dos Conjuntos", sym: "{ }", name: "Chaves", desc: "Definem conjunto" },
+            { cat: "Teoria dos Conjuntos", sym: "⊂", name: "Subconjunto próprio", desc: "Está contido" },
+            { cat: "Teoria dos Conjuntos", sym: "⊆", name: "Subconjunto", desc: "Contido ou igual" },
+            { cat: "Teoria dos Conjuntos", sym: "⊄", name: "Não subconjunto", desc: "Não está contido" },
+            { cat: "Teoria dos Conjuntos", sym: "⊇", name: "Superconjunto", desc: "Contém outro conjunto" },
+            { cat: "Teoria dos Conjuntos", sym: "⊃", name: "Superconjunto próprio", desc: "Contém estritamente" },
+            { cat: "Teoria dos Conjuntos", sym: "∪", name: "União", desc: "União de conjuntos" },
+            { cat: "Teoria dos Conjuntos", sym: "∩", name: "Interseção", desc: "Elementos comuns" },
+            { cat: "Teoria dos Conjuntos", sym: "\\", name: "Diferença", desc: "Diferença entre conjuntos" },
+            { cat: "Teoria dos Conjuntos", sym: "△", name: "Diferença simétrica", desc: "Exclusão mútua" },
+            { cat: "Teoria dos Conjuntos", sym: "Aᶜ", name: "Complemento", desc: "Elementos fora do conjunto" },
+            { cat: "Teoria dos Conjuntos", sym: "|A|", name: "Cardinalidade", desc: "Número de elementos" },
+            { cat: "Teoria dos Conjuntos", sym: "℘(A)", name: "Conjunto das partes", desc: "Todos os subconjuntos" },
+
+            // Lógica Proposicional
+            { cat: "Lógica Proposicional", sym: "¬", name: "Negação", desc: "Não" },
+            { cat: "Lógica Proposicional", sym: "~", name: "Negação", desc: "Alternativa" },
+            { cat: "Lógica Proposicional", sym: "∧", name: "Conjunção", desc: "E" },
+            { cat: "Lógica Proposicional", sym: "∨", name: "Disjunção", desc: "Ou" },
+            { cat: "Lógica Proposicional", sym: "⊕", name: "Ou exclusivo", desc: "XOR" },
+            { cat: "Lógica Proposicional", sym: "→", name: "Implicação", desc: "Se... então" },
+            { cat: "Lógica Proposicional", sym: "←", name: "Implicação inversa", desc: "Recebe implicação" },
+            { cat: "Lógica Proposicional", sym: "↔", name: "Bicondicional", desc: "Se e somente se" },
+            { cat: "Lógica Proposicional", sym: "⇒", name: "Implica", desc: "Consequência lógica" },
+            { cat: "Lógica Proposicional", sym: "⇐", name: "Implicado por", desc: "Consequência inversa" },
+            { cat: "Lógica Proposicional", sym: "⇔", name: "Equivalência lógica", desc: "Equivalentes" },
+            { cat: "Lógica Proposicional", sym: "⊤", name: "Verdadeiro", desc: "True" },
+            { cat: "Lógica Proposicional", sym: "⊥", name: "Falso", desc: "False" },
+            { cat: "Lógica Proposicional", sym: "⊢", name: "Demonstrável", desc: "Pode ser provado" },
+            { cat: "Lógica Proposicional", sym: "⊨", name: "Satisfaz", desc: "Verdade semântica" },
+
+            // Quantificadores
+            { cat: "Quantificadores", sym: "∀", name: "Universal", desc: "Para todo" },
+            { cat: "Quantificadores", sym: "∃", name: "Existencial", desc: "Existe" },
+            { cat: "Quantificadores", sym: "∄", name: "Não existe", desc: "Inexistência" },
+            { cat: "Quantificadores", sym: "∃!", name: "Existe único", desc: "Existe exatamente um" },
+
+            // Cálculo
+            { cat: "Cálculo", sym: "∫", name: "Integral", desc: "Soma contínua" },
+            { cat: "Cálculo", sym: "∬", name: "Integral dupla", desc: "Integração em duas dimensões" },
+            { cat: "Cálculo", sym: "∭", name: "Integral tripla", desc: "Integração em três dimensões" },
+            { cat: "Cálculo", sym: "∮", name: "Integral de linha", desc: "Contorno fechado" },
+            { cat: "Cálculo", sym: "d", name: "Diferencial", desc: "Variação infinitesimal" },
+            { cat: "Cálculo", sym: "∂", name: "Derivada parcial", desc: "Derivada em relação a uma variável" },
+            { cat: "Cálculo", sym: "∇", name: "Nabla", desc: "Gradiente" },
+            { cat: "Cálculo", sym: "Δ", name: "Delta", desc: "Variação" },
+            { cat: "Cálculo", sym: "δ", name: "Delta minúsculo", desc: "Pequena variação" },
+            { cat: "Cálculo", sym: "lim", name: "Limite", desc: "Valor de aproximação" },
+
+            // Álgebra Linear
+            { cat: "Álgebra Linear", sym: "→", name: "Vetor", desc: "Direção" },
+            { cat: "Álgebra Linear", sym: "‖v‖", name: "Norma", desc: "Comprimento" },
+            { cat: "Álgebra Linear", sym: "·", name: "Produto escalar", desc: "Dot product" },
+            { cat: "Álgebra Linear", sym: "×", name: "Produto vetorial", desc: "Cross product" },
+            { cat: "Álgebra Linear", sym: "⊗", name: "Produto tensorial", desc: "Tensor" },
+            { cat: "Álgebra Linear", sym: "T", name: "Transposta", desc: "Matriz transposta" },
+            { cat: "Álgebra Linear", sym: "det", name: "Determinante", desc: "Determinante da matriz" },
+            { cat: "Álgebra Linear", sym: "rank", name: "Posto", desc: "Rank da matriz" },
+
+            // Números
+            { cat: "Números", sym: "ℕ", name: "Naturais", desc: "{0,1,2,...}" },
+            { cat: "Números", sym: "ℤ", name: "Inteiros", desc: "{...,-1,0,1,...}" },
+            { cat: "Números", sym: "ℚ", name: "Racionais", desc: "Frações" },
+            { cat: "Números", sym: "ℝ", name: "Reais", desc: "Todos os números reais" },
+            { cat: "Números", sym: "ℂ", name: "Complexos", desc: "a+bi" },
+            { cat: "Números", sym: "ℍ", name: "Quatérnios", desc: "Álgebra dos quatérnios" },
+            { cat: "Números", sym: "ℙ", name: "Primos", desc: "Conjunto dos números primos" },
+
+            // Alfabeto Grego
+            { cat: "Alfabeto Grego", sym: "α", name: "Alfa", desc: "Ângulo, coeficiente" },
+            { cat: "Alfabeto Grego", sym: "β", name: "Beta", desc: "Coeficiente" },
+            { cat: "Alfabeto Grego", sym: "γ", name: "Gama", desc: "Fator, função" },
+            { cat: "Alfabeto Grego", sym: "Γ", name: "Gama maiúsculo", desc: "Função Gama" },
+            { cat: "Alfabeto Grego", sym: "δ", name: "Delta", desc: "Pequena variação" },
+            { cat: "Alfabeto Grego", sym: "Δ", name: "Delta maiúsculo", desc: "Diferença" },
+            { cat: "Alfabeto Grego", sym: "ε", name: "Épsilon", desc: "Erro, precisão" },
+            { cat: "Alfabeto Grego", sym: "ζ", name: "Zeta", desc: "Função zeta" },
+            { cat: "Alfabeto Grego", sym: "η", name: "Eta", desc: "Eficiência" },
+            { cat: "Alfabeto Grego", sym: "θ", name: "Teta", desc: "Ângulo" },
+            { cat: "Alfabeto Grego", sym: "λ", name: "Lambda", desc: "Autovalor, função" },
+            { cat: "Alfabeto Grego", sym: "μ", name: "Mi", desc: "Média, micro" },
+            { cat: "Alfabeto Grego", sym: "ν", name: "Ni", desc: "Frequência" },
+            { cat: "Alfabeto Grego", sym: "ξ", name: "Xi", desc: "Variável" },
+            { cat: "Alfabeto Grego", sym: "π", name: "Pi", desc: "Constante matemática" },
+            { cat: "Alfabeto Grego", sym: "ρ", name: "Rô", desc: "Densidade" },
+            { cat: "Alfabeto Grego", sym: "σ", name: "Sigma", desc: "Desvio padrão" },
+            { cat: "Alfabeto Grego", sym: "Σ", name: "Sigma maiúsculo", desc: "Somatório" },
+            { cat: "Alfabeto Grego", sym: "τ", name: "Tau", desc: "Tempo, constante" },
+            { cat: "Alfabeto Grego", sym: "φ", name: "Fi", desc: "Razão áurea, fase" },
+            { cat: "Alfabeto Grego", sym: "Φ", name: "Fi maiúsculo", desc: "Fluxo" },
+            { cat: "Alfabeto Grego", sym: "χ", name: "Qui", desc: "Estatística χ²" },
+            { cat: "Alfabeto Grego", sym: "ψ", name: "Psi", desc: "Função de onda" },
+            { cat: "Alfabeto Grego", sym: "ω", name: "Ômega", desc: "Frequência angular" },
+            { cat: "Alfabeto Grego", sym: "Ω", name: "Ômega maiúsculo", desc: "Resistência, espaço amostral" },
+
+            // Relações
+            { cat: "Relações", sym: "∼", name: "Semelhante", desc: "Relação de equivalência" },
+            { cat: "Relações", sym: "≃", name: "Aproximadamente igual", desc: "Equivalência" },
+            { cat: "Relações", sym: "≺", name: "Precede", desc: "Ordem parcial" },
+            { cat: "Relações", sym: "≻", name: "Sucede", desc: "Ordem parcial" },
+            { cat: "Relações", sym: "⊥", name: "Perpendicular", desc: "Ortogonalidade" },
+            { cat: "Relações", sym: "∥", name: "Paralelo", desc: "Paralelismo" },
+
+            // Outros Símbolos
+            { cat: "Outros Símbolos", sym: "∘", name: "Composição", desc: "Composição de funções" },
+            { cat: "Outros Símbolos", sym: "↦", name: "Mapeamento", desc: "Função" },
+            { cat: "Outros Símbolos", sym: "→", name: "Função", desc: "Vai para" },
+            { cat: "Outros Símbolos", sym: "⇢", name: "Transformação", desc: "Aplicação" },
+            { cat: "Outros Símbolos", sym: "∣", name: "Divide", desc: "Divisibilidade" },
+            { cat: "Outros Símbolos", sym: "∤", name: "Não divide", desc: "Não divisível" },
+            { cat: "Outros Símbolos", sym: "⌈x⌉", name: "Teto", desc: "Menor inteiro ≥ x" },
+            { cat: "Outros Símbolos", sym: "⌊x⌋", name: "Piso", desc: "Maior inteiro ≤ x" },
+            { cat: "Outros Símbolos", sym: "…", name: "Reticências", desc: "Continuação" },
+            { cat: "Outros Símbolos", sym: "□", name: "Fim da prova", desc: "Q.E.D." },
+            { cat: "Outros Símbolos", sym: "■", name: "Fim da demonstração", desc: "Q.E.D." }
+        ];
+
+        // Unique IDs
+        symbolsData.forEach((item, index) => { item.id = `sym-${index}`; });
+
+        // Globals
+        const categories = [...new Set(symbolsData.map(s => s.cat))];
+        let currentCategory = "Todos";
+        let currentSearch = "";
+        const renderedMathJaxIds = new Set(); // To avoid calling Typeset redundantly
+
+        // DOM Elements
+        const navEl = document.getElementById('category-nav');
+        const contentEl = document.getElementById('content-area');
+        const searchInput = document.getElementById('search-input');
+        const toastEl = document.getElementById('toast');
+        const toastMsg = document.getElementById('toast-msg');
+
+        function init() {
+            renderNav();
+            renderContent();
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value.toLowerCase();
+                renderContent();
+            });
+        }
+
+        function renderNav() {
+            let html = `<button class="nav-item ${currentCategory === 'Todos' ? 'active' : ''}" onclick="setCategory('Todos')">
+                            Todos <span class="nav-count">${symbolsData.length}</span>
+                        </button>`;
+            categories.forEach(cat => {
+                const count = symbolsData.filter(s => s.cat === cat).length;
+                const isActive = currentCategory === cat ? 'active' : '';
+                html += `<button class="nav-item ${isActive}" onclick="setCategory('${cat}')">
+                            ${cat} <span class="nav-count">${count}</span>
+                         </button>`;
+            });
+            navEl.innerHTML = html;
+        }
+
+        window.setCategory = function(cat) {
+            currentCategory = cat;
+            renderNav();
+            renderContent();
+            document.getElementById('main-scroll').scrollTo(0,0);
+        };
+
+        function renderContent() {
+            let html = '';
+            let filteredData = symbolsData.filter(s => {
+                const matchCat = currentCategory === 'Todos' || s.cat === currentCategory;
+                const matchSearch = s.sym.toLowerCase().includes(currentSearch) || 
+                                    s.name.toLowerCase().includes(currentSearch) || 
+                                    s.desc.toLowerCase().includes(currentSearch);
+                return matchCat && matchSearch;
+            });
+
+            if (filteredData.length === 0) {
+                contentEl.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>Nenhum símbolo encontrado.</h3></div>`;
+                return;
+            }
+
+            if (currentCategory === 'Todos' && currentSearch === '') {
+                const grouped = {};
+                filteredData.forEach(s => { if(!grouped[s.cat]) grouped[s.cat] = []; grouped[s.cat].push(s); });
+                for (const cat in grouped) {
+                    html += `<div class="category-section">
+                                <h2 class="category-title">${cat}</h2>
+                                <div class="symbols-grid">${grouped[cat].map(createCard).join('')}</div>
+                             </div>`;
+                }
+            } else {
+                html += `<div class="category-section">
+                            <h2 class="category-title">${currentCategory === 'Todos' ? 'Resultados' : currentCategory}</h2>
+                            <div class="symbols-grid">${filteredData.map(createCard).join('')}</div>
+                         </div>`;
+            }
+            contentEl.innerHTML = html;
+            renderedMathJaxIds.clear(); // reset tracking for new view
+        }
+
+        function createCard(item) {
+            const symRaw = item.sym.replace(/"/g, '&quot;');
+            // HTML structure: Main card area (clickable for copy) + Toggle button + Expansion area (interactivity)
+            return `
+                <div class="symbol-card" id="card-${item.id}">
+                    <div class="card-main" onclick="copyToClipboard('${symRaw}')" title="Copiar símbolo">
+                        <span class="copy-hint">Copiar</span>
+                        <div class="symbol-visual">${item.sym}</div>
+                        <div class="symbol-info">
+                            <h3 class="symbol-name">${item.name}</h3>
+                            <p class="symbol-desc">${item.desc}</p>
+                        </div>
+                    </div>
+                    <button class="card-example-toggle" onclick="toggleExample('${item.id}')">
+                        Ver Exemplo Interativo 
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="card-example-content" id="example-${item.id}"></div>
+                </div>
+            `;
+        }
+
+        // ==========================================
+        // DYNAMIC EXAMPLE ENGINE
+        // ==========================================
+        
+        window.toggleExample = function(id) {
+            const content = document.getElementById(`example-${id}`);
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+            } else {
+                content.classList.add('open');
+                // Se ainda não geramos o conteúdo interativo para este card, geramos agora
+                if (!content.innerHTML.trim()) {
+                    generateExample(id, content);
+                }
+            }
+        };
+
+        function generateExample(id, container) {
+            const item = symbolsData.find(s => s.id === id);
+            if (!item) return;
+
+            let html = '';
+            const sym = item.sym;
+
+            // 1. Operações Básicas
+            if (['+', '−', '×', '÷', '^', '%'].includes(sym) || sym === '·') {
+                html = renderBinaryMath(id, sym);
+            }
+            // 2. Comparações e Relações Básicas
+            else if (['=', '≠', '<', '>', '≤', '≥', '≈'].includes(sym) || sym === '≡') {
+                html = renderBinaryComparison(id, sym);
+            }
+            // 3. Lógica Proposicional Binária
+            else if (['∧', '∨', '⊕', '→', '↔', '⇒', '⇔'].includes(sym)) {
+                html = renderBinaryLogic(id, sym);
+            }
+            // 4. Lógica Unária
+            else if (sym === '¬' || sym === '~') {
+                html = renderUnaryLogic(id, sym);
+            }
+            // 5. Teoria dos Conjuntos (Básicos)
+            else if (['∪', '∩', '\\', '△'].includes(sym)) {
+                html = renderBinarySet(id, sym);
+            }
+            // 6. Raízes
+            else if (sym === '√' || sym === '∛') {
+                html = renderUnaryMath(id, sym);
+            }
+            // 7. MathJax Render (Calculo, Gregas, etc)
+            else {
+                html = renderMathJaxExample(id, item);
+            }
+
+            container.innerHTML = html;
+
+            // Bind events for live calculation
+            bindEvents(id, item);
+        }
+
+        // --- Renderers ---
+        function renderBinaryMath(id, sym) {
+            let op = sym === '×' || sym === '·' ? '*' : sym === '÷' ? '/' : sym === '−' ? '-' : sym;
+            return `
+                <div class="engine-io-row">
+                    <input type="number" id="in1-${id}" class="engine-input" value="10">
+                    <span class="engine-sym">${sym}</span>
+                    <input type="number" id="in2-${id}" class="engine-input" value="5">
+                    <span class="engine-sym">=</span>
+                    <div id="res-${id}" class="engine-res"></div>
+                </div>
+                <input type="hidden" id="op-${id}" value="${op}">
+            `;
+        }
+
+        function renderBinaryComparison(id, sym) {
+            return `
+                <div class="engine-io-row">
+                    <input type="number" id="in1-${id}" class="engine-input" value="5">
+                    <span class="engine-sym">${sym}</span>
+                    <input type="number" id="in2-${id}" class="engine-input" value="3">
+                    <span class="engine-sym">⇒</span>
+                    <div id="res-${id}" class="engine-res"></div>
+                </div>
+            `;
+        }
+
+        function renderBinaryLogic(id, sym) {
+            const opts = `<option value="1">V</option><option value="0">F</option>`;
+            return `
+                <div class="engine-io-row">
+                    <select id="in1-${id}" class="engine-select">${opts}</select>
+                    <span class="engine-sym">${sym}</span>
+                    <select id="in2-${id}" class="engine-select">${opts}</select>
+                    <span class="engine-sym">⇒</span>
+                    <div id="res-${id}" class="engine-res"></div>
+                </div>
+            `;
+        }
+
+        function renderUnaryLogic(id, sym) {
+            const opts = `<option value="1">V</option><option value="0">F</option>`;
+            return `
+                <div class="engine-io-row">
+                    <span class="engine-sym">${sym}</span>
+                    <select id="in1-${id}" class="engine-select">${opts}</select>
+                    <span class="engine-sym">⇒</span>
+                    <div id="res-${id}" class="engine-res"></div>
+                </div>
+            `;
+        }
+        
+        function renderUnaryMath(id, sym) {
+            return `
+                <div class="engine-io-row">
+                    <span class="engine-sym">${sym}</span>
+                    <input type="number" id="in1-${id}" class="engine-input" value="${sym==='∛'?27:25}">
+                    <span class="engine-sym">=</span>
+                    <div id="res-${id}" class="engine-res"></div>
+                </div>
+            `;
+        }
+
+        function renderBinarySet(id, sym) {
+            return `
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; text-align:center;">Elementos separados por vírgula</div>
+                <div class="engine-io-row">
+                    <span class="engine-sym">{</span>
+                    <input type="text" id="in1-${id}" class="engine-input" value="1,2" style="max-width:60px;">
+                    <span class="engine-sym">}</span>
+                    <span class="engine-sym">${sym}</span>
+                    <span class="engine-sym">{</span>
+                    <input type="text" id="in2-${id}" class="engine-input" value="2,3" style="max-width:60px;">
+                    <span class="engine-sym">}</span>
+                    <span class="engine-sym">=</span>
+                    <div id="res-${id}" class="engine-res"></div>
+                </div>
+            `;
+        }
+
+        function renderMathJaxExample(id, item) {
+            let formulaTpl = '';
+            let sliderMax = 10;
+            let showSlider = true;
+            let title = 'Deslize para interagir com a fórmula';
+            
+            switch (item.sym) {
+                // Somatórios e Produtos (Real Usages)
+                case 'Σ': case '∑': 
+                    formulaTpl = '\\sum_{i=1}^{N} i = \\frac{N(N+1)}{2}'; 
+                    title = 'Soma dos N primeiros inteiros (Gauss)';
+                    break;
+                case 'σ': 
+                    formulaTpl = '\\sigma = \\sqrt{\\frac{1}{N} \\sum_{i=1}^{N} (x_i - \\mu)^2}'; 
+                    title = 'Desvio Padrão Populacional de N amostras';
+                    break;
+                case 'Π': case '∏': 
+                    formulaTpl = '\\sum_{n=1}^\\infty \\frac{1}{n^N} = \\prod_{p \\text{ prime}} \\frac{1}{1 - p^{-N}}'; 
+                    title = 'Fórmula de Produto de Euler';
+                    break;
+                case '∐': 
+                    formulaTpl = 'X = \\coprod_{i=1}^{N} X_i'; 
+                    title = 'União Disjunta na Teoria dos Conjuntos';
+                    break;
+                
+                // Cálculo (Real Usages)
+                case '∫': 
+                    formulaTpl = '\\int_{0}^{N} x^2 \\, dx = \\frac{N^3}{3}'; 
+                    break;
+                case '∬': 
+                    formulaTpl = '\\iint_{D} f(x,y) \\, dA = N \\pi'; 
+                    break;
+                case '∭': 
+                    formulaTpl = '\\iiint_{V} f(x,y,z) \\, dV = \\frac{4}{3}\\pi N^3'; 
+                    break;
+                case '∮': 
+                    formulaTpl = '\\oint_{\\partial \\Sigma} \\mathbf{B} \\cdot d\\mathbf{l} = \\mu_0 \\iint_{\\Sigma} \\mathbf{J} \\cdot d\\mathbf{S}'; 
+                    showSlider = false;
+                    title = 'Lei de Ampère (Equações de Maxwell)';
+                    break;
+                case 'd': 
+                    formulaTpl = 'df = \\frac{\\partial f}{\\partial x}dx + \\frac{\\partial f}{\\partial y}dy'; 
+                    showSlider = false;
+                    title = 'Diferencial total';
+                    break;
+                case '∂': 
+                    formulaTpl = '\\frac{\\partial}{\\partial x} (x^N y) = N x^{N-1} y'; 
+                    title = 'Derivada Parcial';
+                    break;
+                case '∇': 
+                    formulaTpl = '\\nabla f = \\left( \\frac{\\partial f}{\\partial x_1}, \\dots, \\frac{\\partial f}{\\partial x_N} \\right)'; 
+                    title = 'Gradiente de uma função multivariável em N dimensões';
+                    break;
+                case 'Δ': case 'δ': 
+                    formulaTpl = '\\Delta x = x_{\\text{final}} - x_{\\text{inicial}}'; 
+                    showSlider = false;
+                    title = 'Variação / Diferença';
+                    break;
+                case 'lim': 
+                    formulaTpl = '\\lim_{x \\to N} \\frac{\\sin(x-N)}{x-N} = 1'; 
+                    break;
+
+                // Álgebra Linear (Real Usages)
+                case '→': 
+                    formulaTpl = '\\vec{v} = N \\hat{i} + 2 \\hat{j}'; 
+                    break;
+                case '‖v‖': 
+                    formulaTpl = '\\|\\vec{v}\\| = \\sqrt{v_1^2 + v_2^2 + \\dots + v_N^2}'; 
+                    title = 'Norma euclidiana N-dimensional';
+                    break;
+                case '⊗': 
+                    formulaTpl = 'V \\otimes_K W'; 
+                    showSlider = false;
+                    title = 'Produto Tensorial de Espaços Vetoriais';
+                    break;
+                case 'T': 
+                    formulaTpl = 'A = \\begin{bmatrix} 1 & 2 \\\\ 3 & N \\end{bmatrix} \\implies A^T = \\begin{bmatrix} 1 & 3 \\\\ 2 & N \\end{bmatrix}'; 
+                    sliderMax = 9;
+                    title = 'Matriz Transposta';
+                    break;
+                case 'det': 
+                    formulaTpl = '\\det \\begin{bmatrix} 1 & 2 \\\\ 3 & N \\end{bmatrix} = (1)(N) - (2)(3) = N - 6'; 
+                    sliderMax = 9;
+                    break;
+                case 'rank': 
+                    formulaTpl = '\\text{rank}(A) = N'; 
+                    title = 'Posto da matriz (número de colunas L.I.)';
+                    break;
+
+                // Números
+                case 'ℕ': formulaTpl = '\\mathbb{N} = \\{0, 1, 2, \\dots, N\\}'; break;
+                case 'ℤ': formulaTpl = '\\mathbb{Z} = \\{\\dots, -N, 0, N, \\dots\\}'; break;
+                case 'ℚ': formulaTpl = 'q = \\frac{p}{N} \\in \\mathbb{Q}, \\; (N \\neq 0)'; break;
+                case 'ℝ': formulaTpl = 'x \\in \\mathbb{R}^N'; title = 'Espaço Euclidiano N-Dimensional'; break;
+                case 'ℂ': formulaTpl = 'z = N + i\\sqrt{N} \\in \\mathbb{C}'; break;
+                case 'ℍ': formulaTpl = 'q = a + b\\mathbf{i} + c\\mathbf{j} + d\\mathbf{k} \\in \\mathbb{H}'; showSlider = false; title = 'Álgebra dos Quatérnios'; break;
+                case 'ℙ': formulaTpl = '\\pi(N) \\approx \\frac{N}{\\ln(N)}'; title = 'Teorema dos Números Primos'; break;
+
+                // Alfabeto Grego e Funções Especiais (Real Usages)
+                case 'Γ': 
+                    formulaTpl = '\\Gamma(N) = (N-1)!'; 
+                    title = 'Função Gama (Extensão do Fatorial)';
+                    break;
+                case 'ζ': 
+                    formulaTpl = '\\zeta(N) = \\sum_{n=1}^\\infty \\frac{1}{n^N}'; 
+                    title = 'Função Zeta de Riemann';
+                    break;
+                case 'π': 
+                    formulaTpl = '\\prod_{n=1}^N \\frac{4n^2}{4n^2 - 1} \\approx \\frac{\\pi}{2}'; 
+                    title = 'Produto de Wallis para Pi';
+                    break;
+                case 'θ': formulaTpl = '\\sin(\\theta) = \\frac{N}{10}'; break;
+                
+                // Fallback para outros não mapeados
+                default:
+                    formulaTpl = `${item.sym} \\text{ aplicado a } N`;
+            }
+
+            let html = `<div style="text-align:center; font-size: 0.85rem; color: var(--text-muted); margin-bottom:0.5rem;">${title}</div>`;
+            if (showSlider) {
+                html += `<input type="range" id="slider-${id}" class="engine-range" min="1" max="${sliderMax}" value="5">`;
+            }
+            html += `<div id="mjx-${id}" class="engine-mathjax-container" data-tpl="${formulaTpl.replace(/"/g, '&quot;')}"></div>`;
+            return html;
+        }
+
+
+        // --- Event Binding & Evaluators ---
+        function bindEvents(id, item) {
+            const sym = item.sym;
+            const resEl = document.getElementById(`res-${id}`);
+
+            // Handler helpers
+            function evalMath() {
+                const v1 = parseFloat(document.getElementById(`in1-${id}`).value) || 0;
+                let res = 0;
+                if(document.getElementById(`in2-${id}`)) {
+                    const v2 = parseFloat(document.getElementById(`in2-${id}`).value) || 0;
+                    const op = document.getElementById(`op-${id}`).value;
+                    if(op==='+') res = v1+v2; else if(op==='-') res = v1-v2; else if(op==='*') res = v1*v2;
+                    else if(op==='/') res = v2!==0 ? (v1/v2).toFixed(2) : 'Err'; else if(op==='^') res = Math.pow(v1,v2);
+                    else if(op==='%') res = (v1/100)*v2;
+                } else {
+                    if (sym === '√') res = Math.sqrt(v1).toFixed(2);
+                    else if (sym === '∛') res = Math.cbrt(v1).toFixed(2);
+                }
+                resEl.textContent = res;
+            }
+
+            function evalComp() {
+                const v1 = parseFloat(document.getElementById(`in1-${id}`).value) || 0;
+                const v2 = parseFloat(document.getElementById(`in2-${id}`).value) || 0;
+                let b = false;
+                if(sym==='=') b = v1===v2; else if(sym==='≠') b = v1!==v2; else if(sym==='<') b = v1<v2;
+                else if(sym==='>') b = v1>v2; else if(sym==='≤') b = v1<=v2; else if(sym==='≥') b = v1>=v2;
+                else if(sym==='≈') b = Math.abs(v1-v2)<1; else if(sym==='≡') b = v1===v2;
+                
+                resEl.textContent = b ? 'Verdadeiro' : 'Falso';
+                resEl.className = 'engine-res ' + (b ? 'success' : 'danger');
+            }
+
+            function evalLogic() {
+                const v1 = document.getElementById(`in1-${id}`).value === '1';
+                let res = false;
+                if(document.getElementById(`in2-${id}`)) {
+                    const v2 = document.getElementById(`in2-${id}`).value === '1';
+                    if(sym==='∧') res = v1&&v2; else if(sym==='∨') res = v1||v2; else if(sym==='⊕') res = v1!==v2;
+                    else if(sym==='→' || sym==='⇒') res = !v1||v2; else if(sym==='↔' || sym==='⇔') res = v1===v2;
+                } else {
+                    res = !v1;
+                }
+                resEl.textContent = res ? 'V' : 'F';
+                resEl.className = 'engine-res ' + (res ? 'success' : 'danger');
+            }
+
+            function evalSet() {
+                const s1 = document.getElementById(`in1-${id}`).value.split(',').map(s=>s.trim()).filter(s=>s);
+                const s2 = document.getElementById(`in2-${id}`).value.split(',').map(s=>s.trim()).filter(s=>s);
+                let out = [];
+                if(sym==='∪') out = [...new Set([...s1, ...s2])];
+                else if(sym==='∩') out = s1.filter(x => s2.includes(x));
+                else if(sym==='\\') out = s1.filter(x => !s2.includes(x));
+                else if(sym==='△') out = [...s1.filter(x=>!s2.includes(x)), ...s2.filter(x=>!s1.includes(x))];
+                
+                resEl.textContent = `{ ${out.join(', ')} }`;
+            }
+
+            function evalMathJax() {
+                const slider = document.getElementById(`slider-${id}`);
+                const container = document.getElementById(`mjx-${id}`);
+                if (!container) return;
+                
+                const N = slider ? slider.value : 5;
+                const tpl = container.getAttribute('data-tpl');
+                const formula = tpl.replace(/N/g, N);
+                
+                container.innerHTML = `\\[ ${formula} \\]`;
+                
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([container]).catch((err) => console.log(err.message));
+                }
+            }
+
+            // Attach listeners
+            const in1 = document.getElementById(`in1-${id}`);
+            const in2 = document.getElementById(`in2-${id}`);
+            const slider = document.getElementById(`slider-${id}`);
+
+            if (in1) {
+                if (item.cat==='Operações') { in1.addEventListener('input', evalMath); if(in2) in2.addEventListener('input', evalMath); evalMath(); }
+                else if (item.cat==='Básicos' && !['∴','∵','∞','∝','±','∓'].includes(sym)) { in1.addEventListener('input', evalComp); if(in2) in2.addEventListener('input', evalComp); evalComp(); }
+                else if (item.cat==='Lógica Proposicional') { in1.addEventListener('change', evalLogic); if(in2) in2.addEventListener('change', evalLogic); evalLogic(); }
+                else if (item.cat==='Teoria dos Conjuntos') { in1.addEventListener('input', evalSet); if(in2) in2.addEventListener('input', evalSet); evalSet(); }
+            } else if (slider) {
+                slider.addEventListener('input', evalMathJax);
+                evalMathJax();
+            } else if (item.cat === 'Operações') {
+                // fallbacks unary math (sqrt)
+                if(in1) { in1.addEventListener('input', evalMath); evalMath(); }
+            }
+        }
+
+        // ==========================================
+        // Utils
+        // ==========================================
+        
+        let toastTimeout;
+        window.showToast = function(msg) {
+            toastMsg.innerHTML = msg;
+            toastEl.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { toastEl.classList.remove('show'); }, 3000);
+        };
+
+        // Initialize
+        init();
+
+    </script>
+</body>
+</html>

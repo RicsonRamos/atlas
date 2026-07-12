@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos Computacionais e Matemáticos - Dashboard Interativo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            950: '#0d0d14',
+                            900: '#111120',
+                            800: '#1e1e35',
+                            700: '#2a2a40',
+                            400: '#a0a0c0',
+                            300: '#c0c0d0',
+                            200: '#d0d0e0',
+                            100: '#e8e8f0',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax para Renderização de LaTeX de Alta Fidelidade -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* ── Theme Variables ── */
+        :root {
+            --bg:        #0d0d14;
+            --bg-card:   #111120;
+            --border:    #1e1e35;
+            --text:      #e8e8f0;
+            --text-muted:#a0a0c0;
+            --text-dim:  #60608b;
+            --accent:    #BD93F9;
+            --accent-dim:#BD93F920;
+            --accent-mid:#BD93F940;
+            --link:      #6C63FF;
+        }
+
+        /* ── Nav ── */
+        nav.top-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+            height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .nav-left { display: flex; align-items: center; gap: 1rem; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+            background: var(--accent-dim); border: 1px solid var(--accent-mid);
+            border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+            text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+        }
+        .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+        .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+        .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+
+        /* ── Tabs ── */
+        .tabs-nav-container { padding-top: 5rem; padding-bottom: 1.5rem; background: var(--bg); display: flex; justify-content: center;}
+        .tabs-nav { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--border); max-width: 1200px; width: 100%;}
+        .tab-btn {
+            padding: 0.5rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+            background: transparent; border: 1px solid transparent; color: var(--text-dim); transition: all 0.2s ease; border-bottom: none;
+        }
+        .tab-btn:hover { color: var(--text-muted); background: #ffffff06; }
+        .tab-btn.active { background: var(--bg-card); border-color: var(--border); border-bottom-color: var(--bg-card); color: var(--text); position: relative; top: 1px; }
+
+        .main-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    </style>
+</head>
+<body class="bg-[#0d0d14] text-slate-100 min-h-screen flex flex-col">
+
+    <nav class="top-nav">
+        <div class="nav-left">
+            <a href="/" class="back-btn">← Roadmap</a>
+            <div class="nav-brand"><span>BLOCO 01</span> Fundamentos Matemáticos</div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-xs text-[#505080] font-mono hidden md:inline-block">Status: Rigor Matemático Ativado</span>
+        </div>
+    </nav>
+
+    <!-- Main Container Layout -->
+    <div class="flex flex-1 flex-col overflow-hidden">
+        
+        <div class="tabs-nav-container">
+            <div class="tabs-nav" id="tabs-nav">
+                <button onclick="switchTab('ch1')" class="tab-btn active" id="btn-ch1" style="color:var(--c-g1);">📈 Complexidade</button>
+                <button onclick="switchTab('ch2')" class="tab-btn" id="btn-ch2" style="color:var(--c-g2);">🎲 Probabilidade</button>
+                <button onclick="switchTab('ch3')" class="tab-btn" id="btn-ch3" style="color:var(--c-g3);">📊 Inferência</button>
+                <button onclick="switchTab('ch4')" class="tab-btn" id="btn-ch4" style="color:var(--c-med);">🧠 Lógica</button>
+                <button onclick="switchTab('ch5')" class="tab-btn" id="btn-ch5" style="color:var(--c-g1);">🕸 Grafos</button>
+                <button onclick="switchTab('ch6')" class="tab-btn" id="btn-ch6" style="color:var(--c-g2);">🤖 Bayes</button>
+                <button onclick="switchTab('ch7')" class="tab-btn" id="btn-ch7" style="color:var(--c-g3);">📐 Álgebra Linear</button>
+            </div>
+        </div>
+
+        <!-- Área de Conteúdo Principal -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-[#0d0d14] main-content">
+
+            <!-- TAB 1: COMPLEXIDADE DE ALGORITMOS -->
+            <section id="tab-ch1" class="tab-content space-y-8">
+                <div class="border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-2 text-indigo-400 text-xs uppercase font-mono tracking-widest mb-1">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <span>Análise Assintótica</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Capítulo 1: Complexidade de Algoritmos e Métodos de Amortização</h2>
+                </div>
+
+                <!-- Introdução Teórica -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 space-y-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            A análise assintótica clássica descreve matematicamente a taxa de crescimento de funções de custo em relação ao tamanho da entrada $n$, ignorando constantes de hardware. No entanto, focar exclusivamente no pior caso individual de cada operação pode gerar modelos absurdamente sobreestimados e inúteis em sistemas com operações interdependentes.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            A <strong>Análise Amortizada</strong> resolve esta fragilidade calculando a média de tempo de uma sequência contínua de operações no pior cenário. Existem três metodologias fundamentais estabelecidas por Robert Tarjan (1985):
+                        </p>
+                    </div>
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/50 p-4 space-y-3">
+                        <h4 class="text-xs font-semibold text-white uppercase tracking-wider">As Notações Clássicas</h4>
+                        <ul class="text-xs space-y-2 text-slate-400">
+                            <li><strong class="text-indigo-400">Big O ($O$):</strong> Teto assintótico. $0 \le f(n) \le C \cdot g(n), \forall n \ge n_0$.</li>
+                            <li><strong class="text-emerald-400">Big Omega ($\Omega$):</strong> Piso assintótico. $0 \le C \cdot g(n) \le f(n), \forall n \ge n_0$.</li>
+                            <li><strong class="text-amber-400">Big Theta ($\Theta$):</strong> Limite exato (sanduíche). Simultaneamente $O$ e $\Omega$.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Métodos de Amortização Visual Card -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/40 p-5 space-y-2">
+                        <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-widest">Método 01</span>
+                        <h3 class="text-base font-bold text-white">Método Agregado</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Calcula o custo total cumulativo $T(n)$ para uma sequência inteira de $n$ operações no pior caso absoluto e extrai a média de custo simples: $T(n)/n$. Atribui o mesmo custo amortizado idêntico a todas as operações, independentemente da sua natureza.
+                        </p>
+                    </div>
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/40 p-5 space-y-2">
+                        <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-widest">Método 02</span>
+                        <h3 class="text-base font-bold text-white">Método Contábil (Banqueiro)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Cria tarifas amortizadas fictícias para cada operação. Operações baratas cobram uma taxa superior ao seu custo real, gerando **créditos virtuais** acumulados no sistema. Operações caras consomem estes créditos, impedindo o saldo de se tornar negativo: $\sum \hat{c}_i \ge \sum c_i$.
+                        </p>
+                    </div>
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/40 p-5 space-y-2">
+                        <span class="text-[10px] font-mono text-amber-400 uppercase tracking-widest">Método 03</span>
+                        <h3 class="text-base font-bold text-white">Método do Potencial (Físico)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Formaliza o acréscimo de créditos como energia potencial dependente do estado global da estrutura: $\hat{c}_i = c_i + \Phi(D_i) - \Phi(D_{i-1})$. Se a função de potencial satisfizer $\Phi(D_n) \ge \Phi(D_0)$, a soma amortizada será sempre um limite superior rígido e seguro do custo real.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- INTERATIVE SIMULATION: VETOR DINÂMICO & HISTERESE -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/20 p-6 space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center">
+                                <i class="fa-solid fa-laptop-code text-indigo-400 mr-2"></i>
+                                Simulador Físico: Redimensionamento de Vetor Dinâmico
+                            </h3>
+                            <p class="text-xs text-slate-400">Visualize em tempo real os custos de inserção, créditos acumulados e a variação da função de potencial $\Phi(D) = 2n-m$.</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="insertArrayElement()" class="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-xs text-white font-medium transition duration-150">
+                                Inserir Elemento
+                            </button>
+                            <button onclick="resetArraySimulator()" class="px-3 py-1.5 rounded-md border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition duration-150">
+                                Reiniciar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Estado do Simulador -->
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="rounded-lg bg-slate-950 p-3 border border-slate-800 text-center">
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Elementos ($n$)</span>
+                            <p class="text-lg font-bold text-white font-mono" id="sim-array-n">0</p>
+                        </div>
+                        <div class="rounded-lg bg-slate-950 p-3 border border-slate-800 text-center">
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Capacidade ($m$)</span>
+                            <p class="text-lg font-bold text-white font-mono" id="sim-array-m">1</p>
+                        </div>
+                        <div class="rounded-lg bg-slate-950 p-3 border border-slate-800 text-center">
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Último Custo Real</span>
+                            <p class="text-lg font-bold text-rose-400 font-mono" id="sim-array-real">0</p>
+                        </div>
+                        <div class="rounded-lg bg-slate-950 p-3 border border-slate-800 text-center">
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Acumulado Amortizado</span>
+                            <p class="text-lg font-bold text-emerald-400 font-mono" id="sim-array-amort">0</p>
+                        </div>
+                        <div class="rounded-lg bg-slate-950 p-3 border border-slate-800 text-center col-span-2 md:col-span-1">
+                            <span class="text-[10px] font-mono text-slate-500 uppercase">Potencial ($\Phi = 2n-m$)</span>
+                            <p class="text-lg font-bold text-amber-400 font-mono" id="sim-array-pot">0</p>
+                        </div>
+                    </div>
+
+                    <!-- Representação Física do Vetor -->
+                    <div>
+                        <span class="text-xs font-semibold text-slate-400 mb-2 block">Visualização da Memória Contígua (Vetor Alocado):</span>
+                        <div class="flex flex-wrap gap-1.5 p-3.5 bg-slate-950 border border-slate-800 rounded-lg min-h-[56px] items-center" id="array-memory-blocks">
+                            <!-- Blocos de memória dinâmicos via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUDITORIA CRÍTICA DO CAPÍTULO -->
+                <div class="rounded-xl border border-rose-500/20 bg-rose-500/5 p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Auditoria de Rigor: A Falha da Histerese e a Ilusão Amortizada</span>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                        <p>
+                            <strong>1. Falha de Premissa na Liberação de Memória:</strong> Ao programar vetores dinâmicos, engenheiros juniores muitas vezes libertam memória pela metade exactamente no limiar de 50% de ocupação. Se o sistema sofrer operações alternadas de escrita e leitura nesta fronteira exata, o pior cenário degradará imediatamente para $\Theta(n)$ em cada operação devido à oscilação infinita (**thrashing**). A histerese (só reduzir a capacidade com ocupação de 25%) é obrigatória, não opcional.
+                        </p>
+                        <p>
+                            <strong>2. A Ilusão do Caso Médio vs Garantia Amortizada:</strong> Não confunda análise amortizada com caso médio estatístico. A análise amortizada fornece uma garantia determinística absoluta de pior caso sobre o tempo total de execução. Se um sistema crítico de tempo real (como o processador de sinal de um avião) não conseguir acomodar picos individuais esporádicos de latência $O(n)$, a complexidade amortizada $O(1)$ é uma métrica irrelevante que pode causar desastres físicos.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: PROBABILIDADE E DISTRIBUIÇÕES -->
+            <section id="tab-ch2" class="tab-content hidden space-y-8">
+                <div class="border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-2 text-emerald-400 text-xs uppercase font-mono tracking-widest mb-1">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Teoria de Probabilidade</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Capítulo 2: Probabilidade e Distribuições Estatísticas na Ciência de Dados</h2>
+                </div>
+
+                <!-- Distribuições Principais -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            O mapeamento matemático de incertezas requer a distinção rigorosa das variáveis. Variáveis discretas descrevem contagens inteiras e apoiam-se em Funções de Massa de Probabilidade (PMF). Variáveis contínuas descrevem medições de intervalo real e são regidas por Funções de Densidade de Probabilidade (PDF).
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            O <strong>Teorema Central do Limite (TCL)</strong> é o pilar analítico que sustenta os testes paramétricos: independentemente da distribuição populacional de origem, a média amostral $\overline{X}$ de uma amostra de tamanho suficiente $n$ aproxima-se de uma distribuição normal padrão:
+                            $$Z = \frac{\overline{X} - \mu}{\sigma / \sqrt{n}} \sim \text{Normal}(0,1)$$
+                        </p>
+                    </div>
+
+                    <!-- Tabela de Variáveis e Suporte -->
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/50 p-4 overflow-hidden">
+                        <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block mb-2">Suporte de Distribuições</span>
+                        <table class="w-full text-xs text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-slate-400">
+                                    <th class="py-2">Distribuição</th>
+                                    <th class="py-2">Mecanismo</th>
+                                    <th class="py-2">Aplicação Típica</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300 divide-y divide-slate-800">
+                                <tr>
+                                    <td class="py-2 font-semibold text-white">Binomial</td>
+                                    <td class="py-2">Contagem de $k$ sucessos em $n$ ensaios</td>
+                                    <td class="py-2">Cliques em anúncios, Testes A/B</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-semibold text-white">Poisson</td>
+                                    <td class="py-2">Eventos por intervalo contínuo</td>
+                                    <td class="py-2">Acessos a servidor, fila de chamadas</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-semibold text-white">Dirichlet</td>
+                                    <td class="py-2">Densidade sobre o Simplex de dimensão $K-1$</td>
+                                    <td class="py-2">Modelos de tópicos (LDA), Market Share</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Simplex e Dirichlet -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/20 p-5 space-y-4">
+                    <h3 class="text-base font-bold text-white">A Geometria do Simplex e a Distribuição Dirichlet</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Ao modelar dados composicionais (frações que somam obrigatoriamente 1), a distribuição Dirichlet é a única que respeita a barreira física do espaço geométrico do **Simplex**:
+                        $$p(\theta|\alpha) = \frac{\Gamma\left(\sum_{i=1}^K \alpha_i\right)}{\prod_{i=1}^K \Gamma(\alpha_i)} \prod_{i=1}^K \theta_i^{\alpha_i - 1}$$
+                        Diferente de modelos lineares que admitem proporções negativas ou somas superiores a 100%, a formulação Dirichlet restringe nativamente os vetores de saída às fronteiras do triângulo do simplex equilátero para $K=3$.
+                    </p>
+                </div>
+
+                <!-- INTERACTIVE SIMULATION: BAYESIAN BETA-BINOMIAL CONJUGATE UPDATE -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-6 space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center">
+                                <i class="fa-solid fa-calculator text-emerald-400 mr-2"></i>
+                                Simulador Bayesiano: Prior Conjugada Beta-Binomial
+                            </h3>
+                            <p class="text-xs text-slate-400">Insira as observações empíricas e veja a actualização direta dos parâmetros a posteriori de forma analítica.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Controlos de Entrada -->
+                        <div class="space-y-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <h4 class="text-xs font-bold text-white uppercase tracking-wider">Parâmetros Atuais</h4>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Prior $\alpha$ (Crença de Sucesso Inicial):</label>
+                                <input type="number" id="input-prior-alpha" value="2" min="1" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-2 text-xs focus:ring-2 focus:ring-emerald-500 font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Prior $\beta$ (Crença de Falha Inicial):</label>
+                                <input type="number" id="input-prior-beta" value="2" min="1" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-2 text-xs focus:ring-2 focus:ring-emerald-500 font-mono">
+                            </div>
+                            <div class="border-t border-slate-800 my-2 pt-2">
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-2">Dados Observados (Binomial)</h4>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-xs text-slate-500 mb-1">Sucessos ($k$):</label>
+                                        <input type="number" id="input-obs-k" value="8" min="0" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-2 text-xs focus:ring-2 focus:ring-emerald-500 font-mono">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-slate-500 mb-1">Falhas ($n-k$):</label>
+                                        <input type="number" id="input-obs-f" value="2" min="0" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-2 text-xs focus:ring-2 focus:ring-emerald-500 font-mono">
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="calculateBetaBinomial()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-xs tracking-wide transition duration-150 uppercase">
+                                Atualizar Posterior
+                            </button>
+                        </div>
+
+                        <!-- Resultados Analíticos -->
+                        <div class="md:col-span-2 space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+                                    <span class="text-[10px] text-slate-500 font-mono uppercase">Média Esperada do Prior</span>
+                                    <p class="text-lg font-bold text-white font-mono" id="bb-prior-mean">0.500</p>
+                                    <p class="text-[10px] text-slate-500">$$\mu = \frac{\alpha}{\alpha+\beta}$$</p>
+                                </div>
+                                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+                                    <span class="text-[10px] text-slate-500 font-mono uppercase">Média Esperada Posteriori</span>
+                                    <p class="text-lg font-bold text-emerald-400 font-mono" id="bb-post-mean">0.714</p>
+                                    <p class="text-[10px] text-slate-500">$$\mu = \frac{\alpha + k}{\alpha + \beta + n}$$</p>
+                                </div>
+                            </div>
+
+                            <!-- Gráfico Primitivo Beta (SVG) -->
+                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+                                <span class="text-[10px] text-slate-500 font-mono uppercase mb-2 block">Esboço Geométrico da Densidade de Probabilidade (Modo vs Desvio):</span>
+                                <div class="h-28 w-full flex items-end justify-center space-x-1.5" id="beta-distribution-visualizer">
+                                    <!-- Render dinâmico de barras para emular a distribuição Beta -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUDITORIA CRÍTICA DO CAPÍTULO -->
+                <div class="rounded-xl border border-rose-500/20 bg-rose-500/5 p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Auditoria de Rigor: O Abuso do Teorema Central do Limite</span>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                        <p>
+                            <strong>1. O "Mito de $n \ge 30$":</strong> No desenvolvimento de sistemas analíticos, assume-se cegamente que qualquer variável amostrada sob $n \ge 30$ converge para a normalidade e suporta testes t padrão de forma segura. Em dados reais de tráfego de rede ou valores financeiros, que seguem **distribuições de cauda pesada (heavy-tailed / Power Law)**, a convergência para a média populacional real exige milhões de amostras ou pode simplesmente nunca acontecer de forma estável. Assumir normalidade nestes casos é um erro de engenharia grave.
+                        </p>
+                        <p>
+                            <strong>2. Conjugação Bayesiana como Conveniência Computacional:</strong> O uso de priores conjugadas (como Dirichlet e Multinomial) é uma facilidade algébrica elegante para acelerar o processamento analítico de grandes modelos de linguagem ou simulações estatísticas. Contudo, não representam leis naturais. Se a sua prior representativa da realidade histórica não pertencer a esta classe exata, forçar um prior conjugada apenas para evitar computações exaustivas de Markov Chain Monte Carlo (MCMC) constitui um erro analítico e um desvio metodológico de rigor.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: ANÁLISE INFERENCIAL -->
+            <section id="tab-ch3" class="tab-content hidden space-y-8">
+                <div class="border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-2 text-indigo-400 text-xs uppercase font-mono tracking-widest mb-1">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        <span>Estatística Inferencial</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Capítulo 3: Análise Multivariada e Inferencial Aplicada</h2>
+                </div>
+
+                <!-- Teoria Geral -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            A estatística descritiva pura é incompleta sem a caracterização da dispersão absoluta. Ao estimar a variância de uma amostra finita a partir de uma média populacional desconhecida, o uso do denominador comum $n$ subestima sistematicamente a variabilidade real. É aqui que entra a **Correção de Bessel**, reduzindo o denominador para $n-1$:
+                            $$s^2 = \frac{\sum_{i=1}^n(x_i - \overline{x})^2}{n-1}$$
+                            A perda de 1 grau de liberdade reflete a dependência de termos lineares imposta pela média amostral.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            No domínio do teste de hipóteses clássico, vivemos sob a síntese do dualismo entre **Ronald Fisher** (que introduziu o valor $p$ como uma medida contínua de força empírica contra a hipótese nula $H_0$) e **Neyman-Pearson** (que estruturou a decisão mecânica binária controlando o erro do Tipo I $\alpha$ e o poder estatístico $1-\beta$).
+                        </p>
+                    </div>
+
+                    <!-- Testes t e Correção de Welch -->
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/50 p-5 space-y-3">
+                        <h3 class="text-base font-bold text-white">Correção de Welch</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            No teste t de Student para duas amostras independentes clássico, a premissa de homocedasticidade (variâncias populacionais homogêneas) é altamente sensível e raramente cumprida em dados experimentais. A violação deste pressuposto infla instantaneamente a taxa de falsos positivos (Erro Tipo I).
+                        </p>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            O <strong>Teste t de Welch</strong> descarta essa limitação, adaptando a estatística e aproximando os graus de liberdade por meio da complexa fórmula de Satterthwaite, estabelecendo o padrão ouro analítico para amostras desbalanceadas.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- INTERATIVE SIMULATION: ANOVA CALCULATOR -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-6 space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center">
+                                <i class="fa-solid fa-calculator text-indigo-400 mr-2"></i>
+                                Calculador de ANOVA Unidirecional (Amostras Desbalanceadas)
+                            </h3>
+                            <p class="text-xs text-slate-400">Insira ou edite as observações dos grupos do estudo clássico para recalcular instantaneamente as somas de quadrados e a estatística F.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <!-- Inputs dos Grupos -->
+                        <div class="md:col-span-1 space-y-3 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-wider block mb-2">Amostras do Estudo</span>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Ração A ($r_1=3$):</label>
+                                <input type="text" id="anova-g1" value="25, 21, 29" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-1.5 text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Ração B ($r_2=3$):</label>
+                                <input type="text" id="anova-g2" value="24, 31, 32" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-1.5 text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Ração C ($r_3=4$):</label>
+                                <input type="text" id="anova-g3" value="25, 18, 19, 22" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-1.5 text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Ração D ($r_4=4$):</label>
+                                <input type="text" id="anova-g4" value="20, 17, 23, 16" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-1.5 text-xs font-mono">
+                            </div>
+                            <button onclick="calculateAnova()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs tracking-wide transition duration-150 uppercase mt-2">
+                                Recalcular F
+                            </button>
+                        </div>
+
+                        <!-- Resultados - Tabela de ANOVA -->
+                        <div class="md:col-span-3 overflow-x-auto">
+                            <table class="w-full text-xs text-left border-collapse border border-slate-800 bg-slate-950 rounded-xl overflow-hidden">
+                                <thead>
+                                    <tr class="bg-slate-900 border-b border-slate-800 text-slate-400 font-mono text-[10px]">
+                                        <th class="p-3">Fonte de Variação</th>
+                                        <th class="p-3">Soma de Quadrados (SQ)</th>
+                                        <th class="p-3">Graus de Liberdade (gl)</th>
+                                        <th class="p-3">Quadrado Médio (QM)</th>
+                                        <th class="p-3">Estatística F</th>
+                                        <th class="p-3">Decisão (p < 0.05)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 text-slate-300">
+                                    <tr>
+                                        <td class="p-3 font-semibold text-white">Tratamento (Entre)</td>
+                                        <td class="p-3 font-mono" id="anova-sq-trat">200.00</td>
+                                        <td class="p-3 font-mono" id="anova-df-trat">3</td>
+                                        <td class="p-3 font-mono" id="anova-qm-trat">66.67</td>
+                                        <td class="p-3 font-mono font-bold text-emerald-400" id="anova-f-val">5.13</td>
+                                        <td class="p-3 font-bold text-emerald-500" id="anova-decision">Rejeitar H0</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-white">Resíduo (Dentro)</td>
+                                        <td class="p-3 font-mono" id="anova-sq-res">130.00</td>
+                                        <td class="p-3 font-mono" id="anova-df-res">10</td>
+                                        <td class="p-3 font-mono" id="anova-qm-res">13.00</td>
+                                        <td class="p-3 text-slate-500">—</td>
+                                        <td class="p-3 text-slate-500">—</td>
+                                    </tr>
+                                    <tr class="bg-slate-900/40">
+                                        <td class="p-3 font-bold text-white">Total</td>
+                                        <td class="p-3 font-mono" id="anova-sq-tot">330.00</td>
+                                        <td class="p-3 font-mono" id="anova-df-tot">13</td>
+                                        <td class="p-3 text-slate-500">—</td>
+                                        <td class="p-3 text-slate-500">—</td>
+                                        <td class="p-3 text-slate-500">—</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="mt-4 p-4 rounded-lg bg-slate-900/50 border border-slate-800">
+                                <h4 class="text-xs font-bold text-white mb-2 uppercase tracking-wider font-mono">Nota Metodológica de Equivalência</h4>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    Lembre-se: quando comparamos exactamente dois grupos ($k=2$), a ANOVA é numericamente equivalente ao teste t para amostras independentes clássico, satisfazendo de forma estrita a identidade matemática de Fisher: $t^2 = F$.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUDITORIA CRÍTICA DO CAPÍTULO -->
+                <div class="rounded-xl border border-rose-500/20 bg-rose-500/5 p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Auditoria de Rigor: Comparações Múltiplas e o Efeito Gaveta</span>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                        <p>
+                            <strong>1. O Crime de Múltiplos Testes t Sucessivos:</strong> Nunca compare múltiplos tratamentos ($k \ge 3$) executando testes t sucessivos par a par. A probabilidade de erro global da família de testes inflaciona geometricamente: $1 - (1-\alpha)^c$, onde $c$ é o número de combinações. Para 6 grupos, comparar 15 pares leva a sua taxa nominal de falso positivo de 5% para mais de **54%**. O uso de testes de correção post-hoc (como Tukey ou Bonferroni) é mandatório para controlar o erro global.
+                        </p>
+                        <p>
+                            <strong>2. O Viés Estatístico de Publicação ("Efeito Gaveta"):</strong> Estresses industriais para encontrar p-valores inferiores a 0.05 levam a manipulações inconscientes dos limites amostrais. Resultados insatisfatórios que não rejeitam a hipótese nula são sistematicamente arquivados e ignorados, criando um viés perigoso e distorcendo severamente os factos consolidados na literatura técnica e científica.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: LÓGICA E CONJUNTOS -->
+            <section id="tab-ch4" class="tab-content hidden space-y-8">
+                <div class="border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-2 text-emerald-400 text-xs uppercase font-mono tracking-widest mb-1">
+                        <i class="fa-solid fa-brain"></i>
+                        <span>Lógica & Fundamentos</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Capítulo 4: O Legado Axiomático da Lógica Matemática e Teoria dos Conjuntos</h2>
+                </div>
+
+                <!-- Crise dos Fundamentos -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            No início do século XX, a matemática clássica enfrentou a **Crise dos Fundamentos**. O "paraíso ideal" de Cantor ruiu diante de contradições cruas como o **Paradoxo de Russell** (1901), que expôs a inconsistência do Axioma da Compreensão Ingénuo ao postular o conjunto de todos os conjuntos que não pertencem a si mesmos: $A = \{x : x \notin x\}$, levando ao absurdo lógico $A \in A \leftrightarrow A \notin A$.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Para salvar os axiomas, surgiram três grandes escolas fundacionais com posições irreconciliáveis: o <strong>Logicismo</strong> de Russell, o <strong>Formalismo</strong> mecânico de Hilbert e o <strong>Intuicionismo</strong> construtivista de Brouwer (que rejeita o princípio do terceiro excluído).
+                        </p>
+                    </div>
+
+                    <!-- Quadro Comparativo das Escolas -->
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/40 p-4 space-y-3 text-xs">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">A Trindade Fundacional</h4>
+                        <div class="space-y-2">
+                            <p class="text-slate-400 border-l-2 border-indigo-500 pl-2">
+                                <strong class="text-indigo-400 block">Logicismo:</strong> Toda a matemática é logicamente redutível a teoremas puros e tipos de dados estritos de forma analítica.
+                            </p>
+                            <p class="text-slate-400 border-l-2 border-emerald-500 pl-2">
+                                <strong class="text-emerald-400 block">Formalismo:</strong> Matemática é um jogo mecânico de manipulação sintática de símbolos desprovidos de significado.
+                            </p>
+                            <p class="text-slate-400 border-l-2 border-amber-500 pl-2">
+                                <strong class="text-amber-400 block">Intuicionismo:</strong> A existência de uma entidade matemática exige uma prova finita de construção algoritmo-operacional.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teoremas da Incompletude -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/20 p-5 space-y-4">
+                    <h3 class="text-base font-bold text-white">Os Limites Absolutos do Rigor: Gödel e Tarski</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-300 leading-relaxed">
+                        <div class="space-y-2">
+                            <p>
+                                O sonho formalista de um sistema axiomático completo e infalível foi destruído por Kurt Gödel em 1931 com os revolucionários <strong>Teoremas da Incompletude</strong>:
+                            </p>
+                            <ul class="list-disc list-inside text-xs text-slate-400 space-y-1">
+                                <li>Qualquer teoria formal consistente capaz de conter a aritmética básica é necessariamente incompleta (existem sentenças verdadeiras indemonstráveis).</li>
+                                <li>Nenhum sistema consistente consegue provar a sua própria consistência interna.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2">
+                            <p>
+                                Este marco limitador abriu caminho para os fundamentos da computação: Alan Turing provou a insolubilidade do Problema da Parada e Alonzo Church estabeleceu a indecidibilidade da primeira ordem.
+                            </p>
+                            <p class="text-xs text-indigo-400 font-semibold flex items-center">
+                                <i class="fa-solid fa-link mr-1"></i>
+                                Isomorfismo de Curry-Howard: Provas Lógicas são Programas; Proposições de Tipo de Dados.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUDITORIA CRÍTICA DO CAPÍTULO -->
+                <div class="rounded-xl border border-rose-500/20 bg-rose-500/5 p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Auditoria de Rigor: A Incongruência dos Modelos de Dados Modernos</span>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                        <p>
+                            <strong>1. O Mito da Correção Formal Absoluta:</strong> A obsessão contemporânea por provadores automáticos de teoremas (coq, lean) e tipagem rigorosa estrita pode levar à falsa percepção de imunidade total a erros de engenharia. O Isomorfismo de Curry-Howard-Lambek garante que o código está rigorosamente alinhado à sua especificação lógica, mas não impede que a própria especificação original esteja conceitualmente errada e desalinhada com a realidade.
+                        </p>
+                        <p>
+                            <strong>2. A Farsa da Equivalência de Nulidade:</strong> Na ciência da computação prática e bases SQL relacionais, o conceito de "NULL" é largamente abusado como se fosse um valor axiomático natural. O modelo matemático relacional clássico de Codd baseia-se na teoria estrita de conjuntos onde a pertença é binária e bem definida. Forçar a inserção de nulos em sistemas lógicos introduz indefinições de lógica ternária inconsistente e quebras de restrições funcionais em produção.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: GRAFOS E ORQUESTRAÇÃO -->
+            <section id="tab-ch5" class="tab-content hidden space-y-8">
+                <div class="border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-2 text-indigo-400 text-xs uppercase font-mono tracking-widest mb-1">
+                        <i class="fa-solid fa-network-wired"></i>
+                        <span>Grafos & Sistemas</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Capítulo 5: Teoria de Grafos, Algoritmos de Varredura e Orquestração</h2>
+                </div>
+
+                <!-- Conceito Geral -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            A transposição de teorias matemáticas abstratas para a engenharia de sistemas modernos brilha nos **Grafos Acíclicos Dirigidos (DAGs)**. Um DAG representa um dígrafo sem ciclos, onde os vértices $V$ expressam tarefas de processamento isoladas e as arestas $E$ ditam a ordem e o fluxo de precedência das transformações.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            A travessia de grafos assenta em duas estratégias clássicas: a **Busca em Largura (BFS)** (que prioriza a proximidade radial via estrutura de fila FIFO) e a **Busca em Profundidade (DFS)** (que avança de forma linear no ramo via pilha LIFO ou recursão de backtracking).
+                        </p>
+                    </div>
+
+                    <!-- Kahn vs DFS para Ordenação Topológica -->
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/50 p-4 space-y-3">
+                        <h4 class="text-xs font-semibold text-white uppercase tracking-wider font-mono">Ordenação Topológica</h4>
+                        <div class="text-xs text-slate-400 space-y-2">
+                            <p><strong>Algoritmo de Kahn (Iterativo):</strong> Focado em graus de entrada zero, constrói a ordenação através de uma fila e decremento dinâmico de dependências upstream.</p>
+                            <p><strong>DFS Modificada (Recursivo):</strong> Realiza o backtracking e insere o nó no topo da lista somente após todos os seus descendentes terem sido totalmente esgotados.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Airflow 3 & Linhagem -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/20 p-5 space-y-3">
+                    <h3 class="text-base font-bold text-white">Arquitectura de Orquestração de Alta Disponibilidade</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Plataformas corporativas como o <strong>Apache Airflow 3</strong> trazem resiliência através do desacoplamento total da base de metadados por meio do servidor de APIs FastAPI. O isolamento de processos impede acessos arbitrários directos de trabalhadores (workers), blindando credenciais cruciais e logs transacionais.
+                    </p>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        A **Linhagem de Dados (Data Lineage)** estende a governança monitorizando não apenas as tarefas, mas o tráfego lógico entre os próprios activos informacionais (tabelas e partições em lagos de dados), integrando o padrão aberto **OpenLineage-Marquez** de forma totalmente assíncrona.
+                    </p>
+                </div>
+
+                <!-- INTERACTIVE SIMULATION: TOPOLOGICAL SORT (KAHN) -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-6 space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center">
+                                <i class="fa-solid fa-sort-amount-down text-indigo-400 mr-2"></i>
+                                Visualizador Interativo: Ordenação Topológica (Algoritmo de Kahn)
+                            </h3>
+                            <p class="text-xs text-slate-400">Step by step através do fluxo de agendamento de tarefas livres de ciclo.</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="stepKahnAlgorithm()" class="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-xs text-white font-medium transition duration-150" id="btn-kahn-step">
+                                Passo Seguinte
+                            </button>
+                            <button onclick="resetKahnAlgorithm()" class="px-3 py-1.5 rounded-md border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition duration-150">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- O Grafo Visualizado -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                            <span class="text-[10px] text-slate-500 font-mono uppercase mb-2 block">Esquema das Tarefas Alinhadas (DAG)</span>
+                            <div class="space-y-3" id="kahn-dag-nodes">
+                                <!-- Nós dinâmicos com graus de entrada -->
+                            </div>
+                        </div>
+
+                        <!-- Fila de Execução e Ordenação Final -->
+                        <div class="md:col-span-2 space-y-4">
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                                <span class="text-[10px] text-slate-500 font-mono uppercase block">Fila de Agendamento Activa (Tasks elegíveis: Grau 0):</span>
+                                <div class="flex space-x-2 min-h-[36px]" id="kahn-queue">
+                                    <!-- Fila de execução dinâmica -->
+                                </div>
+                            </div>
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                                <span class="text-[10px] text-slate-500 font-mono uppercase block">Ordem Topológica Resultante (Fila de Conclusão):</span>
+                                <div class="flex flex-wrap gap-2 min-h-[36px]" id="kahn-order">
+                                    <!-- Ordem topológica final -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUDITORIA CRÍTICA DO CAPÍTULO -->
+                <div class="rounded-xl border border-rose-500/20 bg-rose-500/5 p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Auditoria de Rigor: O Perigo dos Pipelines Estáticos</span>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                        <p>
+                            <strong>1. Travamento Silencioso do Scheduler:</strong> O erro mais crasso de engenheiros de dados é incluir processamento de rede, requisições HTTP bloqueantes ou operações de leitura pesada directamente no script de definição do DAG do Airflow. Como o Scheduler e o DAG Processor executam a leitura contínua de todo o diretório de desenvolvimento em loops de alta frequência, scripts lentos provocam travamentos silenciosos, picos de CPU no banco e a degradação total de agendamento de todo o ecossistema corporativo.
+                        </p>
+                        <p>
+                            <strong>2. A Farsa da Linhagem Síncrona:</strong> Tentar forçar o envio síncrono e mandatório de metadados de linhagem de dados para plataformas de governança (Purview, Marquez) no fim de cada tarefa é uma falha de planeamento gravíssima. Se o barramento de linhagem falhar ou sofrer latência momentânea de rede, o pipeline de dados principal é abortado sem necessidade, quebrando o fluxo de negócio por capricho de metadados. O pipeline de linhagem deve operar sempre sob o regime seguro de **failsafe assíncrono**.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: CLASSIFICADORES BAYESIANOS -->
+            <section id="tab-ch6" class="tab-content hidden space-y-8">
+                <div class="border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-2 text-emerald-400 text-xs uppercase font-mono tracking-widest mb-1">
+                        <i class="fa-solid fa-diagram-project"></i>
+                        <span>Inferência Bayesiana</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Capítulo 6: Teorema de Bayes e Classificadores Bayesianos</h2>
+                </div>
+
+                <!-- Teoria do Teorema e Naive Bayes -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            O Teorema de Bayes estabelece o mecanismo determinístico e estruturado para a atualização racional de expectativas baseada na evidência empírica coletada:
+                            $$P(H|E) = \frac{P(E|H)P(H)}{P(E)}$$
+                            Onde $P(H)$ é a probabilidade a priori (prior), $P(E|H)$ representa a verossimilhança (likelihood), e $P(H|E)$ é a posteriori ajustada.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            O classificador <strong>Naive Bayes</strong> estende esta formulação assumindo a independência condicional ingénua dos atributos dada a classe: as características operacionais são tratadas de forma totalmente isolada. Isto simplifica o cálculo do produtório de densidades e permite computar as probabilidades em sistemas estáveis de alta dimensionalidade aplicando a função logarítmica.
+                        </p>
+                    </div>
+
+                    <!-- Teorema de Zhang -->
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/50 p-4 space-y-3">
+                        <h3 class="text-base font-bold text-white">O Paradoxo da Independência de Zhang</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Por que razão o Naive Bayes apresenta um desempenho empírico excelente mesmo violando patentemente a premissa de independência de atributos no mundo real?
+                        </p>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            O matemático <strong>Harry Zhang (2004)</strong> provou analiticamente que as dependências fortes não deterioram a acurácia de classificação do modelo sob perda zero-um, desde que essas dependências se distribuam de forma perfeitamente simétrica entre as classes, cancelando-se mutuamente na definição da fronteira global de decisão.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- INTERACTIVE SIMULATION: BAYES DIAGNOSTIC BASE-RATE FALLACY -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-6 space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center">
+                                <i class="fa-solid fa-hospital-user text-emerald-400 mr-2"></i>
+                                Simulador Metodológico: Negligência da Taxa Base (Base-Rate Fallacy)
+                            </h3>
+                            <p class="text-xs text-slate-400">Manipule a prevalência da doença e observe como a taxa de falso positivo destrói a sensibilidade aparente do teste clínico.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Inputs Clínicos -->
+                        <div class="space-y-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block mb-2 font-semibold">Parâmetros do Teste</span>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Prevalência / Taxa Base ($P(H)$):</label>
+                                <input type="range" id="rate-prevalencia" min="0.0001" max="0.1" step="0.001" value="0.01" oninput="updateBaseRateFallbackSim()" class="w-full">
+                                <p class="text-xs text-slate-400 mt-1 font-mono">Valor: <span id="rate-prevalencia-txt">1.0%</span></p>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Sensibilidade ($TPR$ / Verdadeiro Positivo):</label>
+                                <input type="range" id="rate-sensibilidade" min="0.5" max="1" step="0.01" value="0.99" oninput="updateBaseRateFallbackSim()" class="w-full">
+                                <p class="text-xs text-slate-400 mt-1 font-mono">Valor: <span id="rate-sensibilidade-txt">99%</span></p>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Especificidade ($TNR$ / Verdadeiro Negativo):</label>
+                                <input type="range" id="rate-especificidade" min="0.5" max="1" step="0.01" value="0.95" oninput="updateBaseRateFallbackSim()" class="w-full">
+                                <p class="text-xs text-slate-400 mt-1 font-mono">Valor: <span id="rate-especificidade-txt">95%</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Outputs Clínicos -->
+                        <div class="md:col-span-2 space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+                                    <span class="text-[10px] text-slate-500 font-mono uppercase">Taxa Falso Positivo ($FPR$)</span>
+                                    <p class="text-lg font-bold text-rose-400 font-mono" id="rate-fpr-txt">5%</p>
+                                    <p class="text-[10px] text-slate-500">$$\text{FPR} = 1 - \text{Especificidade}$$</p>
+                                </div>
+                                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+                                    <span class="text-[10px] text-slate-500 font-mono uppercase text-emerald-400 font-semibold">Probabilidade Posterior Real $P(H|Pos)$</span>
+                                    <p class="text-lg font-bold text-emerald-400 font-mono" id="rate-posterior-txt">16.67%</p>
+                                    <p class="text-[10px] text-slate-500">$$\frac{\text{TPR} \cdot P(H)}{\text{TPR} \cdot P(H) + \text{FPR} \cdot (1-P(H))}$$</p>
+                                </div>
+                            </div>
+
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                                <span class="text-[10px] text-slate-500 font-mono uppercase block">Análise de Realidade Clínica:</span>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Mesmo com sensibilidade de 99% e especificidade de 95%, um paciente que obtenha um teste positivo tem apenas **<span id="rate-analysis-post">16.67</span>%** de probabilidade de estar doente. A esmagadora maioria saudável (99%) exposta à taxa de falso positivo de 5% mascara completamente a precisão aparente do teste.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUDITORIA CRÍTICA DO CAPÍTULO -->
+                <div class="rounded-xl border border-rose-500/20 bg-rose-500/5 p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Auditoria de Rigor: Suavização Abusiva e o Mito Gerativo</span>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                        <p>
+                            <strong>1. O Truque da Suavização de Laplace ($l=1$):</strong> Para resolver o "problema da frequência zero" (quando um termo nunca ocorre sob uma classe, zerando o produtório de probabilidade inteira), engenheiros aplicam indiscriminadamente a suavização aditiva de Laplace. Em vocabulários de alta escala com milhões de palavras raras, adicionar +1 artificialmente a cada contagem infla absurdamente o peso das ocorrências irrelevantes, distorcendo gravemente as fronteiras de probabilidade do classificador.
+                        </p>
+                        <p>
+                            <strong>2. O Desalinhamento do Modelo Gerativo em Big Data:</strong> O Naive Bayes é um modelo gerativo que se estabiliza de forma excepcionalmente rápida ($O(\log d)$ dados de entrada), tornando-o ideal para pequenos corpora de treino. Contudo, em volumes massivos de big data ($N \rightarrow \infty$), ele é superado de forma consistente pela Regressão Logística (modelo discriminativo clássico). Continuar preso à simplicidade computacional do Naive Bayes ignorando o crescimento do dataset constitui um erro analítico crónico.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 7: ÁLGEBRA LINEAR E METROLOGIA -->
+            <section id="tab-ch7" class="tab-content hidden space-y-8">
+                <div class="border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-2 text-indigo-400 text-xs uppercase font-mono tracking-widest mb-1">
+                        <i class="fa-solid fa-cube"></i>
+                        <span>Álgebra Linear</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Capítulo 7: Álgebra Linear Aplicada, SVD e as Dinâmicas Metrológicas de Cosseno</h2>
+                </div>
+
+                <!-- Teoria Geral e SVD -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            No processamento de dados contemporâneo, objectos do mundo real são projetados em estruturas de <strong>Espaços Vetoriais</strong> por meio de embutimentos semânticos. Para garantir a integridade algébrica, estes espaços devem satisfazer rigorosamente a axiomas fundamentais de fechamento, comutatividade, distributividade e inversos sob adição e multiplicação escalar.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            A <strong>Decomposição em Valores Singulares (SVD)</strong> destaca-se como o operador analítico supremo para fatoração e redução de posto matricial em inteligência computacional:
+                            $$A = U \Sigma V^T$$
+                            Trunca-se a decomposição retendo os maiores $k$ valores singulares para emular filtros que eliminam ruídos espaciais, mantendo a estrutura geométrica latente dos dados.
+                        </p>
+                    </div>
+
+                    <!-- Cosseno vs Euclidiana -->
+                    <div class="rounded-xl border border-slate-800 bg-slate-900/50 p-4 space-y-3">
+                        <h3 class="text-base font-bold text-white">Similaridade de Cosseno</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            A similaridade de cosseno anula efeitos de escala normalizando o produto escalar clássico:
+                            $$\text{sim\_cos}(A,B) = \frac{A \cdot B}{\|A\| \|B\|}$$
+                            Sob vetores de norma unitária, a Distância de Cosseno $d_{\cos}$ atua como o complemento monotônico que equivale precisamente à metade do quadrado da distância euclidiana normalizada:
+                            $$d_{\cos}(A,B) = 1 - \text{sim\_cos}(A,B) = \frac{1}{2} \|A - B\|^2$$
+                        </p>
+                    </div>
+                </div>
+
+                <!-- INTERACTIVE SIMULATION: HIGH-DIMENSIONAL CONCENTRATE MEASURE -->
+                <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-6 space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center">
+                                <i class="fa-solid fa-compress text-indigo-400 mr-2"></i>
+                                Simulador Metrológico: Concentração de Medida em Alta Dimensão
+                            </h3>
+                            <p class="text-xs text-slate-400">Observe como o aumento da dimensionalidade de um espaço destrói a variabilidade de distância euclidiana das amostras.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Inputs -->
+                        <div class="space-y-4 bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-wider block mb-3 font-semibold">Dimensionalidade</span>
+                                <div>
+                                    <label class="block text-xs text-slate-400 mb-1">Dimensão do Espaço ($d$):</label>
+                                    <input type="number" id="input-curse-dim" value="512" min="2" max="10000" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded p-1.5 text-xs font-mono">
+                                </div>
+                                <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                                    Simule a distância euclidiana de pares de vetores aleatórios gaussianos no hiperespaço.
+                                </p>
+                            </div>
+                            <button onclick="simulateCurseOfDimensionality()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs tracking-wide transition duration-150 uppercase">
+                                Rodar Simulação Física
+                            </button>
+                        </div>
+
+                        <!-- Outputs -->
+                        <div class="md:col-span-2 space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+                                    <span class="text-[10px] text-slate-500 font-mono uppercase">Razão $\frac{\text{Dist\_Máx} - \text{Dist\_Mín}}{\text{Dist\_Mín}}$</span>
+                                    <p class="text-lg font-bold text-rose-400 font-mono" id="curse-ratio-txt">0.12</p>
+                                    <p class="text-[10px] text-slate-500">Razões próximas a zero denotam saturação metrológica total.</p>
+                                </div>
+                                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+                                    <span class="text-[10px] text-slate-500 font-mono uppercase">Distância Euclidiana Média</span>
+                                    <p class="text-lg font-bold text-white font-mono" id="curse-mean-txt">32.00</p>
+                                    <p class="text-[10px] text-slate-500">Concentração de medida ao redor de $\sqrt{2d}$.</p>
+                                </div>
+                            </div>
+
+                            <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                                <span class="text-[10px] text-slate-500 font-mono uppercase block">Diagnóstico de Auditoria de Dados:</span>
+                                <p class="text-xs text-slate-300 leading-relaxed" id="curse-diag-txt">
+                                    Em dimensões elevadas como $512$, a variabilidade entre a menor e a maior distância colapsa. Algoritmos de busca como o K-Nearest Neighbors (KNN) tornam-se completamente ineficientes sob estas condições.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUDITORIA CRÍTICA DO CAPÍTULO -->
+                <div class="rounded-xl border border-rose-500/20 bg-rose-500/5 p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Auditoria de Rigor: A Crise da Metrologia de Cosseno</span>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                        <p>
+                            <strong>1. A Arbitrariedade de Escala da Cosseno:</strong> O estudo rigoroso conduzido pela Cornell e Netflix expôs uma vulnerabilidade metrológica severa. Modelos de embutimento treinados sob regularização L2 carregam um grau de liberdade de redimensionamento diagonal indissociável. Para qualquer matriz diagonal invertível $D$, a previsão mantém-se exata, mas a similaridade de cosseno final altera-se drasticamente ao normalizar os vetores na hiperesfera. Confiar cegamente no ranking angular sem branqueamento rigoroso de covariância (**whitening**) gera resultados puramente espúrios e sem valor semântico.
+                        </p>
+                        <p>
+                            <strong>2. A Farsa da Distância de Cosseno:</strong> Tratar a distância de cosseno como uma métrica matemática autêntica é um erro escolar básico. Para ser qualificada como uma métrica formal, a função deve satisfazer sem exceção a quatro axiomas, incluindo a desigualdade triangular e a identidade dos indiscerníveis. A distância de cosseno falha em ambas: vetores colineares de magnitudes imensamente díspares retornam distância zero, e a desigualdade triangular é consistentemente violada. Sistemas de busca espacial devem aplicar a transformação para **Distância Angular** ou **Corda Euclidiana**.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script de Inicialização e Lógica Funcional -->
+    <script>
+        // Tab Navigation Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+
+            // Trigger MathJax typeset
+            if (window.MathJax && typeof window.MathJax.typeset === 'function') {
+                window.MathJax.typeset();
+            }
+        }
+
+        // --- CHAPTER 1: VECTOR RESIZING SIMULATOR ---
+        let arrayN = 0;
+        let arrayM = 1;
+        let lastRealCost = 0;
+        let accumAmortizedCost = 0;
+
+        function updateArraySimUI() {
+            document.getElementById('sim-array-n').innerText = arrayN;
+            document.getElementById('sim-array-m').innerText = arrayM;
+            document.getElementById('sim-array-real').innerText = lastRealCost;
+            document.getElementById('sim-array-amort').innerText = accumAmortizedCost;
+            document.getElementById('sim-array-pot').innerText = (2 * arrayN) - arrayM;
+
+            // Render blocos físicos
+            const container = document.getElementById('array-memory-blocks');
+            container.innerHTML = '';
+            for (let i = 0; i < arrayM; i++) {
+                const block = document.createElement('div');
+                block.className = `w-10 h-10 rounded border flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 ${
+                    i < arrayN
+                        ? 'bg-gradient-to-tr from-indigo-600 to-indigo-500 border-indigo-400 text-white shadow-md shadow-indigo-500/15'
+                        : 'bg-slate-900/50 border-slate-800 text-slate-600'
+                }`;
+                block.innerHTML = i < arrayN ? `${i + 1}` : 'Ø';
+                container.appendChild(block);
+            }
+        }
+
+        function insertArrayElement() {
+            arrayN++;
+            accumAmortizedCost += 3; // Custo amortizado estável O(1) = 3
+            if (arrayN > arrayM) {
+                // Redimensionamento (dobrar de M para 2M)
+                lastRealCost = (arrayN - 1) + 1; // Custo real: Cópia física + nova inserção
+                arrayM = arrayM * 2;
+            } else {
+                lastRealCost = 1; // Inserção simples
+            }
+            updateArraySimUI();
+        }
+
+        function resetArraySimulator() {
+            arrayN = 0;
+            arrayM = 1;
+            lastRealCost = 0;
+            accumAmortizedCost = 0;
+            updateArraySimUI();
+        }
+
+        // --- CHAPTER 2: BETA-BINOMIAL SIMULATOR ---
+        function calculateBetaBinomial() {
+            const alpha_prior = parseFloat(document.getElementById('input-prior-alpha').value) || 2;
+            const beta_prior = parseFloat(document.getElementById('input-prior-beta').value) || 2;
+            const successes = parseFloat(document.getElementById('input-obs-k').value) || 0;
+            const failures = parseFloat(document.getElementById('input-obs-f').value) || 0;
+
+            const priorMean = alpha_prior / (alpha_prior + beta_prior);
+            const postAlpha = alpha_prior + successes;
+            const postBeta = beta_prior + failures;
+            const postMean = postAlpha / (postAlpha + postBeta);
+
+            document.getElementById('bb-prior-mean').innerText = priorMean.toFixed(3);
+            document.getElementById('bb-post-mean').innerText = postMean.toFixed(3);
+
+            // Redesenhar bars gráfico Beta (Simulação de Densidade de Probabilidade)
+            const graph = document.getElementById('beta-distribution-visualizer');
+            graph.innerHTML = '';
+            const steps = 25;
+            for (let i = 0; i <= steps; i++) {
+                const x = i / steps;
+                // Densidade Beta aproximada proporcional: x^(a-1) * (1-x)^(b-1)
+                const dens = Math.pow(x, postAlpha - 1) * Math.pow(1 - x, postBeta - 1);
+                const heightVal = Math.min(Math.max(dens * 100, 2), 100);
+
+                const bar = document.createElement('div');
+                bar.className = 'w-2 bg-emerald-500 rounded-t opacity-80 hover:opacity-100 transition-opacity duration-150';
+                bar.style.height = `${heightVal}%`;
+                graph.appendChild(bar);
+            }
+        }
+
+        // --- CHAPTER 3: ANOVA CALCULATOR ---
+        function calculateAnova() {
+            const parseInput = id => document.getElementById(id).value.split(',').map(Number).filter(x => !isNaN(x));
+            const g1 = parseInput('anova-g1');
+            const g2 = parseInput('anova-g2');
+            const g3 = parseInput('anova-g3');
+            const g4 = parseInput('anova-g4');
+
+            const allData = [...g1, ...g2, ...g3, ...g4];
+            const k = 4;
+            const n = allData.length;
+
+            if (n === 0) return;
+
+            const sumAll = allData.reduce((a, b) => a + b, 0);
+            const C = (sumAll * sumAll) / n;
+            const sqTot = allData.reduce((a, b) => a + b * b, 0) - C;
+
+            const sumT = arr => arr.reduce((a, b) => a + b, 0);
+            const sqTrat = (
+                (Math.pow(sumT(g1), 2) / g1.length) +
+                (Math.pow(sumT(g2), 2) / g2.length) +
+                (Math.pow(sumT(g3), 2) / g3.length) +
+                (Math.pow(sumT(g4), 2) / g4.length)
+            ) - C;
+
+            const sqRes = sqTot - sqTrat;
+
+            const dfTrat = k - 1;
+            const dfRes = n - k;
+            const dfTot = n - 1;
+
+            const qmTrat = sqTrat / dfTrat;
+            const qmRes = sqRes / dfRes;
+
+            const FVal = qmTrat / qmRes;
+
+            // Update UI
+            document.getElementById('anova-sq-trat').innerText = sqTrat.toFixed(2);
+            document.getElementById('anova-sq-res').innerText = sqRes.toFixed(2);
+            document.getElementById('anova-sq-tot').innerText = sqTot.toFixed(2);
+
+            document.getElementById('anova-df-trat').innerText = dfTrat;
+            document.getElementById('anova-df-res').innerText = dfRes;
+            document.getElementById('anova-df-tot').innerText = dfTot;
+
+            document.getElementById('anova-qm-trat').innerText = qmTrat.toFixed(2);
+            document.getElementById('anova-qm-res').innerText = qmRes.toFixed(2);
+
+            document.getElementById('anova-f-val').innerText = FVal.toFixed(2);
+
+            // Mock F crítico para simplicidade alpha=0.05
+            const fCriticoEst = 3.71;
+            const decisionCell = document.getElementById('anova-decision');
+            if (FVal > fCriticoEst) {
+                decisionCell.innerText = "Rejeitar H0";
+                decisionCell.className = "p-3 font-bold text-emerald-500";
+            } else {
+                decisionCell.innerText = "Manter H0";
+                decisionCell.className = "p-3 font-bold text-slate-500";
+            }
+        }
+
+        // --- CHAPTER 5: TOPOLOGICAL SORT (KAHN) ---
+        let kahnNodes = [
+            { id: 'Task_A', edges: ['Task_B', 'Task_C'], inDegree: 0, initialInDegree: 0 },
+            { id: 'Task_B', edges: ['Task_D'], inDegree: 1, initialInDegree: 1 },
+            { id: 'Task_C', edges: ['Task_D'], inDegree: 1, initialInDegree: 1 },
+            { id: 'Task_D', edges: [], inDegree: 2, initialInDegree: 2 }
+        ];
+        let kahnQueue = [];
+        let kahnFinalOrder = [];
+        let kahnStep = 0;
+
+        function renderKahnGraph() {
+            const container = document.getElementById('kahn-dag-nodes');
+            container.innerHTML = '';
+            kahnNodes.forEach(node => {
+                const card = document.createElement('div');
+                card.className = `p-3.5 rounded-lg border flex justify-between items-center transition-all duration-300 ${
+                    kahnFinalOrder.includes(node.id)
+                        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                        : kahnQueue.includes(node.id)
+                        ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400'
+                        : 'bg-slate-900 border-slate-800 text-slate-300'
+                }`;
+                card.innerHTML = `
+                    <div>
+                        <p class="font-mono text-xs font-bold">${node.id}</p>
+                        <p class="text-[10px] text-slate-500">Apenas para: ${node.edges.join(', ') || 'Fim'}</p>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full bg-slate-950 text-[10px] font-mono border border-slate-800 text-slate-400">Grau Entrada: ${node.inDegree}</span>
+                `;
+                container.appendChild(card);
+            });
+
+            // Render Queue
+            const qContainer = document.getElementById('kahn-queue');
+            qContainer.innerHTML = '';
+            if (kahnQueue.length === 0) {
+                qContainer.innerHTML = '<span class="text-xs text-slate-600 italic">Vazia</span>';
+            } else {
+                kahnQueue.forEach(item => {
+                    const badge = document.createElement('span');
+                    badge.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white font-mono text-xs shadow';
+                    badge.innerText = item;
+                    qContainer.appendChild(badge);
+                });
+            }
+
+            // Render Order
+            const oContainer = document.getElementById('kahn-order');
+            oContainer.innerHTML = '';
+            if (kahnFinalOrder.length === 0) {
+                oContainer.innerHTML = '<span class="text-xs text-slate-600 italic">Vazia</span>';
+            } else {
+                kahnFinalOrder.forEach(item => {
+                    const badge = document.createElement('span');
+                    badge.className = 'px-2.5 py-1 rounded bg-emerald-500 text-white font-mono text-xs shadow';
+                    badge.innerText = item;
+                    oContainer.appendChild(badge);
+                });
+            }
+        }
+
+        function resetKahnAlgorithm() {
+            kahnNodes.forEach(node => node.inDegree = node.initialInDegree);
+            kahnQueue = [];
+            kahnFinalOrder = [];
+            kahnStep = 0;
+            // Inicializar Fila
+            kahnNodes.forEach(node => {
+                if (node.inDegree === 0) kahnQueue.push(node.id);
+            });
+            document.getElementById('btn-kahn-step').disabled = false;
+            renderKahnGraph();
+        }
+
+        function stepKahnAlgorithm() {
+            if (kahnQueue.length === 0) {
+                document.getElementById('btn-kahn-step').disabled = true;
+                return;
+            }
+            const activeNodeId = kahnQueue.shift();
+            kahnFinalOrder.push(activeNodeId);
+
+            // Decrementar adjacentes
+            const nodeObj = kahnNodes.find(n => n.id === activeNodeId);
+            nodeObj.edges.forEach(edgeId => {
+                const adjNode = kahnNodes.find(n => n.id === edgeId);
+                if (adjNode) {
+                    adjNode.inDegree = Math.max(0, adjNode.inDegree - 1);
+                    if (adjNode.inDegree === 0 && !kahnQueue.includes(edgeId) && !kahnFinalOrder.includes(edgeId)) {
+                        kahnQueue.push(edgeId);
+                    }
+                }
+            });
+            renderKahnGraph();
+        }
+
+        // --- CHAPTER 6: BAYES BASE-RATE FALLACY SIMULATOR ---
+        function updateBaseRateFallbackSim() {
+            const prevalencia = parseFloat(document.getElementById('rate-prevalencia').value);
+            const sensibilidade = parseFloat(document.getElementById('rate-sensibilidade').value);
+            const especificidade = parseFloat(document.getElementById('rate-especificidade').value);
+
+            // Formatar Textos
+            document.getElementById('rate-prevalencia-txt').innerText = (prevalencia * 100).toFixed(2) + "%";
+            document.getElementById('rate-sensibilidade-txt').innerText = (sensibilidade * 100).toFixed(0) + "%";
+            document.getElementById('rate-especificidade-txt').innerText = (especificidade * 100).toFixed(0) + "%";
+
+            const fpr = 1 - especificidade;
+            document.getElementById('rate-fpr-txt').innerText = (fpr * 100).toFixed(0) + "%";
+
+            // Teorema Bayes
+            const numerador = sensibilidade * prevalencia;
+            const denominador = (sensibilidade * prevalencia) + (fpr * (1 - prevalencia));
+            const posterior = numerador / denominador;
+
+            document.getElementById('rate-posterior-txt').innerText = (posterior * 100).toFixed(2) + "%";
+            document.getElementById('rate-analysis-post').innerText = (posterior * 100).toFixed(2);
+        }
+
+        // --- CHAPTER 7: CURSE OF DIMENSIONALITY SIMULATOR ---
+        function simulateCurseOfDimensionality() {
+            const d = parseInt(document.getElementById('input-curse-dim').value) || 512;
+            const numSamples = 100;
+            let distances = [];
+
+            // Gerar vetores Gaussianos independentes e calcular distâncias par a par
+            const generateVector = dim => Array.from({length: dim}, () => {
+                // Emular distribuição Normal Box-Muller transform
+                const u = 1 - Math.random();
+                const v = 1 - Math.random();
+                return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+            });
+
+            const v1 = generateVector(d);
+            const v2 = generateVector(d);
+
+            // Distância Euclidiana de simulação
+            let minDistance = Infinity;
+            let maxDistance = -Infinity;
+            let sumDist = 0;
+
+            for (let i = 0; i < numSamples; i++) {
+                const sample1 = generateVector(d);
+                const sample2 = generateVector(d);
+
+                let dSq = 0;
+                for (let j = 0; j < d; j++) {
+                    const diff = sample1[j] - sample2[j];
+                    dSq += diff * diff;
+                }
+                const dist = Math.sqrt(dSq);
+                distances.push(dist);
+
+                if (dist < minDistance) minDistance = dist;
+                if (dist > maxDistance) maxDistance = dist;
+                sumDist += dist;
+            }
+
+            const meanDist = sumDist / numSamples;
+            const ratio = (maxDistance - minDistance) / minDistance;
+
+            document.getElementById('curse-ratio-txt').innerText = ratio.toFixed(3);
+            document.getElementById('curse-mean-txt').innerText = meanDist.toFixed(2);
+
+            const diagEl = document.getElementById('curse-diag-txt');
+            if (ratio < 0.15) {
+                diagEl.innerHTML = `
+                    Em dimensões extremas como **${d}**, a variabilidade de distância colapsa (razão de apenas **${ratio.toFixed(3)}**). Todos os pontos parecem estar exactamente à mesma distância de si mesmos. Os agrupadores de K-means e classificadores de KNN falharão catastróficamente.
+                `;
+            } else {
+                diagEl.innerHTML = `
+                    Em baixas dimensões como **${d}**, as distâncias apresentam forte variabilidade espacial (razão saudável de **${ratio.toFixed(3)}**), permitindo a correta modelagem geométrica dos dados.
+                `;
+            }
+        }
+
+        // Inicializações Globais
+        window.onload = function() {
+            updateArraySimUI();
+            calculateBetaBinomial();
+            calculateAnova();
+            resetKahnAlgorithm();
+            updateBaseRateFallbackSim();
+            simulateCurseOfDimensionality();
+            switchTab('ch1');
+        }
+    </script>
+</body>
+</html>

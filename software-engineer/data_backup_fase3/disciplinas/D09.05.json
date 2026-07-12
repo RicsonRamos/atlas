@@ -1,0 +1,71 @@
+{
+  "id": "D09.05",
+  "dominio_id": "D09",
+  "nome": "FinOps e Otimização de Custo",
+  "nivel": "Staff",
+  "carga_horaria": "24-32h",
+  "prerequisitos": [
+    "Cloud",
+    "Query optimization"
+  ],
+  "objetivos": [
+    "Atribuir custo a domínio e decisão técnica",
+    "Reduzir desperdício sem sacrificar confiabilidade"
+  ],
+  "pratica_esperada": [
+    "Criar dashboard de custo por produto de dados",
+    "Otimizar workload com rightsizing e pruning"
+  ],
+  "teoria": [
+    "unit-economics",
+    "showback-chargeback",
+    "reserved-spot",
+    "autoscaling",
+    "storage-lifecycle",
+    "query-cost",
+    "tagging"
+  ],
+  "algoritmos_tecnicas": [
+    "cost-attribution",
+    "anomaly-detection",
+    "bin-packing",
+    "workload-scheduling"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Reis & Housley, Fundamentals of Data Engineering",
+    "Beyer et al., Site Reliability Engineering"
+  ],
+  "papers_fundamentais": [
+    "FinOps Foundation, FinOps Framework",
+    "Forsgren, Humble & Kim, Accelerate, 2018"
+  ],
+  "ferramentas": [
+    "AWS Cost Explorer",
+    "GCP Billing",
+    "Kubecost",
+    "Infracost",
+    "Databricks system tables"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como provar economia sem degradar SLA?",
+    "Por que custo por query é métrica de produto?"
+  ],
+  "projetos_reais": [
+    "FinOps dashboard com custo por domínio, pipeline e query"
+  ],
+  "exercicios": [
+    "Identificar top 10 queries caras",
+    "Simular spot vs reserved"
+  ],
+  "tags": [
+    "FinOps",
+    "Cost Attribution",
+    "Rightsizing",
+    "Autoscaling",
+    "Showback"
+  ]
+}

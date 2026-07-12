@@ -1,0 +1,82 @@
+{
+  "id": "D01.05",
+  "dominio_id": "D01",
+  "nome": "Álgebra Linear e Cálculo Tensorial",
+  "nivel": "Staff",
+  "carga_horaria": "34-42h",
+  "prerequisitos": [
+    "Cálculo básico",
+    "Python científico"
+  ],
+  "objetivos": [
+    "Entender embeddings, PCA, compressão e otimização numérica",
+    "Raciocinar sobre matrizes densas, esparsas e tensores"
+  ],
+  "pratica_esperada": [
+    "Implementar busca por similaridade com cosseno",
+    "Aplicar SVD para compressão e detecção de fatores latentes"
+  ],
+  "teoria": [
+    "vetores",
+    "espacos-vetoriais",
+    "subespacos",
+    "transformacoes-lineares",
+    "base",
+    "dimensao",
+    "ortogonalidade",
+    "produto-interno",
+    "normas",
+    "autovalores",
+    "autovetores",
+    "diagonalizacao",
+    "svd",
+    "pca",
+    "tensor-algebra",
+    "sparse-matrices",
+    "kronecker-products"
+  ],
+  "algoritmos_tecnicas": [
+    "qr-decomposition",
+    "power-iteration",
+    "lanczos",
+    "svd-truncado",
+    "pca"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Strang, Linear Algebra and Learning from Data",
+    "Trefethen & Bau, Numerical Linear Algebra",
+    "Golub & Van Loan, Matrix Computations"
+  ],
+  "papers_fundamentais": [
+    "Halko, Martinsson & Tropp, Finding structure with randomness, 2011"
+  ],
+  "ferramentas": [
+    "NumPy",
+    "SciPy",
+    "PyTorch",
+    "FAISS",
+    "Spark MLlib"
+  ],
+  "perguntas_entrevista_staff": [
+    "Por que normalização muda busca vetorial?",
+    "Explique SVD para redução dimensional em linguagem de engenharia"
+  ],
+  "projetos_reais": [
+    "Criar uma pipeline de embeddings com PCA, ANN e avaliação de recall"
+  ],
+  "exercicios": [
+    "Calcular autovetores em matriz pequena",
+    "Comparar matrizes densas e esparsas em memória"
+  ],
+  "tags": [
+    "SVD",
+    "PCA",
+    "Tensores",
+    "Sparse",
+    "Embeddings"
+  ]
+}

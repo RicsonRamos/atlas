@@ -1,0 +1,72 @@
+{
+  "id": "D05.01",
+  "dominio_id": "D05",
+  "nome": "Padrões de Ingestão: Batch, Streaming e Micro-batch",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Sistemas",
+    "SQL",
+    "APIs"
+  ],
+  "objetivos": [
+    "Escolher padrão de ingestão por SLA e fonte",
+    "Projetar ingestão incremental e reprocessável"
+  ],
+  "pratica_esperada": [
+    "Desenhar matriz SLA vs custo para fontes",
+    "Implementar ingestão incremental por cursor"
+  ],
+  "teoria": [
+    "batch",
+    "streaming",
+    "micro-batch",
+    "polling",
+    "push",
+    "watermarks",
+    "late-data",
+    "exactly-once-claims"
+  ],
+  "algoritmos_tecnicas": [
+    "checkpointing",
+    "windowing",
+    "deduplication",
+    "watermark-advancement"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Hueske & Kalavri, Stream Processing with Apache Flink"
+  ],
+  "papers_fundamentais": [
+    "Akidau et al., The Dataflow Model, 2015"
+  ],
+  "ferramentas": [
+    "Flink",
+    "Spark Structured Streaming",
+    "Kafka Connect",
+    "Airbyte",
+    "Fivetran"
+  ],
+  "perguntas_entrevista_staff": [
+    "Quando micro-batch é suficiente?",
+    "O que exactly-once realmente significa?"
+  ],
+  "projetos_reais": [
+    "Pipeline com batch, streaming e replay sobre a mesma fonte"
+  ],
+  "exercicios": [
+    "Simular late events",
+    "Criar checkpoint reprocessável"
+  ],
+  "tags": [
+    "Batch",
+    "Streaming",
+    "Watermarks",
+    "Checkpoint",
+    "Replay"
+  ]
+}

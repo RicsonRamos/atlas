@@ -1,0 +1,76 @@
+{
+  "id": "D07.06",
+  "dominio_id": "D07",
+  "nome": "Apache Spark: Arquitetura e Internals",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Arquitetura de Computadores e Hierarquia de Memória",
+    "Motores Federados e Execução Vetorizada"
+  ],
+  "objetivos": [
+    "Entender a arquitetura interna do Spark além do uso da API",
+    "Diagnosticar gargalos de shuffle, skew e serialização em jobs reais"
+  ],
+  "pratica_esperada": [
+    "Interpretar Spark UI para identificar stages lentos",
+    "Ajustar particionamento e configuração de shuffle para reduzir spill em disco"
+  ],
+  "teoria": [
+    "driver-e-executors",
+    "cluster-manager-yarn-kubernetes-standalone",
+    "jobs-stages-e-tasks",
+    "lazy-evaluation",
+    "dag-scheduler",
+    "transformacoes-estreitas-e-largas",
+    "rdd",
+    "dataframes-e-datasets",
+    "catalyst-optimizer",
+    "project-tungsten",
+    "adaptive-query-execution",
+    "data-skew"
+  ],
+  "algoritmos_tecnicas": [
+    "whole-stage-code-generation",
+    "shuffle-sort",
+    "broadcast-join",
+    "sort-merge-join",
+    "dynamic-partition-coalescing"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Karau & Warren, High Performance Spark",
+    "Chambers & Zaharia, Spark: The Definitive Guide"
+  ],
+  "papers_fundamentais": [
+    "Zaharia et al., Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing, 2012",
+    "Armbrust et al., Spark SQL: Relational Data Processing in Spark, 2015"
+  ],
+  "ferramentas": [
+    "Apache Spark",
+    "PySpark",
+    "Spark UI",
+    "Databricks"
+  ],
+  "perguntas_entrevista_staff": [
+    "Por que uma transformação wide força shuffle, e como isso aparece no plano de execução?",
+    "Como o AQE decide recoalescer partições em tempo de execução?"
+  ],
+  "projetos_reais": [
+    "Diagnóstico de job Spark com data skew severo e reescrita para eliminar spill para disco"
+  ],
+  "exercicios": [
+    "Interpretar um DAG no Spark UI identificando stages e shuffle boundaries",
+    "Configurar particionamento para eliminar skew em join com chave enviesada"
+  ],
+  "tags": [
+    "Spark",
+    "Tungsten",
+    "Catalyst",
+    "Shuffle",
+    "AQE"
+  ]
+}

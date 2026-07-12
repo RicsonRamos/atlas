@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explorador interativo de distribuições estatísticas — Normal, Binomial, Poisson e Dirichlet. Material do Bloco 01 do Roadmap DE & IA." />
+  <title>Distribuições Estatísticas — Explorador Interativo | Roadmap DE & IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #111120;
+      --bg-card2:  #14142a;
+      --border:    #1e1e35;
+      --border2:   #2a2a40;
+      --text:      #e8e8f0;
+      --text-muted:#a0a0c0;
+      --text-dim:  #60608b;
+      --text-deep: #40407a;
+      --accent:    #BD93F9;
+      --accent-dim:#BD93F920;
+      --accent-mid:#BD93F940;
+      --link:      #6C63FF;
+
+      /* Tab accent colors */
+      --tab-normal:    #50FA7B;
+      --tab-binomial:  #FF79C6;
+      --tab-poisson:   #FFB86C;
+      --tab-dirichlet: #8BE9FD;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--link); }
+
+    /* ── Nav ── */
+    nav.top-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: rgba(13, 13, 20, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1rem; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0.3rem 0.75rem;
+      background: var(--accent-dim); border: 1px solid var(--accent-mid);
+      border-radius: 6px; color: var(--accent);
+      font-size: 0.72rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+    .nav-brand {
+      font-size: 0.8rem; font-weight: 800; color: var(--text-dim);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .nav-brand span {
+      font-size: 0.65rem; background: var(--accent-dim); color: var(--accent);
+      padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 5rem 1.25rem 3rem;
+      display: flex; flex-direction: column; gap: 2rem;
+    }
+
+    /* ── Header ── */
+    .page-header { text-align: center; margin-bottom: 0.5rem; }
+    .page-header h1 {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 0.6rem;
+    }
+    .page-header h1 .accent { color: var(--accent); }
+    .page-header p { color: var(--text-muted); font-size: 0.85rem; max-width: 600px; margin: 0 auto; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 0.8rem; }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 5px;
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em;
+    }
+
+    /* ── Tabs ── */
+    .tabs-nav {
+      display: flex; justify-content: center; gap: 4px; flex-wrap: wrap;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      padding: 0.5rem 1.2rem; border-radius: 8px 8px 0 0;
+      font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      background: transparent; border: 1px solid transparent;
+      color: var(--text-dim); transition: all 0.2s ease;
+      border-bottom: none;
+    }
+    .tab-btn:hover { color: var(--text-muted); background: #ffffff06; }
+    .tab-btn.active {
+      background: var(--bg-card); border-color: var(--border);
+      border-bottom-color: var(--bg-card); color: var(--text);
+      position: relative; top: 1px;
+    }
+    .tab-btn .dot {
+      display: inline-block; width: 8px; height: 8px; border-radius: 99px;
+      margin-right: 6px; vertical-align: middle;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem 1.8rem;
+    }
+
+    /* ── Distribution section ── */
+    .dist-section { display: none; }
+    .dist-section.active { display: block; }
+
+    .dist-grid {
+      display: grid; grid-template-columns: 1fr 1.8fr; gap: 1.5rem; align-items: start;
+    }
+    @media (max-width: 700px) { .dist-grid { grid-template-columns: 1fr; } }
+
+    .dist-info { display: flex; flex-direction: column; gap: 1rem; }
+
+    h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.4rem; }
+    h3 { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 0.5rem; }
+
+    p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.65; }
+    strong { color: var(--text); font-weight: 700; }
+
+    .use-box {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.9rem 1rem;
+    }
+    .use-box ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+    .use-box li {
+      font-size: 0.76rem; color: var(--text-muted); line-height: 1.5;
+      padding-left: 1rem; position: relative;
+    }
+    .use-box li::before {
+      content: '▸'; position: absolute; left: 0; font-weight: 700;
+    }
+
+    /* ── Sliders ── */
+    .slider-group { display: flex; flex-direction: column; gap: 0.9rem; }
+    .slider-item label {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;
+    }
+    .slider-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+
+    input[type=range] {
+      -webkit-appearance: none; width: 100%; height: 6px;
+      background: var(--border); border-radius: 99px; outline: none;
+      transition: background 0.2s;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px;
+      border-radius: 50%; cursor: pointer; border: 2px solid;
+      transition: box-shadow 0.2s;
+    }
+    input[type=range]:focus::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--accent-dim); }
+    .slider-hint { font-size: 0.65rem; color: var(--text-deep); margin-top: 2px; }
+
+    .note-box {
+      font-size: 0.72rem; padding: 0.65rem 0.85rem; border-radius: 8px;
+      border-left: 3px solid; line-height: 1.5;
+    }
+
+    /* ── Chart ── */
+    .chart-wrap { position: relative; width: 100%; height: 320px; }
+    @media (max-width: 700px) { .chart-wrap { height: 260px; } }
+    .chart-note { font-size: 0.6rem; text-align: center; color: var(--text-deep); margin-top: 6px; }
+
+    .mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 1.5rem;
+      text-align: center; font-size: 0.72rem; color: var(--text-deep);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Color overrides per distribution ── */
+    .color-normal    { color: var(--tab-normal) !important; }
+    .color-binomial  { color: var(--tab-binomial) !important; }
+    .color-poisson   { color: var(--tab-poisson) !important; }
+    .color-dirichlet { color: var(--tab-dirichlet) !important; }
+
+    .bg-normal    { background: #50FA7B15 !important; border-color: #50FA7B30 !important; }
+    .bg-binomial  { background: #FF79C615 !important; border-color: #FF79C630 !important; }
+    .bg-poisson   { background: #FFB86C15 !important; border-color: #FFB86C30 !important; }
+    .bg-dirichlet { background: #8BE9FD15 !important; border-color: #8BE9FD30 !important; }
+
+    /* Slider thumb colors */
+    .slider-normal input[type=range]::-webkit-slider-thumb    { background: var(--tab-normal);    border-color: var(--tab-normal); }
+    .slider-binomial input[type=range]::-webkit-slider-thumb  { background: var(--tab-binomial);  border-color: var(--tab-binomial); }
+    .slider-poisson input[type=range]::-webkit-slider-thumb   { background: var(--tab-poisson);   border-color: var(--tab-poisson); }
+    .slider-dirichlet input[type=range]::-webkit-slider-thumb { background: var(--tab-dirichlet); border-color: var(--tab-dirichlet); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .dist-section.active { animation: fadeUp 0.35s ease both; }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="/" class="back-btn">← Roadmap</a>
+      <div class="nav-brand">
+        <span>BLOCO 01</span>
+        Fundamentos Computacionais
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <main>
+
+    <!-- ── Header ── -->
+    <div class="page-header">
+      <div class="chip-row">
+        <span class="badge" style="background:#BD93F920;color:#BD93F9;">BLOCO 01</span>
+        <span class="badge" style="background:#6C63FF20;color:#9988ff;">CORE</span>
+        <span class="badge" style="background:#50FA7B18;color:#50FA7B;">Probabilidade & Distribuições</span>
+      </div>
+      <h1>Explorador de <span class="accent">Distribuições</span></h1>
+      <p>
+        Explore interativamente os modelos matemáticos que fundamentam a Análise de Dados e o Machine Learning.
+        Manipule os parâmetros e veja como cada distribuição se comporta em tempo real.
+      </p>
+    </div>
+
+    <!-- ── Tabs ── -->
+    <div class="tabs-nav" id="tabs-nav">
+      <button class="tab-btn active" onclick="showTab('normal')" id="btn-normal">
+        <span class="dot" style="background:var(--tab-normal);"></span>Normal
+      </button>
+      <button class="tab-btn" onclick="showTab('binomial')" id="btn-binomial">
+        <span class="dot" style="background:var(--tab-binomial);"></span>Binomial
+      </button>
+      <button class="tab-btn" onclick="showTab('poisson')" id="btn-poisson">
+        <span class="dot" style="background:var(--tab-poisson);"></span>Poisson
+      </button>
+      <button class="tab-btn" onclick="showTab('dirichlet')" id="btn-dirichlet">
+        <span class="dot" style="background:var(--tab-dirichlet);"></span>Dirichlet
+      </button>
+    </div>
+
+    <!-- ── Content Card ── -->
+    <div class="card">
+
+      <!-- ═══ NORMAL ═══ -->
+      <section id="tab-normal" class="dist-section active">
+        <div class="dist-grid">
+          <div class="dist-info">
+            <div>
+              <h2 class="color-normal">Distribuição Normal (Gaussiana)</h2>
+              <p>
+                A famosa "curva em sino". É a distribuição mais importante na estatística devido ao
+                <strong>Teorema do Limite Central</strong> — a soma de muitas variáveis independentes
+                tende a uma Normal, independentemente da distribuição original.
+              </p>
+            </div>
+
+            <div class="use-box bg-normal">
+              <h3>Uso em Dados</h3>
+              <ul style="--marker:#50FA7B;">
+                <li style="--marker-color:var(--tab-normal);"><strong>Padronização (Z-score):</strong> Preparação de dados para Redes Neurais e SVM.</li>
+                <li><strong>Testes de Hipótese:</strong> Base para testes T e ANOVA.</li>
+                <li><strong>Detecção de Anomalias:</strong> Identificar outliers nas caudas extremas.</li>
+              </ul>
+            </div>
+
+            <div class="slider-group slider-normal">
+              <div class="slider-item">
+                <label>
+                  <span>Média (μ)</span>
+                  <span class="slider-val color-normal" id="normal-mu-val">0</span>
+                </label>
+                <input type="range" id="normal-mu" min="-5" max="5" step="0.5" value="0" />
+                <div class="slider-hint">Desloca o centro da curva.</div>
+              </div>
+              <div class="slider-item">
+                <label>
+                  <span>Desvio Padrão (σ)</span>
+                  <span class="slider-val color-normal" id="normal-sigma-val">1</span>
+                </label>
+                <input type="range" id="normal-sigma" min="0.5" max="4" step="0.1" value="1" />
+                <div class="slider-hint">Controla a largura e o "espalhamento" dos dados.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="chart-wrap"><canvas id="chart-normal"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ BINOMIAL ═══ -->
+      <section id="tab-binomial" class="dist-section">
+        <div class="dist-grid">
+          <div class="dist-info">
+            <div>
+              <h2 class="color-binomial">Distribuição Binomial</h2>
+              <p>
+                Modela a probabilidade de obter um número específico de "sucessos" em <strong>n tentativas fixas</strong>,
+                onde cada tentativa tem dois resultados possíveis e probabilidade constante <strong>p</strong>.
+              </p>
+            </div>
+
+            <div class="use-box bg-binomial">
+              <h3>Uso em Dados</h3>
+              <ul>
+                <li><strong>Testes A/B:</strong> Qual a probabilidade de X usuários clicarem (conversão)?</li>
+                <li><strong>Controle de Qualidade:</strong> Quantos defeitos esperar em um lote.</li>
+                <li><strong>Previsão de Churn:</strong> Modelar retenção de clientes em um período.</li>
+              </ul>
+            </div>
+
+            <div class="slider-group slider-binomial">
+              <div class="slider-item">
+                <label>
+                  <span>Tentativas (n)</span>
+                  <span class="slider-val color-binomial" id="binomial-n-val">20</span>
+                </label>
+                <input type="range" id="binomial-n" min="5" max="50" step="1" value="20" />
+                <div class="slider-hint">Tamanho da amostra ou experimentos.</div>
+              </div>
+              <div class="slider-item">
+                <label>
+                  <span>Prob. Sucesso (p)</span>
+                  <span class="slider-val color-binomial" id="binomial-p-val">0.50</span>
+                </label>
+                <input type="range" id="binomial-p" min="0.05" max="0.95" step="0.05" value="0.5" />
+                <div class="slider-hint">A chance de sucesso em cada tentativa.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="chart-wrap"><canvas id="chart-binomial"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ POISSON ═══ -->
+      <section id="tab-poisson" class="dist-section">
+        <div class="dist-grid">
+          <div class="dist-info">
+            <div>
+              <h2 class="color-poisson">Distribuição de Poisson</h2>
+              <p>
+                Expressa a probabilidade de que uma certa quantidade de eventos ocorra em um intervalo fixo,
+                se esses eventos ocorrerem com uma <strong>taxa média λ</strong> conhecida e de forma independente.
+              </p>
+            </div>
+
+            <div class="use-box bg-poisson">
+              <h3>Uso em Dados</h3>
+              <ul>
+                <li><strong>Tráfego de Servidores:</strong> Modelar requisições por minuto em um site.</li>
+                <li><strong>Atendimento:</strong> Prever chamadas em um call center por hora.</li>
+                <li><strong>Risco e Seguros:</strong> Estimar acidentes por área por mês.</li>
+              </ul>
+            </div>
+
+            <div class="slider-group slider-poisson">
+              <div class="slider-item">
+                <label>
+                  <span>Taxa Média (λ — Lambda)</span>
+                  <span class="slider-val color-poisson" id="poisson-l-val">4</span>
+                </label>
+                <input type="range" id="poisson-l" min="1" max="20" step="1" value="4" />
+                <div class="slider-hint">Número médio histórico de ocorrências.</div>
+              </div>
+              <div class="note-box" style="background:#FFB86C0a;border-color:var(--tab-poisson);color:#FFB86Ccc;">
+                Quando λ aumenta, a distribuição se aproxima visualmente de uma Normal.
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="chart-wrap"><canvas id="chart-poisson"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ DIRICHLET ═══ -->
+      <section id="tab-dirichlet" class="dist-section">
+        <div class="dist-grid">
+          <div class="dist-info">
+            <div>
+              <h2 class="color-dirichlet">Distribuição de Dirichlet</h2>
+              <p>
+                Uma "distribuição de distribuições". Modela probabilidades para <strong>múltiplos resultados categóricos</strong>,
+                garantindo que a soma de todas as probabilidades seja 1 — como fatias de uma pizza.
+              </p>
+            </div>
+
+            <div class="use-box bg-dirichlet">
+              <h3>Uso em Dados</h3>
+              <ul>
+                <li><strong>NLP:</strong> Base do algoritmo LDA para modelagem de tópicos.</li>
+                <li><strong>Recomendação:</strong> Modelar perfil de preferência em múltiplas categorias.</li>
+                <li><strong>Testes A/B/n Bayesiano:</strong> Avaliar múltiplas variações simultaneamente.</li>
+              </ul>
+            </div>
+
+            <div class="slider-group slider-dirichlet">
+              <p style="font-size:0.68rem;font-weight:800;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.2rem;">
+                Parâmetros de Concentração (α)
+              </p>
+              <div class="slider-item">
+                <label>
+                  <span style="color:#f59e0b;">Categoria A (α₁)</span>
+                  <span class="slider-val" style="color:#f59e0b;" id="dir-a1-val">2.0</span>
+                </label>
+                <input type="range" id="dir-a1" min="0.1" max="10" step="0.1" value="2.0"
+                  style="--thumb-color:#f59e0b;" />
+              </div>
+              <div class="slider-item">
+                <label>
+                  <span style="color:#14b8a6;">Categoria B (α₂)</span>
+                  <span class="slider-val" style="color:#14b8a6;" id="dir-a2-val">2.0</span>
+                </label>
+                <input type="range" id="dir-a2" min="0.1" max="10" step="0.1" value="2.0" />
+              </div>
+              <div class="slider-item">
+                <label>
+                  <span style="color:#6366f1;">Categoria C (α₃)</span>
+                  <span class="slider-val" style="color:#6366f1;" id="dir-a3-val">2.0</span>
+                </label>
+                <input type="range" id="dir-a3" min="0.1" max="10" step="0.1" value="2.0" />
+              </div>
+              <div class="note-box" style="background:#8BE9FD0a;border-color:var(--tab-dirichlet);color:#8BE9FDcc;">
+                α &lt; 1 → concentração nos extremos (esparsidade).<br/>
+                α &gt; 1 → concentração equilibrada no centro.
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="chart-wrap"><canvas id="chart-dirichlet"></canvas></div>
+            <div class="chart-note">Visão simplificada: distribuições marginais (Beta) para cada categoria.</div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /card -->
+
+  </main>
+
+  <footer>
+    <p>
+      Material do <strong style="color:var(--accent);">Bloco 01</strong> —
+      Roadmap <a href="/">Engenharia de Dados e Plataformas de IA</a>
+    </p>
+  </footer>
+
+  <script>
+    // ── Chart.js globals ──
+    Chart.defaults.font.family = "'JetBrains Mono', 'Inter', monospace";
+    Chart.defaults.color = '#60608b';
+
+    const CHART_OPTS = {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 400, easing: 'easeOutCubic' },
+      plugins: {
+        tooltip: {
+          backgroundColor: 'rgba(17,17,32,0.96)',
+          titleColor: '#e8e8f0',
+          bodyColor: '#a0a0c0',
+          titleFont: { family: 'JetBrains Mono, monospace', size: 12 },
+          bodyFont:  { family: 'JetBrains Mono, monospace', size: 12 },
+          padding: 12, cornerRadius: 8,
+          borderColor: '#1e1e35', borderWidth: 1,
+          intersect: false, mode: 'index'
+        }
+      }
+    };
+
+    const SCALE_X = { grid: { color: '#1e1e3540' }, ticks: { color: '#60608b', font: { size: 10 } } };
+    const SCALE_Y = { grid: { color: '#1e1e3530' }, ticks: { color: '#60608b', font: { size: 10 } } };
+
+    // ── Tab switching ──
+    function showTab(id) {
+      document.querySelectorAll('.dist-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      document.getElementById('btn-' + id).classList.add('active');
+    }
+
+    // ── Math helpers ──
+    function factorial(n) {
+      if (n === 0 || n === 1) return 1;
+      let r = 1; for (let i = 2; i <= n; i++) r *= i; return r;
+    }
+    function combination(n, k) {
+      return factorial(n) / (factorial(k) * factorial(n - k));
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  NORMAL
+    // ════════════════════════════════════════════════════════════════════════
+    let chartNormal;
+    function initNormal() {
+      const ctx = document.getElementById('chart-normal').getContext('2d');
+
+      function gen(mu, sigma) {
+        const labels = [], data = [];
+        for (let x = -10; x <= 10; x += 0.2) {
+          labels.push(x.toFixed(1));
+          data.push((1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mu) / sigma) ** 2));
+        }
+        return { labels, data };
+      }
+
+      const d = gen(0, 1);
+      chartNormal = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: d.labels,
+          datasets: [{
+            label: 'Densidade de Probabilidade',
+            data: d.data,
+            borderColor: '#50FA7B',
+            backgroundColor: '#50FA7B12',
+            fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2
+          }]
+        },
+        options: {
+          ...CHART_OPTS,
+          scales: {
+            x: { ...SCALE_X, title: { display: true, text: 'Valor (X)', color: '#60608b' } },
+            y: { ...SCALE_Y, min: 0, title: { display: true, text: 'Probabilidade', color: '#60608b' } }
+          }
+        }
+      });
+
+      function update() {
+        const mu = parseFloat(document.getElementById('normal-mu').value);
+        const sigma = parseFloat(document.getElementById('normal-sigma').value);
+        document.getElementById('normal-mu-val').textContent = mu;
+        document.getElementById('normal-sigma-val').textContent = sigma;
+        const d = gen(mu, sigma);
+        chartNormal.data.datasets[0].data = d.data;
+        chartNormal.update();
+      }
+      document.getElementById('normal-mu').addEventListener('input', update);
+      document.getElementById('normal-sigma').addEventListener('input', update);
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  BINOMIAL
+    // ════════════════════════════════════════════════════════════════════════
+    let chartBinomial;
+    function initBinomial() {
+      const ctx = document.getElementById('chart-binomial').getContext('2d');
+
+      function gen(n, p) {
+        const labels = [], data = [];
+        for (let k = 0; k <= n; k++) {
+          labels.push(k);
+          data.push(combination(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k));
+        }
+        return { labels, data };
+      }
+
+      const d = gen(20, 0.5);
+      chartBinomial = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: d.labels,
+          datasets: [{
+            label: 'Probabilidade',
+            data: d.data,
+            backgroundColor: '#FF79C640',
+            hoverBackgroundColor: '#FF79C670',
+            borderColor: '#FF79C6',
+            borderWidth: 1,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          ...CHART_OPTS,
+          scales: {
+            x: { ...SCALE_X, title: { display: true, text: 'Nº de Sucessos (k)', color: '#60608b' } },
+            y: { ...SCALE_Y, min: 0, max: 1, title: { display: true, text: 'Probabilidade', color: '#60608b' } }
+          }
+        }
+      });
+
+      function update() {
+        const n = parseInt(document.getElementById('binomial-n').value);
+        const p = parseFloat(document.getElementById('binomial-p').value);
+        document.getElementById('binomial-n-val').textContent = n;
+        document.getElementById('binomial-p-val').textContent = p.toFixed(2);
+        const d = gen(n, p);
+        chartBinomial.data.labels = d.labels;
+        chartBinomial.data.datasets[0].data = d.data;
+        const mx = Math.max(...d.data);
+        chartBinomial.options.scales.y.max = mx > 0.5 ? 1 : (mx > 0.2 ? 0.5 : 0.3);
+        chartBinomial.update();
+      }
+      document.getElementById('binomial-n').addEventListener('input', update);
+      document.getElementById('binomial-p').addEventListener('input', update);
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  POISSON
+    // ════════════════════════════════════════════════════════════════════════
+    let chartPoisson;
+    function initPoisson() {
+      const ctx = document.getElementById('chart-poisson').getContext('2d');
+
+      function gen(lambda) {
+        const labels = [], data = [];
+        const maxK = Math.max(15, Math.ceil(lambda * 2.5));
+        for (let k = 0; k <= maxK; k++) {
+          labels.push(k);
+          data.push((Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k));
+        }
+        return { labels, data };
+      }
+
+      const d = gen(4);
+      chartPoisson = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: d.labels,
+          datasets: [{
+            label: 'Probabilidade',
+            data: d.data,
+            backgroundColor: '#FFB86C40',
+            hoverBackgroundColor: '#FFB86C70',
+            borderColor: '#FFB86C',
+            borderWidth: 1,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          ...CHART_OPTS,
+          scales: {
+            x: { ...SCALE_X, title: { display: true, text: 'Nº de Eventos (k)', color: '#60608b' } },
+            y: { ...SCALE_Y, min: 0, title: { display: true, text: 'Probabilidade', color: '#60608b' } }
+          }
+        }
+      });
+
+      function update() {
+        const l = parseFloat(document.getElementById('poisson-l').value);
+        document.getElementById('poisson-l-val').textContent = l;
+        const d = gen(l);
+        chartPoisson.data.labels = d.labels;
+        chartPoisson.data.datasets[0].data = d.data;
+        chartPoisson.update();
+      }
+      document.getElementById('poisson-l').addEventListener('input', update);
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  DIRICHLET
+    // ════════════════════════════════════════════════════════════════════════
+    let chartDirichlet;
+    function initDirichlet() {
+      const ctx = document.getElementById('chart-dirichlet').getContext('2d');
+
+      function betaShape(x, a, b) {
+        if (x <= 0 || x >= 1) return 0;
+        const val = Math.pow(x, a - 1) * Math.pow(1 - x, b - 1);
+        return isFinite(val) ? val : 0;
+      }
+
+      function gen(a1, a2, a3) {
+        const labels = [], d1 = [], d2 = [], d3 = [];
+        const sum = a1 + a2 + a3;
+        for (let i = 0.01; i < 1; i += 0.02) {
+          labels.push(i.toFixed(2));
+          d1.push(betaShape(i, a1, sum - a1));
+          d2.push(betaShape(i, a2, sum - a2));
+          d3.push(betaShape(i, a3, sum - a3));
+        }
+        const mx1 = Math.max(...d1) || 1;
+        const mx2 = Math.max(...d2) || 1;
+        const mx3 = Math.max(...d3) || 1;
+        return {
+          labels,
+          d1: d1.map(v => v / mx1),
+          d2: d2.map(v => v / mx2),
+          d3: d3.map(v => v / mx3)
+        };
+      }
+
+      const d = gen(2, 2, 2);
+      chartDirichlet = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: d.labels,
+          datasets: [
+            { label: 'Categoria A', data: d.d1, borderColor: '#f59e0b', backgroundColor: '#f59e0b10', fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2 },
+            { label: 'Categoria B', data: d.d2, borderColor: '#14b8a6', backgroundColor: '#14b8a610', fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2 },
+            { label: 'Categoria C', data: d.d3, borderColor: '#6366f1', backgroundColor: '#6366f110', fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2 }
+          ]
+        },
+        options: {
+          ...CHART_OPTS,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            ...CHART_OPTS.plugins,
+            legend: {
+              labels: { usePointStyle: true, boxWidth: 7, color: '#a0a0c0', padding: 16, font: { size: 11 } }
+            }
+          },
+          scales: {
+            x: { ...SCALE_X, title: { display: true, text: 'Proporção', color: '#60608b' } },
+            y: { ...SCALE_Y, display: false, min: 0 }
+          }
+        }
+      });
+
+      function update() {
+        const a1 = parseFloat(document.getElementById('dir-a1').value);
+        const a2 = parseFloat(document.getElementById('dir-a2').value);
+        const a3 = parseFloat(document.getElementById('dir-a3').value);
+        document.getElementById('dir-a1-val').textContent = a1.toFixed(1);
+        document.getElementById('dir-a2-val').textContent = a2.toFixed(1);
+        document.getElementById('dir-a3-val').textContent = a3.toFixed(1);
+        const d = gen(a1, a2, a3);
+        chartDirichlet.data.datasets[0].data = d.d1;
+        chartDirichlet.data.datasets[1].data = d.d2;
+        chartDirichlet.data.datasets[2].data = d.d3;
+        chartDirichlet.update();
+      }
+      document.getElementById('dir-a1').addEventListener('input', update);
+      document.getElementById('dir-a2').addEventListener('input', update);
+      document.getElementById('dir-a3').addEventListener('input', update);
+    }
+
+    // ── Init all ──
+    window.onload = () => {
+      initNormal();
+      initBinomial();
+      initPoisson();
+      initDirichlet();
+    };
+  </script>
+</body>
+</html>

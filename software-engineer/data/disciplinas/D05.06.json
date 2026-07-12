@@ -1,0 +1,76 @@
+{
+  "id": "D05.06",
+  "dominio_id": "D05",
+  "nome": "Apache Kafka: Arquitetura e Internals",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Redes",
+    "Sistemas distribuídos: modelos de falha"
+  ],
+  "objetivos": [
+    "Entender o design de log distribuído que sustenta ingestão e streaming em escala",
+    "Operar e depurar clusters Kafka em produção com conhecimento de internals"
+  ],
+  "pratica_esperada": [
+    "Dimensionar partições e fator de replicação para um domínio de dados",
+    "Diagnosticar consumer lag e rebalanceamento problemático"
+  ],
+  "teoria": [
+    "kafka-particoes",
+    "kafka-replicas",
+    "kafka-isr",
+    "kafka-log-commit",
+    "kafka-offset",
+    "kafka-consumer-groups",
+    "kafka-rebalanceamento",
+    "kafka-log-compaction",
+    "kafka-retention",
+    "kafka-broker-controller"
+  ],
+  "algoritmos_tecnicas": [
+    "kafka-partitioning-by-key",
+    "kafka-isr-replication-protocol",
+    "kafka-idempotent-producer",
+    "kafka-transactional-api"
+  ],
+  "arquiteturas": [
+    "kafka-kraft"
+  ],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [
+    "kafka-wire-protocol"
+  ],
+  "livros": [
+    "Narkhede, Shapira & Palino, Kafka: The Definitive Guide"
+  ],
+  "papers_fundamentais": [
+    "Kreps, Narkhede & Rao, Kafka: a Distributed Messaging System for Log Processing, 2011"
+  ],
+  "ferramentas": [
+    "Kafka",
+    "kcat",
+    "Kafka Streams",
+    "Confluent Schema Registry",
+    "Cruise Control"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como ISR garante durabilidade sem sacrificar disponibilidade?",
+    "Por que aumentar partições depois de criar o tópico muda a chave de particionamento efetiva?"
+  ],
+  "projetos_reais": [
+    "Cluster Kafka com política de replicação, monitoramento de ISR e simulação de perda de broker"
+  ],
+  "exercicios": [
+    "Calcular throughput máximo dado número de partições e réplicas",
+    "Diagnosticar rebalanceamento excessivo em consumer group"
+  ],
+  "tags": [
+    "Kafka",
+    "ISR",
+    "Partitions",
+    "KRaft",
+    "Exactly-once"
+  ]
+}

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odisseia da Lógica: Da Grécia ao Quântico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfaf7;
+            color: #2d3436;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        .logic-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logic-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .gate-active {
+            background-color: #3b82f6;
+            color: white;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-active .timeline-dot {
+            background: #3b82f6;
+            transform: scale(1.3);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Chosen Palette: Warm Academic (Fundo creme suave, acentos azul-sereno e ardósia) -->
+    <!-- Application Structure Plan: O SPA é estruturado como uma jornada cronológica e temática. Escolhi uma navegação híbrida: um menu lateral fixo para desktop (acesso rápido) e uma progressão em "cards" centrais. Cada seção possui uma introdução contextual, um elemento interativo (simulador ou gráfico) e conclusões. Essa estrutura foi escolhida para facilitar a digestão de conceitos abstratos, permitindo que o usuário "brinque" com a lógica antes de ler a teoria profunda. -->
+    <!-- Visualization & Content Choices: 
+        1. Silogismo -> Fluxo de Premissas (HTML/JS) -> Demonstra dedução clássica.
+        2. Álgebra de Boole/Shannon -> Simulador de Portas Lógicas (HTML/CSS Interativo) -> Conecta abstração à eletrônica.
+        3. Lógica Proposicional/Predicados -> Tabela Verdade Dinâmica -> Visualiza exaustão de possibilidades.
+        4. Lógica Fuzzy -> Gráfico de Pertencência (Chart.js) -> Ilustra a transição entre 0 e 1.
+        5. Lógica Quântica -> Gráfico de Superposição (Chart.js) -> Mostra a probabilidade de estados.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+
+    <nav class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <span class="font-bold text-xl tracking-tight text-slate-800 uppercase">Logos<span class="text-blue-600">Evolution</span></span>
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                <a href="#aristoteles" class="hover:text-blue-600 transition">Aristóteles</a>
+                <a href="#boole" class="hover:text-blue-600 transition">Boole & Shannon</a>
+                <a href="#proposicional" class="hover:text-blue-600 transition">Sistemas Formais</a>
+                <a href="#fuzzy" class="hover:text-blue-600 transition">Fuzzy</a>
+                <a href="#quantum" class="hover:text-blue-600 transition">Quantum</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 px-4 max-w-5xl mx-auto">
+        
+        <header class="text-center mb-20">
+            <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6">A Evolução dos Sistemas Lógicos</h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                Da retórica clássica aos bits quânticos: explore como a estrutura do pensamento humano se tornou a base da computação moderna.
+            </p>
+        </header>
+
+        <!-- Aristóteles -->
+        <section id="aristoteles" class="mb-24 scroll-mt-24">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 logic-card">
+                <div class="flex items-center mb-6">
+                    <span class="bg-stone-800 text-white px-3 py-1 rounded-full text-xs font-bold mr-4">IV a.C.</span>
+                    <h2 class="text-3xl font-bold text-slate-800">Silogismo Aristotélico</h2>
+                </div>
+                <p class="text-slate-600 mb-8 leading-relaxed">
+                    Aristóteles fundou a lógica formal com o silogismo: um sistema de dedução onde duas premissas levam necessariamente a uma conclusão. Esta seção permite testar a validade do pensamento dedutivo clássico.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <div class="p-4 bg-stone-50 rounded-xl border-l-4 border-stone-400">
+                            <p class="text-sm font-semibold text-stone-500 uppercase mb-1">Premissa Maior</p>
+                            <select id="premissa1" class="w-full bg-transparent font-medium focus:outline-none" onchange="updateSyllogism()">
+                                <option value="homens">Todos os homens são mortais</option>
+                                <option value="deuses">Nenhum deus é mortal</option>
+                            </select>
+                        </div>
+                        <div class="p-4 bg-stone-50 rounded-xl border-l-4 border-stone-400">
+                            <p class="text-sm font-semibold text-stone-500 uppercase mb-1">Premissa Menor</p>
+                            <select id="premissa2" class="w-full bg-transparent font-medium focus:outline-none" onchange="updateSyllogism()">
+                                <option value="socrates">Sócrates é homem</option>
+                                <option value="zeus">Zeus é um deus</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center justify-center p-8 bg-blue-50 rounded-2xl border-2 border-dashed border-blue-200">
+                        <p class="text-sm font-bold text-blue-600 uppercase mb-2">Conclusão Lógica</p>
+                        <p id="conclusao-texto" class="text-xl font-semibold text-blue-900 text-center italic">Sócrates é mortal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Boole & Shannon -->
+        <section id="boole" class="mb-24 scroll-mt-24">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 logic-card">
+                <div class="flex items-center mb-6">
+                    <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold mr-4">Séc. XIX - XX</span>
+                    <h2 class="text-3xl font-bold text-slate-800">Boole & Shannon: O Nascimento do Bit</h2>
+                </div>
+                <p class="text-slate-600 mb-8 leading-relaxed">
+                    George Boole reduziu o pensamento a 0 e 1. Claude Shannon percebeu que isso poderia ser mapeado em circuitos elétricos (ligado/desligado). Interaja com a porta lógica abaixo para ver a "eletricidade do pensamento".
+                </p>
+
+                <div class="flex flex-col md:flex-row items-center justify-around gap-8 p-8 bg-slate-900 rounded-3xl text-white">
+                    <div class="flex gap-4">
+                        <button onclick="toggleInput('A')" id="btnA" class="w-16 h-16 rounded-2xl border-2 border-slate-700 flex flex-col items-center justify-center transition hover:border-blue-400">
+                            <span class="text-xs text-slate-400">INPUT A</span>
+                            <span id="valA" class="text-xl font-bold">0</span>
+                        </button>
+                        <button onclick="toggleInput('B')" id="btnB" class="w-16 h-16 rounded-2xl border-2 border-slate-700 flex flex-col items-center justify-center transition hover:border-blue-400">
+                            <span class="text-xs text-slate-400">INPUT B</span>
+                            <span id="valB" class="text-xl font-bold">0</span>
+                        </button>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <select id="gateType" onchange="calculateGate()" class="bg-slate-800 border border-slate-600 rounded px-4 py-2 text-blue-400 font-bold focus:outline-none">
+                            <option value="AND">PORTA AND</option>
+                            <option value="OR">PORTA OR</option>
+                            <option value="XOR">PORTA XOR</option>
+                        </select>
+                        <div class="h-px w-24 bg-slate-700 my-4"></div>
+                    </div>
+
+                    <div id="outputLight" class="w-20 h-20 rounded-full bg-slate-800 border-4 border-slate-700 flex items-center justify-center transition-all duration-500">
+                        <span class="text-xs font-bold">OUTPUT</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lógica de Predicados/Proposicional -->
+        <section id="proposicional" class="mb-24 scroll-mt-24">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 logic-card">
+                <div class="flex items-center mb-6">
+                    <span class="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold mr-4">Modernidade</span>
+                    <h2 class="text-3xl font-bold text-slate-800">Sistemas de Predicados</h2>
+                </div>
+                <p class="text-slate-600 mb-6 leading-relaxed">
+                    A Lógica Proposicional trata frases inteiras como variáveis. A Lógica de Predicados (First-Order Logic) vai além, usando quantificadores (∀ "para todo" ou ∃ "existe") para descrever propriedades de objetos.
+                </p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="border-b-2 border-stone-100">
+                                <th class="py-4 font-bold text-slate-400 uppercase tracking-widest">Conceito</th>
+                                <th class="py-4 font-bold text-slate-400 uppercase tracking-widest">Sintaxe</th>
+                                <th class="py-4 font-bold text-slate-400 uppercase tracking-widest">Exemplo Computacional</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-stone-50">
+                            <tr>
+                                <td class="py-4 font-semibold text-slate-700">Proposição (P)</td>
+                                <td class="py-4 text-indigo-600 font-mono">P → Q</td>
+                                <td class="py-4 text-slate-500">Se (usuário_logado), então (mostrar_dashboard).</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 font-semibold text-slate-700">Quantificador Universal</td>
+                                <td class="py-4 text-indigo-600 font-mono">∀x P(x)</td>
+                                <td class="py-4 text-slate-500">Todos os arquivos no diretório são (.txt).</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 font-semibold text-slate-700">Quantificador Existencial</td>
+                                <td class="py-4 text-indigo-600 font-mono">∃x P(x)</td>
+                                <td class="py-4 text-slate-500">Existe pelo menos um erro na lista de logs.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lógica Fuzzy -->
+        <section id="fuzzy" class="mb-24 scroll-mt-24">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 logic-card">
+                <div class="flex items-center mb-6">
+                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold mr-4">1965</span>
+                    <h2 class="text-3xl font-bold text-slate-800">Lógica Fuzzy (Nebulosa)</h2>
+                </div>
+                <p class="text-slate-600 mb-8 leading-relaxed">
+                    Diferente da lógica binária, a Lógica Fuzzy admite "graus de verdade" entre 0 e 1. É essencial para sistemas como ar-condicionados inteligentes e freios ABS, onde as condições não são apenas "quente" ou "frio", mas "morno".
+                </p>
+                
+                <div class="chart-container mb-8">
+                    <canvas id="fuzzyChart"></canvas>
+                </div>
+                <div class="text-center">
+                    <p class="text-sm font-medium text-slate-500 mb-2">Ajuste a Temperatura: <span id="tempVal" class="text-orange-600 font-bold">25°C</span></p>
+                    <input type="range" min="0" max="50" value="25" class="w-full max-w-md accent-orange-500" oninput="updateFuzzy(this.value)">
+                </div>
+            </div>
+        </section>
+
+        <!-- Lógica Quântica -->
+        <section id="quantum" class="mb-24 scroll-mt-24">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 logic-card">
+                <div class="flex items-center mb-6">
+                    <span class="bg-cyan-500 text-white px-3 py-1 rounded-full text-xs font-bold mr-4">Fronteira</span>
+                    <h2 class="text-3xl font-bold text-slate-800">Lógica Quântica</h2>
+                </div>
+                <p class="text-slate-600 mb-8 leading-relaxed">
+                    A lógica clássica é distributiva; a quântica não. Aqui, um bit (qubit) pode estar em superposição, sendo 0 e 1 simultaneamente até ser observado. Isso permite o processamento paralelo em escala atômica.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container">
+                        <canvas id="quantumChart"></canvas>
+                    </div>
+                    <div class="bg-cyan-50 p-6 rounded-2xl">
+                        <h4 class="font-bold text-cyan-900 mb-4">Paradoxo da Medição</h4>
+                        <p class="text-sm text-cyan-800 mb-4">No gráfico ao lado, você vê a probabilidade. Diferente de Boole (onde ou é 0 ou é 1), aqui operamos em um espaço de Hilbert.</p>
+                        <button onclick="measureQuantum()" class="w-full py-3 bg-cyan-600 text-white font-bold rounded-xl hover:bg-cyan-700 transition uppercase tracking-wider text-xs">Observar Qubit</button>
+                        <p id="measurementResult" class="mt-4 text-center font-mono font-bold text-cyan-600"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-12 px-4 text-center">
+        <p class="text-sm">Exploração interativa baseada na evolução da Ciência da Computação e Filosofia.</p>
+        <div class="mt-4 flex justify-center space-x-4">
+            <span class="w-2 h-2 rounded-full bg-stone-700"></span>
+            <span class="w-2 h-2 rounded-full bg-stone-700"></span>
+            <span class="w-2 h-2 rounded-full bg-stone-700"></span>
+        </div>
+    </footer>
+
+    <script>
+        // --- Estado Global ---
+        let inputA = 0;
+        let inputB = 0;
+        let fuzzyChart, quantumChart;
+
+        // --- Silogismo Logic ---
+        function updateSyllogism() {
+            const p1 = document.getElementById('premissa1').value;
+            const p2 = document.getElementById('premissa2').value;
+            const res = document.getElementById('conclusao-texto');
+
+            if(p1 === 'homens' && p2 === 'socrates') res.innerText = "Sócrates é mortal.";
+            else if(p1 === 'deuses' && p2 === 'zeus') res.innerText = "Zeus não é mortal.";
+            else if(p1 === 'homens' && p2 === 'zeus') res.innerText = "Não há conexão válida.";
+            else if(p1 === 'deuses' && p2 === 'socrates') res.innerText = "Sócrates não é um deus.";
+        }
+
+        // --- Boolean/Shannon Gate ---
+        function toggleInput(target) {
+            if(target === 'A') {
+                inputA = inputA === 0 ? 1 : 0;
+                document.getElementById('valA').innerText = inputA;
+                document.getElementById('btnA').classList.toggle('gate-active');
+            } else {
+                inputB = inputB === 0 ? 1 : 0;
+                document.getElementById('valB').innerText = inputB;
+                document.getElementById('btnB').classList.toggle('gate-active');
+            }
+            calculateGate();
+        }
+
+        function calculateGate() {
+            const type = document.getElementById('gateType').value;
+            const light = document.getElementById('outputLight');
+            let result = 0;
+
+            if(type === 'AND') result = (inputA && inputB);
+            else if(type === 'OR') result = (inputA || inputB);
+            else if(type === 'XOR') result = (inputA !== inputB ? 1 : 0);
+
+            if(result === 1) {
+                light.style.backgroundColor = '#fbbf24';
+                light.style.boxShadow = '0 0 30px #fbbf24';
+                light.style.borderColor = '#d97706';
+            } else {
+                light.style.backgroundColor = '#1e293b';
+                light.style.boxShadow = 'none';
+                light.style.borderColor = '#334155';
+            }
+        }
+
+        // --- Fuzzy Logic Chart ---
+        function initFuzzy() {
+            const ctx = document.getElementById('fuzzyChart').getContext('2d');
+            fuzzyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [0, 10, 20, 30, 40, 50],
+                    datasets: [
+                        {
+                            label: 'Frio',
+                            data: [1, 0.8, 0.2, 0, 0, 0],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Morno',
+                            data: [0, 0.2, 0.8, 0.8, 0.2, 0],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Quente',
+                            data: [0, 0, 0, 0.2, 0.8, 1],
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: {
+                        y: { min: 0, max: 1, title: { display: true, text: 'Grau de Verdade (μ)' } },
+                        x: { title: { display: true, text: 'Temperatura (°C)' } }
+                    }
+                }
+            });
+        }
+
+        function updateFuzzy(val) {
+            document.getElementById('tempVal').innerText = val + '°C';
+            // Visual feedback apenas textual aqui para manter simplicidade
+        }
+
+        // --- Quantum Logic Chart ---
+        function initQuantum() {
+            const ctx = document.getElementById('quantumChart').getContext('2d');
+            quantumChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Estado |0⟩', 'Estado |1⟩'],
+                    datasets: [{
+                        label: 'Probabilidade de Colapso',
+                        data: [0.5, 0.5],
+                        backgroundColor: ['#0891b2', '#06b6d4'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { min: 0, max: 1, ticks: { callback: v => (v*100) + '%' } }
+                    }
+                }
+            });
+        }
+
+        function measureQuantum() {
+            const res = document.getElementById('measurementResult');
+            res.innerText = "Medindo...";
+            
+            setTimeout(() => {
+                const outcome = Math.random() > 0.5 ? '|0⟩' : '|1⟩';
+                res.innerText = "Colapso detectado: Qubit está em " + outcome;
+                
+                quantumChart.data.datasets[0].data = outcome === '|0⟩' ? [1, 0] : [0, 1];
+                quantumChart.update();
+                
+                setTimeout(() => {
+                    quantumChart.data.datasets[0].data = [0.5, 0.5];
+                    quantumChart.update();
+                }, 2000);
+            }, 800);
+        }
+
+        // Initialization
+        window.onload = () => {
+            initFuzzy();
+            initQuantum();
+            calculateGate();
+        };
+    </script>
+</body>
+</html>

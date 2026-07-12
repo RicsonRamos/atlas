@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas de Conhecimento — Hub de Projetos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at top, #1e293b 0%, #0f172a 60%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .project-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent, #f59e0b);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .accent-amber { --accent: #f59e0b; }
+        .accent-indigo { --accent: #818cf8; }
+        .accent-emerald { --accent: #34d399; }
+        .accent-rose { --accent: #fb7185; }
+
+        .icon-badge {
+            background: color-mix(in srgb, var(--accent, #f59e0b) 15%, transparent);
+            color: var(--accent, #f59e0b);
+            border: 1px solid color-mix(in srgb, var(--accent, #f59e0b) 35%, transparent);
+        }
+
+        .stat-pill {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        .empty-slot {
+            border: 1.5px dashed rgba(148, 163, 184, 0.25);
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.3); border-radius: 10px; }
+    </style>
+</head>
+<body class="custom-scroll">
+
+    <nav class="border-b border-white/5 px-6 py-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-amber-400 font-black text-xl">◈</div>
+            <div>
+                <h1 class="text-lg font-extrabold tracking-tight leading-none text-white">Atlas <span class="text-amber-400">de Conhecimento</span></h1>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Hub de formações de nível internacional</p>
+            </div>
+        </div>
+        <div id="globalStats" class="hidden md:flex items-center gap-3 text-[10px] font-black text-slate-400 uppercase tracking-tighter">
+            <!-- preenchido via JS -->
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-14">
+        <div class="mb-12 max-w-2xl">
+            <h2 class="text-4xl font-extrabold text-white tracking-tight">Escolha uma trilha</h2>
+            <p class="text-slate-400 mt-4 text-sm leading-relaxed">
+                Cada projeto abaixo é uma árvore de conhecimento completa e independente — com domínios, disciplinas,
+                pré-requisitos e conteúdo técnico rigoroso. Novos projetos aparecem aqui automaticamente conforme
+                são adicionados a <code class="mono text-amber-300/80 bg-black/20 px-1.5 py-0.5 rounded text-[11px]">projects.json</code>.
+            </p>
+        </div>
+
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Cards gerados via JS -->
+        </div>
+
+        <div id="loadError" class="hidden mt-10 p-6 rounded-2xl border border-rose-500/20 bg-rose-500/5 text-rose-300 text-sm">
+            Não foi possível carregar <span class="mono">projects.json</span>. Se você abriu este arquivo diretamente
+            (<span class="mono">file://</span>), rode um servidor local na pasta do projeto, por exemplo:
+            <span class="mono block mt-2 bg-black/30 px-3 py-2 rounded-lg">python -m http.server</span>
+            e acesse <span class="mono">http://localhost:8000</span>.
+        </div>
+    </main>
+
+    <footer class="max-w-6xl mx-auto px-6 pb-10 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+        Estrutura extensível — cada pasta na raiz é um projeto autocontido
+    </footer>
+
+    <script>
+        const ACCENTS = ["amber", "indigo", "emerald", "rose"];
+
+        function renderStatPill(label, value) {
+            return `
+                <div class="stat-pill rounded-lg px-3 py-2 text-center">
+                    <div class="text-lg font-extrabold text-white leading-none">${value}</div>
+                    <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-1">${label}</div>
+                </div>
+            `;
+        }
+
+        function renderProjectCard(project, idx) {
+            const accent = ACCENTS[idx % ACCENTS.length];
+            const statusBadge = project.status === "ativo"
+                ? `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-full">Ativo</span>`
+                : `<span class="bg-slate-500/10 text-slate-400 border border-slate-500/20 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-full">Em construção</span>`;
+
+            return `
+                <a href="${project.url}" class="project-card accent-${accent} rounded-3xl p-7 flex flex-col gap-5 group">
+                    <div class="flex items-start justify-between">
+                        <div class="icon-badge w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-black">
+                            ${project.icone || "◆"}
+                        </div>
+                        ${statusBadge}
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-extrabold text-white tracking-tight group-hover:text-[var(--accent)] transition-colors">${project.titulo}</h3>
+                        <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wide mt-1">${project.subtitulo}</p>
+                        <p class="text-sm text-slate-400 leading-relaxed mt-3">${project.descricao}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mt-auto pt-2">
+                        ${renderStatPill("Domínios", project.dominios)}
+                        ${renderStatPill("Disciplinas", project.disciplinas)}
+                    </div>
+                    <div class="flex items-center gap-2 text-[11px] font-black uppercase tracking-wider text-slate-300 group-hover:text-[var(--accent)] transition-colors">
+                        Acessar trilha
+                        <span class="transition-transform group-hover:translate-x-1">→</span>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderEmptySlot() {
+            return `
+                <div class="empty-slot rounded-3xl p-7 flex flex-col items-center justify-center gap-3 text-center min-h-[280px]">
+                    <div class="w-12 h-12 rounded-2xl border border-dashed border-slate-600 flex items-center justify-center text-slate-600 text-2xl">+</div>
+                    <p class="text-slate-500 text-sm font-bold">Próximo projeto</p>
+                    <p class="text-slate-600 text-xs max-w-[200px]">Adicione uma entrada em <span class="mono">projects.json</span> e uma pasta com o conteúdo</p>
+                </div>
+            `;
+        }
+
+        async function init() {
+            try {
+                const projects = await fetch('projects.json').then(r => {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                });
+
+                const grid = document.getElementById('projectsGrid');
+                grid.innerHTML = projects.map((p, i) => renderProjectCard(p, i)).join('') + renderEmptySlot();
+
+                const totalDominios = projects.reduce((t, p) => t + (p.dominios || 0), 0);
+                const totalDisciplinas = projects.reduce((t, p) => t + (p.disciplinas || 0), 0);
+                document.getElementById('globalStats').innerHTML = `
+                    <span class="bg-white/5 px-3 py-1.5 rounded-full border border-white/10">${projects.length} projetos</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-full border border-white/10">${totalDominios} domínios</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-full border border-white/10">${totalDisciplinas} disciplinas</span>
+                `;
+                document.getElementById('globalStats').classList.remove('hidden');
+            } catch (err) {
+                document.getElementById('loadError').classList.remove('hidden');
+                console.error(err);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

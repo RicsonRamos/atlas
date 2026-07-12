@@ -1,0 +1,73 @@
+{
+  "id": "D01.13",
+  "dominio_id": "D01",
+  "nome": "Sistemas Formais e Programação Funcional",
+  "nivel": "Staff",
+  "carga_horaria": "24-32h",
+  "prerequisitos": [
+    "Lógica",
+    "Programação"
+  ],
+  "objetivos": [
+    "Usar tipos e composição para reduzir estados inválidos",
+    "Entender abstrações que aparecem em APIs de dados modernas"
+  ],
+  "pratica_esperada": [
+    "Modelar pipelines como funções puras com efeitos explícitos",
+    "Usar tipos para representar sucesso, falha e ausência"
+  ],
+  "teoria": [
+    "type-theory",
+    "lambda-calculus",
+    "category-theory-introdutoria",
+    "monads",
+    "functional-programming-foundations",
+    "tipos-algebricos",
+    "imutabilidade",
+    "composicao"
+  ],
+  "algoritmos_tecnicas": [
+    "inferencia-de-tipos",
+    "beta-reducao",
+    "map-reduce-fold",
+    "composicao-monadica"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Pierce, Types and Programming Languages",
+    "Bird & Wadler, Introduction to Functional Programming",
+    "Mac Lane, Categories for the Working Mathematician"
+  ],
+  "papers_fundamentais": [
+    "Moggi, Notions of computation and monads, 1991",
+    "Wadler, The essence of functional programming, 1992"
+  ],
+  "ferramentas": [
+    "Haskell",
+    "Scala",
+    "Rust",
+    "mypy",
+    "TypeScript"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como tipos algébricos evitam estados inválidos?",
+    "Explique monad sem jargão usando pipeline com falhas"
+  ],
+  "projetos_reais": [
+    "Biblioteca de ETL funcional com composição, validação e erros tipados"
+  ],
+  "exercicios": [
+    "Implementar Either/Result",
+    "Refatorar transformação mutável para função pura"
+  ],
+  "tags": [
+    "Tipos",
+    "Lambda",
+    "Monads",
+    "FP",
+    "Composição"
+  ]
+}

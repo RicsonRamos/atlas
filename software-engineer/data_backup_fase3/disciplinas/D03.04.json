@@ -1,0 +1,71 @@
+{
+  "id": "D03.04",
+  "dominio_id": "D03",
+  "nome": "CI/CD, Release Engineering e Ambientes",
+  "nivel": "Staff",
+  "carga_horaria": "24-32h",
+  "prerequisitos": [
+    "Git",
+    "Testes automatizados"
+  ],
+  "objetivos": [
+    "Automatizar build, validação, promoção e rollback",
+    "Projetar ambientes dev/stage/prod com segurança"
+  ],
+  "pratica_esperada": [
+    "Pipeline GitHub Actions para dbt, Airflow e Terraform",
+    "Promover artefatos imutáveis entre ambientes"
+  ],
+  "teoria": [
+    "trunk-based-development",
+    "conventional-commits",
+    "semantic-versioning",
+    "blue-green",
+    "canary",
+    "rollback",
+    "feature-flags",
+    "artifact-management"
+  ],
+  "algoritmos_tecnicas": [
+    "deployment-gates",
+    "progressive-rollout",
+    "topological-deployment-order"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Humble & Farley, Continuous Delivery",
+    "Kim et al., The DevOps Handbook",
+    "Beyer et al., Site Reliability Engineering"
+  ],
+  "papers_fundamentais": [
+    "Forsgren, Humble & Kim, Accelerate, 2018"
+  ],
+  "ferramentas": [
+    "GitHub Actions",
+    "GitLab CI",
+    "Argo CD",
+    "Docker",
+    "dbt Cloud"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como fazer rollback de uma mudança de schema?",
+    "Por que artefato imutável importa?"
+  ],
+  "projetos_reais": [
+    "Esteira completa para DAG, modelos dbt, testes e deploy canário"
+  ],
+  "exercicios": [
+    "Criar validação de PR para breaking changes",
+    "Simular rollback de materialização"
+  ],
+  "tags": [
+    "CI/CD",
+    "GitOps",
+    "Rollback",
+    "Canary",
+    "Artifacts"
+  ]
+}

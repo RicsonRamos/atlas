@@ -1,0 +1,73 @@
+{
+  "id": "D02.02",
+  "dominio_id": "D02",
+  "nome": "Linux Internals, Processos e Isolamento",
+  "nivel": "Staff",
+  "carga_horaria": "28-36h",
+  "prerequisitos": [
+    "Sistemas operacionais básicos"
+  ],
+  "objetivos": [
+    "Operar workloads de dados com conhecimento de kernel",
+    "Entender Docker e Kubernetes por cgroups e namespaces"
+  ],
+  "pratica_esperada": [
+    "Inspecionar limites de memória de container",
+    "Diagnosticar FD leak e throttling de CPU"
+  ],
+  "teoria": [
+    "processos",
+    "threads",
+    "scheduling",
+    "syscalls",
+    "file-descriptors",
+    "signals",
+    "cgroups",
+    "namespaces-kernel-linux",
+    "seccomp",
+    "i-o-assincrono"
+  ],
+  "algoritmos_tecnicas": [
+    "scheduling-cfs",
+    "event-loop",
+    "epoll",
+    "backpressure-local"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Kerrisk, The Linux Programming Interface",
+    "Arpaci-Dusseau, Operating Systems: Three Easy Pieces"
+  ],
+  "papers_fundamentais": [
+    "Kerrisk, The Linux Programming Interface, 2010",
+    "Merkel, Docker: lightweight Linux containers, 2014"
+  ],
+  "ferramentas": [
+    "strace",
+    "lsof",
+    "cgroups",
+    "systemd",
+    "bcc/eBPF"
+  ],
+  "perguntas_entrevista_staff": [
+    "O que um namespace isola?",
+    "Como um limite de cgroup afeta Spark executor?"
+  ],
+  "projetos_reais": [
+    "Laboratório de container mínimo com isolamento de CPU, memória e rede"
+  ],
+  "exercicios": [
+    "Rastrear syscalls de um leitor Parquet",
+    "Simular OOM em container controlado"
+  ],
+  "tags": [
+    "Kernel",
+    "cgroups",
+    "Namespaces",
+    "eBPF",
+    "I/O"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "D10.01",
+  "dominio_id": "D10",
+  "nome": "Ciclo de Vida de ML e Experiment Tracking",
+  "nivel": "Staff",
+  "carga_horaria": "24-32h",
+  "prerequisitos": [
+    "Estatística",
+    "Engenharia de software"
+  ],
+  "objetivos": [
+    "Versionar dados, código, parâmetros e métricas",
+    "Separar experimento reproduzível de notebook exploratório"
+  ],
+  "pratica_esperada": [
+    "Criar pipeline reproduzível com MLflow",
+    "Registrar modelo com dataset e métricas"
+  ],
+  "teoria": [
+    "experiment-tracking",
+    "data-versioning",
+    "model-registry",
+    "reproducibility",
+    "train-validation-test",
+    "leakage",
+    "baseline"
+  ],
+  "algoritmos_tecnicas": [
+    "cross-validation",
+    "hyperparameter-search",
+    "seed-control"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Chip Huyen, Designing Machine Learning Systems",
+    "Treveil et al., Introducing MLOps"
+  ],
+  "papers_fundamentais": [
+    "Sculley et al., Hidden technical debt in machine learning systems, 2015"
+  ],
+  "ferramentas": [
+    "MLflow",
+    "Weights & Biases",
+    "DVC",
+    "LakeFS",
+    "Git"
+  ],
+  "perguntas_entrevista_staff": [
+    "O que torna um experimento reproduzível?",
+    "Como evitar leakage em feature temporal?"
+  ],
+  "projetos_reais": [
+    "Template de experimento versionado ponta a ponta"
+  ],
+  "exercicios": [
+    "Reproduzir treino a partir de commit",
+    "Detectar leakage em dataset temporal"
+  ],
+  "tags": [
+    "MLflow",
+    "Reproducibility",
+    "Registry",
+    "DVC",
+    "Leakage"
+  ]
+}

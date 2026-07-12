@@ -1,0 +1,101 @@
+{
+  "id": "D01.10",
+  "dominio_id": "D01",
+  "nome": "Teoria dos Grafos Avançada",
+  "nivel": "Staff",
+  "carga_horaria": "42-52h",
+  "prerequisitos": [
+    "Matemática discreta",
+    "Estruturas de dados"
+  ],
+  "objetivos": [
+    "Dominar grafos para linhagem, dependências, fraude, roteamento e conhecimento",
+    "Escolher algoritmos corretos por escala e restrição"
+  ],
+  "pratica_esperada": [
+    "Analisar lineage como DAG e detectar ciclos",
+    "Modelar entidades e relações em grafo de conhecimento"
+  ],
+  "teoria": [
+    "bfs",
+    "dfs",
+    "dijkstra",
+    "bellman-ford",
+    "floyd-warshall",
+    "a",
+    "union-find",
+    "topological-sort",
+    "strongly-connected-components",
+    "tarjan",
+    "kosaraju",
+    "minimum-spanning-tree",
+    "prim",
+    "kruskal",
+    "network-flow",
+    "ford-fulkerson",
+    "edmonds-karp",
+    "dinic",
+    "caminhos-minimos",
+    "matching",
+    "fluxo-maximo",
+    "coloracao",
+    "arvores-geradoras",
+    "pagerank",
+    "random-walks",
+    "knowledge-graphs",
+    "property-graphs"
+  ],
+  "algoritmos_tecnicas": [
+    "bfs",
+    "dfs",
+    "dijkstra",
+    "a",
+    "tarjan",
+    "kosaraju",
+    "prim",
+    "kruskal",
+    "ford-fulkerson",
+    "edmonds-karp",
+    "dinic",
+    "pagerank"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Diestel, Graph Theory",
+    "West, Introduction to Graph Theory",
+    "Cormen et al., Introduction to Algorithms"
+  ],
+  "papers_fundamentais": [
+    "Tarjan, Depth-first search and linear graph algorithms, 1972",
+    "Page et al., The PageRank citation ranking, 1999",
+    "Ford & Fulkerson, Maximal flow through a network, 1956"
+  ],
+  "ferramentas": [
+    "NetworkX",
+    "Neo4j",
+    "Apache AGE",
+    "GraphFrames",
+    "Graphviz"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como detectar ciclo em DAG de orquestração?",
+    "Explique Dijkstra vs Bellman-Ford em presença de pesos negativos"
+  ],
+  "projetos_reais": [
+    "Explorador de lineage com SCC, topological sort e impacto downstream"
+  ],
+  "exercicios": [
+    "Implementar Union-Find",
+    "Calcular fluxo máximo em rede pequena"
+  ],
+  "tags": [
+    "Grafos",
+    "DAGs",
+    "SCC",
+    "Flow",
+    "PageRank"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "D11.03",
+  "dominio_id": "D11",
+  "nome": "RAG, Chunking e Re-ranking",
+  "nivel": "Staff",
+  "carga_horaria": "30-40h",
+  "prerequisitos": [
+    "Busca vetorial",
+    "Governança"
+  ],
+  "objetivos": [
+    "Construir recuperação com proveniência e avaliação",
+    "Reduzir alucinação por contexto correto, não por esperança"
+  ],
+  "pratica_esperada": [
+    "Criar pipeline RAG com chunking por estrutura",
+    "Avaliar answer faithfulness e retrieval quality"
+  ],
+  "teoria": [
+    "rag",
+    "chunking-semantico",
+    "overlap",
+    "query-rewriting",
+    "hybrid-retrieval",
+    "re-ranking",
+    "citations",
+    "groundedness",
+    "context-compression"
+  ],
+  "algoritmos_tecnicas": [
+    "bm25",
+    "dense-retrieval",
+    "cross-encoder-re-ranking",
+    "mmr",
+    "rag-fusion"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Manning et al., Introduction to Information Retrieval",
+    "Jurafsky & Martin, Speech and Language Processing"
+  ],
+  "papers_fundamentais": [
+    "Lewis et al., Retrieval-Augmented Generation, 2020",
+    "Karpukhin et al., Dense Passage Retrieval, 2020",
+    "Gao et al., RAG survey, 2023"
+  ],
+  "ferramentas": [
+    "LlamaIndex",
+    "LangChain",
+    "Haystack",
+    "Ragas",
+    "DeepEval"
+  ],
+  "perguntas_entrevista_staff": [
+    "Chunk maior sempre melhora RAG?",
+    "Como provar que resposta está ancorada na fonte?"
+  ],
+  "projetos_reais": [
+    "RAG corporativo com ACL, citações, re-ranking e avaliação contínua"
+  ],
+  "exercicios": [
+    "Comparar estratégias de chunking",
+    "Criar conjunto de perguntas douradas"
+  ],
+  "tags": [
+    "RAG",
+    "Chunking",
+    "Re-ranking",
+    "Groundedness",
+    "Evaluation"
+  ]
+}

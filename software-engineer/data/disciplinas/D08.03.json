@@ -1,0 +1,73 @@
+{
+  "id": "D08.03",
+  "dominio_id": "D08",
+  "nome": "Privacidade, LGPD/GDPR e Dados Sensíveis",
+  "nivel": "Staff",
+  "carga_horaria": "24-32h",
+  "prerequisitos": [
+    "Segurança",
+    "Governança básica"
+  ],
+  "objetivos": [
+    "Classificar e proteger PII",
+    "Operacionalizar direitos de titulares e retenção"
+  ],
+  "pratica_esperada": [
+    "Criar política de retenção por domínio",
+    "Implementar mascaramento por coluna e ambiente"
+  ],
+  "teoria": [
+    "pii",
+    "dpia",
+    "data-minimization",
+    "purpose-limitation",
+    "retention",
+    "consent",
+    "right-to-erasure",
+    "tokenization-pii",
+    "masking"
+  ],
+  "algoritmos_tecnicas": [
+    "pii-detection",
+    "k-anonymity",
+    "tokenization-pii",
+    "differential-privacy-introdutoria"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Dwork & Roth, The Algorithmic Foundations of Differential Privacy",
+    "NIST Privacy Framework"
+  ],
+  "papers_fundamentais": [
+    "Dwork, Differential privacy, 2006",
+    "Sweeney, k-anonymity, 2002"
+  ],
+  "ferramentas": [
+    "BigQuery policy tags",
+    "Immuta",
+    "Privacera",
+    "Open Policy Agent",
+    "Presidio"
+  ],
+  "perguntas_entrevista_staff": [
+    "Mascaramento resolve reidentificação?",
+    "Como atender deleção em lakehouse imutável?"
+  ],
+  "projetos_reais": [
+    "Classificador PII com políticas de acesso e retenção automatizadas"
+  ],
+  "exercicios": [
+    "Criar matriz de finalidade vs dado",
+    "Aplicar k-anonymity em dataset pequeno"
+  ],
+  "tags": [
+    "LGPD",
+    "GDPR",
+    "PII",
+    "Masking",
+    "Retention"
+  ]
+}

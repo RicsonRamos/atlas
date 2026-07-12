@@ -1,0 +1,75 @@
+{
+  "id": "D06.06",
+  "dominio_id": "D06",
+  "nome": "Bancos Distribuídos, NoSQL e Warehouses Modernos",
+  "nivel": "Staff",
+  "carga_horaria": "32-42h",
+  "prerequisitos": [
+    "Sistemas distribuídos",
+    "Storage engines"
+  ],
+  "objetivos": [
+    "Escolher banco por consistência, escala e modelo de acesso",
+    "Entender trade-offs de Cassandra, Bigtable, Spanner, Snowflake e DynamoDB"
+  ],
+  "pratica_esperada": [
+    "Desenhar chave de partição para Cassandra/DynamoDB",
+    "Comparar Snowflake, BigQuery e Redshift por arquitetura"
+  ],
+  "teoria": [
+    "key-value",
+    "wide-column",
+    "document",
+    "graph",
+    "distributed-sql",
+    "mpp-warehouses",
+    "separation-of-storage-and-compute",
+    "secondary-indexes"
+  ],
+  "algoritmos_tecnicas": [
+    "consistent-hashing",
+    "lsm-compaction",
+    "two-phase-commit",
+    "quorum-reads-writes",
+    "vectorized-mpp-execution"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Sadalage & Fowler, NoSQL Distilled",
+    "Kleppmann, Designing Data-Intensive Applications"
+  ],
+  "papers_fundamentais": [
+    "Chang et al., Bigtable, 2006",
+    "DeCandia et al., Dynamo, 2007",
+    "Corbett et al., Spanner, 2012"
+  ],
+  "ferramentas": [
+    "Cassandra",
+    "DynamoDB",
+    "Spanner",
+    "BigQuery",
+    "Snowflake",
+    "Redshift"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como escolher partition key em DynamoDB?",
+    "Por que Spanner consegue SQL distribuído com consistência forte?"
+  ],
+  "projetos_reais": [
+    "Matriz de decisão entre NoSQL, distributed SQL e warehouse para três workloads"
+  ],
+  "exercicios": [
+    "Modelar tabela wide-column por query",
+    "Analisar hotspot de chave de partição"
+  ],
+  "tags": [
+    "NoSQL",
+    "MPP",
+    "Distributed SQL",
+    "Bigtable",
+    "Dynamo"
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "D13.01",
+  "dominio_id": "D13",
+  "nome": "Visão Computacional",
+  "nivel": "Staff",
+  "carga_horaria": "28-36h",
+  "prerequisitos": [
+    "Álgebra Linear e Cálculo Tensorial",
+    "Arquitetura de Computadores e Hierarquia de Memória"
+  ],
+  "objetivos": [
+    "Aplicar arquiteturas de visão computacional a problemas reais de classificação, detecção e segmentação",
+    "Avaliar trade-offs entre descritores clássicos e redes profundas"
+  ],
+  "pratica_esperada": [
+    "Treinar e avaliar um classificador CNN em dataset de imagens",
+    "Comparar detecção de estágio único e duplo em latência e precisão"
+  ],
+  "teoria": [
+    "representacao-matricial-de-imagens",
+    "espacos-de-cor",
+    "filtragem-espacial",
+    "deteccao-de-bordas",
+    "rede-neural-convolucional",
+    "camadas-de-pooling",
+    "vision-transformer",
+    "deteccao-de-objetos",
+    "segmentacao-semantica-e-instancial",
+    "fluxo-optico"
+  ],
+  "algoritmos_tecnicas": [
+    "sobel",
+    "canny",
+    "sift",
+    "surf",
+    "orb",
+    "r-cnn",
+    "faster-r-cnn",
+    "yolo",
+    "u-net",
+    "mask-r-cnn",
+    "deepsort"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Szeliski, Computer Vision: Algorithms and Applications",
+    "Goodfellow, Bengio & Courville, Deep Learning"
+  ],
+  "papers_fundamentais": [
+    "Krizhevsky, Sutskever & Hinton, ImageNet Classification with Deep Convolutional Neural Networks, 2012",
+    "Ren et al., Faster R-CNN, 2015",
+    "Redmon et al., You Only Look Once, 2016",
+    "Dosovitskiy et al., An Image is Worth 16x16 Words (Vision Transformer), 2020"
+  ],
+  "ferramentas": [
+    "PyTorch",
+    "OpenCV",
+    "torchvision",
+    "Detectron2"
+  ],
+  "perguntas_entrevista_staff": [
+    "Quando um Vision Transformer supera uma CNN em visão computacional, e quando não compensa o custo?",
+    "Como escolher entre detecção de estágio único e duplo para um sistema de produção com restrição de latência?"
+  ],
+  "projetos_reais": [
+    "Pipeline de detecção e rastreamento de objetos em vídeo com métricas de latência e precisão por câmera"
+  ],
+  "exercicios": [
+    "Comparar SIFT/ORB com features aprendidas por CNN no mesmo dataset",
+    "Avaliar precisão e recall de um modelo YOLO em cenário de baixa luminosidade"
+  ],
+  "tags": [
+    "ComputerVision",
+    "CNN",
+    "YOLO",
+    "VisionTransformer",
+    "Segmentação"
+  ]
+}

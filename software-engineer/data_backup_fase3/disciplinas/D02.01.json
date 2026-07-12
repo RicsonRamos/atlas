@@ -1,0 +1,71 @@
+{
+  "id": "D02.01",
+  "dominio_id": "D02",
+  "nome": "Arquitetura de Computadores e Hierarquia de Memória",
+  "nivel": "Staff",
+  "carga_horaria": "22-30h",
+  "prerequisitos": [
+    "Álgebra booleana",
+    "Noções de C ou Rust"
+  ],
+  "objetivos": [
+    "Entender CPU, cache, memória e layout de dados",
+    "Relacionar localidade com formatos colunares e vetorização"
+  ],
+  "pratica_esperada": [
+    "Medir efeito de cache em leitura colunar",
+    "Comparar row-based vs columnar scan"
+  ],
+  "teoria": [
+    "pipeline-de-cpu",
+    "cache-l1-l2-l3",
+    "numa",
+    "simd",
+    "branch-prediction",
+    "page-faults",
+    "memory-alignment",
+    "columnar-layout"
+  ],
+  "algoritmos_tecnicas": [
+    "cache-aware-scan",
+    "vectorized-execution",
+    "prefetching"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Bryant & O'Hallaron, Computer Systems: A Programmer's Perspective",
+    "Patterson & Hennessy, Computer Organization and Design"
+  ],
+  "papers_fundamentais": [
+    "Drepper, What every programmer should know about memory, 2007",
+    "Boncz, MonetDB/X100, 2005"
+  ],
+  "ferramentas": [
+    "perf",
+    "flamegraph",
+    "DuckDB",
+    "Polars",
+    "NumPy"
+  ],
+  "perguntas_entrevista_staff": [
+    "Por que Parquet melhora scan analítico?",
+    "Como cache miss vira custo de cloud?"
+  ],
+  "projetos_reais": [
+    "Benchmark de layout row vs column com análise de cache"
+  ],
+  "exercicios": [
+    "Medir throughput de arrays contíguos e listas de objetos",
+    "Identificar gargalos por flamegraph"
+  ],
+  "tags": [
+    "CPU",
+    "Cache",
+    "SIMD",
+    "NUMA",
+    "Vetorização"
+  ]
+}

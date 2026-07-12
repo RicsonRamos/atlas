@@ -1,0 +1,265 @@
+{
+  "versao": "5.0",
+  "dominios": [
+    {
+      "id": "D01",
+      "titulo": "Fundamentos & Matemática",
+      "descricao": "A base formal para projetar sistemas de dados, entender otimizadores, raciocinar sobre falhas e modelar incerteza em escala.",
+      "insight": "Este módulo transforma a seção inicial em uma fundação de pós-graduação: matemática discreta, lógica, complexidade, probabilidade, informação, grafos, computabilidade e criptografia aplicada.",
+      "radar": [
+        100,
+        82,
+        55,
+        70,
+        72,
+        60
+      ],
+      "disciplinas": [
+        "D01.01",
+        "D01.02",
+        "D01.03",
+        "D01.04",
+        "D01.05",
+        "D01.06",
+        "D01.07",
+        "D01.08",
+        "D01.09",
+        "D01.10",
+        "D01.11",
+        "D01.12",
+        "D01.13"
+      ]
+    },
+    {
+      "id": "D02",
+      "titulo": "Sistemas & Ciência da Computação",
+      "descricao": "A camada onde hardware, kernel, rede e runtime determinam custo, latência e confiabilidade dos sistemas de dados.",
+      "insight": "Performance de plataforma nasce em caches, syscalls, escalonamento, rede e I/O antes de aparecer no Spark UI.",
+      "radar": [
+        70,
+        100,
+        75,
+        60,
+        90,
+        55
+      ],
+      "disciplinas": [
+        "D02.01",
+        "D02.02",
+        "D02.03",
+        "D02.04",
+        "D02.05"
+      ]
+    },
+    {
+      "id": "D03",
+      "titulo": "Engenharia de Software",
+      "descricao": "Data Engineering tratado como engenharia de produto: código confiável, testável, versionado, observável e evolutivo.",
+      "insight": "Pipelines críticos são software de produção. Sem contrato, teste e deploy seguro, cada dado correto é quase acidente.",
+      "radar": [
+        55,
+        75,
+        100,
+        75,
+        65,
+        80
+      ],
+      "disciplinas": [
+        "D03.01",
+        "D03.02",
+        "D03.03",
+        "D03.04",
+        "D03.05"
+      ]
+    },
+    {
+      "id": "D04",
+      "titulo": "Bancos de Dados",
+      "descricao": "Da teoria relacional aos storage engines, transações, otimizadores e bancos distribuídos modernos.",
+      "insight": "Um Staff Engineer deve ler um plano de execução como quem lê raio-x: vendo estrutura, custo e falha provável.",
+      "radar": [
+        70,
+        88,
+        72,
+        100,
+        82,
+        55
+      ],
+      "disciplinas": [
+        "D04.01",
+        "D04.02",
+        "D04.03",
+        "D04.04",
+        "D04.05"
+      ]
+    },
+    {
+      "id": "D05",
+      "titulo": "Ingestão & Orquestração",
+      "descricao": "Movimentação de dados confiável, idempotente, versionada e observável entre sistemas heterogêneos.",
+      "insight": "O melhor pipeline é aquele que falha de forma previsível, reprocessa sem duplicar e explica exatamente o que aconteceu.",
+      "radar": [
+        52,
+        78,
+        90,
+        96,
+        86,
+        65
+      ],
+      "disciplinas": [
+        "D05.01",
+        "D05.02",
+        "D05.03",
+        "D05.04",
+        "D05.05"
+      ]
+    },
+    {
+      "id": "D06",
+      "titulo": "Sistemas Distribuídos",
+      "descricao": "A ciência de coordenar nós que atrasam, falham, duplicam mensagens e discordam do estado do mundo.",
+      "insight": "A rede sempre participa da arquitetura, mesmo quando o diagrama finge que ela não existe.",
+      "radar": [
+        88,
+        96,
+        76,
+        82,
+        100,
+        70
+      ],
+      "disciplinas": [
+        "D06.01",
+        "D06.02",
+        "D06.03",
+        "D06.04",
+        "D06.05"
+      ]
+    },
+    {
+      "id": "D07",
+      "titulo": "Lakehouse",
+      "descricao": "Arquitetura aberta que combina object storage, formatos colunares, metadados transacionais e múltiplos motores.",
+      "insight": "Lakehouse não é pasta no S3. É protocolo de tabela, contrato de metadados e disciplina operacional.",
+      "radar": [
+        58,
+        78,
+        70,
+        100,
+        90,
+        62
+      ],
+      "disciplinas": [
+        "D07.01",
+        "D07.02",
+        "D07.03",
+        "D07.04",
+        "D07.05"
+      ]
+    },
+    {
+      "id": "D08",
+      "titulo": "Governança",
+      "descricao": "Confiança, privacidade, linhagem, qualidade e semântica operando como produto de plataforma.",
+      "insight": "Boa governança reduz atrito. Ela torna o caminho seguro também o caminho mais fácil.",
+      "radar": [
+        54,
+        62,
+        82,
+        96,
+        74,
+        96
+      ],
+      "disciplinas": [
+        "D08.01",
+        "D08.02",
+        "D08.03",
+        "D08.04",
+        "D08.05"
+      ]
+    },
+    {
+      "id": "D09",
+      "titulo": "Infraestrutura",
+      "descricao": "Cloud, Kubernetes, IaC, plataforma interna, confiabilidade e custo como fundamentos operacionais.",
+      "insight": "Infraestrutura de dados boa é invisível quando funciona e explicável quando falha.",
+      "radar": [
+        46,
+        100,
+        88,
+        72,
+        88,
+        78
+      ],
+      "disciplinas": [
+        "D09.01",
+        "D09.02",
+        "D09.03",
+        "D09.04",
+        "D09.05"
+      ]
+    },
+    {
+      "id": "D10",
+      "titulo": "MLOps",
+      "descricao": "Industrialização de modelos: dados, features, treino, registro, deploy, monitoramento e governança.",
+      "insight": "Modelo em produção é sistema distribuído com estatística dentro. Trate como produto crítico.",
+      "radar": [
+        86,
+        78,
+        88,
+        94,
+        82,
+        68
+      ],
+      "disciplinas": [
+        "D10.01",
+        "D10.02",
+        "D10.03",
+        "D10.04",
+        "D10.05"
+      ]
+    },
+    {
+      "id": "D11",
+      "titulo": "LLMs",
+      "descricao": "Infraestrutura para modelos fundacionais: dados, embeddings, busca vetorial, RAG, serving, avaliação e segurança.",
+      "insight": "RAG é engenharia de dados com avaliação probabilística: sem curadoria, chunking e observabilidade, vira busca cara com texto bonito.",
+      "radar": [
+        96,
+        86,
+        92,
+        98,
+        88,
+        72
+      ],
+      "disciplinas": [
+        "D11.01",
+        "D11.02",
+        "D11.03",
+        "D11.04",
+        "D11.05"
+      ]
+    },
+    {
+      "id": "D12",
+      "titulo": "Staff Engineering e Arquitetura",
+      "descricao": "Influência técnica, estratégia, arquitetura evolutiva e liderança sem autoridade formal.",
+      "insight": "O trabalho Staff é aumentar a qualidade das decisões técnicas da organização, não apenas entregar mais tarefas.",
+      "radar": [
+        72,
+        78,
+        88,
+        90,
+        88,
+        100
+      ],
+      "disciplinas": [
+        "D12.01",
+        "D12.02",
+        "D12.03",
+        "D12.04",
+        "D12.05"
+      ]
+    }
+  ]
+}

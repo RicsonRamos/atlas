@@ -1,0 +1,74 @@
+{
+  "id": "D02.03",
+  "dominio_id": "D02",
+  "nome": "Concorrência, Paralelismo e Runtimes",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Programação avançada",
+    "Sistemas operacionais"
+  ],
+  "objetivos": [
+    "Escolher modelo de execução adequado para pipelines",
+    "Evitar race conditions, deadlocks e contenção"
+  ],
+  "pratica_esperada": [
+    "Projetar ingestão concorrente com controle de pressão",
+    "Comparar multiprocessing, asyncio e executores distribuídos"
+  ],
+  "teoria": [
+    "threads",
+    "async-await",
+    "modelo-de-atores",
+    "locks",
+    "cas",
+    "deadlocks",
+    "race-conditions",
+    "work-stealing",
+    "gil",
+    "backpressure"
+  ],
+  "algoritmos_tecnicas": [
+    "producer-consumer",
+    "work-stealing",
+    "lock-free-queue",
+    "actor-supervision"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Goetz, Java Concurrency in Practice",
+    "Kleppmann, Designing Data-Intensive Applications"
+  ],
+  "papers_fundamentais": [
+    "Hewitt, Bishop & Steiger, A universal modular actor formalism, 1973",
+    "Blumofe & Leiserson, Scheduling multithreaded computations by work stealing, 1999"
+  ],
+  "ferramentas": [
+    "asyncio",
+    "Ray",
+    "Akka",
+    "Tokio",
+    "Flink"
+  ],
+  "perguntas_entrevista_staff": [
+    "Concorrência é o mesmo que paralelismo?",
+    "Como backpressure evita queda em cascata?"
+  ],
+  "projetos_reais": [
+    "Ingestor concorrente com filas, retry, rate limit e backpressure"
+  ],
+  "exercicios": [
+    "Criar e corrigir uma race condition",
+    "Medir latência sob diferentes pools"
+  ],
+  "tags": [
+    "Async",
+    "Threads",
+    "Atores",
+    "Backpressure",
+    "Race Conditions"
+  ]
+}

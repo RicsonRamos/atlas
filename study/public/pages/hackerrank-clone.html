@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Lab — HackerRank Clone</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            bg: '#0F111A',
+            panel: '#151822',
+            border: '#23283B',
+            accent: '#00F5D4',
+            primary: '#6C63FF',
+            dracula: {
+              bg: '#282a36',
+              cl: '#44475a',
+              fg: '#f8f8f2',
+              cmt: '#6272a4',
+              cyan: '#8be9fd',
+              green: '#50fa7b',
+              orange: '#ffb86c',
+              pink: '#ff79c6',
+              purple: '#bd93f9',
+              red: '#ff5555',
+              yellow: '#f1fa8c'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Pyodide -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+
+  <!-- PrismJS CSS for syntax highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+  <style>
+    body { background-color: #0F111A; color: #f8f8f2; margin: 0; overflow: hidden; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0F111A; }
+    ::-webkit-scrollbar-thumb { background: #23283B; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #bd93f9; }
+    
+    .editor-container textarea { outline: none !important; }
+    .markdown-body h3 { font-size: 1.1rem; font-weight: bold; margin-bottom: 0.5rem; color: #bd93f9; }
+    .markdown-body p { margin-bottom: 1rem; line-height: 1.5; color: #a0a0c0; font-size: 0.9rem; }
+    .markdown-body code { background: #282a36; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #8be9fd; }
+    .markdown-body pre { background: #1a1c23; padding: 1rem; border-radius: 8px; border: 1px solid #23283B; margin-bottom: 1rem; overflow-x: auto; }
+    .markdown-body pre code { background: transparent; padding: 0; color: #f8f8f2; }
+    .markdown-body ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; color: #a0a0c0; font-size: 0.9rem; }
+  </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18?dev",
+        "react/jsx-runtime": "https://esm.sh/react@18/jsx-runtime?dev",
+        "react-dom/client": "https://esm.sh/react-dom@18/client?dev",
+        "lucide-react": "https://esm.sh/lucide-react@0.292.0",
+        "react-simple-code-editor": "https://esm.sh/react-simple-code-editor@3.3.1?deps=react@18",
+        "prismjs": "https://esm.sh/prismjs@1.29.0"
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-type="module" data-presets="react">
+    import React, { useState, useEffect, useRef } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import { Play, CheckCircle2, XCircle, ChevronRight, Terminal, BookOpen, AlertCircle, Loader2 } from 'lucide-react';
+    import Editor from 'react-simple-code-editor';
+    import Prism from 'prismjs';
+    import 'https://esm.sh/prismjs@1.29.0/components/prism-python';
+
+    // ==========================================
+    // CHALLENGE DATABASE
+    // ==========================================
+    const CHALLENGES = [
+      {
+        id: 'c1',
+        title: 'Filtrar Valores Nulos',
+        difficulty: 'Básico',
+        category: 'Data Cleaning',
+        description: `
+          <h3>Descrição do Problema</h3>
+          <p>Na Engenharia de Dados, lidar com dados ausentes (nulos) é uma tarefa rotineira. Neste desafio, você receberá uma lista de valores e deve escrever uma função que retorna uma nova lista sem os valores <code>None</code>.</p>
+          <p>Você <strong>deve</strong> implementar a função <code>remover_nulos(dados)</code>.</p>
+          
+          <h3>Exemplo de Entrada</h3>
+          <pre><code>dados = [10, None, 20, 30, None, 50]</code></pre>
+          
+          <h3>Exemplo de Saída Esperada</h3>
+          <pre><code>[10, 20, 30, 50]</code></pre>
+        `,
+        initialCode: 'def remover_nulos(dados):\n    # Escreva sua lógica aqui\n    pass\n',
+        testCode: `
+def run_test():
+    try:
+        assert remover_nulos([10, None, 20]) == [10, 20], "Falha no Teste 1: [10, None, 20]"
+        assert remover_nulos([None, None]) == [], "Falha no Teste 2: Todos nulos"
+        assert remover_nulos([1, 2, 3]) == [1, 2, 3], "Falha no Teste 3: Nenhum nulo"
+        return "PASS", "Todos os testes passaram com sucesso!"
+    except Exception as e:
+        return "FAIL", str(e)
+run_test()
+`
+      },
+      {
+        id: 'c2',
+        title: 'Média Móvel Simples (SMA)',
+        difficulty: 'Intermediário',
+        category: 'Data Analysis',
+        description: `
+          <h3>Descrição do Problema</h3>
+          <p>A média móvel simples é muito utilizada em análise de séries temporais para suavizar flutuações de curto prazo. Escreva uma função <code>media_movel(dados, janela)</code> que calcule a média móvel de uma lista.</p>
+          <p>Se a lista for menor que a janela, retorne uma lista vazia.</p>
+          
+          <h3>Exemplo de Entrada</h3>
+          <pre><code>dados = [10, 20, 30, 40, 50]\njanela = 3</code></pre>
+          
+          <h3>Exemplo de Saída Esperada</h3>
+          <pre><code>[20.0, 30.0, 40.0]</code></pre>
+        `,
+        initialCode: 'def media_movel(dados, janela):\n    # Escreva sua lógica aqui\n    pass\n',
+        testCode: `
+def run_test():
+    try:
+        assert media_movel([10, 20, 30, 40, 50], 3) == [20.0, 30.0, 40.0], "Falha no Teste 1"
+        assert media_movel([1, 2], 3) == [], "Falha no Teste 2: Janela maior que lista"
+        assert media_movel([5, 5, 5, 5], 2) == [5.0, 5.0, 5.0], "Falha no Teste 3"
+        return "PASS", "Todos os testes passaram com sucesso!"
+    except Exception as e:
+        return "FAIL", str(e)
+run_test()
+`
+      },
+      {
+        id: 'c3',
+        title: 'One-Hot Encoding Manual',
+        difficulty: 'Avançado',
+        category: 'Feature Engineering',
+        description: `
+          <h3>Descrição do Problema</h3>
+          <p>Para treinar modelos de Machine Learning, variáveis categóricas precisam ser transformadas em numéricas. Escreva uma função <code>one_hot_encode(categorias)</code> que recebe uma lista de categorias (strings) e retorna uma lista de listas (matriz) representando o One-Hot Encoding.</p>
+          <p>A ordem das colunas deve respeitar a ordem alfabética das categorias únicas.</p>
+          
+          <h3>Exemplo de Entrada</h3>
+          <pre><code>categorias = ["vermelho", "azul", "vermelho", "verde"]</code></pre>
+          
+          <h3>Exemplo de Saída Esperada</h3>
+          <pre><code># Categorias únicas em ordem alfabética: ["azul", "verde", "vermelho"]
+[
+  [0, 0, 1], # vermelho
+  [1, 0, 0], # azul
+  [0, 0, 1], # vermelho
+  [0, 1, 0]  # verde
+]</code></pre>
+        `,
+        initialCode: 'def one_hot_encode(categorias):\n    # Escreva sua lógica aqui\n    pass\n',
+        testCode: `
+def run_test():
+    try:
+        res1 = one_hot_encode(["vermelho", "azul", "vermelho", "verde"])
+        assert res1 == [[0, 0, 1], [1, 0, 0], [0, 0, 1], [0, 1, 0]], "Falha no Teste 1"
+        
+        res2 = one_hot_encode(["a", "a"])
+        assert res2 == [[1], [1]], "Falha no Teste 2: Mesma categoria"
+        
+        return "PASS", "Todos os testes passaram com sucesso!"
+    except Exception as e:
+        return "FAIL", str(e)
+run_test()
+`
+      }
+    ];
+
+    // ==========================================
+    // APP COMPONENT
+    // ==========================================
+    function App() {
+      const [pyodide, setPyodide] = useState(null);
+      const [isPyodideLoading, setIsPyodideLoading] = useState(true);
+      const [activeChallengeIdx, setActiveChallengeIdx] = useState(0);
+      const [code, setCode] = useState(CHALLENGES[0].initialCode);
+      const [output, setOutput] = useState({ status: 'idle', message: 'Aguardando execução...' });
+      const [isRunning, setIsRunning] = useState(false);
+
+      const challenge = CHALLENGES[activeChallengeIdx];
+
+      useEffect(() => {
+        // Load Pyodide
+        async function load() {
+          try {
+            console.log("Loading pyodide...");
+            let pyodideInstance = await loadPyodide({
+              indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/"
+            });
+            setPyodide(pyodideInstance);
+            setIsPyodideLoading(false);
+            console.log("Pyodide loaded!");
+          } catch (err) {
+            console.error("Failed to load Pyodide:", err);
+            setOutput({ status: 'error', message: 'Falha ao carregar o motor Python. Verifique a internet.' });
+            setIsPyodideLoading(false);
+          }
+        }
+        load();
+      }, []);
+
+      useEffect(() => {
+        setCode(CHALLENGES[activeChallengeIdx].initialCode);
+        setOutput({ status: 'idle', message: 'Pronto para testar.' });
+      }, [activeChallengeIdx]);
+
+      const runTests = async () => {
+        if (!pyodide) return;
+        setIsRunning(true);
+        setOutput({ status: 'running', message: 'Executando testes...' });
+
+        // Build the full code to evaluate: User Code + Test Code
+        const fullCode = code + "\n\n" + challenge.testCode;
+
+        try {
+          // Wrap in a setTimeout to allow UI to update to 'running' state
+          await new Promise(r => setTimeout(r, 50));
+          
+          // Redirect stdout to capture prints (optional, for advanced usage)
+          pyodide.runPython(\`
+            import sys
+            import io
+            sys.stdout = io.StringIO()
+          \`);
+
+          // Run the python code
+          const result = pyodide.runPython(fullCode);
+          const stdout = pyodide.runPython("sys.stdout.getvalue()");
+
+          if (Array.isArray(result) || (result && result.length === 2)) {
+            const [status, msg] = result;
+            setOutput({
+              status: status === 'PASS' ? 'success' : 'error',
+              message: status === 'PASS' ? 'Todos os casos de teste passaram!' : msg,
+              stdout: stdout
+            });
+          } else {
+            setOutput({ status: 'error', message: 'O teste não retornou um formato válido.', stdout: stdout });
+          }
+
+        } catch (err) {
+          setOutput({ status: 'error', message: err.toString() });
+        } finally {
+          setIsRunning(false);
+        }
+      };
+
+      const getDifficultyColor = (diff) => {
+        if (diff === 'Básico') return 'text-dracula-green bg-dracula-green/10 border-dracula-green/20';
+        if (diff === 'Intermediário') return 'text-dracula-yellow bg-dracula-yellow/10 border-dracula-yellow/20';
+        return 'text-dracula-red bg-dracula-red/10 border-dracula-red/20';
+      };
+
+      return (
+        <div className="flex h-screen w-full bg-bg font-sans overflow-hidden">
+          
+          {/* SIDEBAR: Challenge Trail */}
+          <div className="w-80 bg-panel border-r border-border flex flex-col shrink-0">
+            <div className="p-5 border-b border-border flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-dracula-purple flex items-center justify-center font-bold text-white shadow-lg shadow-dracula-purple/20">
+                DE
+              </div>
+              <div>
+                <h1 className="font-bold text-sm text-white">Data Engineering Labs</h1>
+                <p className="text-xs text-dracula-purple font-medium">Trilha de Python</p>
+              </div>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {CHALLENGES.map((ch, idx) => (
+                <button
+                  key={ch.id}
+                  onClick={() => setActiveChallengeIdx(idx)}
+                  className={\`w-full text-left p-4 rounded-xl border transition-all duration-200 \${activeChallengeIdx === idx ? 'bg-border/50 border-dracula-purple shadow-lg shadow-dracula-purple/10' : 'bg-transparent border-transparent hover:bg-border/30'}\`}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-xs font-mono font-bold text-slate-500">#{String(idx + 1).padStart(2, '0')}</span>
+                    <span className={\`text-[0.65rem] font-bold px-2 py-0.5 rounded-full border \${getDifficultyColor(ch.difficulty)}\`}>
+                      {ch.difficulty}
+                    </span>
+                  </div>
+                  <h3 className={\`font-semibold text-sm mb-1 \${activeChallengeIdx === idx ? 'text-white' : 'text-slate-300'}\`}>{ch.title}</h3>
+                  <div className="text-xs text-slate-500 font-medium">{ch.category}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* MAIN CONTENT */}
+          <div className="flex-1 flex flex-col min-w-0">
+            
+            {/* TOP BAR */}
+            <div className="h-14 border-b border-border flex items-center justify-between px-6 bg-panel shrink-0">
+              <div className="flex items-center gap-2">
+                <BookOpen size={18} className="text-dracula-cyan" />
+                <span className="font-semibold text-sm text-slate-200">{challenge.title}</span>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                {isPyodideLoading && (
+                  <span className="text-xs text-dracula-orange flex items-center gap-2 font-mono">
+                    <Loader2 size={14} className="animate-spin" /> Iniciando Motor Python...
+                  </span>
+                )}
+                {!isPyodideLoading && (
+                  <button
+                    onClick={runTests}
+                    disabled={isRunning}
+                    className="flex items-center gap-2 px-5 py-2 bg-dracula-green hover:bg-[#40e068] text-[#0a2010] font-bold text-xs rounded-lg transition-colors shadow-lg shadow-dracula-green/20 disabled:opacity-50"
+                  >
+                    {isRunning ? <Loader2 size={16} className="animate-spin" /> : <Play size={16} fill="currentColor" />}
+                    {isRunning ? 'Rodando...' : 'Rodar Testes'}
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* SPLIT PANELS */}
+            <div className="flex-1 flex overflow-hidden">
+              
+              {/* LEFT PANEL: Description */}
+              <div className="w-1/2 border-r border-border overflow-y-auto p-8 markdown-body bg-[#11131c]">
+                <div dangerouslySetInnerHTML={{ __html: challenge.description }} />
+              </div>
+
+              {/* RIGHT PANEL: Editor & Console */}
+              <div className="w-1/2 flex flex-col bg-[#0F111A]">
+                
+                {/* Editor */}
+                <div className="flex-1 overflow-y-auto p-4 editor-container relative">
+                  <div className="absolute top-4 right-6 text-xs font-mono text-slate-600 select-none">main.py</div>
+                  <Editor
+                    value={code}
+                    onValueChange={code => setCode(code)}
+                    highlight={code => Prism.highlight(code, Prism.languages.python, 'python')}
+                    padding={15}
+                    style={{
+                      fontFamily: '"JetBrains Mono", monospace',
+                      fontSize: 14,
+                      minHeight: '100%',
+                    }}
+                    className="min-h-full"
+                  />
+                </div>
+
+                {/* Console */}
+                <div className="h-64 border-t border-border bg-[#151822] flex flex-col shrink-0">
+                  <div className="px-4 py-2 border-b border-border flex items-center gap-2 bg-[#1a1c26]">
+                    <Terminal size={14} className="text-slate-400" />
+                    <span className="text-xs font-bold text-slate-300 font-mono tracking-wide">Saída dos Testes</span>
+                  </div>
+                  
+                  <div className="flex-1 overflow-y-auto p-4 font-mono text-sm">
+                    {output.status === 'idle' && (
+                      <div className="text-slate-500">{output.message}</div>
+                    )}
+                    {output.status === 'running' && (
+                      <div className="text-dracula-cyan flex items-center gap-2">
+                        <Loader2 size={14} className="animate-spin" /> {output.message}
+                      </div>
+                    )}
+                    {output.status === 'success' && (
+                      <div className="text-dracula-green p-3 bg-dracula-green/5 border border-dracula-green/20 rounded-lg flex items-start gap-3">
+                        <CheckCircle2 size={18} className="shrink-0 mt-0.5" />
+                        <div>
+                          <div className="font-bold mb-1">Sucesso!</div>
+                          <div>{output.message}</div>
+                        </div>
+                      </div>
+                    )}
+                    {output.status === 'error' && (
+                      <div className="text-dracula-red p-3 bg-dracula-red/5 border border-dracula-red/20 rounded-lg flex items-start gap-3">
+                        <XCircle size={18} className="shrink-0 mt-0.5" />
+                        <div>
+                          <div className="font-bold mb-1">Erro de Execução ou Falha no Teste</div>
+                          <pre className="text-xs whitespace-pre-wrap mt-2 opacity-90">{output.message}</pre>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Print Stdout if any */}
+                    {output.stdout && (
+                      <div className="mt-4 pt-4 border-t border-border/50">
+                        <div className="text-xs text-slate-500 mb-1">Console de Impressão (stdout):</div>
+                        <pre className="text-slate-300 text-xs">{output.stdout}</pre>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const root = createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

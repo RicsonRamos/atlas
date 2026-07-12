@@ -1,0 +1,77 @@
+{
+  "id": "D01.11",
+  "dominio_id": "D01",
+  "nome": "Teoria da Computação, Linguagens e Compiladores",
+  "nivel": "Staff",
+  "carga_horaria": "30-38h",
+  "prerequisitos": [
+    "Lógica",
+    "Matemática discreta"
+  ],
+  "objetivos": [
+    "Entender parsing, linguagens e limites da computação",
+    "Conectar regex, SQL, compiladores e otimizadores"
+  ],
+  "pratica_esperada": [
+    "Criar parser simples para DSL de contratos de dados",
+    "Entender como SQL vira plano lógico e físico"
+  ],
+  "teoria": [
+    "automatos",
+    "linguagens-formais",
+    "gramaticas",
+    "regex",
+    "compiladores",
+    "maquinas-de-turing",
+    "church-turing",
+    "computabilidade",
+    "parsing",
+    "ast",
+    "ir",
+    "otimizacao-de-consultas"
+  ],
+  "algoritmos_tecnicas": [
+    "thompson-construction",
+    "subset-construction",
+    "cyk",
+    "ll-lr-parsing",
+    "data-flow-analysis"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Hopcroft, Motwani & Ullman, Introduction to Automata Theory",
+    "Aho, Lam, Sethi & Ullman, Compilers",
+    "Sipser, Introduction to the Theory of Computation"
+  ],
+  "papers_fundamentais": [
+    "Turing, On computable numbers, 1936",
+    "Church, An unsolvable problem of elementary number theory, 1936"
+  ],
+  "ferramentas": [
+    "ANTLR",
+    "tree-sitter",
+    "Calcite",
+    "DuckDB EXPLAIN"
+  ],
+  "perguntas_entrevista_staff": [
+    "Por que regex não cobre todas as linguagens?",
+    "Como um otimizador transforma uma query SQL?"
+  ],
+  "projetos_reais": [
+    "DSL mínima de qualidade de dados compilada para SQL"
+  ],
+  "exercicios": [
+    "Converter regex em autômato",
+    "Criar uma gramática para filtros declarativos"
+  ],
+  "tags": [
+    "Autômatos",
+    "Gramáticas",
+    "Compiladores",
+    "Computabilidade",
+    "SQL Planning"
+  ]
+}

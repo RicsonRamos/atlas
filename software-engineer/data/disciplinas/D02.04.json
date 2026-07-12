@@ -1,0 +1,77 @@
+{
+  "id": "D02.04",
+  "dominio_id": "D02",
+  "nome": "Redes, Protocolos e Latência",
+  "nivel": "Staff",
+  "carga_horaria": "28-36h",
+  "prerequisitos": [
+    "Sistemas operacionais",
+    "Criptografia básica"
+  ],
+  "objetivos": [
+    "Entender custo de rede em sistemas distribuídos",
+    "Desenhar APIs internas eficientes e seguras"
+  ],
+  "pratica_esperada": [
+    "Medir latência p50/p95/p99",
+    "Projetar contrato gRPC para serviço de metadados"
+  ],
+  "teoria": [
+    "tcp",
+    "udp",
+    "http-2",
+    "http-3",
+    "grpc",
+    "protocol-buffers",
+    "tls",
+    "mtls",
+    "dns",
+    "load-balancing",
+    "timeouts",
+    "retries",
+    "tail-latency"
+  ],
+  "algoritmos_tecnicas": [
+    "exponential-backoff",
+    "circuit-breaker",
+    "hedged-requests",
+    "consistent-hashing-em-load-balancing"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Stevens, TCP/IP Illustrated",
+    "Kleppmann, Designing Data-Intensive Applications"
+  ],
+  "papers_fundamentais": [
+    "Dean & Barroso, The Tail at Scale, 2013",
+    "Fielding, Architectural Styles and REST, 2000"
+  ],
+  "ferramentas": [
+    "grpcurl",
+    "Wireshark",
+    "curl",
+    "Envoy",
+    "OpenTelemetry"
+  ],
+  "perguntas_entrevista_staff": [
+    "Por que retry sem jitter causa incidente?",
+    "Quando gRPC é melhor que REST em plataforma de dados?"
+  ],
+  "projetos_reais": [
+    "Serviço gRPC de catálogo com tracing e mTLS local"
+  ],
+  "exercicios": [
+    "Simular tail latency",
+    "Comparar JSON e Protobuf em payload grande"
+  ],
+  "tags": [
+    "TCP",
+    "gRPC",
+    "mTLS",
+    "Tail Latency",
+    "Retries"
+  ]
+}

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explorador interativo de Estatística Aplicada — Descritiva, Hipóteses, Teste T e ANOVA. Material do Bloco 01 do Roadmap DE & IA." />
+  <title>Estatística Aplicada — Explorador Interativo | Roadmap DE & IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #111120;
+      --bg-card2:  #14142a;
+      --border:    #1e1e35;
+      --border2:   #2a2a40;
+      --text:      #e8e8f0;
+      --text-muted:#a0a0c0;
+      --text-dim:  #60608b;
+      --text-deep: #40407a;
+      --accent:    #BD93F9;
+      --accent-dim:#BD93F920;
+      --accent-mid:#BD93F940;
+      --link:      #6C63FF;
+
+      /* Colors for groups */
+      --c-g1: #50FA7B;
+      --c-g2: #FF79C6;
+      --c-g3: #8BE9FD;
+      --c-med: #FFB86C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--link); }
+
+    /* ── Nav ── */
+    nav.top-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: rgba(13, 13, 20, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1rem; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0.3rem 0.75rem;
+      background: var(--accent-dim); border: 1px solid var(--accent-mid);
+      border-radius: 6px; color: var(--accent);
+      font-size: 0.72rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+    .nav-brand {
+      font-size: 0.8rem; font-weight: 800; color: var(--text-dim);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .nav-brand span {
+      font-size: 0.65rem; background: var(--accent-dim); color: var(--accent);
+      padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 5rem 1.25rem 3rem;
+      display: flex; flex-direction: column; gap: 2rem;
+    }
+
+    /* ── Header ── */
+    .page-header { text-align: center; margin-bottom: 0.5rem; }
+    .page-header h1 {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 0.6rem;
+    }
+    .page-header h1 .accent { color: var(--accent); }
+    .page-header p { color: var(--text-muted); font-size: 0.85rem; max-width: 600px; margin: 0 auto; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 0.8rem; }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 5px;
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em;
+    }
+
+    /* ── Tabs ── */
+    .tabs-nav {
+      display: flex; justify-content: center; gap: 4px; flex-wrap: wrap;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      padding: 0.5rem 1.2rem; border-radius: 8px 8px 0 0;
+      font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      background: transparent; border: 1px solid transparent;
+      color: var(--text-dim); transition: all 0.2s ease;
+      border-bottom: none;
+    }
+    .tab-btn:hover { color: var(--text-muted); background: #ffffff06; }
+    .tab-btn.active {
+      background: var(--bg-card); border-color: var(--border);
+      border-bottom-color: var(--bg-card); color: var(--text);
+      position: relative; top: 1px;
+    }
+    .tab-btn .emoji { margin-right: 6px; font-size: 0.9rem; }
+
+    /* ── Card & Views ── */
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 2rem;
+    }
+    .view-section { display: none; animation: fadeIn 0.35s ease both; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); }
+    h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--text); }
+    h4 { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 0.5rem; }
+    
+    p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    strong { color: var(--text); font-weight: 700; }
+
+    .intro-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;
+    }
+    .feature-box {
+      background: var(--bg); border: 1px solid var(--border);
+      padding: 1.5rem; border-radius: 12px;
+    }
+    .feature-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+    .btn-primary {
+      display: inline-block; background: var(--accent); color: #0d0d14;
+      padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 800; font-size: 0.9rem;
+      cursor: pointer; border: none; transition: all 0.2s; margin-top: 1.5rem; width: 100%; text-align: center;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+
+    /* ── Descritiva UI ── */
+    .desc-container { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
+    @media (max-width: 768px) { .desc-container { flex-direction: column; } }
+
+    .desc-panel {
+      flex: 1; background: var(--bg); border: 1px solid var(--border); padding: 1.2rem; border-radius: 10px;
+    }
+    .desc-stats {
+      flex: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    }
+    
+    .input-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    input[type=number] {
+      flex: 1; background: var(--bg-card2); border: 1px solid var(--border2); color: var(--text);
+      padding: 0.5rem; border-radius: 6px; font-family: 'JetBrains Mono', monospace;
+    }
+    input[type=number]:focus { outline: none; border-color: var(--accent); }
+    .add-btn {
+      background: var(--border2); color: var(--text); border: none; padding: 0 1rem;
+      border-radius: 6px; cursor: pointer; font-weight: 700; transition: background 0.2s;
+    }
+    .add-btn:hover { background: var(--text-deep); }
+
+    .data-pill {
+      display: inline-flex; items-center; gap: 6px; background: var(--border);
+      padding: 2px 8px; border-radius: 99px; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; margin: 0 4px 4px 0;
+    }
+    .data-pill button { background: none; border: none; color: #ff5555; cursor: pointer; font-weight: 700; }
+    
+    .stat-box {
+      background: var(--bg); border: 1px solid var(--border); padding: 1rem; border-radius: 10px;
+      text-align: center; display: flex; flex-direction: column; justify-content: center;
+    }
+    .stat-val { font-size: 2rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; margin: 0.2rem 0; }
+    .stat-desc { font-size: 0.65rem; color: var(--text-dim); }
+
+    /* ── T-Test UI ── */
+    .slider-row { display: flex; gap: 1.5rem; background: var(--bg); padding: 1.5rem; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 1.5rem; }
+    @media (max-width: 600px) { .slider-row { flex-direction: column; } }
+    .slider-item { flex: 1; }
+    .slider-item label { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; color: var(--text-muted); }
+    .slider-val { font-family: 'JetBrains Mono', monospace; }
+
+    input[type=range] {
+      -webkit-appearance: none; width: 100%; height: 6px; background: var(--border2); border-radius: 99px; outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; cursor: pointer;
+      background: var(--thumb-color, var(--accent));
+    }
+
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .result-box { padding: 1.2rem; border-radius: 10px; border: 1px solid var(--border); text-align: center; transition: all 0.3s; }
+    .result-box.sig { background: #50FA7B15; border-color: #50FA7B40; color: #50FA7B; }
+    .result-box.not-sig { background: var(--bg); color: var(--text-muted); }
+    
+    .pval { font-size: 2.2rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; margin: 0.5rem 0; }
+    .conclusion { font-size: 0.85rem; font-weight: 700; }
+
+    /* ── ANOVA UI ── */
+    .anova-btns { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .anova-btn {
+      background: var(--bg); border: 1px solid var(--border2); color: var(--text-muted);
+      padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: 0.8rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .anova-btn.active { background: var(--text-deep); color: #fff; border-color: var(--text-deep); }
+    .anova-btn:hover:not(.active) { background: var(--border); }
+
+    .scenario-box { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 10px; text-align: center; margin-bottom: 1.5rem; }
+
+    /* ── Chart ── */
+    .chart-wrap { position: relative; width: 100%; height: 300px; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 1.5rem; text-align: center; font-size: 0.72rem; color: var(--text-deep); margin-top: auto; }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Bullet Lists ── */
+    ul.styled-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    ul.styled-list li { position: relative; padding-left: 1.2rem; color: var(--text-muted); font-size: 0.85rem; }
+    ul.styled-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-weight: 900; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="/" class="back-btn">← Roadmap</a>
+      <div class="nav-brand">
+        <span>BLOCO 01</span>
+        Fundamentos Computacionais
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <main>
+    <div class="page-header">
+      <div class="chip-row">
+        <span class="badge" style="background:#BD93F920;color:#BD93F9;">BLOCO 01</span>
+        <span class="badge" style="background:#6C63FF20;color:#9988ff;">CORE</span>
+        <span class="badge" style="background:#FFB86C20;color:#FFB86C;">Estatística Aplicada</span>
+      </div>
+      <h1>Estatística<span class="accent">Play</span></h1>
+      <p>
+        Compreenda os fundamentos da análise de dados através da intuição visual.
+        Transformando fórmulas abstratas em gráficos interativos.
+      </p>
+    </div>
+
+    <!-- ── Tabs ── -->
+    <div class="tabs-nav" id="tabs-nav">
+      <button class="tab-btn active" data-target="view-intro">
+        <span class="emoji">🏠</span> Início
+      </button>
+      <button class="tab-btn" data-target="view-desc">
+        <span class="emoji">📊</span> Descritiva
+      </button>
+      <button class="tab-btn" data-target="view-hypo">
+        <span class="emoji">⚖️</span> Hipóteses
+      </button>
+      <button class="tab-btn" data-target="view-ttest">
+        <span class="emoji">🅰️🅱️</span> Teste T
+      </button>
+      <button class="tab-btn" data-target="view-anova">
+        <span class="emoji">📈</span> ANOVA
+      </button>
+    </div>
+
+    <!-- ── Content Card ── -->
+    <div class="card">
+      
+      <!-- ══ INÍCIO ══ -->
+      <section id="view-intro" class="view-section active">
+        <h2>Bem-vindo ao Explorador Estatístico</h2>
+        <p>A estatística não é apenas sobre memorizar fórmulas; é sobre <strong>entender o comportamento dos dados</strong>. Este aplicativo foi desenhado para transformar conceitos matemáticos abstratos em visualizações interativas.</p>
+        <p>Aqui você poderá manipular dados reais e observar, em tempo real, como métricas de tendência central, dispersão e testes inferenciais reagem às suas mudanças. O objetivo principal é desenvolver a sua intuição analítica.</p>
+        
+        <div class="intro-grid">
+          <div class="feature-box">
+            <div class="feature-icon">📊</div>
+            <h3 style="margin-bottom:0.2rem;">Resumir Dados</h3>
+            <p style="font-size:0.8rem;margin:0;">Aprenda a diferença crucial entre Média e Mediana, e descubra o que a Variância diz sobre a confiabilidade das suas métricas.</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon">⚖️</div>
+            <h3 style="margin-bottom:0.2rem;">Tomar Decisões</h3>
+            <p style="font-size:0.8rem;margin:0;">Explore Testes de Hipótese, Testes T e ANOVA para saber se as diferenças que você observa nos dados são reais ou mero acaso.</p>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="document.querySelector('[data-target=\'view-desc\']').click()">
+          Começar a Explorar →
+        </button>
+      </section>
+
+      <!-- ══ DESCRITIVA ══ -->
+      <section id="view-desc" class="view-section">
+        <h2>Estatística Descritiva</h2>
+        <p>Como resumir um conjunto de dados. Entenda a sensibilidade aos <em>outliers</em> (valores atípicos).</p>
+        <p style="margin-bottom:1.5rem;">Adicione novos números ao conjunto de dados abaixo e observe como a <strong>Média</strong> pode ser drasticamente afetada por um único valor extremo, enquanto a <strong>Mediana</strong> permanece estável. A <strong>Variância</strong> mede o quão "espalhados" estão os dados.</p>
+
+        <div class="desc-container">
+          <div class="desc-panel">
+            <h4>Seus Dados</h4>
+            <div class="input-row">
+              <input type="number" id="desc-input" placeholder="Digite um valor..." value="50" />
+              <button id="desc-add-btn" class="add-btn">+</button>
+            </div>
+            <div id="desc-data-list"></div>
+            <button id="desc-reset-btn" style="background:none;border:none;color:#ff5555;font-size:0.7rem;font-weight:700;margin-top:1rem;cursor:pointer;">⟲ Reiniciar Dados</button>
+          </div>
+
+          <div class="desc-stats">
+            <div class="stat-box" style="border-top:3px solid var(--c-g1);">
+              <h4>Média</h4>
+              <div class="stat-val" style="color:var(--c-g1);" id="desc-val-mean">0.0</div>
+              <div class="stat-desc">Sensível a extremos</div>
+            </div>
+            <div class="stat-box" style="border-top:3px solid var(--c-med);">
+              <h4>Mediana</h4>
+              <div class="stat-val" style="color:var(--c-med);" id="desc-val-median">0.0</div>
+              <div class="stat-desc">Resistente a extremos</div>
+            </div>
+            <div class="stat-box" style="border-top:3px solid var(--text-dim);">
+              <h4>Variância</h4>
+              <div class="stat-val" style="color:var(--text);" id="desc-val-var">0.0</div>
+              <div class="stat-desc">Dispersão</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="descChart"></canvas>
+        </div>
+      </section>
+
+      <!-- ══ HIPÓTESES ══ -->
+      <section id="view-hypo" class="view-section">
+        <h2>Testes de Hipótese (O Básico)</h2>
+        <p>Tomando decisões baseadas em probabilidades, não em certezas.</p>
+        <p style="margin-bottom:1.5rem;">Um Teste de Hipótese é um procedimento para avaliar evidências. Começamos com uma suposição cética chamada <strong>Hipótese Nula (H₀)</strong>, que geralmente afirma que "não há efeito" ou "não há diferença".</p>
+
+        <div class="feature-box" style="margin-bottom:1rem;">
+          <h3>O Processo Mental</h3>
+          <ul class="styled-list">
+            <li><strong>1. Formule H₀:</strong> Ex: "O novo modelo de ML tem a mesma acurácia do antigo."</li>
+            <li><strong>2. Colete Dados:</strong> Realize o experimento (teste A/B) e calcule uma métrica.</li>
+            <li><strong>3. Calcule o p-valor:</strong> Se H₀ fosse verdade, qual a probabilidade de vermos resultados tão extremos quanto os que coletamos?</li>
+            <li><strong>4. Tome a Decisão:</strong> Se a probabilidade (p-valor) for muito baixa (menor que o nível de significância <strong>α</strong>, ex: 0.05), nós rejeitamos H₀.</li>
+          </ul>
+        </div>
+
+        <div class="feature-box" style="border-left:4px solid var(--accent);">
+          <h3 style="color:var(--accent);">A Analogia do Tribunal</h3>
+          <p style="margin:0;font-size:0.85rem;">Pense em um julgamento criminal. H₀ é "O réu é inocente". O promotor (cientista de dados) deve reunir evidências. Se as evidências são altamente improváveis de ocorrerem se o réu fosse realmente inocente (p-valor baixo), o júri rejeita a inocência (rejeita H₀).</p>
+        </div>
+      </section>
+
+      <!-- ══ TESTE T ══ -->
+      <section id="view-ttest" class="view-section">
+        <h2>Teste T (Duas Amostras)</h2>
+        <p>O Teste T avalia se a diferença entre as médias de <strong>dois grupos</strong> é estatisticamente significativa ou se ocorreu devido ao acaso da amostragem.</p>
+        <p style="margin-bottom:1.5rem;">Utilize os controles abaixo para afastar ou aproximar as médias populacionais de dois grupos. Observe como a sobreposição das curvas afeta o p-valor.</p>
+
+        <div class="slider-row">
+          <div class="slider-item">
+            <label>
+              <span style="color:var(--c-g1);">Média do Grupo A</span>
+              <span class="slider-val" style="color:var(--c-g1);" id="ttest-muA-val">50</span>
+            </label>
+            <input type="range" id="ttest-muA" min="30" max="70" value="50" step="1" style="--thumb-color:var(--c-g1);" />
+          </div>
+          <div class="slider-item">
+            <label>
+              <span style="color:var(--c-med);">Média do Grupo B</span>
+              <span class="slider-val" style="color:var(--c-med);" id="ttest-muB-val">55</span>
+            </label>
+            <input type="range" id="ttest-muB" min="30" max="70" value="55" step="1" style="--thumb-color:var(--c-med);" />
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <div id="ttest-result-box" class="result-box not-sig">
+            <h4>Resultado Simulado</h4>
+            <div id="ttest-pvalue" class="pval">p = 0.05</div>
+            <div id="ttest-conclusion" class="conclusion">Analisando...</div>
+          </div>
+          <div class="result-box" style="background:var(--bg);display:flex;flex-direction:column;justify-content:center;">
+            <h4>Como interpretar:</h4>
+            <p style="margin:0;font-size:0.8rem;">
+              <strong>Muita sobreposição</strong> = Difícil dizer se são diferentes (p alto).<br/>
+              <strong>Pouca sobreposição</strong> = Claramente diferentes (p baixo).
+            </p>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="ttestChart"></canvas>
+        </div>
+      </section>
+
+      <!-- ══ ANOVA ══ -->
+      <section id="view-anova" class="view-section">
+        <h2>ANOVA (Análise de Variância)</h2>
+        <p>A ANOVA nos diz se existe diferença significativa entre as médias de <strong>três ou mais grupos</strong> simultaneamente.</p>
+        <p style="margin-bottom:1.5rem;">O segredo é que ela compara a <strong>Variância Entre Grupos</strong> (distância entre as médias) com a <strong>Variância Dentro dos Grupos</strong> (o "ruído" ou espalhamento). Simule cenários abaixo:</p>
+
+        <div class="anova-btns">
+          <button class="anova-btn active" id="anova-btn-diff">Cenário 1: Diferença Clara</button>
+          <button class="anova-btn" id="anova-btn-noise">Cenário 2: Muito Ruído</button>
+          <button class="anova-btn" id="anova-btn-same">Cenário 3: Grupos Iguais</button>
+        </div>
+
+        <div class="scenario-box">
+          <h3 id="anova-scenario-title" style="margin-bottom:0.5rem;color:var(--accent);">Cenário 1</h3>
+          <p id="anova-scenario-desc" style="margin:0;">Desc</p>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="anovaChart"></canvas>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Material do <strong style="color:var(--accent);">Bloco 01</strong> — Roadmap <a href="/">Engenharia de Dados e Plataformas de IA</a></p>
+  </footer>
+
+  <script>
+    // ── Globals ──
+    Chart.defaults.font.family = "'JetBrains Mono', 'Inter', monospace";
+    Chart.defaults.color = '#60608b';
+
+    const CHART_OPTS = {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 400, easing: 'easeOutCubic' },
+      plugins: {
+        tooltip: {
+          backgroundColor: 'rgba(17,17,32,0.96)',
+          titleColor: '#e8e8f0', bodyColor: '#a0a0c0',
+          titleFont: { family: 'JetBrains Mono, monospace', size: 12 },
+          bodyFont:  { family: 'JetBrains Mono, monospace', size: 12 },
+          padding: 12, cornerRadius: 8, borderColor: '#1e1e35', borderWidth: 1
+        }
+      }
+    };
+    const SCALE_X = { type: 'linear', grid: { color: '#1e1e3540' }, ticks: { color: '#60608b', font: { size: 10 } } };
+    const SCALE_Y = { grid: { color: '#1e1e3540', drawBorder: false }, ticks: { display: false } };
+
+    // ── Tab Logic ──
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.view-section');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.target).classList.add('active');
+      });
+    });
+
+    // ── Math ──
+    const math = {
+      mean: arr => arr.reduce((a, b) => a + b, 0) / arr.length,
+      median: arr => {
+        const s = [...arr].sort((a, b) => a - b);
+        const m = Math.floor(s.length / 2);
+        return s.length % 2 !== 0 ? s[m] : (s[m - 1] + s[m]) / 2;
+      },
+      var: arr => {
+        const m = math.mean(arr);
+        return arr.reduce((a, b) => a + (b - m)**2, 0) / (arr.length - 1 || 1);
+      },
+      norm: (mu, sigma, xMin, xMax, pts=100) => {
+        let d = [], step = (xMax - xMin) / pts;
+        for(let x = xMin; x <= xMax; x += step) {
+          let y = (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mu)/sigma)**2);
+          d.push({x: parseFloat(x.toFixed(2)), y});
+        }
+        return d;
+      }
+    };
+
+    // ── Descritiva ──
+    let descData = [10, 12, 14, 15, 18, 20];
+    let descChart = null;
+
+    function updateDesc() {
+      const mean = math.mean(descData);
+      const median = math.median(descData);
+      document.getElementById('desc-val-mean').textContent = mean.toFixed(1);
+      document.getElementById('desc-val-median').textContent = median.toFixed(1);
+      document.getElementById('desc-val-var').textContent = math.var(descData).toFixed(1);
+
+      const list = document.getElementById('desc-data-list');
+      list.innerHTML = '';
+      descData.forEach((v, i) => {
+        list.innerHTML += `<div class="data-pill"><span>${v}</span><button onclick="rmDesc(${i})">×</button></div>`;
+      });
+
+      const ctx = document.getElementById('descChart').getContext('2d');
+      let minX = Math.min(...descData, mean, median) - 5;
+      let maxX = Math.max(...descData, mean, median) + 5;
+
+      const freqs = {};
+      descData.forEach(v => freqs[v] = (freqs[v] || 0) + 1);
+      const pts = [];
+      for(let k in freqs) {
+        for(let i=0; i<freqs[k]; i++) pts.push({x: parseFloat(k), y: i + 1});
+      }
+
+      if(descChart) descChart.destroy();
+      descChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            { label: 'Dados', data: pts, backgroundColor: '#e8e8f0', pointRadius: 6, pointHoverRadius: 8 },
+            { label: 'Média', data: [{x: mean, y: 0}, {x: mean, y: 5}], borderColor: '#50FA7B', type: 'line', borderWidth: 2, pointRadius: 0, borderDash: [4, 4] },
+            { label: 'Mediana', data: [{x: median, y: 0}, {x: median, y: 5}], borderColor: '#FFB86C', type: 'line', borderWidth: 2, pointRadius: 0, borderDash: [2, 2] }
+          ]
+        },
+        options: {
+          ...CHART_OPTS,
+          scales: { x: { ...SCALE_X, min: minX, max: maxX }, y: { display: false, min: 0, max: 6 } }
+        }
+      });
+    }
+
+    window.rmDesc = i => { descData.splice(i, 1); if(!descData.length) descData=[0]; updateDesc(); };
+    document.getElementById('desc-add-btn').addEventListener('click', () => {
+      const v = parseFloat(document.getElementById('desc-input').value);
+      if(!isNaN(v)) { descData.push(v); document.getElementById('desc-input').value=''; updateDesc(); }
+    });
+    document.getElementById('desc-reset-btn').addEventListener('click', () => {
+      descData = [10, 12, 14, 15, 18, 20]; updateDesc();
+    });
+    updateDesc();
+
+    // ── Teste T ──
+    let ttestChart = null;
+    function updateTTest() {
+      const muA = parseFloat(document.getElementById('ttest-muA').value);
+      const muB = parseFloat(document.getElementById('ttest-muB').value);
+      document.getElementById('ttest-muA-val').textContent = muA;
+      document.getElementById('ttest-muB-val').textContent = muB;
+
+      const diff = Math.abs(muA - muB);
+      let pval = Math.max(0.001, Math.min(1, Math.exp(-0.1 * diff * diff)));
+
+      document.getElementById('ttest-pvalue').textContent = 'p ≈ ' + pval.toFixed(3);
+      const box = document.getElementById('ttest-result-box');
+      if(pval < 0.05) {
+        box.className = 'result-box sig';
+        document.getElementById('ttest-conclusion').textContent = "Significativo! Rejeitamos H₀.";
+      } else {
+        box.className = 'result-box not-sig';
+        document.getElementById('ttest-conclusion').textContent = "Não Significativo. H₀ mantida.";
+      }
+
+      const dA = math.norm(muA, 5, 10, 90, 150);
+      const dB = math.norm(muB, 5, 10, 90, 150);
+
+      if(!ttestChart) {
+        ttestChart = new Chart(document.getElementById('ttestChart'), {
+          type: 'line',
+          data: {
+            datasets: [
+              { label: 'Grupo A', data: dA, borderColor: '#50FA7B', backgroundColor: '#50FA7B20', fill: true, pointRadius: 0, borderWidth: 2 },
+              { label: 'Grupo B', data: dB, borderColor: '#FFB86C', backgroundColor: '#FFB86C20', fill: true, pointRadius: 0, borderWidth: 2 }
+            ]
+          },
+          options: { ...CHART_OPTS, plugins: { tooltip: { enabled: false } }, scales: { x: { ...SCALE_X, min: 10, max: 90 }, y: SCALE_Y } }
+        });
+      } else {
+        ttestChart.data.datasets[0].data = dA;
+        ttestChart.data.datasets[1].data = dB;
+        ttestChart.update();
+      }
+    }
+    document.getElementById('ttest-muA').addEventListener('input', updateTTest);
+    document.getElementById('ttest-muB').addEventListener('input', updateTTest);
+    updateTTest();
+
+    // ── ANOVA ──
+    let anovaChart = null;
+    function renderAnova(scen) {
+      document.querySelectorAll('.anova-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('anova-btn-'+scen).classList.add('active');
+
+      let m1, m2, m3, s1, s2, s3, t, d;
+      if(scen==='diff') {
+        m1=30; m2=50; m3=70; s1=s2=s3=4;
+        t = "Cenário 1: Diferença Clara";
+        d = "Médias separadas (alta Var Entre) e grupos estreitos (baixa Var Dentro). F alto, P-valor baixo. Rejeitamos H₀.";
+      } else if(scen==='noise') {
+        m1=45; m2=50; m3=55; s1=s2=s3=15;
+        t = "Cenário 2: Muito Ruído Interno";
+        d = "As médias têm ligeira diferença, mas o espalhamento interno (Var Dentro) é imenso. F baixo. Não podemos rejeitar H₀.";
+      } else {
+        m1=m2=m3=50; s1=s2=s3=5;
+        t = "Cenário 3: Grupos Idênticos";
+        d = "Distribuições totalmente sobrepostas. Var Entre é zero. Nenhuma evidência de diferença.";
+      }
+      document.getElementById('anova-scenario-title').textContent = t;
+      document.getElementById('anova-scenario-desc').textContent = d;
+
+      const d1 = math.norm(m1, s1, 0, 100, 150);
+      const d2 = math.norm(m2, s2, 0, 100, 150);
+      const d3 = math.norm(m3, s3, 0, 100, 150);
+
+      if(!anovaChart) {
+        anovaChart = new Chart(document.getElementById('anovaChart'), {
+          type: 'line',
+          data: {
+            datasets: [
+              { label: 'G1', data: d1, borderColor: '#50FA7B', backgroundColor: '#50FA7B20', fill: true, pointRadius: 0, borderWidth: 2 },
+              { label: 'G2', data: d2, borderColor: '#FF79C6', backgroundColor: '#FF79C620', fill: true, pointRadius: 0, borderWidth: 2 },
+              { label: 'G3', data: d3, borderColor: '#8BE9FD', backgroundColor: '#8BE9FD20', fill: true, pointRadius: 0, borderWidth: 2 }
+            ]
+          },
+          options: { ...CHART_OPTS, plugins: { tooltip: { enabled: false } }, scales: { x: { ...SCALE_X, min: 0, max: 100 }, y: SCALE_Y } }
+        });
+      } else {
+        anovaChart.data.datasets[0].data = d1;
+        anovaChart.data.datasets[1].data = d2;
+        anovaChart.data.datasets[2].data = d3;
+        anovaChart.update();
+      }
+    }
+    document.getElementById('anova-btn-diff').addEventListener('click', ()=>renderAnova('diff'));
+    document.getElementById('anova-btn-noise').addEventListener('click', ()=>renderAnova('noise'));
+    document.getElementById('anova-btn-same').addEventListener('click', ()=>renderAnova('same'));
+    renderAnova('diff');
+
+  </script>
+</body>
+</html>

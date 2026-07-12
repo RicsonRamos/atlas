@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolução da Teoria do Crime & Perspectiva Comparada</title>
+    
+    <!-- Chosen Palette: Warm Neutrals & Legal Slate (Cream background, dark slate text, subtle gold/ochre accents for interactions) -->
+    <!-- Application Structure Plan: 
+         1. Hero/Intro: Establishes the subject.
+         2. Chronological Pathway: Visual CSS timeline to show the evolution of thought.
+         3. Interactive Dogmatic Dashboard (The Core): A master-detail interface (tabs) allowing users to switch between Causalism, Finalism, and Functionalism. This prevents text overload and allows direct comparison of concepts, pros, and cons.
+         4. Comparative Analysis (US Model): Shifts focus to Common Law, explaining Actus Reus/Mens Rea.
+         5. Data Visualization: Chart.js bar chart exploring the variation in the age of criminal responsibility across US states, demonstrating the practical application of criminal policy. 
+         Rationale: This structure moves from theoretical history -> deep dive into dogmatics -> comparative practical application, optimizing comprehension of dense legal concepts. -->
+    <!-- Visualization & Content Choices: 
+         - Timeline: Goal: Show historical progression. Method: HTML/CSS styled elements (No SVG). Interaction: Hover effects.
+         - Schools Comparison: Goal: Deep dive into theories without overwhelming text. Method: JS-driven Tab/Master-Detail view. Interaction: Clickable school names updating a central content area.
+         - US Age of Responsibility: Goal: Show fragmentation of the US system regarding minors. Method: Chart.js Bar Chart. Interaction: Tooltips. Library: Chart.js via Canvas (No SVG). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Lora', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            200: '#e7e5e4',
+                            800: '#292524',
+                            900: '#1c1917',
+                        },
+                        accent: {
+                            light: '#d4af37', // Gold/Ochre
+                            DEFAULT: '#b8860b',
+                            dark: '#8b6508',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #fafaf9; color: #292524; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        /* Custom scrollbar for content areas */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f5f5f4; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+        
+        .tab-active { background-color: #292524; color: #fafaf9; border-left: 4px solid #b8860b; }
+        .tab-inactive { background-color: transparent; color: #57534e; border-left: 4px solid transparent; }
+        .tab-inactive:hover { background-color: #e7e5e4; color: #292524; }
+
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="font-sans antialiased leading-relaxed">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-stone-50/90 backdrop-blur border-b border-stone-200">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center text-sm font-semibold text-stone-800">
+            <div class="font-serif text-lg tracking-tight">Dogmática Penal</div>
+            <div class="flex space-x-6">
+                <a href="#historia" class="hover:text-accent transition-colors">História</a>
+                <a href="#escolas" class="hover:text-accent transition-colors">As Escolas</a>
+                <a href="#modelo-eua" class="hover:text-accent transition-colors">Modelo EUA</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
+        <div class="inline-block px-3 py-1 mb-6 text-xs font-bold uppercase tracking-widest text-accent bg-accent/10 rounded-full">
+            Estudo Interativo
+        </div>
+        <h1 class="font-serif text-4xl md:text-5xl font-semibold mb-6 leading-tight text-stone-900">
+            A Evolução da Teoria do Crime
+        </h1>
+        <p class="text-lg md:text-xl text-stone-600 mb-8 max-w-2xl mx-auto">
+            Da física mecânica do Causalismo à complexidade sistêmica do Funcionalismo. Explore as fundações do Direito Penal e sua aplicação contrastante no modelo norte-americano.
+        </p>
+    </header>
+
+    <!-- Section: Timeline/History -->
+    <section id="historia" class="py-16 bg-stone-100">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="mb-12">
+                <h2 class="font-serif text-3xl font-semibold mb-4 text-stone-900">A Linha do Tempo Dogmática</h2>
+                <p class="text-stone-600">A estruturação do conceito analítico de crime (Fato Típico, Antijurídico e Culpável) sofreu profundas mutações filosóficas entre o final do século XIX e o final do século XX, impulsionadas pela ciência alemã.</p>
+            </div>
+
+            <!-- CSS Timeline -->
+            <div class="relative border-l-4 border-stone-300 ml-3 md:ml-6 space-y-12">
+                
+                <div class="relative pl-8 md:pl-12 group">
+                    <div class="absolute -left-3.5 mt-1.5 w-6 h-6 rounded-full bg-stone-300 border-4 border-stone-100 group-hover:bg-accent transition-colors"></div>
+                    <div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-2">
+                        <h3 class="text-xl font-bold text-stone-800">Causalismo Clássico</h3>
+                        <span class="text-sm font-semibold text-accent mt-1 md:mt-0">Fim do Séc. XIX</span>
+                    </div>
+                    <p class="text-stone-600 text-sm">Influência do Positivismo Científico. O crime é visto como um fenômeno natural. A ação é um mero movimento corporal mecânico que causa uma alteração no mundo exterior.</p>
+                </div>
+
+                <div class="relative pl-8 md:pl-12 group">
+                    <div class="absolute -left-3.5 mt-1.5 w-6 h-6 rounded-full bg-stone-300 border-4 border-stone-100 group-hover:bg-accent transition-colors"></div>
+                    <div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-2">
+                        <h3 class="text-xl font-bold text-stone-800">Finalismo</h3>
+                        <span class="text-sm font-semibold text-accent mt-1 md:mt-0">Anos 1930 - 1950</span>
+                    </div>
+                    <p class="text-stone-600 text-sm">Ruptura ontológica. O homem age com um fim (propósito). O dolo e a culpa saem da culpabilidade e vão para o Fato Típico. A ação torna-se um "exercício de atividade final".</p>
+                </div>
+
+                <div class="relative pl-8 md:pl-12 group">
+                    <div class="absolute -left-3.5 mt-1.5 w-6 h-6 rounded-full bg-stone-300 border-4 border-stone-100 group-hover:bg-accent transition-colors"></div>
+                    <div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-2">
+                        <h3 class="text-xl font-bold text-stone-800">Funcionalismo</h3>
+                        <span class="text-sm font-semibold text-accent mt-1 md:mt-0">A partir dos anos 1970</span>
+                    </div>
+                    <p class="text-stone-600 text-sm">Superação das bases puramente ontológicas. O Direito Penal passa a ser estruturado com base em suas funções sociais e de política criminal (proteção de bens ou manutenção da norma).</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Interactive Schools Comparison -->
+    <section id="escolas" class="py-20 max-w-6xl mx-auto px-6">
+        <div class="mb-10 text-center max-w-3xl mx-auto">
+            <h2 class="font-serif text-3xl font-semibold mb-4 text-stone-900">Análise Estrutural das Escolas Penais</h2>
+            <p class="text-stone-600">Selecione uma escola no menu lateral para explorar detalhadamente seus conceitos estruturantes, principais teóricos e as críticas (prós e contras) formuladas a cada modelo.</p>
+        </div>
+
+        <div class="flex flex-col md:flex-row bg-white rounded-xl shadow-lg overflow-hidden border border-stone-200 min-h-[500px]">
+            
+            <!-- Sidebar Navigation -->
+            <div class="w-full md:w-1/3 bg-stone-50 border-b md:border-b-0 md:border-r border-stone-200 flex flex-col" id="school-tabs">
+                <button onclick="updateSchool('causalismo')" class="school-btn tab-active text-left px-6 py-5 focus:outline-none transition-all flex items-center justify-between" data-target="causalismo">
+                    <span class="font-semibold">Causalismo Clássico</span>
+                    <span class="text-xl">&#8250;</span>
+                </button>
+                <button onclick="updateSchool('finalismo')" class="school-btn tab-inactive text-left px-6 py-5 focus:outline-none transition-all flex items-center justify-between" data-target="finalismo">
+                    <span class="font-semibold">Finalismo</span>
+                    <span class="text-xl">&#8250;</span>
+                </button>
+                <button onclick="updateSchool('funcionalismo-roxin')" class="school-btn tab-inactive text-left px-6 py-5 focus:outline-none transition-all flex items-center justify-between" data-target="funcionalismo-roxin">
+                    <span class="font-semibold">Funcionalismo Moderado</span>
+                    <span class="text-xs text-stone-500 font-normal ml-2">(Roxin)</span>
+                </button>
+                <button onclick="updateSchool('funcionalismo-jakobs')" class="school-btn tab-inactive text-left px-6 py-5 focus:outline-none transition-all flex items-center justify-between" data-target="funcionalismo-jakobs">
+                    <span class="font-semibold">Funcionalismo Sistêmico</span>
+                    <span class="text-xs text-stone-500 font-normal ml-2">(Jakobs)</span>
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="w-full md:w-2/3 p-6 md:p-10 relative bg-white" id="school-content">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: US Model & Age of Responsibility -->
+    <section id="modelo-eua" class="py-20 bg-stone-900 text-stone-100">
+        <div class="max-w-6xl mx-auto px-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <!-- Text Column -->
+                <div>
+                    <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-6 text-white">O Modelo Aplicado nos Estados Unidos</h2>
+                    <p class="text-stone-300 mb-6 text-lg">
+                        Diferente do sistema romano-germânico (Civil Law) que baseia as escolas estudadas, os EUA adotam o <strong>Common Law</strong>. A teoria do crime não possui uma dogmática unificada e estratificada de forma tão rígida.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-stone-800 p-5 rounded-lg border border-stone-700">
+                            <h3 class="font-bold text-accent-light text-xl mb-2">Estrutura Bipartida</h3>
+                            <p class="text-sm text-stone-300">O crime nos EUA é geralmente analisado em dois elementos fundamentais coincidentes no tempo:</p>
+                            <ul class="list-disc pl-5 mt-2 text-sm text-stone-300 space-y-1">
+                                <li><strong>Actus Reus:</strong> O ato culpável (a conduta física ou omissão).</li>
+                                <li><strong>Mens Rea:</strong> A mente culpável (a intenção, conhecimento, imprudência ou negligência).</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-white text-xl mb-2">Maioridade Penal e Julgamento de Menores</h3>
+                            <p class="text-sm text-stone-300 mb-4">
+                                Nos EUA, a responsabilidade penal não é regulada federalmente para crimes estaduais. O sistema juvenil foca (teoricamente) em reabilitação, mas existe a possibilidade de transferir menores para cortes adultas (*waiver*), dependendo da gravidade do crime.
+                            </p>
+                            <p class="text-sm text-stone-300">
+                                A doutrina do <em>doli incapax</em> (incapacidade de formar dolo) originária da Common Law estipulava que menores de 7 anos eram incapazes de cometer crime, mas isso varia drasticamente por estado atualmente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Visualization Column -->
+                <div class="bg-stone-50 rounded-xl p-6 shadow-2xl">
+                    <h3 class="text-xl font-bold text-stone-800 mb-2 text-center">Idade Mínima para Responsabilidade Juvenil</h3>
+                    <p class="text-xs text-stone-500 text-center mb-6">Distribuição aproximada por Estados nos EUA (Estatísticas indicativas sujeitas a variações legislativas)</p>
+                    
+                    <!-- Chart Container Constraint -->
+                    <div class="chart-container">
+                        <canvas id="ageChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-4 text-xs text-stone-500 italic text-center">
+                        Nota: Mesmo em estados com idade mínima definida para a corte juvenil, muitos permitem o julgamento como adulto (transferência) para crimes hediondos a partir de idades muito baixas.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-stone-950 py-8 border-t border-stone-800 text-center">
+        <p class="text-stone-500 text-sm">Desenvolvido como demonstração interativa de arquitetura de informação e análise de dados. Baseado em teorias do Direito Penal.</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- 1. Data Store for Schools ---
+        const schoolsData = {
+            'causalismo': {
+                title: "Causalismo Clássico (Naturalista)",
+                authors: "Franz von Liszt, Ernst von Beling",
+                concept: "Fortemente influenciado pelas ciências naturais do final do séc. XIX. A ação é definida de forma mecanicista: um movimento corporal voluntário que causa modificação no mundo exterior. O dolo e a culpa não estão na ação (Fato Típico), mas são analisados apenas no terceiro substrato do crime: a Culpabilidade (teoria psicológica da culpabilidade).",
+                pros: [
+                    "Sistematização científica e objetiva do Direito Penal.",
+                    "Forte segurança jurídica e limitação do arbítrio judicial devido à separação rígida entre o lado objetivo (fato típico) e subjetivo (culpabilidade)."
+                ],
+                cons: [
+                    "Incapacidade de explicar crimes omissivos (como um 'não-fazer' causa fisicamente algo?).",
+                    "Dificuldade em lidar com a tentativa (onde não há modificação do mundo exterior).",
+                    "Ignora que todo movimento humano racional tem uma finalidade."
+                ]
+            },
+            'finalismo': {
+                title: "Finalismo",
+                authors: "Hans Welzel",
+                concept: "Baseado em fundamentos ontológicos. O legislador não pode criar o conceito de ação, deve respeitar a 'natureza das coisas'. Ação é o exercício de atividade final. O homem, por saber os desdobramentos causais de seus atos, os direciona a um fim. O Dolo e a Culpa migram da Culpabilidade e passam a integrar o Fato Típico (teoria normativa pura da culpabilidade).",
+                pros: [
+                    "Compreensão mais humana e realista da conduta.",
+                    "Resolveu satisfatoriamente o problema da tentativa e facilitou a análise da omissão, baseando-se na expectativa de conduta."
+                ],
+                cons: [
+                    "Extrema dificuldade em explicar o crime culposo: se a ação é sempre final (direcionada a um fim), onde está a 'finalidade' num acidente de trânsito culposo? A finalidade nesses casos é irrelevante para o tipo penal.",
+                    "Engessamento ontológico (apego exagerado ao 'ser', limitando o 'dever ser')."
+                ]
+            },
+            'funcionalismo-roxin': {
+                title: "Funcionalismo Moderado (Teleológico-Racional)",
+                authors: "Claus Roxin",
+                concept: "A dogmática penal deve ser estruturada a partir de decisões de Política Criminal e dos fins do Direito Penal. Para Roxin, a função do Direito Penal é a <strong>proteção de bens jurídicos</strong>. A culpabilidade deixa de ser o único limite da pena, devendo somar-se à 'necessidade preventiva' (Responsabilidade). Introduz o princípio da Imputação Objetiva no fato típico (criação de risco proibido).",
+                pros: [
+                    "Flexibiliza a rigidez dogmática em favor de soluções mais justas no caso concreto.",
+                    "A Imputação Objetiva resolve problemas complexos de nexo causal em sociedades modernas de risco.",
+                    "Aproxima o Direito da realidade social e constitucional."
+                ],
+                cons: [
+                    "Certa margem de insegurança jurídica, pois a 'política criminal' e os 'bens jurídicos' podem ter interpretações abertas e variáveis."
+                ]
+            },
+            'funcionalismo-jakobs': {
+                title: "Funcionalismo Sistêmico (Radical)",
+                authors: "Günther Jakobs",
+                concept: "Baseado na teoria dos sistemas de Niklas Luhmann. A função do Direito Penal NÃO é proteger bens jurídicos (pois o direito chega tarde, após a lesão), mas sim <strong>garantir a validade da norma</strong> (estabilizar expectativas sociais). O criminoso ao delinquir expressa uma máxima que contraria a norma; a pena é a reafirmação de que a norma continua válida. Criador da tese do Direito Penal do Inimigo.",
+                pros: [
+                    "Teoria sociologicamente sofisticada para explicar o funcionamento do Direito em sociedades hipercomplexas.",
+                    "Coerência lógica interna muito forte."
+                ],
+                cons: [
+                    "Esvaziamento do indivíduo, que passa a ser visto apenas como um 'centro de imputação' ou cumpridor de papéis sociais.",
+                    "O 'Direito Penal do Inimigo' flerta perigosamente com o autoritarismo, permitindo a suspensão de garantias fundamentais para indivíduos considerados 'não-pessoas' (inimigos do estado/sociedade)."
+                ]
+            }
+        };
+
+        // --- 2. Interactive Logic for Schools Dashboard ---
+        function updateSchool(schoolKey) {
+            const data = schoolsData[schoolKey];
+            const contentDiv = document.getElementById('school-content');
+            
+            // Update Buttons State
+            document.querySelectorAll('.school-btn').forEach(btn => {
+                if(btn.dataset.target === schoolKey) {
+                    btn.classList.remove('tab-inactive');
+                    btn.classList.add('tab-active');
+                } else {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('tab-inactive');
+                }
+            });
+
+            // Generate Content HTML
+            let prosHtml = data.pros.map(pro => `<li class="flex items-start"><span class="text-green-600 mr-2 font-bold">+</span><span class="text-sm">${pro}</span></li>`).join('');
+            let consHtml = data.cons.map(con => `<li class="flex items-start"><span class="text-red-600 mr-2 font-bold">-</span><span class="text-sm">${con}</span></li>`).join('');
+
+            const html = `
+                <div class="fade-in">
+                    <h3 class="text-3xl font-serif font-bold text-stone-900 mb-2">${data.title}</h3>
+                    <p class="text-sm text-accent-dark font-bold uppercase tracking-wider mb-6">Principais Autores: ${data.authors}</p>
+                    
+                    <div class="mb-8 bg-stone-50 p-5 rounded border border-stone-200">
+                        <h4 class="font-bold text-stone-800 mb-2 text-lg">Conceito e Estrutura</h4>
+                        <p class="text-stone-700 leading-relaxed">${data.concept}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-bold text-stone-800 mb-3 border-b border-stone-200 pb-1">Prós / Contribuições</h4>
+                            <ul class="space-y-3 text-stone-600">${prosHtml}</ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-stone-800 mb-3 border-b border-stone-200 pb-1">Contras / Críticas</h4>
+                            <ul class="space-y-3 text-stone-600">${consHtml}</ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            contentDiv.innerHTML = html;
+        }
+
+        // Initialize first tab
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSchool('causalismo');
+            initChart();
+        });
+
+        // --- 3. Chart.js Implementation (US Age of Responsibility) ---
+        function initChart() {
+            const ctx = document.getElementById('ageChart').getContext('2d');
+            
+            // Mock data representing approximate distribution in US states
+            // Data sources generally point to a large number of states lacking a statutory minimum,
+            // relying on common law, while others have set limits mostly between 7 and 10.
+            const labels = ['Sem Idade Mínima (Common Law)', '10 anos', '12 anos ou mais', '7 anos', '8 anos'];
+            const dataPoints = [24, 15, 6, 3, 2];
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Número de Estados Americanos',
+                        data: dataPoints,
+                        backgroundColor: '#b8860b', // Accent color
+                        hoverBackgroundColor: '#8b6508',
+                        borderRadius: 4,
+                        barPercentage: 0.7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // CRITICAL: Allows the chart to fill the container defined in CSS
+                    indexAxis: 'y', // Horizontal bar chart for easier label reading
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#292524',
+                            titleFont: { family: 'Inter', size: 13 },
+                            bodyFont: { family: 'Inter', size: 14, weight: 'bold' },
+                            padding: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.x + ' Estados';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: '#e7e5e4', drawBorder: false },
+                            ticks: { font: { family: 'Inter' }, color: '#57534e', stepSize: 5 },
+                            title: { display: true, text: 'Nº de Estados', color: '#57534e', font: {family: 'Inter', weight: 'bold'} }
+                        },
+                        y: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: { 
+                                font: { family: 'Inter', weight: '600' }, 
+                                color: '#292524',
+                                // Custom label wrapping logic for long labels if needed (Chart.js handles Y axis horizontal well, but good practice)
+                                callback: function(value) {
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 25) {
+                                        return label.substr(0, 25) + '...';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

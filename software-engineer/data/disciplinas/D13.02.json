@@ -1,0 +1,72 @@
+{
+  "id": "D13.02",
+  "dominio_id": "D13",
+  "nome": "Aprendizado por Reforço",
+  "nivel": "Staff",
+  "carga_horaria": "28-36h",
+  "prerequisitos": [
+    "Probabilidade e Processos Estocásticos",
+    "Otimização Matemática"
+  ],
+  "objetivos": [
+    "Formular problemas de decisão sequencial como MDPs",
+    "Escolher entre métodos tabulares, DQN e gradiente de política conforme o espaço de ação"
+  ],
+  "pratica_esperada": [
+    "Implementar Q-Learning tabular em ambiente simples",
+    "Treinar um agente DQN com experience replay e target network"
+  ],
+  "teoria": [
+    "processos-de-decisao-de-markov",
+    "estados-acoes-recompensas",
+    "fator-de-desconto",
+    "equacoes-de-bellman",
+    "exploracao-versus-explotacao",
+    "experience-replay",
+    "target-networks",
+    "gradiente-de-politica"
+  ],
+  "algoritmos_tecnicas": [
+    "q-learning",
+    "sarsa",
+    "deep-q-network",
+    "reinforce",
+    "actor-critic",
+    "proximal-policy-optimization"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Sutton & Barto, Reinforcement Learning: An Introduction"
+  ],
+  "papers_fundamentais": [
+    "Watkins & Dayan, Q-learning, 1992",
+    "Mnih et al., Playing Atari with Deep Reinforcement Learning, 2013",
+    "Schulman et al., Proximal Policy Optimization Algorithms, 2017"
+  ],
+  "ferramentas": [
+    "OpenAI Gymnasium",
+    "Stable-Baselines3",
+    "PyTorch"
+  ],
+  "perguntas_entrevista_staff": [
+    "Por que Q-Learning é off-policy e SARSA é on-policy, e quando essa diferença importa na prática?",
+    "Como o PPO evita atualizações de política destrutivamente grandes?"
+  ],
+  "projetos_reais": [
+    "Agente de otimização de alocação de recursos treinado por simulação com PPO"
+  ],
+  "exercicios": [
+    "Implementar Q-Learning tabular para um ambiente de grade simples",
+    "Comparar convergência de REINFORCE e Actor-Critic no mesmo ambiente"
+  ],
+  "tags": [
+    "ReinforcementLearning",
+    "QLearning",
+    "DQN",
+    "PPO",
+    "MDP"
+  ]
+}

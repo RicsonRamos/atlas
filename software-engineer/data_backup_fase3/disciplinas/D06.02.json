@@ -1,0 +1,74 @@
+{
+  "id": "D06.02",
+  "dominio_id": "D06",
+  "nome": "CAP, PACELC e Consenso",
+  "nivel": "Staff",
+  "carga_horaria": "34-44h",
+  "prerequisitos": [
+    "Modelos de falha",
+    "Logs"
+  ],
+  "objetivos": [
+    "Entender limites de disponibilidade e consistência",
+    "Explicar Paxos, Raft e replicação de log"
+  ],
+  "pratica_esperada": [
+    "Executar cluster Raft e observar eleição",
+    "Mapear decisões CAP em Cassandra, etcd e Spanner"
+  ],
+  "teoria": [
+    "cap",
+    "pacelc",
+    "paxos",
+    "raft",
+    "leader-election",
+    "log-replication",
+    "term",
+    "commit-index",
+    "split-brain"
+  ],
+  "algoritmos_tecnicas": [
+    "paxos",
+    "raft",
+    "zab",
+    "leader-election",
+    "two-phase-commit"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Lynch, Distributed Algorithms",
+    "Kleppmann, Designing Data-Intensive Applications"
+  ],
+  "papers_fundamentais": [
+    "Lamport, Paxos Made Simple, 2001",
+    "Ongaro & Ousterhout, In Search of an Understandable Consensus Algorithm, 2014",
+    "Gilbert & Lynch, Brewer's conjecture and the feasibility of consistent systems, 2002"
+  ],
+  "ferramentas": [
+    "etcd",
+    "Consul",
+    "ZooKeeper",
+    "rqlite"
+  ],
+  "perguntas_entrevista_staff": [
+    "Raft resolve CAP?",
+    "Por que 2PC bloqueia?"
+  ],
+  "projetos_reais": [
+    "Visualizador de Raft com eleição, append entries e partição"
+  ],
+  "exercicios": [
+    "Seguir um log Raft manualmente",
+    "Comparar 2PC e consenso"
+  ],
+  "tags": [
+    "CAP",
+    "PACELC",
+    "Raft",
+    "Paxos",
+    "Consensus"
+  ]
+}

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos de Dados: OLTP, OLAP, ETL e ELT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Chosen Palette: Warm Neutrals with Sky Blue (OLTP) and Amber (OLAP/Pipelines) Accents -->
+    <!-- Application Structure Plan: The SPA is divided into three distinct, sequential sections to build understanding. 
+         1. 'Sistemas' contrasts OLTP (operational) and OLAP (analytical) using an interactive comparison and a radar chart to visualize their opposite characteristics.
+         2. 'Integração' introduces ETL and ELT as the bridges between these systems, using an interactive CSS-based flow diagram to show the architectural differences.
+         3. 'Ecossistema' brings it all together in a unified view, showing the end-to-end data lifecycle. 
+         This logical flow (Source -> Bridge -> Destination) prioritizes ease of learning over a flat glossary approach. -->
+    <!-- Visualization & Content Choices: 
+         - OLTP vs OLAP comparison: Radar Chart (Chart.js/Canvas) -> Goal: Compare multi-dimensional characteristics -> Justification: Radar charts clearly show how these systems are inverses of each other (high speed/low volume vs low speed/high volume).
+         - ETL vs ELT architecture: CSS Flexbox Flow Diagrams + JS Toggle -> Goal: Show process change -> Justification: A toggleable visual flow is the most intuitive way to explain changing the order of operations without using complex external diagramming tools. NO SVG/Mermaid used. Clickable steps reveal contextual text. 
+         - Ecosystem overview: CSS Grid Diagram -> Goal: Show relationships -> Justification: Connects the previous sections into a final mental model using structured HTML/CSS styling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafaf9; /* stone-50 */
+            color: #292524; /* stone-800 */
+        }
+
+        /* Mandatory Chart Container Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+                max-height: 500px;
+                max-width: 800px;
+            }
+        }
+
+        /* CSS specific for flow diagrams (No SVG) */
+        .flow-node {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .flow-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .flow-arrow-right {
+            display: inline-block;
+            position: relative;
+            width: 2rem;
+            height: 4px;
+            background-color: #d6d3d1; /* stone-300 */
+            margin: 0 0.5rem;
+        }
+        .flow-arrow-right::after {
+            content: '';
+            position: absolute;
+            right: -4px;
+            top: -4px;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 6px solid #d6d3d1;
+        }
+        .flow-arrow-down {
+            display: block;
+            position: relative;
+            height: 2rem;
+            width: 4px;
+            background-color: #d6d3d1;
+            margin: 0.5rem auto;
+        }
+        .flow-arrow-down::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: -4px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #d6d3d1;
+        }
+
+        /* Accent Colors defined for JS manipulation */
+        .border-active-elt { border-color: #f59e0b; } /* amber-500 */
+        .border-active-etl { border-color: #0ea5e9; } /* sky-500 */
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-stone-50/90 backdrop-blur-sm border-b border-stone-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center font-bold text-xl text-stone-800 tracking-tight">
+                    <span class="text-sky-600 mr-1">&#9635;</span> ArquitetoDados
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('sistemas')" class="text-stone-600 hover:text-sky-600 transition-colors font-medium">OLTP vs OLAP</button>
+                    <button onclick="scrollToSection('integracao')" class="text-stone-600 hover:text-amber-600 transition-colors font-medium">ETL vs ELT</button>
+                    <button onclick="scrollToSection('ecossistema')" class="text-stone-600 hover:text-emerald-600 transition-colors font-medium">O Ecossistema</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-stone-900 mb-6 tracking-tight">Desmistificando a Engenharia de Dados</h1>
+        <p class="text-xl text-stone-600 leading-relaxed mb-10">
+            Para extrair valor real dos dados, as organizações precisam de arquiteturas robustas. Entenda as diferenças fundamentais entre os sistemas que operam o negócio (<strong class="text-sky-600">OLTP</strong>) e os sistemas que o analisam (<strong class="text-amber-600">OLAP</strong>), e como os dados viajam entre eles através de pipelines (<strong class="text-stone-800">ETL/ELT</strong>).
+        </p>
+        <button onclick="scrollToSection('sistemas')" class="bg-stone-900 text-white px-8 py-3 rounded-full font-medium hover:bg-stone-800 transition-colors shadow-lg">
+            Iniciar Jornada &#8595;
+        </button>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-32">
+
+        <!-- Section 1: OLTP vs OLAP -->
+        <section id="sistemas" class="scroll-mt-24">
+            <div class="mb-12 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">Sistemas de Banco de Dados</h2>
+                <p class="text-lg text-stone-600">
+                    Nesta seção, exploramos as duas principais categorias de sistemas de banco de dados. Um é focado em manter as luzes acesas, registrando cada transação em tempo real. O outro é projetado para processar volumes massivos de dados históricos para descobrir padrões. Explore o gráfico e os cartões abaixo para entender o contraste.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- OLTP Card -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-sky-500 hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl group-hover:scale-110 transition-transform">&#9881;</div>
+                    <h3 class="text-2xl font-bold text-sky-700 mb-2">OLTP</h3>
+                    <p class="text-sm text-stone-500 font-medium uppercase tracking-wider mb-4">Online Transaction Processing</p>
+                    <p class="text-stone-700 mb-6">O motor do dia a dia. Focado em processar um grande número de transações curtas em tempo real com extrema precisão e velocidade.</p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-sky-500 mr-2 mt-1">&#10003;</span>
+                            <div><strong class="block text-stone-900">Operação Principal:</strong> Inserções, atualizações e exclusões rápidas (INSERT, UPDATE, DELETE).</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-sky-500 mr-2 mt-1">&#10003;</span>
+                            <div><strong class="block text-stone-900">Estrutura de Dados:</strong> Altamente normalizada (muitas tabelas, poucos dados redundantes) para garantir a integridade.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-sky-500 mr-2 mt-1">&#10003;</span>
+                            <div><strong class="block text-stone-900">Exemplo:</strong> Sistemas de caixa de supermercado, caixas eletrônicos, e-commerce.</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- OLAP Card -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-amber-500 hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl group-hover:scale-110 transition-transform">&#128200;</div>
+                    <h3 class="text-2xl font-bold text-amber-600 mb-2">OLAP</h3>
+                    <p class="text-sm text-stone-500 font-medium uppercase tracking-wider mb-4">Online Analytical Processing</p>
+                    <p class="text-stone-700 mb-6">O cérebro analítico. Focado em responder consultas complexas envolvendo grandes volumes de dados históricos agregados.</p>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-amber-500 mr-2 mt-1">&#10003;</span>
+                            <div><strong class="block text-stone-900">Operação Principal:</strong> Leituras massivas e agregações complexas (SELECT com JOINs pesados, GROUP BY).</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-amber-500 mr-2 mt-1">&#10003;</span>
+                            <div><strong class="block text-stone-900">Estrutura de Dados:</strong> Desnormalizada (esquema estrela/floco de neve) otimizada para leitura rápida, aceitando redundância.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-amber-500 mr-2 mt-1">&#10003;</span>
+                            <div><strong class="block text-stone-900">Exemplo:</strong> Data Warehouses, relatórios de Business Intelligence, análise de tendências de vendas plurianuais.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Interactive Visualization -->
+            <div class="bg-stone-100 rounded-2xl p-6 md:p-10 border border-stone-200">
+                <h4 class="text-center font-bold text-stone-800 mb-6 text-xl">Comparação de Características (Radar)</h4>
+                
+                <div class="chart-container">
+                    <canvas id="oltpOlapChart"></canvas>
+                </div>
+                
+                <p class="text-center text-sm text-stone-500 mt-6 max-w-2xl mx-auto">
+                    Observe como os perfis são praticamente opostos. Enquanto o OLTP prioriza altíssima concorrência (muitos usuários ao mesmo tempo) e velocidade de gravação, o OLAP sacrifica isso em favor de lidar com enormes volumes de dados históricos para consultas complexas.
+                </p>
+            </div>
+        </section>
+
+        <hr class="border-stone-200">
+
+        <!-- Section 2: ETL vs ELT -->
+        <section id="integracao" class="scroll-mt-24">
+            <div class="mb-12 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">A Ponte de Integração de Dados</h2>
+                <p class="text-lg text-stone-600">
+                    Como movemos dados do caos operacional (OLTP) para a clareza analítica (OLAP)? Através de pipelines de dados. Historicamente, usávamos o processo <strong>ETL</strong>. Com o advento da computação em nuvem, o processo <strong>ELT</strong> tornou-se dominante. Utilize o seletor abaixo para interagir e entender a diferença arquitetônica crucial.
+                </p>
+            </div>
+
+            <!-- Pipeline Toggle UI -->
+            <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+                <div class="flex border-b border-stone-200">
+                    <button id="tab-etl" class="flex-1 py-4 text-center font-bold bg-stone-100 text-stone-500 border-b-2 border-transparent transition-all" onclick="setPipelineMode('etl')">
+                        Abordagem Tradicional: ETL
+                    </button>
+                    <button id="tab-elt" class="flex-1 py-4 text-center font-bold bg-white text-amber-600 border-b-2 border-amber-500 transition-all" onclick="setPipelineMode('elt')">
+                        Abordagem Moderna: ELT
+                    </button>
+                </div>
+
+                <div class="p-8 md:p-12 bg-stone-50">
+                    
+                    <!-- Interactive Architecture Diagram (Built with HTML/CSS) -->
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-12 min-h-[200px]">
+                        
+                        <!-- Extração (Common) -->
+                        <div class="flow-node bg-white border-2 border-stone-300 rounded-xl p-6 w-48 text-center" onclick="showPipelineDetail('E')">
+                            <div class="text-3xl mb-2 text-stone-400">&#128228;</div>
+                            <h4 class="font-bold text-stone-800">E: Extract</h4>
+                            <p class="text-xs text-stone-500 mt-1">Extração das fontes (OLTP, APIs)</p>
+                        </div>
+
+                        <!-- Dynamic Arrow / Layout based on mode -->
+                        <div class="hidden md:block flow-arrow-right"></div>
+                        <div class="block md:hidden flow-arrow-down"></div>
+
+                        <!-- Dynamic Middle Step -->
+                        <div id="diagram-middle" class="flow-node bg-white border-2 border-sky-400 rounded-xl p-6 w-48 text-center shadow-lg transform scale-105" onclick="showPipelineDetail('T')">
+                            <div class="text-3xl mb-2 text-sky-500" id="middle-icon">&#9874;</div>
+                            <h4 class="font-bold text-sky-700" id="middle-title">T: Transform</h4>
+                            <p class="text-xs text-stone-500 mt-1" id="middle-desc">Em servidor intermediário</p>
+                        </div>
+
+                        <div class="hidden md:block flow-arrow-right"></div>
+                        <div class="block md:hidden flow-arrow-down"></div>
+
+                        <!-- Dynamic End Step -->
+                        <div id="diagram-end" class="flow-node bg-white border-2 border-stone-300 rounded-xl p-6 w-48 text-center" onclick="showPipelineDetail('L')">
+                            <div class="text-3xl mb-2 text-stone-400" id="end-icon">&#128190;</div>
+                            <h4 class="font-bold text-stone-800" id="end-title">L: Load</h4>
+                            <p class="text-xs text-stone-500 mt-1" id="end-desc">Carga no Data Warehouse</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Dynamic Description Box -->
+                    <div id="detail-box" class="bg-white p-6 rounded-lg border-l-4 border-amber-500 shadow-sm max-w-2xl mx-auto">
+                        <h5 class="text-lg font-bold text-stone-900 mb-2 flex items-center">
+                            <span id="detail-title-icon" class="mr-2">&#128161;</span>
+                            <span id="detail-title">Selecione uma etapa acima</span>
+                        </h5>
+                        <p id="detail-text" class="text-stone-600 leading-relaxed">
+                            Clique nas caixas do diagrama para entender o que acontece em cada fase no modelo selecionado. A principal diferença reside em <strong>onde</strong> o processamento pesado (Transformação) ocorre.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-stone-200">
+
+        <!-- Section 3: The Ecosystem -->
+        <section id="ecossistema" class="scroll-mt-24">
+            <div class="mb-12 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">A Arquitetura Completa</h2>
+                <p class="text-lg text-stone-600">
+                    O ecossistema moderno de dados conecta todos esses conceitos. Sistemas operacionais geram dados continuamente. Pipelines automatizados movem e moldam esses dados. Finalmente, plataformas analíticas servem esses dados refinados para tomadores de decisão.
+                </p>
+            </div>
+
+            <!-- Ecosystem CSS Diagram -->
+            <div class="bg-stone-900 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
+                <!-- Background decorative elements -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-stone-800 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-amber-900 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2"></div>
+
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                    
+                    <!-- Fontes (OLTP) -->
+                    <div class="col-span-1 flex flex-col gap-3">
+                        <div class="bg-stone-800 border border-stone-700 p-4 rounded-xl text-center">
+                            <span class="block text-sky-400 font-bold mb-1">CRM</span>
+                            <span class="text-xs text-stone-400">OLTP</span>
+                        </div>
+                        <div class="bg-stone-800 border border-stone-700 p-4 rounded-xl text-center">
+                            <span class="block text-sky-400 font-bold mb-1">ERP</span>
+                            <span class="text-xs text-stone-400">OLTP</span>
+                        </div>
+                        <div class="bg-stone-800 border border-stone-700 p-4 rounded-xl text-center">
+                            <span class="block text-sky-400 font-bold mb-1">Web API</span>
+                            <span class="text-xs text-stone-400">JSON/NoSQL</span>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Arrow -->
+                    <div class="col-span-1 flex justify-center text-stone-500">
+                        <span class="hidden md:inline text-4xl">&#8680;</span>
+                        <span class="md:hidden inline text-4xl py-4">&#8681;</span>
+                    </div>
+
+                    <!-- Processamento (ETL/ELT) -->
+                    <div class="col-span-1 text-center bg-stone-800/80 backdrop-blur border border-stone-600 p-6 rounded-2xl">
+                        <div class="text-4xl mb-3">&#9881;&#65039;</div>
+                        <h4 class="font-bold text-amber-400 mb-2">Ingestão</h4>
+                        <p class="text-xs text-stone-400">ETL ou ELT Pipelines rodando em batch ou streaming.</p>
+                    </div>
+
+                    <!-- Pipeline Arrow -->
+                    <div class="col-span-1 flex justify-center text-stone-500">
+                        <span class="hidden md:inline text-4xl">&#8680;</span>
+                        <span class="md:hidden inline text-4xl py-4">&#8681;</span>
+                    </div>
+
+                    <!-- Destino (OLAP / BI) -->
+                    <div class="col-span-1 flex flex-col items-center">
+                        <div class="w-full bg-stone-800 border-2 border-emerald-500 p-6 rounded-2xl text-center mb-4">
+                            <div class="text-3xl mb-2">&#127980;</div>
+                            <h4 class="font-bold text-white">Data Warehouse</h4>
+                            <p class="text-xs text-stone-400 mt-1">OLAP / Esquema Estrela</p>
+                        </div>
+                        
+                        <div class="flex gap-2 w-full justify-center text-xs text-emerald-400 font-bold">
+                            <div class="bg-emerald-900/50 px-3 py-2 rounded">Dashboards</div>
+                            <div class="bg-emerald-900/50 px-3 py-2 rounded">ML Models</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-8 text-center text-sm border-t border-stone-800">
+        <p>Desenvolvido para exploração e aprendizado de conceitos de arquitetura de dados.</p>
+    </footer>
+
+    <!-- Logic Setup -->
+    <script>
+        // Smooth scrolling for navigation
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- Chart.js Configuration (OLTP vs OLAP) ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('oltpOlapChart').getContext('2d');
+            
+            // Set global font defaults for Chart.js to match Tailwind
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#78716c'; // stone-500
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Volume de Dados (por query)', 
+                        'Velocidade Necessária', 
+                        'Complexidade da Consulta', 
+                        'Necessidade de Histórico', 
+                        'Volume de Transações/Concorrência'
+                    ],
+                    datasets: [
+                        {
+                            label: 'OLTP (Operacional)',
+                            data: [1, 10, 2, 1, 10], // High speed, high concurrency, low complexity/history
+                            backgroundColor: 'rgba(14, 165, 233, 0.2)', // Sky-500 with opacity
+                            borderColor: 'rgba(14, 165, 233, 1)',
+                            pointBackgroundColor: 'rgba(14, 165, 233, 1)',
+                            borderWidth: 2,
+                            fill: true
+                        },
+                        {
+                            label: 'OLAP (Analítico)',
+                            data: [10, 3, 10, 10, 2], // High volume, high complexity/history, lower speed requirement relative to txns
+                            backgroundColor: 'rgba(245, 158, 11, 0.2)', // Amber-500 with opacity
+                            borderColor: 'rgba(245, 158, 11, 1)',
+                            pointBackgroundColor: 'rgba(245, 158, 11, 1)',
+                            borderWidth: 2,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.05)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            pointLabels: {
+                                font: { size: 12, weight: '600' },
+                                color: '#44403c', // stone-700
+                                // Implement 16-char wrapping logic for labels
+                                callback: function(value) {
+                                    if (value.length > 16) {
+                                        const words = value.split(' ');
+                                        let lines = [];
+                                        let currentLine = '';
+                                        words.forEach(word => {
+                                            if ((currentLine + word).length > 16) {
+                                                lines.push(currentLine.trim());
+                                                currentLine = word + ' ';
+                                            } else {
+                                                currentLine += word + ' ';
+                                            }
+                                        });
+                                        lines.push(currentLine.trim());
+                                        return lines;
+                                    }
+                                    return value;
+                                }
+                            },
+                            ticks: { display: false, min: 0, max: 10 }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } },
+                        tooltip: {
+                            backgroundColor: 'rgba(28, 25, 23, 0.9)', // stone-900
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 13 },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    // Translate numeric values to conceptual text for tooltip
+                                    if(context.raw === 10) return label + 'Muito Alto';
+                                    if(context.raw === 1 || context.raw === 2) return label + 'Baixo';
+                                    return label + 'Moderado';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // --- ETL vs ELT Logic ---
+        let currentMode = 'elt'; // Default to modern ELT
+        
+        // Data content for descriptions
+        const pipelineData = {
+            etl: {
+                E: { title: "Extração (Extract)", icon: "&#128228;", text: "Os dados brutos são lidos dos sistemas de origem (geralmente bancos de dados OLTP, APIs, arquivos planos). Esta etapa é idêntica em ambos os modelos." },
+                T: { title: "Transformação (Transform)", icon: "&#9874;", text: "<strong>Fase Crítica no ETL:</strong> Os dados são transformados (limpos, agregados, filtrados, padronizados) em um <em>servidor de processamento intermediário</em> (como o Apache Spark ou uma ferramenta de integração específica) ANTES de chegarem ao destino final. Isso exige infraestrutura separada." },
+                L: { title: "Carga (Load)", icon: "&#128190;", text: "Os dados, já completamente transformados e modelados, são carregados no Data Warehouse (OLAP). O destino recebe o dado pronto para consumo." }
+            },
+            elt: {
+                E: { title: "Extração (Extract)", icon: "&#128228;", text: "Os dados brutos são lidos das fontes. Idêntico ao ETL." },
+                L: { title: "Carga (Load)", icon: "&#128190;", text: "<strong>Mudança de Paradigma:</strong> Os dados brutos são carregados <em>diretamente</em> no Data Warehouse ou Data Lake destino (geralmente na nuvem), exatamente como vieram da origem, sem transformação prévia." },
+                T: { title: "Transformação (Transform)", icon: "&#9874;", text: "A transformação ocorre <em>dentro</em> do Data Warehouse moderno (ex: Snowflake, BigQuery), utilizando SQL. Isso aproveita o imenso poder de processamento paralelo da nuvem destino, eliminando a necessidade de um servidor de transformação intermediário pesado." }
+            }
+        };
+
+        function setPipelineMode(mode) {
+            currentMode = mode;
+            
+            // UI Toggle Styles
+            const tabEtl = document.getElementById('tab-etl');
+            const tabElt = document.getElementById('tab-elt');
+            
+            if (mode === 'etl') {
+                tabEtl.className = "flex-1 py-4 text-center font-bold bg-white text-sky-600 border-b-2 border-sky-500 transition-all";
+                tabElt.className = "flex-1 py-4 text-center font-bold bg-stone-100 text-stone-500 border-b-2 border-transparent transition-all";
+                document.getElementById('detail-box').className = "bg-white p-6 rounded-lg border-l-4 border-sky-500 shadow-sm max-w-2xl mx-auto";
+                
+                // Update Diagram Layout for ETL: Source -> Transform(Active) -> Load
+                updateDiagramNode('middle', 'T', 'Transform', 'Em servidor intermediário', 'sky');
+                updateDiagramNode('end', 'L', 'Load', 'Carga de dados limpos', 'stone');
+                
+            } else {
+                tabElt.className = "flex-1 py-4 text-center font-bold bg-white text-amber-600 border-b-2 border-amber-500 transition-all";
+                tabEtl.className = "flex-1 py-4 text-center font-bold bg-stone-100 text-stone-500 border-b-2 border-transparent transition-all";
+                document.getElementById('detail-box').className = "bg-white p-6 rounded-lg border-l-4 border-amber-500 shadow-sm max-w-2xl mx-auto";
+
+                // Update Diagram Layout for ELT: Source -> Load(Active) -> Transform
+                updateDiagramNode('middle', 'L', 'Load', 'Carga de dados brutos', 'amber');
+                updateDiagramNode('end', 'T', 'Transform', 'Dentro do Cloud DW', 'amber', true);
+            }
+
+            // Reset detail box
+            document.getElementById('detail-title').innerText = `Fluxo ${mode.toUpperCase()} selecionado`;
+            document.getElementById('detail-title-icon').innerHTML = '&#128161;';
+            document.getElementById('detail-text').innerHTML = `Você selecionou a arquitetura <strong>${mode.toUpperCase()}</strong>. Clique nas caixas do diagrama acima para inspecionar os detalhes técnicos desta abordagem.`;
+        }
+
+        function updateDiagramNode(positionId, letter, title, desc, colorTheme, highlightEnd = false) {
+            const element = document.getElementById(`diagram-${positionId}`);
+            
+            // Base classes
+            let bgClass = "flow-node bg-white border-2 rounded-xl p-6 w-48 text-center";
+            let iconColor = "", textColor = "";
+
+            if (colorTheme === 'sky') {
+                bgClass += " border-sky-400 shadow-lg transform scale-105";
+                iconColor = "text-sky-500"; textColor = "text-sky-700";
+            } else if (colorTheme === 'amber' && positionId === 'middle') {
+                bgClass += " border-amber-400";
+                iconColor = "text-amber-500"; textColor = "text-amber-700";
+            } else if (colorTheme === 'amber' && positionId === 'end' && highlightEnd) {
+                 bgClass += " border-amber-500 shadow-lg transform scale-105";
+                 iconColor = "text-amber-600"; textColor = "text-amber-700";
+            } else {
+                bgClass += " border-stone-300";
+                iconColor = "text-stone-400"; textColor = "text-stone-800";
+            }
+
+            element.className = bgClass;
+            
+            // Set inner content
+            let iconHex = letter === 'T' ? '&#9874;' : '&#128190;'; // Hammer for T, Disk for L
+            
+            document.getElementById(`${positionId}-icon`).innerHTML = iconHex;
+            document.getElementById(`${positionId}-icon`).className = `text-3xl mb-2 ${iconColor}`;
+            document.getElementById(`${positionId}-title`).innerText = `${letter}: ${title}`;
+            document.getElementById(`${positionId}-title`).className = `font-bold ${textColor}`;
+            document.getElementById(`${positionId}-desc`).innerText = desc;
+            
+            // Update onclick handler mapping based on mode
+            element.onclick = function() { showPipelineDetail(letter); };
+        }
+
+        function showPipelineDetail(stepLetter) {
+            const data = pipelineData[currentMode][stepLetter];
+            document.getElementById('detail-title').innerText = data.title;
+            document.getElementById('detail-title-icon').innerHTML = data.icon;
+            document.getElementById('detail-text').innerHTML = data.text;
+        }
+
+        // Initialize with ELT view
+        setPipelineMode('elt');
+
+    </script>
+</body>
+</html>

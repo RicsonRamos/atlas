@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Relatório Interativo: Maturidade de Dados e IA 2026." />
+  <title>Maturidade de Dados e IA | Roadmap DE & IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #111120;
+      --bg-card2:  #14142a;
+      --border:    #1e1e35;
+      --border2:   #2a2a40;
+      --text:      #e8e8f0;
+      --text-muted:#a0a0c0;
+      --text-dim:  #60608b;
+      --text-deep: #40407a;
+      --accent:    #BD93F9;
+      --accent-dim:#BD93F920;
+      --accent-mid:#BD93F940;
+      --link:      #6C63FF;
+
+      --c-g1: #50FA7B;
+      --c-g2: #FF79C6;
+      --c-g3: #8BE9FD;
+      --c-med: #FFB86C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--link); }
+
+    /* ── Nav ── */
+    nav.top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+      height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1rem; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+      background: var(--accent-dim); border: 1px solid var(--accent-mid);
+      border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+    .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+    .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+
+    /* ── Layout ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 5rem 1.25rem 3rem; display: flex; flex-direction: column; gap: 2rem; }
+
+    .page-header { text-align: center; margin-bottom: 0.5rem; }
+    .page-header h1 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 0.6rem; }
+    .page-header h1 .accent { color: var(--accent); }
+    .page-header p { color: var(--text-muted); font-size: 0.85rem; max-width: 600px; margin: 0 auto; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 0.8rem; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; }
+
+    /* ── Tabs ── */
+    .tabs-nav { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .tab-btn {
+      padding: 0.5rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      background: transparent; border: 1px solid transparent; color: var(--text-dim); transition: all 0.2s ease; border-bottom: none;
+    }
+    .tab-btn:hover { color: var(--text-muted); background: #ffffff06; }
+    .tab-btn.active { background: var(--bg-card); border-color: var(--border); border-bottom-color: var(--bg-card); color: var(--text); position: relative; top: 1px; }
+
+    /* ── Card & Views ── */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; }
+    .view-section { display: none; animation: fadeIn 0.35s ease both; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); }
+    h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--text); }
+    p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    strong { color: var(--text); font-weight: 700; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+    .feature-box { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; }
+    
+    .chart-wrap { position: relative; width: 100%; height: 350px; margin-top: 1.5rem; }
+
+    /* Custom Diagram (Mesh vs Lake) */
+    .diagram-controls { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+    .btn-toggle { background: var(--bg); border: 1px solid var(--border2); color: var(--text-muted); padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-toggle.active { background: var(--accent); color: #0d0d14; border-color: var(--accent); }
+    
+    .diagram-container { position: relative; min-height: 400px; display: flex; align-items: center; justify-content: center; padding: 2rem; background: var(--bg-card2); border-radius: 12px; border: 1px solid var(--border); }
+    .diagram-view { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s; padding: 2rem; }
+    .diagram-view.active { opacity: 1; pointer-events: auto; }
+    
+    .node { background: var(--bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; text-align: center; min-width: 120px; font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .node.central { border-color: var(--accent); border-width: 2px; padding: 1.5rem; background: var(--bg-card); }
+    .arrow-down { color: var(--text-dim); margin: 0.5rem 0; font-size: 1.2rem; }
+    
+    .mesh-domain { background: var(--bg); border: 1px solid var(--c-g3); padding: 1rem; border-radius: 8px; text-align: center; flex: 1; min-width: 150px; }
+    .mesh-product { background: var(--bg-card); font-size: 0.7rem; padding: 4px; margin-top: 8px; border-radius: 4px; border: 1px solid var(--border); color: var(--text-muted); }
+
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="/" class="back-btn">← Roadmap</a>
+      <div class="nav-brand"><span>BLOCO 01</span> Fundamentos Matemáticos</div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <div class="chip-row">
+        <span class="badge" style="background:#BD93F920;color:#BD93F9;">BLOCO 01</span>
+        <span class="badge" style="background:#6C63FF20;color:#9988ff;">CORE</span>
+      </div>
+      <h1>Maturidade de <span class="accent">Dados e IA</span></h1>
+      <p>A IA é o motor. Os Dados são o combustível. Explore como a arquitetura de dados dita o sucesso da Inteligência Artificial corporativa.</p>
+    </div>
+
+    <div class="tabs-nav" id="tabs-nav">
+      <button class="tab-btn active" data-target="view-intro">🏠 Visão Geral</button>
+      <button class="tab-btn" data-target="view-desafios" style="color:var(--c-g1);">⚠️ Gargalos</button>
+      <button class="tab-btn" data-target="view-arq" style="color:var(--c-g2);">🏗️ Paradigma Mesh</button>
+      <button class="tab-btn" data-target="view-roi" style="color:var(--c-g3);">💰 Impacto e ROI</button>
+    </div>
+
+    <div class="card">
+      
+      <!-- INÍCIO -->
+      <section id="view-intro" class="view-section active">
+        <h2>O Desafio Atual</h2>
+        <p>A pesquisa global de 2026 revela que algoritmos avançados falham sem uma fundação de dados robusta.</p>
+        
+        <div class="grid-3 mt-8">
+          <div class="feature-box">
+            <h3 style="color:var(--c-g1); font-size:2rem; margin-bottom:0;">85%</h3>
+            <p style="font-size:0.8rem; margin:0;">Dos modelos falham em produção devido à baixa qualidade dos dados de origem.</p>
+          </div>
+          <div class="feature-box">
+            <h3 style="color:var(--c-g2); font-size:2rem; margin-bottom:0;">3.2x</h3>
+            <p style="font-size:0.8rem; margin:0;">Mais rápido é o time-to-market de IA em empresas com arquitetura descentralizada.</p>
+          </div>
+          <div class="feature-box">
+            <h3 style="color:var(--c-g3); font-size:2rem; margin-bottom:0;">60%</h3>
+            <p style="font-size:0.8rem; margin:0;">Do orçamento de IA está sendo redirecionado para Engenharia de Dados.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- GARGALOS -->
+      <section id="view-desafios" class="view-section">
+        <h2 style="color:var(--c-g1);">O Gargalo da Adoção</h2>
+        <p>A <strong>Qualidade e Silos de Dados (68%)</strong> lideram como o maior bloqueio. Modelos de IA dependem de contexto.</p>
+        
+        <div class="chart-wrap">
+          <canvas id="bottleneckChart"></canvas>
+        </div>
+        <p style="text-align:center; font-size:0.8rem; color:var(--text-dim); margin-top:1rem;">A Falácia do Algoritmo: investir apenas no modelo e ignorar o pipeline de dados.</p>
+      </section>
+
+      <!-- ARQUITETURA -->
+      <section id="view-arq" class="view-section">
+        <h2 style="color:var(--c-g2);">Monolito vs. Data Mesh</h2>
+        <p>A arquitetura de dados está mudando de um repositório centralizado (Lake) para produtos de dados descentralizados (Mesh).</p>
+        
+        <div class="diagram-controls">
+          <button class="btn-toggle active" id="btn-lake">Data Lake Centralizado</button>
+          <button class="btn-toggle" id="btn-mesh">Data Mesh Descentralizado</button>
+        </div>
+
+        <div class="diagram-container">
+          <!-- LAKE -->
+          <div class="diagram-view active" id="diag-lake">
+            <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+              <div class="node">Vendas</div>
+              <div class="node">Marketing</div>
+              <div class="node">Logística</div>
+            </div>
+            <div class="arrow-down">↓↓↓</div>
+            <div class="node central">
+              <span style="color:var(--accent);">Data Lake Monolítico</span><br/>
+              <span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;">Equipe Central de Dados (Gargalo)</span>
+            </div>
+            <div class="arrow-down">↓↓</div>
+            <div style="display:flex; gap:1rem; margin-top:1rem;">
+              <div class="node" style="border-color:var(--c-g2);">IA & ML</div>
+              <div class="node" style="border-color:var(--c-g2);">Dashboards</div>
+            </div>
+          </div>
+          <!-- MESH -->
+          <div class="diagram-view" id="diag-mesh">
+            <div style="width:100%; display:flex; flex-wrap:wrap; gap:1rem; justify-content:center;">
+              <div class="mesh-domain">
+                <div>Domínio: Vendas</div>
+                <div class="mesh-product">Data Product A →</div>
+              </div>
+              <div class="mesh-domain">
+                <div>Domínio: Marketing</div>
+                <div class="mesh-product">Data Product B →</div>
+                <div class="mesh-product">Data Product C →</div>
+              </div>
+              <div class="mesh-domain" style="border-color:var(--accent);">
+                <div style="color:var(--accent);">Domínio: IA</div>
+                <div class="mesh-product" style="border-color:var(--accent);">Consome Produtos via API</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p id="diag-desc" style="text-align:center; font-size:0.85rem; margin-top:1rem; color:var(--text-muted);">No <strong>Data Lake Centralizado</strong>, todas as fontes enviam dados brutos para um local único, criando um gargalo na equipe central.</p>
+      </section>
+
+      <!-- ROI -->
+      <section id="view-roi" class="view-section">
+        <h2 style="color:var(--c-g3);">Maturidade vs. Retorno (ROI)</h2>
+        <p>Como o investimento em arquitetura se traduz em lucros com IA? Veja a divisão do mercado.</p>
+        
+        <div class="grid-2" style="align-items:center;">
+          <div class="chart-wrap" style="height:250px; margin:0;">
+            <canvas id="roiChart"></canvas>
+          </div>
+          <div>
+            <div class="feature-box" style="margin-bottom:0.5rem; padding:1rem;">
+              <h4 style="color:var(--c-g1); font-size:0.9rem;">Líderes (15%)</h4>
+              <p style="font-size:0.8rem; margin:0;">Adotaram Data Mesh. Reportam ROI positivo em IA em menos de 6 meses.</p>
+            </div>
+            <div class="feature-box" style="margin-bottom:0.5rem; padding:1rem;">
+              <h4 style="color:var(--c-g3); font-size:0.9rem;">Exploradores (45%)</h4>
+              <p style="font-size:0.8rem; margin:0;">Possuem Data Lakes, mas sofrem com governança. IA usada apenas em PoCs isoladas.</p>
+            </div>
+            <div class="feature-box" style="padding:1rem;">
+              <h4 style="color:var(--text-dim); font-size:0.9rem;">Atrasados (40%)</h4>
+              <p style="font-size:0.8rem; margin:0;">Projetos paralisados por dados fragmentados em sistemas legados e falta de qualidade.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // Tab Logic
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.view-section');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.target).classList.add('active');
+      });
+    });
+
+    // Chart Global
+    Chart.defaults.color = '#60608b';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    // Bar Chart - Gargalos
+    new Chart(document.getElementById('bottleneckChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Qualidade de Dados', 'Silos e Integração', 'Privacidade/Segurança', 'Falta de Talentos', 'Custo de Compute'],
+        datasets: [{
+          data: [68, 55, 42, 38, 25],
+          backgroundColor: ['#50FA7B', '#8BE9FD', '#FFB86C', '#FF79C6', '#BD93F9'],
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: '#1e1e3540' }, max: 100 },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+
+    // Doughnut - ROI
+    new Chart(document.getElementById('roiChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Líderes', 'Exploradores', 'Atrasados'],
+        datasets: [{
+          data: [15, 45, 40],
+          backgroundColor: ['#50FA7B', '#8BE9FD', '#1e1e35'],
+          borderWidth: 2, borderColor: '#111120', hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '65%',
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // Diagram Toggle
+    const btnLake = document.getElementById('btn-lake');
+    const btnMesh = document.getElementById('btn-mesh');
+    const diagLake = document.getElementById('diag-lake');
+    const diagMesh = document.getElementById('diag-mesh');
+    const diagDesc = document.getElementById('diag-desc');
+    
+    const txtLake = "No <strong>Data Lake Centralizado</strong>, todas as fontes enviam dados brutos para um local único, criando um gargalo na equipe central.";
+    const txtMesh = "No <strong>Data Mesh Descentralizado</strong>, cada domínio gerencia a qualidade de seus próprios <em>Data Products</em>. A IA consome isso via API, eliminando gargalos.";
+
+    btnLake.addEventListener('click', () => {
+      btnLake.classList.add('active'); btnMesh.classList.remove('active');
+      diagLake.classList.add('active'); diagMesh.classList.remove('active');
+      diagDesc.innerHTML = txtLake;
+    });
+
+    btnMesh.addEventListener('click', () => {
+      btnMesh.classList.add('active'); btnLake.classList.remove('active');
+      diagMesh.classList.add('active'); diagLake.classList.remove('active');
+      diagDesc.innerHTML = txtMesh;
+    });
+
+  </script>
+</body>
+</html>

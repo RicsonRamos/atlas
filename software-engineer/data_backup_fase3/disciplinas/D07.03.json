@@ -1,0 +1,72 @@
+{
+  "id": "D07.03",
+  "dominio_id": "D07",
+  "nome": "Delta Lake e Hudi",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Parquet",
+    "Streaming",
+    "Transações"
+  ],
+  "objetivos": [
+    "Comparar transaction log, MOR/COW e padrões de upsert",
+    "Escolher formato por workload e ecossistema"
+  ],
+  "pratica_esperada": [
+    "Implementar CDC com MERGE em Delta e Hudi",
+    "Comparar read amplification em MOR"
+  ],
+  "teoria": [
+    "delta-transaction-log",
+    "optimistic-concurrency",
+    "change-data-feed",
+    "z-order",
+    "hudi-copy-on-write",
+    "hudi-merge-on-read",
+    "timeline"
+  ],
+  "algoritmos_tecnicas": [
+    "optimistic-concurrency-control",
+    "log-replay",
+    "compaction-scheduling",
+    "index-lookup"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Reis & Housley, Fundamentals of Data Engineering",
+    "Karau & Warren, High Performance Spark"
+  ],
+  "papers_fundamentais": [
+    "Armbrust et al., Delta Lake, 2020",
+    "Apache Hudi technical reports"
+  ],
+  "ferramentas": [
+    "Delta Lake",
+    "Databricks",
+    "Hudi",
+    "Spark",
+    "Flink"
+  ],
+  "perguntas_entrevista_staff": [
+    "Delta log é banco de dados?",
+    "Quando MOR compensa?"
+  ],
+  "projetos_reais": [
+    "Comparativo CDC: Delta MERGE vs Hudi MOR em carga incremental"
+  ],
+  "exercicios": [
+    "Ler transaction log",
+    "Medir compaction em Hudi"
+  ],
+  "tags": [
+    "Delta",
+    "Hudi",
+    "MERGE",
+    "CDC",
+    "Compaction"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "D02.05",
+  "dominio_id": "D02",
+  "nome": "Filesystems, Storage Local e I/O",
+  "nivel": "Staff",
+  "carga_horaria": "22-30h",
+  "prerequisitos": [
+    "Linux internals",
+    "Arquitetura de computadores"
+  ],
+  "objetivos": [
+    "Relacionar disco, page cache e throughput de dados",
+    "Entender zero-copy e padrões de acesso sequencial"
+  ],
+  "pratica_esperada": [
+    "Medir read amplification com arquivos pequenos",
+    "Comparar mmap, read e streaming"
+  ],
+  "teoria": [
+    "page-cache",
+    "buffer-cache",
+    "mmap",
+    "direct-i-o",
+    "zero-copy",
+    "fsync",
+    "nvme",
+    "object-storage-semantics",
+    "small-files-problem"
+  ],
+  "algoritmos_tecnicas": [
+    "sequential-scan",
+    "read-ahead",
+    "compaction-local",
+    "spill-to-disk"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Tanenbaum & Bos, Modern Operating Systems",
+    "Kleppmann, Designing Data-Intensive Applications"
+  ],
+  "papers_fundamentais": [
+    "Rosenblum & Ousterhout, The design and implementation of a log-structured file system, 1992"
+  ],
+  "ferramentas": [
+    "fio",
+    "iostat",
+    "parquet-tools",
+    "DuckDB",
+    "strace"
+  ],
+  "perguntas_entrevista_staff": [
+    "Por que small files matam performance no lake?",
+    "O que zero-copy economiza?"
+  ],
+  "projetos_reais": [
+    "Benchmark de leitura Parquet com diferentes tamanhos de arquivo"
+  ],
+  "exercicios": [
+    "Medir page cache cold vs warm",
+    "Analisar spill de sort local"
+  ],
+  "tags": [
+    "I/O",
+    "Page Cache",
+    "Zero-copy",
+    "NVMe",
+    "Small Files"
+  ]
+}

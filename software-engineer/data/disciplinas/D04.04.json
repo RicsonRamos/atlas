@@ -1,0 +1,73 @@
+{
+  "id": "D04.04",
+  "dominio_id": "D04",
+  "nome": "Modelagem Analítica: Kimball, Vault e Semântica",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "SQL",
+    "Domínios de negócio"
+  ],
+  "objetivos": [
+    "Projetar modelos analíticos evolutivos",
+    "Separar fatos, dimensões, historização e semântica de métricas"
+  ],
+  "pratica_esperada": [
+    "Modelar domínio com Kimball e comparar com Vault",
+    "Definir métricas canônicas e granularidade"
+  ],
+  "teoria": [
+    "star-schema",
+    "snowflake-schema",
+    "scd",
+    "data-vault-2-0",
+    "hubs",
+    "links",
+    "satellites",
+    "anchor-modeling",
+    "semantic-layer"
+  ],
+  "algoritmos_tecnicas": [
+    "surrogate-key-generation",
+    "scd-type-2-merge",
+    "snapshotting",
+    "point-in-time-tables"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Kimball & Ross, The Data Warehouse Toolkit",
+    "Linstedt & Olschimke, Building a Scalable Data Warehouse with Data Vault 2.0"
+  ],
+  "papers_fundamentais": [
+    "Linstedt, Data Vault overview, 2002",
+    "Kimball, Dimensional modeling techniques, 1996"
+  ],
+  "ferramentas": [
+    "dbt",
+    "MetricFlow",
+    "LookML",
+    "Dataform",
+    "SQLMesh"
+  ],
+  "perguntas_entrevista_staff": [
+    "Quando Data Vault compensa o custo?",
+    "Como garantir uma métrica única entre times?"
+  ],
+  "projetos_reais": [
+    "Warehouse de domínio com SCD2, Vault e camada semântica comparada"
+  ],
+  "exercicios": [
+    "Modelar evento em fato transacional",
+    "Criar PIT table para Vault"
+  ],
+  "tags": [
+    "Kimball",
+    "Data Vault",
+    "SCD",
+    "Semantic Layer",
+    "Metrics"
+  ]
+}

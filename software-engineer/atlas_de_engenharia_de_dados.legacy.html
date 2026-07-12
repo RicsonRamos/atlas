@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas de Engenharia de Dados: Staff Level</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        :root {
+            --primary: #f59e0b;
+            --bg: #fcfcf9;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: #1e293b;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .sidebar-item.active {
+            background-color: #fff;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            font-weight: 700;
+            color: #000;
+        }
+
+        .topic-expansion {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+
+        .topic-card.open .topic-expansion {
+            max-height: 12000px;
+            opacity: 1;
+            padding-bottom: 1.5rem;
+        }
+
+        .topic-card.open .chevron {
+            transform: rotate(180deg);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+
+    <nav class="h-16 border-b border-slate-200 bg-white flex items-center justify-between px-6 z-50 relative">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-amber-500 font-black text-xl shadow-lg">Σ</div>
+            <div>
+                <h1 class="text-lg font-extrabold tracking-tight leading-none">StaffData <span class="text-amber-500">Atlas</span></h1>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Ementa de Engenharia de Elite</p>
+            </div>
+        </div>
+        <div class="relative w-1/3 max-w-md hidden md:block">
+            <input type="text" id="searchInput" placeholder="Buscar conceito, algoritmo ou ferramenta..." 
+                   class="w-full bg-slate-100 border-none rounded-full py-2 px-10 text-sm focus:ring-2 focus:ring-amber-500 transition-all">
+            <span class="absolute left-4 top-2.5 opacity-40">🔍</span>
+        </div>
+        <div class="flex items-center gap-4 text-[10px] font-black text-slate-400 uppercase tracking-tighter">
+            <span class="bg-slate-100 px-2 py-1 rounded">v4.0 Staff Atlas</span>
+        </div>
+    </nav>
+
+    <div class="flex h-[calc(100vh-64px)]">
+        <!-- Sidebar Navigation -->
+        <aside class="w-20 md:w-80 bg-slate-50 border-r border-slate-200 overflow-y-auto custom-scroll flex-shrink-0">
+            <div class="p-4 space-y-1" id="sidebarNav">
+                <!-- Blocos gerados por JS -->
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 bg-[#fcfcf9]">
+            <div class="max-w-5xl mx-auto">
+                
+                <div id="moduleHeader" class="mb-10 animate-in fade-in slide-in-from-top-4 duration-500">
+                    <!-- Dinâmico -->
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Syllabus Content -->
+                    <div class="lg:col-span-8 space-y-4" id="topicsGrid">
+                        <!-- Tópicos interativos expandidos aqui -->
+                    </div>
+
+                    <!-- Side Contextual Info -->
+                    <div class="lg:col-span-4 space-y-6">
+                        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm sticky top-4">
+                            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6 text-center">Perfil de Domínio</h3>
+                            <div class="chart-container">
+                                <canvas id="radarChart"></canvas>
+                            </div>
+                            <div id="moduleStats" class="mt-6 pt-6 border-t border-slate-50 text-[12px] text-slate-500 leading-relaxed italic">
+                                <!-- Insight dinâmico -->
+                            </div>
+                            
+                            <div class="mt-6 space-y-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                                    <span class="text-[10px] font-bold uppercase text-slate-500">Requisito de Liderança</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                    <span class="text-[10px] font-bold uppercase text-slate-500">Base Computacional</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        /*
+        const legacyRoadmapData = [
+            {
+                id: "01",
+                title: "Fundamentos & Matemática",
+                desc: "A base intelectual da computação. Um Staff Engineer não apenas usa ferramentas, ele compreende as primitivas que as tornam possíveis.",
+                insight: "Sem o domínio de Grafos e Complexidade, sua orquestração de dados e otimização de consultas serão baseadas em tentativa e erro.",
+                radar: [95, 80, 40, 50, 40, 60], // Math, Systems, Software, Data, Dist, Lead
+                topics: [
+                    {
+                        name: "Lógica Matemática e Teoria dos Conjuntos",
+                        detail: "Domínio de Lógica Proposicional e de Predicados para construção de sistemas de decisão. Teoria dos conjuntos aplicada à Álgebra Relacional (SELECT, JOIN, INTERSECT) e otimização de filtros em grandes volumes. Introdução à Lógica Fuzzy para lidar com incertezas em qualidade de dados.",
+                        skills: ["Álgebra Relacional", "Predicados", "Fuzzy Logic"]
+                    },
+                    {
+                        name: "Matemática Discreta e Grafos (DAGs)",
+                        detail: "Aprofundamento em Grafos Acíclicos Dirigidos (DAGs) para orquestração (Airflow) e linhagem. Algoritmos de ordenação topológica para resolução de dependências. Teoria de Grafos para análise de redes sociais e detecção de fraude em tempo real.",
+                        skills: ["BFS/DFS", "Ordenação Topológica", "Linhagem"]
+                    },
+                    {
+                        name: "Álgebra Linear Aplicada",
+                        detail: "Espaços vetoriais, Matrizes de Coincidência e Decomposição de Valor Singular (SVD). Essencial para entender Embeddings em LLMs e cálculos de similaridade (Distância de Cosseno, Euclidiana) em Bancos de Dados Vetoriais.",
+                        skills: ["SVD", "Cosseno", "Vetores"]
+                    },
+                    {
+                        name: "Estatística e Probabilidade Bayesiana",
+                        detail: "Distribuições de probabilidade (Normal, Poisson, Dirichlet). Testes de Hipótese (T-test, ANOVA) para experimentos de plataforma. Teorema de Bayes aplicado a classificadores e detecção de anomalias em pipelines de ingestão.",
+                        skills: ["Bayes", "ANOVA", "Inferência"]
+                    },
+                    {
+                        name: "Complexidade e Estruturas Probabilísticas",
+                        detail: "Análise Big-O para avaliação de custo computacional de transformações Spark/Flink. Uso de Bloom Filters (existência de chaves) e HyperLogLog (cardinalidade) para processamento em escala com memória reduzida.",
+                        skills: ["Big-O", "Bloom Filters", "HyperLogLog"]
+                    }
+                ]
+            },
+            {
+                id: "02",
+                title: "Sistemas & Ciência da Computação",
+                desc: "Onde o software encontra o hardware. Otimização de baixo nível para performance de petabytes.",
+                insight: "O custo de cloud é diretamente proporcional à sua ignorância sobre como o Linux gerencia memória e redes.",
+                radar: [60, 98, 70, 50, 85, 40],
+                topics: [
+                    {
+                        name: "Unix Internals e Isolamento",
+                        detail: "Gestão de Processos e Threads no Kernel Linux. Primitivas de isolamento: Cgroups e Namespaces (os pilares por trás do Docker/Kubernetes). I/O assíncrono e gestão de file descriptors para alta concorrência.",
+                        skills: ["Kernel", "Cgroups", "Namespaces"]
+                    },
+                    {
+                        name: "Networking e Latência de Pipeline",
+                        detail: "Protocolos modernos: Multiplexação com HTTP/2, gRPC sobre Protocol Buffers para comunicação entre microsserviços de dados. Segurança com TLS/mTLS e impacto de latência em arquiteturas distribuídas.",
+                        skills: ["gRPC", "mTLS", "HTTP/2"]
+                    },
+                    {
+                        name: "Modelos de Concorrência e Paralelismo",
+                        detail: "Domínio de Async/Await, Modelo de Atores e tratamento de Race Conditions. Diferença entre concorrência (gerenciamento de tarefas) e paralelismo (execução simultânea) em pipelines Python/Rust.",
+                        skills: ["Async", "Race Conditions", "Atores"]
+                    },
+                    {
+                        name: "Hierarquia de Memória e I/O",
+                        detail: "Paginação de memória RAM, Buffer Pools em bancos de dados e soquetes de rede. Conceito de Zero-copy reads para acelerar a leitura de arquivos Parquet diretamente do disco para a rede.",
+                        skills: ["Buffer Pools", "Zero-copy", "RAM Page"]
+                    }
+                ]
+            },
+            {
+                id: "03",
+                title: "Engenharia de Software (Core)",
+                desc: "Data Engineering é Software Engineering. Rigor, testes e padrões são mandatórios.",
+                insight: "Código sem testes em engenharia de dados não é agilidade, é dívida técnica acumulando juros compostos.",
+                radar: [40, 70, 95, 60, 50, 70],
+                topics: [
+                    {
+                        name: "Python Avançado para Engenharia",
+                        detail: "Uso de Typing estrito para evitar bugs em runtime. Bibliotecas de alta performance: Pydantic para validação e Polars para processamento in-memory eficiente. Programação funcional aplicada a transformações.",
+                        skills: ["Pydantic", "Polars", "Typing"]
+                    },
+                    {
+                        name: "Design Patterns e OOP Aplicada",
+                        detail: "Implementação de padrões como Factory e Strategy para diversos conectores de ingestão. Classes abstratas para Extrator, Transformer e Loader. Gestão de dependências e inversão de controle.",
+                        skills: ["Design Patterns", "Abstração", "Injeção"]
+                    },
+                    {
+                        name: "CI/CD e DevOps de Dados",
+                        detail: "Trunk-based development e Conventional Commits. Automação com GitHub Actions para deploy de modelos dbt, validação de contratos de dados e testes unitários em DAGs Airflow.",
+                        skills: ["GitHub Actions", "Trunk-based", "Automate"]
+                    },
+                    {
+                        name: "Qualidade de Dados e Observabilidade",
+                        detail: "Testes de dados com pytest e Great Expectations. Implementação de Data Contracts (Protobuf/JSON Schema). Logging estruturado e tracing de execução para debug em sistemas distribuídos.",
+                        skills: ["Great Expectations", "Tracing", "Logging"]
+                    }
+                ]
+            },
+            {
+                id: "04",
+                title: "Internals de Bancos de Dados",
+                desc: "Como os dados são persistidos e recuperados. A diferença entre um SELECT e uma arquitetura resiliente.",
+                insight: "Entender B+ Trees vs LSM Trees permite que você escolha entre otimizar para leitura massiva ou escrita intensa.",
+                radar: [50, 80, 60, 98, 75, 40],
+                topics: [
+                    {
+                        name: "SQL Avançado e Performance",
+                        detail: "Uso de Window Functions complexas, CTEs recursivas e LATERAL JOINS. Análise de plano de execução (EXPLAIN ANALYZE) para identificar gargalos de I/O e CPU.",
+                        skills: ["Window Functions", "Explain", "Recurse"]
+                    },
+                    {
+                        name: "Modelagem: Dimensional vs Vault",
+                        detail: "Kimball (Star Schema) para facilidade analítica vs Data Vault 2.0 (Hubs, Links, Satellites) para resiliência e escalabilidade em ambientes federados e distribuídos.",
+                        skills: ["Kimball", "Data Vault", "SCD"]
+                    },
+                    {
+                        name: "Arquiteturas de Storage (B+ vs LSM)",
+                        detail: "Funcionamento físico de B+ Trees (RDBMS tradicionais) vs Log-Structured Merge-Trees (NoSQL/LSM - Cassandra/RocksDB). Processos de compaction e WAL (Write-Ahead Logging).",
+                        skills: ["LSM Trees", "Compaction", "WAL"]
+                    },
+                    {
+                        name: "Query Optimization e Distributed Joins",
+                        detail: "Cost-Based Optimization (CBO). Estratégias de Joins Distribuídos: Broadcast Joins (tabelas pequenas) vs Shuffle Joins (tabelas grandes). Tratamento de Data Skew no Spark.",
+                        skills: ["CBO", "Shuffle", "Broadcast"]
+                    }
+                ]
+            },
+            {
+                id: "05",
+                title: "Ingestão & Orquestração",
+                desc: "O fluxo vital. Garantindo que o dado chegue no lugar certo, na hora certa e de forma íntegra.",
+                insight: "Idempotência e isolamento são as únicas defesas contra falhas inevitáveis em sistemas distribuídos.",
+                radar: [30, 70, 85, 95, 80, 50],
+                topics: [
+                    {
+                        name: "Padrões de Ingestão e CDC",
+                        detail: "Ingestão Batch vs Streaming. Change Data Capture (CDC) baseado em logs transacionais (Debezium) para evitar sobrecarga em bancos de produção.",
+                        skills: ["CDC", "Debezium", "Streaming"]
+                    },
+                    {
+                        name: "Resiliência e Idempotência",
+                        detail: "Design de pipelines tolerantes a falhas. Implementação de lógicas idempotentes para permitir reprocessamento seguro sem duplicação de dados. Uso de Dead Letter Queues (DLQ).",
+                        skills: ["DLQ", "Idempotência", "Circuit Breaker"]
+                    },
+                    {
+                        name: "Orquestração Avançada (Airflow/dbt)",
+                        detail: "Design de DAGs dinâmicas com TaskFlow API. Gestão de SLAs. Integração com dbt para transformações modulares, materializações e gestão de linhagem técnica.",
+                        skills: ["DAG Design", "SLA", "dbt Cloud"]
+                    },
+                    {
+                        name: "Formatos de Arquivo (Parquet/Avro)",
+                        detail: "Internals do Parquet: Column pruning e Dictionary encoding. Avro para evolução de schema flexível. Trade-offs de compressão (Snappy vs Zstd).",
+                        skills: ["Parquet", "Avro", "Zstd"]
+                    }
+                ]
+            },
+            {
+                id: "06",
+                title: "Sistemas Distribuídos",
+                desc: "A ciência de coordenar múltiplas máquinas que podem falhar a qualquer momento.",
+                insight: "O Teorema CAP não é opcional. Você escolhe Consistência ou Disponibilidade; a rede escolhe a Partição por você.",
+                radar: [85, 95, 60, 70, 98, 60],
+                topics: [
+                    {
+                        name: "Teoremas CAP e PACELC",
+                        detail: "Implicações reais em bancos como Cassandra e PostgreSQL. Modelos de consistência: linearizabilidade vs eventual. Como sistemas modernos lidam com latência.",
+                        skills: ["CAP", "PACELC", "Eventual"]
+                    },
+                    {
+                        name: "Algoritmos de Consenso (Raft/Paxos)",
+                        detail: "Como sistemas distribuídos concordam em um valor. Eleição de líder, replicação de logs e tratamento de partições de rede com o algoritmo Raft.",
+                        skills: ["Raft", "Paxos", "Leader Election"]
+                    },
+                    {
+                        name: "Hashing Consistente e Sharding",
+                        detail: "Redistribuição de dados em clusters (Kafka/Cassandra) usando Consistent Hashing para minimizar movimentação de dados durante o scaling.",
+                        skills: ["Hashing", "Sharding", "Vnodes"]
+                    },
+                    {
+                        name: "Causalidade e Clocks de Lamport",
+                        detail: "Ordenação de eventos sem relógio global. Uso de Vector Clocks e Lamport Timestamps para determinar causalidade em sistemas assíncronos.",
+                        skills: ["Vector Clocks", "Lamport", "Causality"]
+                    }
+                ]
+            },
+            {
+                id: "07",
+                title: "Lakehouse & Formatos Abertos",
+                desc: "A convergência entre Data Lake e Warehouse via metadados abertos e ACID.",
+                insight: "O futuro é sem lock-in. Formatos abertos permitem que seu dado sobreviva a qualquer fornecedor de cloud.",
+                radar: [40, 60, 50, 95, 90, 40],
+                topics: [
+                    {
+                        name: "Iceberg, Delta e Hudi",
+                        detail: "Formatos de tabela modernos com garantias ACID. Apache Iceberg (Hidden Partitioning), Delta Lake (Transaction Log) e Hudi (Merge-on-Read).",
+                        skills: ["Iceberg", "Delta", "ACID"]
+                    },
+                    {
+                        name: "Apache Arrow e Memória Colunar",
+                        detail: "Padrão in-memory para transporte eficiente de dados. Zero-copy entre bibliotecas. Integração nativa com motores de query ultra-rápidos.",
+                        skills: ["Arrow", "Zero-copy", "In-memory"]
+                    },
+                    {
+                        name: "Motores Federados (Trino/Presto)",
+                        detail: "Execução de queries em silos de dados distintos sem necessidade de mover o dado (Data Virtualization). Otimização de filtros e joins federados.",
+                        skills: ["Trino", "Presto", "Federation"]
+                    }
+                ]
+            },
+            {
+                id: "08",
+                title: "Governança & Segurança",
+                desc: "Escalando a confiança e a conformidade legal através de tecnologia, não burocracia.",
+                insight: "Governança é acelerar o consumo de dados com segurança, não criar barreiras para o time de negócio.",
+                radar: [30, 40, 80, 90, 60, 95],
+                topics: [
+                    {
+                        name: "Data Contracts (Contratos de Dados)",
+                        detail: "Implementação da 'API do Dado'. Enforcement de schema e semântica no produtor para garantir estabilidade no consumidor final.",
+                        skills: ["Enforcement", "API First", "Schema"]
+                    },
+                    {
+                        name: "Linhagem e Metadados (DataHub)",
+                        detail: "Gestão centralizada de metadados. Rastreamento de linhagem (lineage) desde a origem até o dashboard final para análise de impacto.",
+                        skills: ["Lineage", "DataHub", "Metadata"]
+                    },
+                    {
+                        name: "Segurança: RBAC, ABAC e LGPD",
+                        detail: "Controle de acesso granular (Row/Column Level Security). Técnicas de mascaramento e tokenização para conformidade com LGPD/GDPR.",
+                        skills: ["RBAC", "LGPD", "Masking"]
+                    }
+                ]
+            },
+            {
+                id: "09",
+                title: "Infraestrutura & FinOps",
+                desc: "Gerenciando a fundação cloud e o custo econômico de cada byte processado.",
+                insight: "Infraestrutura como Código não é opcional. Se não está no Terraform, não existe em produção.",
+                radar: [20, 95, 85, 60, 85, 60],
+                topics: [
+                    {
+                        name: "Kubernetes para Dados (K8s)",
+                        detail: "Deploy de workloads elásticas. Uso de Operators para Spark on K8s e Presto. Gestão de volumes persistentes e isolamento de rede.",
+                        skills: ["K8s", "Helm", "Operators"]
+                    },
+                    {
+                        name: "IaC com Terraform e Módulos",
+                        detail: "Automação completa da stack de dados. Gestão de estado, módulos reutilizáveis e workspaces para diferentes ambientes (Dev/Prod).",
+                        skills: ["Terraform", "State", "IaC"]
+                    },
+                    {
+                        name: "FinOps e Gestão de Custos",
+                        detail: "Alocação de custos por squad. Estratégias de instâncias Spot vs Reservadas. Otimização de armazenamento e computação em Cloud.",
+                        skills: ["FinOps", "Cost Tracking", "Spot Instances"]
+                    }
+                ]
+            },
+            {
+                id: "10",
+                title: "Machine Learning Ops (MLOps)",
+                desc: "A industrialização dos modelos. Movendo experimentos de notebooks para produção resiliente.",
+                insight: "Um modelo no Jupyter é pesquisa. Um modelo servido via KServe com monitoramento de drift é engenharia.",
+                radar: [85, 75, 80, 90, 80, 50],
+                topics: [
+                    {
+                        name: "Ciclo de Vida de ML e Feature Store",
+                        detail: "Industrialização de features com Feature Stores (Feast). Gestão de treino, validação e deploy contínuo de modelos.",
+                        skills: ["Feature Store", "CI/CD ML", "Feast"]
+                    },
+                    {
+                        name: "Monitoramento de Modelos e Drift",
+                        detail: "Detecção de Concept Drift e Data Drift usando Evidently AI. Observabilidade de performance do modelo em tempo real.",
+                        skills: ["Evidently", "Drift", "Monitoring"]
+                    },
+                    {
+                        name: "Serving Elástico e GPUs",
+                        detail: "Inference serving com KServe ou MLflow. Gestão de recursos de hardware específicos para ML (GPUs/TPUs).",
+                        skills: ["KServe", "Inference", "GPU"]
+                    }
+                ]
+            },
+            {
+                id: "11",
+                title: "IA Generativa & LLM Infra",
+                desc: "A nova fronteira. Processamento massivo de vetores e infraestrutura para inteligência linguística.",
+                insight: "RAG é o novo ETL. Entender o chunking semântico é tão importante quanto entender o particionamento de tabelas.",
+                radar: [95, 85, 90, 98, 85, 60],
+                topics: [
+                    {
+                        name: "Arquiteturas RAG e Chunking",
+                        detail: "Retrieval Augmented Generation. Estratégias de chunking semântico, busca híbrida e re-ranking para reduzir alucinações de LLMs.",
+                        skills: ["RAG", "Chunking", "Re-ranking"]
+                    },
+                    {
+                        name: "Vector Databases (Bancos Vetoriais)",
+                        detail: "Indexação HNSW e IVF para busca aproximada de vizinhos (ANN). Gestão de coleções massivas em Milvus, Qdrant ou pgvector.",
+                        skills: ["HNSW", "ANN", "Vector Search"]
+                    },
+                    {
+                        name: "Serving e Otimização (vLLM)",
+                        detail: "Otimização de inferência com PagedAttention e vLLM. Quantização de modelos (AWQ, GGUF) para redução de custo e memória.",
+                        skills: ["vLLM", "Quantization", "PagedAttention"]
+                    }
+                ]
+            },
+            {
+                id: "12",
+                title: "Estratégia & Liderança",
+                desc: "O papel do Staff Engineer na organização. Influência técnica além do código.",
+                insight: "Seu sucesso é medido pela agilidade e autonomia dos outros times, não pelo número de PRs que você aprova.",
+                radar: [40, 50, 70, 80, 85, 98],
+                topics: [
+                    {
+                        name: "Data Mesh e Produtos de Dados",
+                        detail: "Implementação dos 4 princípios: Propriedade de Domínio, Dados como Produto, Plataforma Self-Serve e Governança Federada.",
+                        skills: ["Data Mesh", "SLA", "Self-Serve"]
+                    },
+                    {
+                        name: "Processos: RFCs, ADRs e C4 Model",
+                        detail: "Documentação técnica de alto nível. Architecture Decision Records para registrar o 'porquê'. Comunicação visual via C4 Model.",
+                        skills: ["RFC", "ADR", "C4 Model"]
+                    },
+                    {
+                        name: "Métricas de Engenharia (DORA)",
+                        detail: "Uso de métricas DORA e SPACE para medir a saúde da plataforma. Post-mortems sem culpa e cultura de melhoria contínua.",
+                        skills: ["DORA", "SPACE", "Incident Mgmt"]
+                    }
+                ]
+            }
+        ];
+
+        */
+        const topic = ({
+            name,
+            level = "Staff",
+            workload = "18-24h",
+            prerequisites = [],
+            objectives = [],
+            theory = [],
+            practical = [],
+            algorithms = [],
+            papers = [],
+            books = [],
+            tools = [],
+            interview = [],
+            projects = [],
+            exercises = [],
+            skills = []
+        }) => ({
+            name,
+            level,
+            workload,
+            prerequisites,
+            objectives,
+            theory,
+            practical,
+            algorithms,
+            papers,
+            books,
+            tools,
+            interview,
+            projects,
+            exercises,
+            skills
+        });
+
+        const roadmapData = [
+            {
+                id: "01",
+                title: "Fundamentos & Matemática",
+                desc: "A base formal para projetar sistemas de dados, entender otimizadores, raciocinar sobre falhas e modelar incerteza em escala.",
+                insight: "Este módulo transforma a seção inicial em uma fundação de pós-graduação: matemática discreta, lógica, complexidade, probabilidade, informação, grafos, computabilidade e criptografia aplicada.",
+                radar: [100, 82, 55, 70, 72, 60],
+                topics: [
+                    topic({
+                        name: "Lógica Matemática e Métodos Formais",
+                        level: "Research / Staff",
+                        workload: "36-44h",
+                        prerequisites: ["Matemática discreta introdutória", "Noções de programação funcional"],
+                        objectives: ["Especificar invariantes de pipelines e políticas de dados", "Entender SAT/SMT, prova automática e verificação formal"],
+                        theory: ["Lógica proposicional", "Álgebra Booleana", "Tabelas verdade", "Leis de De Morgan", "CNF", "DNF", "SAT Problem", "Resolução lógica", "Sistemas especialistas", "Lógica de predicados", "Quantificadores", "Escopo", "Inferência", "Unificação", "Horn clauses", "Prolog", "Motores de regras", "Dedução natural", "Sistema de Hilbert", "Sequentes", "Cálculo lambda", "Verificação formal", "SMT Solvers", "Z3", "Model checking"],
+                        practical: ["Modelar regras de qualidade como predicados verificáveis", "Escrever uma especificação TLA+ para idempotência de ingestão"],
+                        algorithms: ["DPLL", "CDCL", "Unificação de Robinson", "Resolução", "Model checking simbólico"],
+                        papers: ["Cook, The complexity of theorem-proving procedures, 1971", "Robinson, A machine-oriented logic based on the resolution principle, 1965", "Clarke, Emerson & Sifakis, Model checking, 1981-1982"],
+                        books: ["Huth & Ryan, Logic in Computer Science", "Enderton, A Mathematical Introduction to Logic", "Baier & Katoen, Principles of Model Checking"],
+                        tools: ["Z3", "TLA+", "Alloy", "Prolog", "Soufflé Datalog"],
+                        interview: ["Explique SAT vs SMT e quando usar cada um em validação de dados", "Como provar que um job de reprocessamento é idempotente?"],
+                        projects: ["Criar um motor de regras para contratos de dados com verificação por SMT"],
+                        exercises: ["Converter políticas de acesso em CNF e DNF", "Provar por dedução natural propriedades simples de filtros SQL"],
+                        skills: ["SAT", "SMT", "Z3", "TLA+", "Regras"]
+                    }),
+                    topic({
+                        name: "Teoria dos Conjuntos, Relações e Funções",
+                        workload: "26-32h",
+                        prerequisites: ["Lógica proposicional", "Álgebra básica"],
+                        objectives: ["Conectar fundamentos de conjuntos à álgebra relacional", "Modelar permissões, joins, domínios e grafos com rigor"],
+                        theory: ["Axiomas", "Conjuntos infinitos", "Cardinalidade", "Relações", "Funções", "Produto Cartesiano", "Conjunto potência", "Classes de equivalência", "Relações de ordem", "Ordens parciais", "Lattice", "Reticulados", "Álgebra relacional", "Semântica de SELECT, JOIN, INTERSECT e EXCEPT"],
+                        practical: ["Derivar operações SQL a partir de operações de conjuntos", "Modelar hierarquia de permissões como reticulado"],
+                        algorithms: ["Fecho transitivo", "Particionamento por equivalência", "Ordenação parcial", "Cálculo relacional"],
+                        papers: ["Codd, A relational model of data for large shared data banks, 1970"],
+                        books: ["Halmos, Naive Set Theory", "Enderton, Elements of Set Theory", "Abiteboul, Hull & Vianu, Foundations of Databases"],
+                        tools: ["SQL", "Datalog", "dbt tests", "Graphviz"],
+                        interview: ["Por que JOIN é produto cartesiano filtrado?", "Como relações de ordem aparecem em governança e lineage?"],
+                        projects: ["Implementar um avaliador mínimo de álgebra relacional sobre CSVs"],
+                        exercises: ["Provar propriedades de equivalência em deduplicação", "Desenhar um lattice de privilégios para um domínio de dados"],
+                        skills: ["Conjuntos", "Relações", "Funções", "Lattice", "Álgebra Relacional"]
+                    }),
+                    topic({
+                        name: "Matemática Discreta e Combinatória",
+                        workload: "30-38h",
+                        prerequisites: ["Teoria dos conjuntos", "Noções de prova matemática"],
+                        objectives: ["Raciocinar sobre dependências, contagens, limites e recursões", "Preparar base para grafos, complexidade e orquestração"],
+                        theory: ["Indução matemática", "Combinatória", "Permutação", "Arranjo", "Combinação", "Inclusão-exclusão", "Princípio da Casa dos Pombos", "Relações", "Árvores", "Grafos", "DAGs", "Recorrências", "Geração de funções"],
+                        practical: ["Calcular espaço de estados de pipelines parametrizados", "Analisar explosão combinatória em backfills e reprocessamentos"],
+                        algorithms: ["Recorrência mestre", "Programação dinâmica introdutória", "Geração de combinações", "Travessia de árvores"],
+                        papers: ["Graham, Knuth & Patashnik, Concrete Mathematics, 1989"],
+                        books: ["Rosen, Discrete Mathematics and Its Applications", "Graham, Knuth & Patashnik, Concrete Mathematics", "Stanley, Enumerative Combinatorics"],
+                        tools: ["Python itertools", "SymPy", "NetworkX"],
+                        interview: ["Use inclusão-exclusão para estimar duplicidade entre fontes", "Como indução ajuda a provar correção de uma DAG?"],
+                        projects: ["Simulador de cardinalidade de combinações de partições e dimensões"],
+                        exercises: ["Resolver recorrências de jobs recursivos", "Aplicar casa dos pombos a colisões de hash"],
+                        skills: ["Indução", "Combinatória", "Recorrências", "DAGs"]
+                    }),
+                    topic({
+                        name: "Complexidade Computacional",
+                        workload: "34-42h",
+                        prerequisites: ["Matemática discreta", "Estruturas de dados"],
+                        objectives: ["Avaliar custo assintótico e limites inferiores", "Distinguir problemas tratáveis, intratáveis, aproximáveis e online"],
+                        theory: ["Big O", "Big Theta", "Big Omega", "Complexidade amortizada", "Lower bounds", "NP", "NP-Complete", "NP-Hard", "Reduções", "Cook-Levin", "P vs NP", "Algoritmos aproximativos", "Algoritmos probabilísticos", "Online algorithms"],
+                        practical: ["Comparar custo de joins, sorts e shuffles", "Escolher algoritmos aproximativos para métricas de plataforma"],
+                        algorithms: ["Redução polinomial", "Análise amortizada", "Algoritmos randomizados", "Competitive analysis", "Aproximação gulosa"],
+                        papers: ["Karp, Reducibility among combinatorial problems, 1972", "Cook, The complexity of theorem-proving procedures, 1971"],
+                        books: ["Sipser, Introduction to the Theory of Computation", "Arora & Barak, Computational Complexity", "Cormen et al., Introduction to Algorithms"],
+                        tools: ["Python profiling", "Spark UI", "BigQuery EXPLAIN", "Jupyter benchmarks"],
+                        interview: ["Quando um problema de otimização de pipeline vira NP-Hard?", "Explique amortização usando append em estruturas dinâmicas"],
+                        projects: ["Catálogo de complexidade para transformações comuns em SQL, Spark e Flink"],
+                        exercises: ["Reduzir vertex cover para um problema de agendamento", "Analisar custo de top-k exato vs aproximado"],
+                        skills: ["Big-O", "NP-Complete", "Reduções", "Aproximação", "Online Algorithms"]
+                    }),
+                    topic({
+                        name: "Álgebra Linear e Cálculo Tensorial",
+                        workload: "34-42h",
+                        prerequisites: ["Cálculo básico", "Python científico"],
+                        objectives: ["Entender embeddings, PCA, compressão e otimização numérica", "Raciocinar sobre matrizes densas, esparsas e tensores"],
+                        theory: ["Vetores", "Espaços vetoriais", "Subespaços", "Transformações lineares", "Base", "Dimensão", "Ortogonalidade", "Produto interno", "Normas", "Autovalores", "Autovetores", "Diagonalização", "SVD", "PCA", "Tensor algebra", "Sparse matrices", "Kronecker products"],
+                        practical: ["Implementar busca por similaridade com cosseno", "Aplicar SVD para compressão e detecção de fatores latentes"],
+                        algorithms: ["QR decomposition", "Power iteration", "Lanczos", "SVD truncado", "PCA"],
+                        papers: ["Halko, Martinsson & Tropp, Finding structure with randomness, 2011"],
+                        books: ["Strang, Linear Algebra and Learning from Data", "Trefethen & Bau, Numerical Linear Algebra", "Golub & Van Loan, Matrix Computations"],
+                        tools: ["NumPy", "SciPy", "PyTorch", "FAISS", "Spark MLlib"],
+                        interview: ["Por que normalização muda busca vetorial?", "Explique SVD para redução dimensional em linguagem de engenharia"],
+                        projects: ["Criar uma pipeline de embeddings com PCA, ANN e avaliação de recall"],
+                        exercises: ["Calcular autovetores em matriz pequena", "Comparar matrizes densas e esparsas em memória"],
+                        skills: ["SVD", "PCA", "Tensores", "Sparse", "Embeddings"]
+                    }),
+                    topic({
+                        name: "Probabilidade e Processos Estocásticos",
+                        workload: "38-46h",
+                        prerequisites: ["Cálculo básico", "Álgebra linear"],
+                        objectives: ["Modelar incerteza, risco operacional e anomalias", "Entender estimadores, simulação e processos de Markov"],
+                        theory: ["Probabilidade clássica", "Probabilidade condicional", "Bayes", "Cadeias de Markov", "Variáveis aleatórias", "Esperança", "Variância", "Covariância", "Distribuição Normal", "Binomial", "Poisson", "Geométrica", "Exponencial", "Gamma", "Beta", "Dirichlet", "Entropia", "Informação mútua", "KL Divergence", "Maximum Likelihood", "MAP", "Monte Carlo", "MCMC", "Bootstrap"],
+                        practical: ["Estimar atraso esperado de pipelines", "Construir detector bayesiano de anomalias em ingestão"],
+                        algorithms: ["MCMC", "Metropolis-Hastings", "Gibbs sampling", "Bootstrap", "MLE", "MAP"],
+                        papers: ["Metropolis et al., Equation of state calculations by fast computing machines, 1953", "Hastings, Monte Carlo sampling methods using Markov chains, 1970"],
+                        books: ["Ross, A First Course in Probability", "Grimmett & Stirzaker, Probability and Random Processes", "Bishop, Pattern Recognition and Machine Learning"],
+                        tools: ["SciPy", "PyMC", "Stan", "NumPyro"],
+                        interview: ["Explique Bayes aplicado a alertas de qualidade", "Quando Poisson é melhor que Normal em eventos raros?"],
+                        projects: ["Painel probabilístico de SLA com bootstrap e intervalos de previsão"],
+                        exercises: ["Simular uma cadeia de Markov", "Comparar MLE e MAP para taxa de erro"],
+                        skills: ["Bayes", "Markov", "MCMC", "Bootstrap", "KL"]
+                    }),
+                    topic({
+                        name: "Estatística, Experimentos e Inferência Causal",
+                        workload: "34-42h",
+                        prerequisites: ["Probabilidade", "Álgebra linear"],
+                        objectives: ["Desenhar experimentos e interpretar métricas com rigor", "Separar correlação, regressão e causalidade"],
+                        theory: ["Inferência", "Intervalo de confiança", "Teste Z", "Teste T", "ANOVA", "Qui-quadrado", "Correlação", "Regressão", "GLM", "Poder estatístico", "Correção de Bonferroni", "FDR", "A/B Testing", "Causal inference"],
+                        practical: ["Planejar experimento de plataforma com cálculo de poder", "Analisar mudança de SLA evitando p-hacking"],
+                        algorithms: ["OLS", "Logistic regression", "Bootstrap CI", "Difference-in-differences", "Propensity score"],
+                        papers: ["Benjamini & Hochberg, Controlling the false discovery rate, 1995", "Rubin, Estimating causal effects of treatments, 1974"],
+                        books: ["Casella & Berger, Statistical Inference", "Wasserman, All of Statistics", "Imbens & Rubin, Causal Inference"],
+                        tools: ["R", "statsmodels", "DoWhy", "EconML", "SciPy"],
+                        interview: ["Como evitar falso positivo em dezenas de métricas?", "Explique causalidade para uma decisão de produto"],
+                        projects: ["Framework de avaliação A/B para mudanças em plataforma de dados"],
+                        exercises: ["Calcular intervalo de confiança de latência", "Aplicar Bonferroni e FDR em múltiplos testes"],
+                        skills: ["Inferência", "A/B Testing", "GLM", "Causalidade", "FDR"]
+                    }),
+                    topic({
+                        name: "Teoria da Informação e Estruturas Probabilísticas",
+                        workload: "32-40h",
+                        prerequisites: ["Probabilidade", "Complexidade"],
+                        objectives: ["Entender compressão, sketches e estruturas aproximadas", "Projetar métricas de cardinalidade e similaridade em escala"],
+                        theory: ["Entropia", "Cross entropy", "KL Divergence", "Compressão", "Shannon", "Huffman", "Arithmetic coding", "Reed Solomon", "CRC", "ECC", "Bloom Filters", "HyperLogLog", "Count-Min Sketch", "MinHash", "LSH"],
+                        practical: ["Usar sketches para contagem aproximada em streaming", "Escolher codificação e compressão para formatos colunares"],
+                        algorithms: ["Huffman coding", "Arithmetic coding", "Bloom filter", "HyperLogLog", "Count-Min Sketch", "MinHash", "Locality Sensitive Hashing"],
+                        papers: ["Shannon, A mathematical theory of communication, 1948", "Bloom, Space/time trade-offs in hash coding, 1970", "Flajolet et al., HyperLogLog, 2007", "Cormode & Muthukrishnan, Count-Min Sketch, 2005"],
+                        books: ["Cover & Thomas, Elements of Information Theory", "MacKay, Information Theory, Inference, and Learning Algorithms"],
+                        tools: ["RedisBloom", "Apache DataSketches", "Spark approx_count_distinct", "BigQuery HLL"],
+                        interview: ["Explique falso positivo em Bloom Filter", "Quando HLL é aceitável para métricas executivas?"],
+                        projects: ["Biblioteca de métricas aproximadas com erro controlado e documentação de trade-offs"],
+                        exercises: ["Calcular entropia de uma distribuição", "Medir erro de HLL em datasets sintéticos"],
+                        skills: ["Entropia", "Compressão", "Bloom", "HLL", "Sketches"]
+                    }),
+                    topic({
+                        name: "Otimização Matemática",
+                        workload: "28-36h",
+                        prerequisites: ["Cálculo", "Álgebra linear", "Probabilidade"],
+                        objectives: ["Entender treinamento de modelos e otimização de recursos", "Formular problemas de custo, escalonamento e alocação"],
+                        theory: ["Gradiente", "Newton", "Convexidade", "Programação linear", "Programação inteira", "Simplex", "Lagrange", "SGD", "Adam", "Coordinate Descent"],
+                        practical: ["Modelar alocação de clusters como otimização com restrições", "Comparar SGD e Adam em treino simples"],
+                        algorithms: ["Gradient descent", "Newton-Raphson", "Simplex", "Branch and bound", "SGD", "Adam", "Coordinate descent"],
+                        papers: ["Dantzig, Linear programming and extensions, 1963", "Kingma & Ba, Adam: A method for stochastic optimization, 2014"],
+                        books: ["Boyd & Vandenberghe, Convex Optimization", "Nocedal & Wright, Numerical Optimization", "Nemhauser & Wolsey, Integer and Combinatorial Optimization"],
+                        tools: ["OR-Tools", "CVXPY", "Pyomo", "SciPy optimize"],
+                        interview: ["Como formular custo de cloud como programação linear?", "Quando convexidade muda sua confiança no ótimo encontrado?"],
+                        projects: ["Otimizador de escalonamento de workloads com restrições de SLA e custo"],
+                        exercises: ["Resolver problema simples pelo Simplex", "Comparar SGD, Adam e coordinate descent"],
+                        skills: ["Convexidade", "LP", "Integer Programming", "SGD", "Adam"]
+                    }),
+                    topic({
+                        name: "Teoria dos Grafos Avançada",
+                        workload: "42-52h",
+                        prerequisites: ["Matemática discreta", "Estruturas de dados"],
+                        objectives: ["Dominar grafos para linhagem, dependências, fraude, roteamento e conhecimento", "Escolher algoritmos corretos por escala e restrição"],
+                        theory: ["BFS", "DFS", "Dijkstra", "Bellman-Ford", "Floyd-Warshall", "A*", "Union Find", "Topological Sort", "Strongly Connected Components", "Tarjan", "Kosaraju", "Minimum Spanning Tree", "Prim", "Kruskal", "Network Flow", "Ford-Fulkerson", "Edmonds-Karp", "Dinic", "Caminhos mínimos", "Matching", "Fluxo máximo", "Coloração", "Árvores geradoras", "PageRank", "Random Walks", "Knowledge Graphs", "Property Graphs"],
+                        practical: ["Analisar lineage como DAG e detectar ciclos", "Modelar entidades e relações em grafo de conhecimento"],
+                        algorithms: ["BFS", "DFS", "Dijkstra", "A*", "Tarjan", "Kosaraju", "Prim", "Kruskal", "Ford-Fulkerson", "Edmonds-Karp", "Dinic", "PageRank"],
+                        papers: ["Tarjan, Depth-first search and linear graph algorithms, 1972", "Page et al., The PageRank citation ranking, 1999", "Ford & Fulkerson, Maximal flow through a network, 1956"],
+                        books: ["Diestel, Graph Theory", "West, Introduction to Graph Theory", "Cormen et al., Introduction to Algorithms"],
+                        tools: ["NetworkX", "Neo4j", "Apache AGE", "GraphFrames", "Graphviz"],
+                        interview: ["Como detectar ciclo em DAG de orquestração?", "Explique Dijkstra vs Bellman-Ford em presença de pesos negativos"],
+                        projects: ["Explorador de lineage com SCC, topological sort e impacto downstream"],
+                        exercises: ["Implementar Union-Find", "Calcular fluxo máximo em rede pequena"],
+                        skills: ["Grafos", "DAGs", "SCC", "Flow", "PageRank"]
+                    }),
+                    topic({
+                        name: "Teoria da Computação, Linguagens e Compiladores",
+                        workload: "30-38h",
+                        prerequisites: ["Lógica", "Matemática discreta"],
+                        objectives: ["Entender parsing, linguagens e limites da computação", "Conectar regex, SQL, compiladores e otimizadores"],
+                        theory: ["Autômatos", "Linguagens formais", "Gramáticas", "Regex", "Compiladores", "Máquinas de Turing", "Church-Turing", "Computabilidade", "Parsing", "AST", "IR", "Otimização de consultas"],
+                        practical: ["Criar parser simples para DSL de contratos de dados", "Entender como SQL vira plano lógico e físico"],
+                        algorithms: ["Thompson construction", "Subset construction", "CYK", "LL/LR parsing", "Data-flow analysis"],
+                        papers: ["Turing, On computable numbers, 1936", "Church, An unsolvable problem of elementary number theory, 1936"],
+                        books: ["Hopcroft, Motwani & Ullman, Introduction to Automata Theory", "Aho, Lam, Sethi & Ullman, Compilers", "Sipser, Introduction to the Theory of Computation"],
+                        tools: ["ANTLR", "tree-sitter", "Calcite", "DuckDB EXPLAIN"],
+                        interview: ["Por que regex não cobre todas as linguagens?", "Como um otimizador transforma uma query SQL?"],
+                        projects: ["DSL mínima de qualidade de dados compilada para SQL"],
+                        exercises: ["Converter regex em autômato", "Criar uma gramática para filtros declarativos"],
+                        skills: ["Autômatos", "Gramáticas", "Compiladores", "Computabilidade", "SQL Planning"]
+                    }),
+                    topic({
+                        name: "Criptografia Aplicada a Dados",
+                        workload: "26-34h",
+                        prerequisites: ["Teoria dos números básica", "Probabilidade"],
+                        objectives: ["Projetar armazenamento e trânsito seguro de dados", "Entender integridade, autenticação, assinatura e hashing"],
+                        theory: ["Hash", "SHA", "Bcrypt", "Argon2", "Merkle Trees", "RSA", "ECC", "TLS", "PKI", "Assinaturas digitais", "Envelope encryption", "Key rotation"],
+                        practical: ["Desenhar criptografia em repouso e em trânsito para lakehouse", "Validar integridade de arquivos com hash e Merkle tree"],
+                        algorithms: ["SHA-2", "SHA-3", "RSA", "ECDSA", "Argon2", "Merkle proof", "HKDF"],
+                        papers: ["Rivest, Shamir & Adleman, A method for obtaining digital signatures, 1978", "Merkle, A digital signature based on a conventional encryption function, 1987", "Biryukov, Dinu & Khovratovich, Argon2, 2016"],
+                        books: ["Katz & Lindell, Introduction to Modern Cryptography", "Menezes, van Oorschot & Vanstone, Handbook of Applied Cryptography"],
+                        tools: ["OpenSSL", "Vault", "KMS", "age", "cosign"],
+                        interview: ["Hash é criptografia reversível?", "Como rotação de chaves afeta dados históricos?"],
+                        projects: ["Manifesto assinado para datasets com verificação de integridade e proveniência"],
+                        exercises: ["Comparar bcrypt e Argon2", "Construir uma Merkle tree para partições de dados"],
+                        skills: ["Hashing", "TLS", "PKI", "Merkle", "KMS"]
+                    }),
+                    topic({
+                        name: "Sistemas Formais e Programação Funcional",
+                        workload: "24-32h",
+                        prerequisites: ["Lógica", "Programação"],
+                        objectives: ["Usar tipos e composição para reduzir estados inválidos", "Entender abstrações que aparecem em APIs de dados modernas"],
+                        theory: ["Type Theory", "Lambda Calculus", "Category Theory introdutória", "Monads", "Functional Programming Foundations", "Tipos algébricos", "Imutabilidade", "Composição"],
+                        practical: ["Modelar pipelines como funções puras com efeitos explícitos", "Usar tipos para representar sucesso, falha e ausência"],
+                        algorithms: ["Inferência de tipos", "Beta-redução", "Map/reduce/fold", "Composição monádica"],
+                        papers: ["Moggi, Notions of computation and monads, 1991", "Wadler, The essence of functional programming, 1992"],
+                        books: ["Pierce, Types and Programming Languages", "Bird & Wadler, Introduction to Functional Programming", "Mac Lane, Categories for the Working Mathematician"],
+                        tools: ["Haskell", "Scala", "Rust", "mypy", "TypeScript"],
+                        interview: ["Como tipos algébricos evitam estados inválidos?", "Explique monad sem jargão usando pipeline com falhas"],
+                        projects: ["Biblioteca de ETL funcional com composição, validação e erros tipados"],
+                        exercises: ["Implementar Either/Result", "Refatorar transformação mutável para função pura"],
+                        skills: ["Tipos", "Lambda", "Monads", "FP", "Composição"]
+                    })
+                ]
+            },
+            {
+                id: "02",
+                title: "Sistemas & Ciência da Computação",
+                desc: "A camada onde hardware, kernel, rede e runtime determinam custo, latência e confiabilidade dos sistemas de dados.",
+                insight: "Performance de plataforma nasce em caches, syscalls, escalonamento, rede e I/O antes de aparecer no Spark UI.",
+                radar: [70, 100, 75, 60, 90, 55],
+                topics: [
+                    topic({
+                        name: "Arquitetura de Computadores e Hierarquia de Memória",
+                        workload: "22-30h",
+                        prerequisites: ["Álgebra booleana", "Noções de C ou Rust"],
+                        objectives: ["Entender CPU, cache, memória e layout de dados", "Relacionar localidade com formatos colunares e vetorização"],
+                        theory: ["Pipeline de CPU", "Cache L1/L2/L3", "NUMA", "SIMD", "Branch prediction", "Page faults", "Memory alignment", "Columnar layout"],
+                        practical: ["Medir efeito de cache em leitura colunar", "Comparar row-based vs columnar scan"],
+                        algorithms: ["Cache-aware scan", "Vectorized execution", "Prefetching"],
+                        papers: ["Drepper, What every programmer should know about memory, 2007", "Boncz, MonetDB/X100, 2005"],
+                        books: ["Bryant & O'Hallaron, Computer Systems: A Programmer's Perspective", "Patterson & Hennessy, Computer Organization and Design"],
+                        tools: ["perf", "flamegraph", "DuckDB", "Polars", "NumPy"],
+                        interview: ["Por que Parquet melhora scan analítico?", "Como cache miss vira custo de cloud?"],
+                        projects: ["Benchmark de layout row vs column com análise de cache"],
+                        exercises: ["Medir throughput de arrays contíguos e listas de objetos", "Identificar gargalos por flamegraph"],
+                        skills: ["CPU", "Cache", "SIMD", "NUMA", "Vetorização"]
+                    }),
+                    topic({
+                        name: "Linux Internals, Processos e Isolamento",
+                        workload: "28-36h",
+                        prerequisites: ["Sistemas operacionais básicos"],
+                        objectives: ["Operar workloads de dados com conhecimento de kernel", "Entender Docker e Kubernetes por cgroups e namespaces"],
+                        theory: ["Processos", "Threads", "Scheduling", "Syscalls", "File descriptors", "Signals", "cgroups", "Namespaces", "seccomp", "I/O assíncrono"],
+                        practical: ["Inspecionar limites de memória de container", "Diagnosticar FD leak e throttling de CPU"],
+                        algorithms: ["Scheduling CFS", "Event loop", "epoll", "Backpressure local"],
+                        papers: ["Kerrisk, The Linux Programming Interface, 2010", "Merkel, Docker: lightweight Linux containers, 2014"],
+                        books: ["Kerrisk, The Linux Programming Interface", "Arpaci-Dusseau, Operating Systems: Three Easy Pieces"],
+                        tools: ["strace", "lsof", "cgroups", "systemd", "bcc/eBPF"],
+                        interview: ["O que um namespace isola?", "Como um limite de cgroup afeta Spark executor?"],
+                        projects: ["Laboratório de container mínimo com isolamento de CPU, memória e rede"],
+                        exercises: ["Rastrear syscalls de um leitor Parquet", "Simular OOM em container controlado"],
+                        skills: ["Kernel", "cgroups", "Namespaces", "eBPF", "I/O"]
+                    }),
+                    topic({
+                        name: "Concorrência, Paralelismo e Runtimes",
+                        workload: "26-34h",
+                        prerequisites: ["Programação avançada", "Sistemas operacionais"],
+                        objectives: ["Escolher modelo de execução adequado para pipelines", "Evitar race conditions, deadlocks e contenção"],
+                        theory: ["Threads", "Async/await", "Modelo de atores", "Locks", "CAS", "Deadlocks", "Race conditions", "Work stealing", "GIL", "Backpressure"],
+                        practical: ["Projetar ingestão concorrente com controle de pressão", "Comparar multiprocessing, asyncio e executores distribuídos"],
+                        algorithms: ["Producer-consumer", "Work stealing", "Lock-free queue", "Actor supervision"],
+                        papers: ["Hewitt, Bishop & Steiger, A universal modular actor formalism, 1973", "Blumofe & Leiserson, Scheduling multithreaded computations by work stealing, 1999"],
+                        books: ["Goetz, Java Concurrency in Practice", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["asyncio", "Ray", "Akka", "Tokio", "Flink"],
+                        interview: ["Concorrência é o mesmo que paralelismo?", "Como backpressure evita queda em cascata?"],
+                        projects: ["Ingestor concorrente com filas, retry, rate limit e backpressure"],
+                        exercises: ["Criar e corrigir uma race condition", "Medir latência sob diferentes pools"],
+                        skills: ["Async", "Threads", "Atores", "Backpressure", "Race Conditions"]
+                    }),
+                    topic({
+                        name: "Redes, Protocolos e Latência",
+                        workload: "28-36h",
+                        prerequisites: ["Sistemas operacionais", "Criptografia básica"],
+                        objectives: ["Entender custo de rede em sistemas distribuídos", "Desenhar APIs internas eficientes e seguras"],
+                        theory: ["TCP", "UDP", "HTTP/2", "HTTP/3", "gRPC", "Protocol Buffers", "TLS", "mTLS", "DNS", "Load balancing", "Timeouts", "Retries", "Tail latency"],
+                        practical: ["Medir latência p50/p95/p99", "Projetar contrato gRPC para serviço de metadados"],
+                        algorithms: ["Exponential backoff", "Circuit breaker", "Hedged requests", "Consistent hashing em load balancing"],
+                        papers: ["Dean & Barroso, The Tail at Scale, 2013", "Fielding, Architectural Styles and REST, 2000"],
+                        books: ["Stevens, TCP/IP Illustrated", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["grpcurl", "Wireshark", "curl", "Envoy", "OpenTelemetry"],
+                        interview: ["Por que retry sem jitter causa incidente?", "Quando gRPC é melhor que REST em plataforma de dados?"],
+                        projects: ["Serviço gRPC de catálogo com tracing e mTLS local"],
+                        exercises: ["Simular tail latency", "Comparar JSON e Protobuf em payload grande"],
+                        skills: ["TCP", "gRPC", "mTLS", "Tail Latency", "Retries"]
+                    }),
+                    topic({
+                        name: "Filesystems, Storage Local e I/O",
+                        workload: "22-30h",
+                        prerequisites: ["Linux internals", "Arquitetura de computadores"],
+                        objectives: ["Relacionar disco, page cache e throughput de dados", "Entender zero-copy e padrões de acesso sequencial"],
+                        theory: ["Page cache", "Buffer cache", "mmap", "Direct I/O", "Zero-copy", "fsync", "NVMe", "Object storage semantics", "Small files problem"],
+                        practical: ["Medir read amplification com arquivos pequenos", "Comparar mmap, read e streaming"],
+                        algorithms: ["Sequential scan", "Read-ahead", "Compaction local", "Spill-to-disk"],
+                        papers: ["Rosenblum & Ousterhout, The design and implementation of a log-structured file system, 1992"],
+                        books: ["Tanenbaum & Bos, Modern Operating Systems", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["fio", "iostat", "parquet-tools", "DuckDB", "strace"],
+                        interview: ["Por que small files matam performance no lake?", "O que zero-copy economiza?"],
+                        projects: ["Benchmark de leitura Parquet com diferentes tamanhos de arquivo"],
+                        exercises: ["Medir page cache cold vs warm", "Analisar spill de sort local"],
+                        skills: ["I/O", "Page Cache", "Zero-copy", "NVMe", "Small Files"]
+                    })
+                ]
+            },
+            {
+                id: "03",
+                title: "Engenharia de Software",
+                desc: "Data Engineering tratado como engenharia de produto: código confiável, testável, versionado, observável e evolutivo.",
+                insight: "Pipelines críticos são software de produção. Sem contrato, teste e deploy seguro, cada dado correto é quase acidente.",
+                radar: [55, 75, 100, 75, 65, 80],
+                topics: [
+                    topic({
+                        name: "Linguagens para Plataformas de Dados",
+                        workload: "30-40h",
+                        prerequisites: ["Estruturas de dados", "Sistemas básicos"],
+                        objectives: ["Usar Python, SQL, Scala, Rust e Java com consciência de runtime", "Escolher linguagem pelo perfil de latência, ecossistema e segurança"],
+                        theory: ["Typing", "Generics", "Memory safety", "FFI", "JVM", "GIL", "Ownership", "Dataframes", "UDFs"],
+                        practical: ["Criar biblioteca Python tipada com Pydantic", "Implementar transformação crítica em Rust ou Scala"],
+                        algorithms: ["Iterator pipelines", "Vectorized transforms", "Serde", "Lazy evaluation"],
+                        papers: ["Armbrust et al., Spark SQL, 2015"],
+                        books: ["Ramalho, Fluent Python", "Matsakis & Klock, The Rust Language, 2014", "Odersky, Spoon & Venners, Programming in Scala"],
+                        tools: ["Python", "Pydantic", "Polars", "Scala", "Rust", "mypy"],
+                        interview: ["Quando trocar pandas por Polars?", "Como typing reduz incidentes de dados?"],
+                        projects: ["SDK interno para ingestão com validação, typing e retries"],
+                        exercises: ["Criar tipos para campos sensíveis", "Comparar performance pandas, Polars e Spark local"],
+                        skills: ["Python", "Typing", "Pydantic", "Polars", "Rust"]
+                    }),
+                    topic({
+                        name: "Design Modular, APIs e Padrões",
+                        workload: "26-34h",
+                        prerequisites: ["Programação orientada a objetos", "Noções de APIs"],
+                        objectives: ["Desenhar módulos extensíveis para conectores e transformações", "Evitar acoplamento entre domínios de dados"],
+                        theory: ["SOLID", "DDD", "Ports and adapters", "Factory", "Strategy", "Repository", "Dependency injection", "API versioning"],
+                        practical: ["Criar camada de conectores com contratos estáveis", "Separar domínio, infraestrutura e orquestração"],
+                        algorithms: ["Dispatch por estratégia", "Validation pipeline", "Schema negotiation"],
+                        papers: ["Parnas, On the criteria to be used in decomposing systems into modules, 1972"],
+                        books: ["Evans, Domain-Driven Design", "Gamma et al., Design Patterns", "Martin, Clean Architecture"],
+                        tools: ["FastAPI", "OpenAPI", "Protobuf", "dbt packages", "Poetry"],
+                        interview: ["Como evoluir um conector sem quebrar consumidores?", "Quando Strategy é melhor que if/else?"],
+                        projects: ["Framework de conectores plugáveis para fontes batch e streaming"],
+                        exercises: ["Refatorar ETL procedural para arquitetura hexagonal", "Versionar uma API com compatibilidade"],
+                        skills: ["DDD", "Design Patterns", "OpenAPI", "Protobuf", "Modularidade"]
+                    }),
+                    topic({
+                        name: "Testes, Contratos e Qualidade de Código",
+                        workload: "28-36h",
+                        prerequisites: ["Python ou JVM", "SQL"],
+                        objectives: ["Cobrir transformações, contratos e integrações críticas", "Usar testes como mecanismo de design"],
+                        theory: ["Unit tests", "Integration tests", "Property-based testing", "Golden datasets", "Mutation testing", "Contract testing", "Snapshot testing"],
+                        practical: ["Criar suíte de testes para DAG e transformações SQL", "Validar contrato produtor-consumidor antes do deploy"],
+                        algorithms: ["Data diff", "Fuzzing", "Schema compatibility check"],
+                        papers: ["Claessen & Hughes, QuickCheck, 2000"],
+                        books: ["Beck, Test-Driven Development", "Humble & Farley, Continuous Delivery", "Freeman & Pryce, Growing Object-Oriented Software"],
+                        tools: ["pytest", "Hypothesis", "Great Expectations", "dbt tests", "Soda", "Pact"],
+                        interview: ["Como testar pipeline sem copiar produção?", "O que property-based testing encontra que exemplo fixo não encontra?"],
+                        projects: ["Harness de testes para transformação com golden datasets e fuzzing"],
+                        exercises: ["Criar teste de contrato para schema Avro", "Escrever propriedade para deduplicação idempotente"],
+                        skills: ["pytest", "Contracts", "Hypothesis", "dbt tests", "Data Quality"]
+                    }),
+                    topic({
+                        name: "CI/CD, Release Engineering e Ambientes",
+                        workload: "24-32h",
+                        prerequisites: ["Git", "Testes automatizados"],
+                        objectives: ["Automatizar build, validação, promoção e rollback", "Projetar ambientes dev/stage/prod com segurança"],
+                        theory: ["Trunk-based development", "Conventional commits", "Semantic versioning", "Blue/green", "Canary", "Rollback", "Feature flags", "Artifact management"],
+                        practical: ["Pipeline GitHub Actions para dbt, Airflow e Terraform", "Promover artefatos imutáveis entre ambientes"],
+                        algorithms: ["Deployment gates", "Progressive rollout", "Topological deployment order"],
+                        papers: ["Forsgren, Humble & Kim, Accelerate, 2018"],
+                        books: ["Humble & Farley, Continuous Delivery", "Kim et al., The DevOps Handbook", "Beyer et al., Site Reliability Engineering"],
+                        tools: ["GitHub Actions", "GitLab CI", "Argo CD", "Docker", "dbt Cloud"],
+                        interview: ["Como fazer rollback de uma mudança de schema?", "Por que artefato imutável importa?"],
+                        projects: ["Esteira completa para DAG, modelos dbt, testes e deploy canário"],
+                        exercises: ["Criar validação de PR para breaking changes", "Simular rollback de materialização"],
+                        skills: ["CI/CD", "GitOps", "Rollback", "Canary", "Artifacts"]
+                    }),
+                    topic({
+                        name: "Observabilidade de Software e Dados",
+                        workload: "26-34h",
+                        prerequisites: ["APIs", "Pipelines"],
+                        objectives: ["Conectar logs, métricas, traces e qualidade de dados", "Diagnosticar incidentes por causa raiz, não por sintoma"],
+                        theory: ["Structured logging", "Metrics", "Tracing", "SLO", "SLI", "Error budget", "Data observability", "Cardinality control"],
+                        practical: ["Instrumentar DAG com OpenTelemetry", "Criar SLO de frescor, completude e validade"],
+                        algorithms: ["Anomaly detection baseline", "Sampling", "Trace correlation"],
+                        papers: ["Sigelman et al., Dapper, a large-scale distributed systems tracing infrastructure, 2010"],
+                        books: ["Beyer et al., Site Reliability Engineering", "Majors, Fong-Jones & Miranda, Observability Engineering"],
+                        tools: ["OpenTelemetry", "Prometheus", "Grafana", "Datadog", "Monte Carlo", "OpenLineage"],
+                        interview: ["Qual a diferença entre monitoramento e observabilidade?", "Como evitar cardinalidade explosiva em métricas?"],
+                        projects: ["Painel de saúde de pipelines com SLOs e traces por execução"],
+                        exercises: ["Criar trace de ponta a ponta", "Definir error budget para frescor de dados"],
+                        skills: ["Tracing", "SLO", "OpenTelemetry", "Data Observability", "SLI"]
+                    })
+                ]
+            },
+            {
+                id: "04",
+                title: "Bancos de Dados",
+                desc: "Da teoria relacional aos storage engines, transações, otimizadores e bancos distribuídos modernos.",
+                insight: "Um Staff Engineer deve ler um plano de execução como quem lê raio-x: vendo estrutura, custo e falha provável.",
+                radar: [70, 88, 72, 100, 82, 55],
+                topics: [
+                    topic({
+                        name: "SQL Avançado e Teoria Relacional",
+                        workload: "28-36h",
+                        prerequisites: ["Álgebra relacional", "Modelagem básica"],
+                        objectives: ["Escrever SQL expressivo e previsível", "Conectar consulta declarativa a semântica formal"],
+                        theory: ["Window functions", "CTEs recursivas", "Lateral joins", "Grouping sets", "Relational calculus", "Normal forms", "NULL semantics"],
+                        practical: ["Reescrever query complexa para legibilidade e custo", "Criar camada semântica com métricas consistentes"],
+                        algorithms: ["Join ordering", "Aggregation pushdown", "Recursive evaluation"],
+                        papers: ["Codd, A relational model of data for large shared data banks, 1970"],
+                        books: ["Date, An Introduction to Database Systems", "Garcia-Molina, Ullman & Widom, Database Systems"],
+                        tools: ["PostgreSQL", "DuckDB", "BigQuery", "Snowflake", "dbt"],
+                        interview: ["Como NULL afeta anti-join?", "Quando CTE vira barreira de otimização?"],
+                        projects: ["Catálogo de padrões SQL para analytics engineering avançado"],
+                        exercises: ["Criar query com janela e grouping sets", "Reescrever subquery correlacionada"],
+                        skills: ["SQL", "Window Functions", "CTE", "Relational Theory", "Metrics"]
+                    }),
+                    topic({
+                        name: "Storage Engines, Índices e Transações",
+                        workload: "34-44h",
+                        prerequisites: ["Sistemas", "SQL"],
+                        objectives: ["Entender persistência física e isolamento", "Escolher engine pelo padrão de leitura/escrita"],
+                        theory: ["B+ Trees", "LSM Trees", "WAL", "MVCC", "Buffer pool", "Compaction", "Isolation levels", "ACID", "ARIES"],
+                        practical: ["Comparar Postgres e RocksDB para workload de escrita", "Diagnosticar bloat e compaction debt"],
+                        algorithms: ["B+ tree search", "LSM compaction", "Two-phase locking", "MVCC visibility", "ARIES recovery"],
+                        papers: ["Mohan et al., ARIES, 1992", "O'Neil et al., The Log-Structured Merge-Tree, 1996"],
+                        books: ["Hellerstein, Stonebraker & Hamilton, Architecture of a Database System", "Petrov, Database Internals"],
+                        tools: ["PostgreSQL", "RocksDB", "Cassandra", "EXPLAIN ANALYZE", "pg_stat_statements"],
+                        interview: ["B+ Tree ou LSM para escrita intensa?", "Como MVCC muda vacuum e storage?"],
+                        projects: ["Mini storage engine com WAL, índice simples e recovery"],
+                        exercises: ["Interpretar plano com índice composto", "Simular compaction em LSM"],
+                        skills: ["B+ Tree", "LSM", "WAL", "MVCC", "ACID"]
+                    }),
+                    topic({
+                        name: "Otimização de Consultas e Joins Distribuídos",
+                        workload: "30-40h",
+                        prerequisites: ["SQL", "Complexidade", "Sistemas distribuídos básicos"],
+                        objectives: ["Entender CBO e planos físicos", "Reduzir shuffle, skew e leitura desnecessária"],
+                        theory: ["Logical plan", "Physical plan", "Cost-Based Optimization", "Statistics", "Predicate pushdown", "Broadcast join", "Shuffle join", "Sort-merge join", "Data skew"],
+                        practical: ["Otimizar consulta Spark com skew", "Comparar broadcast vs shuffle com estatísticas controladas"],
+                        algorithms: ["Dynamic programming join order", "Hash join", "Sort-merge join", "Bloom join", "Adaptive query execution"],
+                        papers: ["Selinger et al., Access path selection in a relational database management system, 1979", "Armbrust et al., Spark SQL, 2015"],
+                        books: ["Graefe, Query Evaluation Techniques for Large Databases", "Petrov, Database Internals"],
+                        tools: ["Spark UI", "Trino EXPLAIN", "PostgreSQL EXPLAIN", "Snowflake Query Profile"],
+                        interview: ["Como estatística ruim quebra CBO?", "O que fazer com data skew em join grande?"],
+                        projects: ["Laboratório de planos de execução com datasets enviesados"],
+                        exercises: ["Forçar e comparar estratégias de join", "Medir efeito de predicate pushdown"],
+                        skills: ["CBO", "EXPLAIN", "Broadcast", "Shuffle", "Skew"]
+                    }),
+                    topic({
+                        name: "Modelagem Analítica: Kimball, Vault e Semântica",
+                        workload: "26-34h",
+                        prerequisites: ["SQL", "Domínios de negócio"],
+                        objectives: ["Projetar modelos analíticos evolutivos", "Separar fatos, dimensões, historização e semântica de métricas"],
+                        theory: ["Star schema", "Snowflake schema", "SCD", "Data Vault 2.0", "Hubs", "Links", "Satellites", "Anchor modeling", "Semantic layer"],
+                        practical: ["Modelar domínio com Kimball e comparar com Vault", "Definir métricas canônicas e granularidade"],
+                        algorithms: ["Surrogate key generation", "SCD Type 2 merge", "Snapshotting", "Point-in-time tables"],
+                        papers: ["Linstedt, Data Vault overview, 2002", "Kimball, Dimensional modeling techniques, 1996"],
+                        books: ["Kimball & Ross, The Data Warehouse Toolkit", "Linstedt & Olschimke, Building a Scalable Data Warehouse with Data Vault 2.0"],
+                        tools: ["dbt", "MetricFlow", "LookML", "Dataform", "SQLMesh"],
+                        interview: ["Quando Data Vault compensa o custo?", "Como garantir uma métrica única entre times?"],
+                        projects: ["Warehouse de domínio com SCD2, Vault e camada semântica comparada"],
+                        exercises: ["Modelar evento em fato transacional", "Criar PIT table para Vault"],
+                        skills: ["Kimball", "Data Vault", "SCD", "Semantic Layer", "Metrics"]
+                    }),
+                    topic({
+                        name: "Bancos Distribuídos, NoSQL e Warehouses Modernos",
+                        workload: "32-42h",
+                        prerequisites: ["Sistemas distribuídos", "Storage engines"],
+                        objectives: ["Escolher banco por consistência, escala e modelo de acesso", "Entender trade-offs de Cassandra, Bigtable, Spanner, Snowflake e DynamoDB"],
+                        theory: ["Key-value", "Wide-column", "Document", "Graph", "Distributed SQL", "MPP warehouses", "Separation of storage and compute", "Secondary indexes"],
+                        practical: ["Desenhar chave de partição para Cassandra/DynamoDB", "Comparar Snowflake, BigQuery e Redshift por arquitetura"],
+                        algorithms: ["Consistent hashing", "LSM compaction", "Two-phase commit", "Quorum reads/writes", "Vectorized MPP execution"],
+                        papers: ["Chang et al., Bigtable, 2006", "DeCandia et al., Dynamo, 2007", "Corbett et al., Spanner, 2012"],
+                        books: ["Sadalage & Fowler, NoSQL Distilled", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["Cassandra", "DynamoDB", "Spanner", "BigQuery", "Snowflake", "Redshift"],
+                        interview: ["Como escolher partition key em DynamoDB?", "Por que Spanner consegue SQL distribuído com consistência forte?"],
+                        projects: ["Matriz de decisão entre NoSQL, distributed SQL e warehouse para três workloads"],
+                        exercises: ["Modelar tabela wide-column por query", "Analisar hotspot de chave de partição"],
+                        skills: ["NoSQL", "MPP", "Distributed SQL", "Bigtable", "Dynamo"]
+                    })
+                ]
+            },
+            {
+                id: "05",
+                title: "Ingestão & Orquestração",
+                desc: "Movimentação de dados confiável, idempotente, versionada e observável entre sistemas heterogêneos.",
+                insight: "O melhor pipeline é aquele que falha de forma previsível, reprocessa sem duplicar e explica exatamente o que aconteceu.",
+                radar: [52, 78, 90, 96, 86, 65],
+                topics: [
+                    topic({
+                        name: "Padrões de Ingestão: Batch, Streaming e Micro-batch",
+                        workload: "26-34h",
+                        prerequisites: ["Sistemas", "SQL", "APIs"],
+                        objectives: ["Escolher padrão de ingestão por SLA e fonte", "Projetar ingestão incremental e reprocessável"],
+                        theory: ["Batch", "Streaming", "Micro-batch", "Polling", "Push", "Watermarks", "Late data", "Exactly-once claims"],
+                        practical: ["Desenhar matriz SLA vs custo para fontes", "Implementar ingestão incremental por cursor"],
+                        algorithms: ["Checkpointing", "Windowing", "Deduplication", "Watermark advancement"],
+                        papers: ["Akidau et al., The Dataflow Model, 2015"],
+                        books: ["Kleppmann, Designing Data-Intensive Applications", "Hueske & Kalavri, Stream Processing with Apache Flink"],
+                        tools: ["Flink", "Spark Structured Streaming", "Kafka Connect", "Airbyte", "Fivetran"],
+                        interview: ["Quando micro-batch é suficiente?", "O que exactly-once realmente significa?"],
+                        projects: ["Pipeline com batch, streaming e replay sobre a mesma fonte"],
+                        exercises: ["Simular late events", "Criar checkpoint reprocessável"],
+                        skills: ["Batch", "Streaming", "Watermarks", "Checkpoint", "Replay"]
+                    }),
+                    topic({
+                        name: "CDC, Logs Transacionais e Evolução de Schema",
+                        workload: "28-36h",
+                        prerequisites: ["Bancos transacionais", "Kafka básico"],
+                        objectives: ["Capturar mudança sem sobrecarregar produção", "Gerenciar compatibilidade de schema em eventos"],
+                        theory: ["CDC", "WAL/binlog", "Snapshot inicial", "Log sequence number", "Schema Registry", "Backward compatibility", "Forward compatibility", "Outbox pattern"],
+                        practical: ["Configurar Debezium com snapshot e streaming", "Definir política de evolução Avro/Protobuf"],
+                        algorithms: ["Log tailing", "Snapshot isolation", "Schema compatibility check", "Outbox relay"],
+                        papers: ["Pat Helland, Life beyond distributed transactions, 2007"],
+                        books: ["Narkhede, Shapira & Palino, Kafka: The Definitive Guide", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["Debezium", "Kafka", "Schema Registry", "Avro", "Protobuf"],
+                        interview: ["Como evitar evento perdido durante snapshot inicial?", "Backward compatibility é suficiente para todos os consumidores?"],
+                        projects: ["CDC completo Postgres -> Kafka -> Lakehouse com evolução de schema"],
+                        exercises: ["Quebrar e corrigir schema Avro", "Implementar outbox transacional"],
+                        skills: ["CDC", "Debezium", "Schema Registry", "Outbox", "Avro"]
+                    }),
+                    topic({
+                        name: "Orquestração Avançada e Dependências",
+                        workload: "26-34h",
+                        prerequisites: ["DAGs", "Python", "CI/CD"],
+                        objectives: ["Construir DAGs dinâmicas, testáveis e observáveis", "Separar orquestração de lógica de negócio"],
+                        theory: ["DAGs", "Topological sort", "Sensors", "Deferrable operators", "Dynamic tasks", "SLAs", "Retries", "Backfills", "Asset-based orchestration"],
+                        practical: ["Criar DAG parametrizada com testes", "Planejar backfill com isolamento e limites"],
+                        algorithms: ["Dependency resolution", "Critical path analysis", "Retry with jitter", "Backfill partition planning"],
+                        papers: ["Apache Airflow design documentation", "Dagster asset-oriented orchestration essays"],
+                        books: ["Karau & Warren, High Performance Spark", "Humble & Farley, Continuous Delivery"],
+                        tools: ["Airflow", "Dagster", "Prefect", "dbt", "OpenLineage"],
+                        interview: ["Como evitar DAG gigante e frágil?", "Quando sensor vira gargalo?"],
+                        projects: ["Orquestração asset-based com lineage e testes de contrato"],
+                        exercises: ["Detectar ciclo em DAG", "Planejar backfill de 2 anos com janelas"],
+                        skills: ["Airflow", "Dagster", "Backfill", "Lineage", "DAGs"]
+                    }),
+                    topic({
+                        name: "Formatos, Serialização e Contratos de Arquivo",
+                        workload: "24-32h",
+                        prerequisites: ["Storage", "Schema evolution"],
+                        objectives: ["Escolher formato por acesso, evolução e custo", "Entender internals de arquivos analíticos"],
+                        theory: ["Parquet", "Avro", "ORC", "JSONL", "Column pruning", "Dictionary encoding", "Compression", "Snappy", "Zstd", "Row groups", "Predicate pushdown"],
+                        practical: ["Ajustar tamanho de row group e compressão", "Comparar Avro para eventos e Parquet para analytics"],
+                        algorithms: ["RLE", "Dictionary encoding", "Delta encoding", "Compression codecs"],
+                        papers: ["Melnik et al., Dremel, 2010", "Vohra, Apache Parquet, 2016"],
+                        books: ["Kleppmann, Designing Data-Intensive Applications", "White, Hadoop: The Definitive Guide"],
+                        tools: ["parquet-tools", "pyarrow", "fastavro", "orc-tools", "DuckDB"],
+                        interview: ["Por que Parquet é ruim para escrita linha-a-linha?", "Quando Avro é melhor que Protobuf?"],
+                        projects: ["Benchmark de formato e compressão por workload analítico"],
+                        exercises: ["Inspecionar metadados Parquet", "Medir predicate pushdown"],
+                        skills: ["Parquet", "Avro", "ORC", "Zstd", "Encoding"]
+                    }),
+                    topic({
+                        name: "Resiliência, Idempotência e Reprocessamento",
+                        workload: "28-36h",
+                        prerequisites: ["Sistemas distribuídos", "Orquestração"],
+                        objectives: ["Projetar pipelines que toleram falha parcial", "Garantir reexecução segura e auditável"],
+                        theory: ["Idempotência", "Deduplicação", "DLQ", "Poison messages", "Circuit breaker", "Retry budgets", "Compensating actions", "Transactional outbox"],
+                        practical: ["Criar padrão de escrita idempotente por chave natural", "Definir DLQ com triagem e replay"],
+                        algorithms: ["Idempotency keys", "Exactly-once sink protocol", "Exponential backoff", "Dead-letter replay"],
+                        papers: ["Helland, Idempotence is not a medical condition, 2012"],
+                        books: ["Kleppmann, Designing Data-Intensive Applications", "Nygard, Release It!"],
+                        tools: ["Kafka", "Flink checkpoints", "Airflow retries", "Delta MERGE", "Iceberg MERGE"],
+                        interview: ["Como provar que um backfill não duplica dados?", "O que vai para DLQ e o que deve falhar o job?"],
+                        projects: ["Framework de replay com idempotency keys, DLQ e auditoria"],
+                        exercises: ["Criar teste de reprocessamento", "Simular falha entre leitura e escrita"],
+                        skills: ["Idempotência", "DLQ", "Replay", "Retries", "Circuit Breaker"]
+                    })
+                ]
+            },
+            {
+                id: "06",
+                title: "Sistemas Distribuídos",
+                desc: "A ciência de coordenar nós que atrasam, falham, duplicam mensagens e discordam do estado do mundo.",
+                insight: "A rede sempre participa da arquitetura, mesmo quando o diagrama finge que ela não existe.",
+                radar: [88, 96, 76, 82, 100, 70],
+                topics: [
+                    topic({
+                        name: "Modelos de Falha, Tempo e Consistência",
+                        workload: "30-38h",
+                        prerequisites: ["Redes", "Probabilidade"],
+                        objectives: ["Raciocinar sob falha parcial e comunicação assíncrona", "Escolher modelos de consistência explicitamente"],
+                        theory: ["Fail-stop", "Byzantine faults", "Partial synchrony", "Timeouts", "Linearizability", "Sequential consistency", "Causal consistency", "Eventual consistency"],
+                        practical: ["Classificar garantias de bancos e filas", "Desenhar timeout e retry sem amplificar incidente"],
+                        algorithms: ["Failure detectors", "Quorum reads/writes", "Read repair"],
+                        papers: ["Fischer, Lynch & Paterson, Impossibility of distributed consensus, 1985", "Herlihy & Wing, Linearizability, 1990"],
+                        books: ["Lynch, Distributed Algorithms", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["Jepsen", "Toxiproxy", "Kind", "tc/netem"],
+                        interview: ["Por que timeout não prova falha?", "Explique linearizabilidade com exemplo de saldo"],
+                        projects: ["Laboratório Jepsen-lite para fila ou KV store local"],
+                        exercises: ["Simular partição de rede", "Classificar anomalias de consistência"],
+                        skills: ["Fault Models", "Linearizability", "Quorum", "Timeouts", "Jepsen"]
+                    }),
+                    topic({
+                        name: "CAP, PACELC e Consenso",
+                        workload: "34-44h",
+                        prerequisites: ["Modelos de falha", "Logs"],
+                        objectives: ["Entender limites de disponibilidade e consistência", "Explicar Paxos, Raft e replicação de log"],
+                        theory: ["CAP", "PACELC", "Paxos", "Raft", "Leader election", "Log replication", "Term", "Commit index", "Split brain"],
+                        practical: ["Executar cluster Raft e observar eleição", "Mapear decisões CAP em Cassandra, etcd e Spanner"],
+                        algorithms: ["Paxos", "Raft", "Zab", "Leader election", "Two-phase commit"],
+                        papers: ["Lamport, Paxos Made Simple, 2001", "Ongaro & Ousterhout, In Search of an Understandable Consensus Algorithm, 2014", "Gilbert & Lynch, Brewer's conjecture and the feasibility of consistent systems, 2002"],
+                        books: ["Lynch, Distributed Algorithms", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["etcd", "Consul", "ZooKeeper", "rqlite"],
+                        interview: ["Raft resolve CAP?", "Por que 2PC bloqueia?"],
+                        projects: ["Visualizador de Raft com eleição, append entries e partição"],
+                        exercises: ["Seguir um log Raft manualmente", "Comparar 2PC e consenso"],
+                        skills: ["CAP", "PACELC", "Raft", "Paxos", "Consensus"]
+                    }),
+                    topic({
+                        name: "Particionamento, Sharding e Replicação",
+                        workload: "28-36h",
+                        prerequisites: ["Hashing", "Bancos distribuídos"],
+                        objectives: ["Distribuir dados reduzindo hotspots e movimentação", "Escolher replicação por padrão de leitura/escrita"],
+                        theory: ["Consistent hashing", "Virtual nodes", "Range partitioning", "Hash partitioning", "Leader-follower", "Leaderless", "Quorums", "Anti-entropy"],
+                        practical: ["Projetar sharding para eventos multi-tenant", "Simular rebalanceamento com consistent hashing"],
+                        algorithms: ["Consistent hashing", "Rendezvous hashing", "Merkle anti-entropy", "Gossip"],
+                        papers: ["Karger et al., Consistent hashing and random trees, 1997", "DeCandia et al., Dynamo, 2007"],
+                        books: ["Kleppmann, Designing Data-Intensive Applications", "Tanenbaum & van Steen, Distributed Systems"],
+                        tools: ["Cassandra", "Kafka", "Redis Cluster", "DynamoDB", "Vitess"],
+                        interview: ["Como evitar hot partition?", "Por que virtual node reduz movimento em scaling?"],
+                        projects: ["Simulador visual de sharding com hashing consistente"],
+                        exercises: ["Medir distribuição de chaves", "Planejar split de partição quente"],
+                        skills: ["Sharding", "Consistent Hashing", "Replication", "Quorum", "Gossip"]
+                    }),
+                    topic({
+                        name: "Causalidade, Relógios e CRDTs",
+                        workload: "28-36h",
+                        prerequisites: ["Lógica", "Sistemas distribuídos"],
+                        objectives: ["Ordenar eventos sem relógio global", "Projetar convergência em sistemas eventualmente consistentes"],
+                        theory: ["Lamport clocks", "Vector clocks", "Hybrid logical clocks", "Happens-before", "CRDT", "LWW", "Causal broadcast"],
+                        practical: ["Implementar vector clock para eventos", "Criar contador CRDT e observar convergência"],
+                        algorithms: ["Lamport timestamp", "Vector clock merge", "G-counter", "OR-set", "LWW register"],
+                        papers: ["Lamport, Time, clocks, and the ordering of events, 1978", "Shapiro et al., Conflict-free replicated data types, 2011"],
+                        books: ["Kleppmann, Designing Data-Intensive Applications", "Lynch, Distributed Algorithms"],
+                        tools: ["Riak concepts", "AntidoteDB", "Akka Distributed Data"],
+                        interview: ["Vector clock escala para muitos nós?", "Quando LWW perde informação de negócio?"],
+                        projects: ["Estado colaborativo simples com CRDT e conflitos explícitos"],
+                        exercises: ["Calcular happens-before em log distribuído", "Implementar G-counter"],
+                        skills: ["Lamport", "Vector Clocks", "CRDT", "Causality", "HLC"]
+                    }),
+                    topic({
+                        name: "Semântica de Streaming Distribuído",
+                        workload: "30-40h",
+                        prerequisites: ["Streaming", "Consistência"],
+                        objectives: ["Entender processamento stateful em escala", "Projetar garantias de entrega, estado e tempo de evento"],
+                        theory: ["Event time", "Processing time", "Watermarks", "State backends", "Checkpoint barriers", "Exactly-once sinks", "Windowing", "Backpressure"],
+                        practical: ["Implementar agregação stateful com late events", "Avaliar recuperação de falha com checkpoint"],
+                        algorithms: ["Chandy-Lamport snapshot", "Two-phase commit sink", "RocksDB state backend", "Windowed aggregation"],
+                        papers: ["Chandy & Lamport, Distributed snapshots, 1985", "Akidau et al., The Dataflow Model, 2015", "Carbone et al., Apache Flink, 2015"],
+                        books: ["Hueske & Kalavri, Stream Processing with Apache Flink", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["Flink", "Spark Structured Streaming", "Kafka Streams", "RocksDB"],
+                        interview: ["Como watermark decide completude?", "Exactly-once entre Kafka e lakehouse exige o quê?"],
+                        projects: ["Pipeline Flink com estado, checkpoint, replay e sink transacional"],
+                        exercises: ["Simular evento atrasado", "Quebrar e recuperar checkpoint"],
+                        skills: ["Flink", "Watermarks", "State", "Checkpoint", "Exactly-once"]
+                    })
+                ]
+            },
+            {
+                id: "07",
+                title: "Lakehouse",
+                desc: "Arquitetura aberta que combina object storage, formatos colunares, metadados transacionais e múltiplos motores.",
+                insight: "Lakehouse não é pasta no S3. É protocolo de tabela, contrato de metadados e disciplina operacional.",
+                radar: [58, 78, 70, 100, 90, 62],
+                topics: [
+                    topic({
+                        name: "Object Storage, Layout e Performance",
+                        workload: "24-32h",
+                        prerequisites: ["I/O", "Formatos de arquivo"],
+                        objectives: ["Desenhar layout físico eficiente em storage barato", "Controlar small files, particionamento e pruning"],
+                        theory: ["S3/GCS/ADLS semantics", "Eventual listing", "Partitioning", "Clustering", "Compaction", "File sizing", "Data skipping", "Manifest files"],
+                        practical: ["Definir estratégia de particionamento por consulta", "Executar compaction e medir ganho"],
+                        algorithms: ["Bin packing", "Z-order clustering", "Partition pruning", "Manifest pruning"],
+                        papers: ["Thusoo et al., Hive, 2009", "Armbrust et al., Lakehouse, 2021"],
+                        books: ["Reis & Housley, Fundamentals of Data Engineering", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["S3", "GCS", "ADLS", "Spark", "DuckDB"],
+                        interview: ["Por que partição demais piora?", "Como data skipping reduz I/O?"],
+                        projects: ["Benchmark de layout lakehouse com small files, compaction e clustering"],
+                        exercises: ["Escolher partição para três consultas", "Medir efeito de compactação"],
+                        skills: ["Object Storage", "Partitioning", "Compaction", "Data Skipping", "File Sizing"]
+                    }),
+                    topic({
+                        name: "Apache Iceberg",
+                        workload: "26-34h",
+                        prerequisites: ["Parquet", "Transações", "Object storage"],
+                        objectives: ["Entender snapshots, manifests e evolução de tabela", "Operar tabelas Iceberg com múltiplos motores"],
+                        theory: ["Snapshots", "Manifest lists", "Hidden partitioning", "Schema evolution", "Partition evolution", "Time travel", "Equality deletes", "Position deletes"],
+                        practical: ["Criar tabela Iceberg com evolução de partição", "Executar time travel e rollback"],
+                        algorithms: ["Snapshot isolation", "Manifest pruning", "Merge-on-read delete planning"],
+                        papers: ["Ryan Blue et al., Apache Iceberg: An open table format, 2018-2020"],
+                        books: ["Reis & Housley, Fundamentals of Data Engineering", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["Iceberg", "Spark", "Trino", "Flink", "Nessie", "Glue Catalog"],
+                        interview: ["O que hidden partitioning resolve?", "Como Iceberg permite evolução de partição?"],
+                        projects: ["Lakehouse Iceberg multi-engine com Spark e Trino"],
+                        exercises: ["Inspecionar manifests", "Executar rollback de snapshot"],
+                        skills: ["Iceberg", "Snapshots", "Manifests", "Hidden Partitioning", "Time Travel"]
+                    }),
+                    topic({
+                        name: "Delta Lake e Hudi",
+                        workload: "26-34h",
+                        prerequisites: ["Parquet", "Streaming", "Transações"],
+                        objectives: ["Comparar transaction log, MOR/COW e padrões de upsert", "Escolher formato por workload e ecossistema"],
+                        theory: ["Delta transaction log", "Optimistic concurrency", "Change Data Feed", "Z-order", "Hudi Copy-on-Write", "Hudi Merge-on-Read", "Timeline"],
+                        practical: ["Implementar CDC com MERGE em Delta e Hudi", "Comparar read amplification em MOR"],
+                        algorithms: ["Optimistic concurrency control", "Log replay", "Compaction scheduling", "Index lookup"],
+                        papers: ["Armbrust et al., Delta Lake, 2020", "Apache Hudi technical reports"],
+                        books: ["Reis & Housley, Fundamentals of Data Engineering", "Karau & Warren, High Performance Spark"],
+                        tools: ["Delta Lake", "Databricks", "Hudi", "Spark", "Flink"],
+                        interview: ["Delta log é banco de dados?", "Quando MOR compensa?"],
+                        projects: ["Comparativo CDC: Delta MERGE vs Hudi MOR em carga incremental"],
+                        exercises: ["Ler transaction log", "Medir compaction em Hudi"],
+                        skills: ["Delta", "Hudi", "MERGE", "CDC", "Compaction"]
+                    }),
+                    topic({
+                        name: "Motores Federados e Execução Vetorizada",
+                        workload: "24-32h",
+                        prerequisites: ["Query optimization", "Álgebra linear básica"],
+                        objectives: ["Consultar múltiplas fontes sem mover dados desnecessariamente", "Entender execução colunar e vetorizada"],
+                        theory: ["Trino", "Presto", "Spark", "DuckDB", "Predicate pushdown", "Connector model", "Vectorized execution", "Apache Arrow", "Substrait", "Velox"],
+                        practical: ["Federar lakehouse, Postgres e object storage", "Comparar DuckDB local e Trino remoto"],
+                        algorithms: ["Vectorized scan", "Late materialization", "Pushdown planning", "Adaptive execution"],
+                        papers: ["Sethi et al., Presto: SQL on everything, 2019", "Richardson et al., Apache Arrow, 2017", "Pedreira et al., Velox, 2022"],
+                        books: ["Stonebraker & Hellerstein, Readings in Database Systems", "Petrov, Database Internals"],
+                        tools: ["Trino", "Presto", "DuckDB", "Arrow", "Velox", "Substrait"],
+                        interview: ["Quando federação vira gargalo?", "O que Arrow padroniza na memória?"],
+                        projects: ["Query federada com pushdown mensurado por fonte"],
+                        exercises: ["Comparar query com e sem pushdown", "Inspecionar batches Arrow"],
+                        skills: ["Trino", "Arrow", "DuckDB", "Pushdown", "Vectorization"]
+                    }),
+                    topic({
+                        name: "Catálogos, Metastores e Transações Multi-engine",
+                        workload: "22-30h",
+                        prerequisites: ["Lakehouse básico", "Governança"],
+                        objectives: ["Gerenciar metadados consistentes entre motores", "Projetar catálogo com segurança e lineage"],
+                        theory: ["Hive Metastore", "Glue", "Unity Catalog", "Nessie", "REST catalog", "Namespaces", "Table properties", "Access policies"],
+                        practical: ["Configurar catálogo compartilhado", "Mapear permissões por domínio e tabela"],
+                        algorithms: ["Optimistic metadata commit", "Catalog versioning", "Conflict detection"],
+                        papers: ["Apache Iceberg REST catalog specification", "Project Nessie technical documentation"],
+                        books: ["Reis & Housley, Fundamentals of Data Engineering", "DAMA-DMBOK"],
+                        tools: ["Hive Metastore", "AWS Glue", "Unity Catalog", "Nessie", "Polaris"],
+                        interview: ["Catálogo é só lista de tabelas?", "Como evitar conflito entre Spark e Trino?"],
+                        projects: ["Catálogo versionado para ambientes dev/stage/prod com políticas"],
+                        exercises: ["Simular conflito de commit", "Definir namespace por domínio"],
+                        skills: ["Catalog", "Metastore", "Unity", "Nessie", "Governance"]
+                    })
+                ]
+            },
+            {
+                id: "08",
+                title: "Governança",
+                desc: "Confiança, privacidade, linhagem, qualidade e semântica operando como produto de plataforma.",
+                insight: "Boa governança reduz atrito. Ela torna o caminho seguro também o caminho mais fácil.",
+                radar: [54, 62, 82, 96, 74, 96],
+                topics: [
+                    topic({
+                        name: "Catálogo, Metadados e Linhagem",
+                        workload: "24-32h",
+                        prerequisites: ["Lakehouse", "Modelagem"],
+                        objectives: ["Criar inventário vivo e rastreável", "Responder impacto downstream antes de mudar dados"],
+                        theory: ["Technical metadata", "Business metadata", "Lineage column-level", "OpenLineage", "Impact analysis", "Ownership", "Glossary"],
+                        practical: ["Instrumentar lineage de Airflow/dbt/Spark", "Criar fluxo de aprovação para mudanças críticas"],
+                        algorithms: ["Graph traversal", "Column lineage propagation", "Impact scoring"],
+                        papers: ["Halevy et al., Enterprise information integration, 2005"],
+                        books: ["DAMA-DMBOK", "Reis & Housley, Fundamentals of Data Engineering"],
+                        tools: ["DataHub", "OpenMetadata", "Amundsen", "OpenLineage", "Marquez"],
+                        interview: ["Por que tabela sem dono é risco?", "Como calcular impacto de breaking change?"],
+                        projects: ["Catálogo com lineage de coluna e score de criticidade"],
+                        exercises: ["Traçar métrica até origem", "Detectar downstream afetado por renomeação"],
+                        skills: ["Metadata", "Lineage", "DataHub", "OpenLineage", "Impact Analysis"]
+                    }),
+                    topic({
+                        name: "Contratos de Dados e Ownership por Domínio",
+                        workload: "26-34h",
+                        prerequisites: ["APIs", "Schema evolution"],
+                        objectives: ["Tratar dados como API entre times", "Definir compatibilidade, SLA e semântica do produto de dados"],
+                        theory: ["Data contracts", "Schema contract", "Semantic contract", "SLA/SLO", "Producer ownership", "Consumer-driven contracts", "Versioning"],
+                        practical: ["Criar contrato para evento e tabela analítica", "Automatizar enforcement em CI/CD"],
+                        algorithms: ["Schema diff", "Compatibility matrix", "SLO burn rate"],
+                        papers: ["Dehghani, Data Mesh principles, 2019-2022"],
+                        books: ["Dehghani, Data Mesh", "Reis & Housley, Fundamentals of Data Engineering"],
+                        tools: ["Protobuf", "Avro", "JSON Schema", "dbt contracts", "Pact"],
+                        interview: ["Contrato de dados é só schema?", "Como negociar breaking change entre domínios?"],
+                        projects: ["Portal de contratos com validação automática em PR"],
+                        exercises: ["Definir contrato semântico para métrica de receita", "Criar teste de compatibilidade"],
+                        skills: ["Data Contracts", "SLO", "Ownership", "Schema", "Data Mesh"]
+                    }),
+                    topic({
+                        name: "Privacidade, LGPD/GDPR e Dados Sensíveis",
+                        workload: "24-32h",
+                        prerequisites: ["Segurança", "Governança básica"],
+                        objectives: ["Classificar e proteger PII", "Operacionalizar direitos de titulares e retenção"],
+                        theory: ["PII", "DPIA", "Data minimization", "Purpose limitation", "Retention", "Consent", "Right to erasure", "Tokenization", "Masking"],
+                        practical: ["Criar política de retenção por domínio", "Implementar mascaramento por coluna e ambiente"],
+                        algorithms: ["PII detection", "K-anonymity", "Tokenization", "Differential privacy introdutória"],
+                        papers: ["Dwork, Differential privacy, 2006", "Sweeney, k-anonymity, 2002"],
+                        books: ["Dwork & Roth, The Algorithmic Foundations of Differential Privacy", "NIST Privacy Framework"],
+                        tools: ["BigQuery policy tags", "Immuta", "Privacera", "Open Policy Agent", "Presidio"],
+                        interview: ["Mascaramento resolve reidentificação?", "Como atender deleção em lakehouse imutável?"],
+                        projects: ["Classificador PII com políticas de acesso e retenção automatizadas"],
+                        exercises: ["Criar matriz de finalidade vs dado", "Aplicar k-anonymity em dataset pequeno"],
+                        skills: ["LGPD", "GDPR", "PII", "Masking", "Retention"]
+                    }),
+                    topic({
+                        name: "Controle de Acesso e Segurança de Dados",
+                        workload: "24-32h",
+                        prerequisites: ["Criptografia", "Catálogos"],
+                        objectives: ["Projetar acesso granular por identidade, atributo e contexto", "Auditar uso de dados críticos"],
+                        theory: ["RBAC", "ABAC", "PBAC", "Row-level security", "Column-level security", "Dynamic masking", "Least privilege", "Audit trails"],
+                        practical: ["Definir política ABAC por domínio, finalidade e sensibilidade", "Auditar queries em dados restritos"],
+                        algorithms: ["Policy evaluation", "Attribute matching", "Access graph traversal"],
+                        papers: ["Hu et al., Attribute-Based Access Control, NIST, 2014"],
+                        books: ["Katz & Lindell, Introduction to Modern Cryptography", "DAMA-DMBOK"],
+                        tools: ["Open Policy Agent", "Ranger", "Lake Formation", "Unity Catalog", "BigQuery IAM"],
+                        interview: ["Quando RBAC fica insuficiente?", "Como aplicar least privilege em analytics self-service?"],
+                        projects: ["Motor de políticas ABAC para dados sensíveis com auditoria"],
+                        exercises: ["Escrever política OPA", "Simular acesso por finalidade de uso"],
+                        skills: ["RBAC", "ABAC", "OPA", "Audit", "RLS"]
+                    }),
+                    topic({
+                        name: "Qualidade, SLOs e Observabilidade de Dados",
+                        workload: "26-34h",
+                        prerequisites: ["Estatística", "Observabilidade"],
+                        objectives: ["Transformar qualidade em contrato mensurável", "Detectar regressões antes do consumidor"],
+                        theory: ["Freshness", "Completeness", "Validity", "Accuracy", "Uniqueness", "Volume anomaly", "SLO", "Error budget", "Incident workflow"],
+                        practical: ["Criar SLOs por produto de dados", "Implementar alertas com severidade e runbook"],
+                        algorithms: ["Anomaly detection", "Statistical profiling", "Drift detection", "Threshold learning"],
+                        papers: ["Schelter et al., Automating large-scale data quality verification, 2018"],
+                        books: ["Reis & Housley, Fundamentals of Data Engineering", "Majors et al., Observability Engineering"],
+                        tools: ["Great Expectations", "Soda", "Monte Carlo", "Bigeye", "dbt tests"],
+                        interview: ["Toda falha de qualidade deve acordar alguém?", "Como definir freshness por caso de uso?"],
+                        projects: ["Sistema de SLOs de dados com burn rate e postmortem"],
+                        exercises: ["Criar check de drift de volume", "Definir severidade para atraso de tabela crítica"],
+                        skills: ["Data Quality", "SLO", "Freshness", "Completeness", "Observability"]
+                    })
+                ]
+            },
+            {
+                id: "09",
+                title: "Infraestrutura",
+                desc: "Cloud, Kubernetes, IaC, plataforma interna, confiabilidade e custo como fundamentos operacionais.",
+                insight: "Infraestrutura de dados boa é invisível quando funciona e explicável quando falha.",
+                radar: [46, 100, 88, 72, 88, 78],
+                topics: [
+                    topic({
+                        name: "Cloud Foundations para Dados",
+                        workload: "26-34h",
+                        prerequisites: ["Redes", "Segurança"],
+                        objectives: ["Projetar fundação multi-conta/projeto segura", "Entender primitives de compute, storage, IAM e rede"],
+                        theory: ["VPC/VNet", "IAM", "Object storage", "KMS", "Private endpoints", "Service accounts", "Quotas", "Regions/Zones", "Egress"],
+                        practical: ["Criar landing zone para plataforma de dados", "Mapear limites e quotas de workloads analíticos"],
+                        algorithms: ["Least privilege policy evaluation", "Capacity planning", "Network routing"],
+                        papers: ["Google, BeyondCorp, 2014", "AWS Well-Architected Framework"],
+                        books: ["Beyer et al., Site Reliability Engineering", "Burns, Designing Distributed Systems"],
+                        tools: ["AWS", "GCP", "Azure", "IAM Analyzer", "KMS"],
+                        interview: ["Por que egress muda arquitetura?", "Como separar ambientes sem duplicar tudo?"],
+                        projects: ["Blueprint cloud para plataforma de dados com rede privada e IAM mínimo"],
+                        exercises: ["Modelar IAM de domínio", "Calcular custo de egress entre regiões"],
+                        skills: ["Cloud", "IAM", "VPC", "KMS", "Egress"]
+                    }),
+                    topic({
+                        name: "Kubernetes e Operators para Dados",
+                        workload: "28-38h",
+                        prerequisites: ["Linux", "Containers"],
+                        objectives: ["Executar workloads elásticos e stateful com segurança", "Entender operators de Spark, Flink, Trino e Airflow"],
+                        theory: ["Pods", "Deployments", "StatefulSets", "Jobs", "CRDs", "Operators", "Scheduling", "Requests/limits", "Persistent volumes", "Network policies"],
+                        practical: ["Deploy Spark operator com isolamento de namespace", "Configurar autoscaling e limites por equipe"],
+                        algorithms: ["Bin packing scheduler", "Leader election", "Reconciliation loop"],
+                        papers: ["Burns et al., Borg, Omega, and Kubernetes, 2016"],
+                        books: ["Hightower, Burns & Beda, Kubernetes: Up and Running", "Burns, Designing Distributed Systems"],
+                        tools: ["Kubernetes", "Helm", "Kustomize", "Spark Operator", "Flink Kubernetes Operator"],
+                        interview: ["Operator é só Helm chart?", "Como requests e limits afetam custo e estabilidade?"],
+                        projects: ["Cluster local com operadores de Spark e Flink, quotas e network policies"],
+                        exercises: ["Criar CRD simples", "Diagnosticar pod OOMKilled"],
+                        skills: ["Kubernetes", "Operators", "Helm", "Scheduling", "CRD"]
+                    }),
+                    topic({
+                        name: "IaC, GitOps e Ambientes Reprodutíveis",
+                        workload: "24-32h",
+                        prerequisites: ["Cloud foundations", "CI/CD"],
+                        objectives: ["Declarar infraestrutura versionada e auditável", "Promover mudanças com revisão e drift controlado"],
+                        theory: ["Terraform state", "Modules", "Workspaces", "Remote backend", "Drift", "GitOps", "Policy as code", "Secrets management"],
+                        practical: ["Criar módulos Terraform para lakehouse", "Aplicar policy-as-code em pull request"],
+                        algorithms: ["Dependency graph", "Plan/apply diff", "Drift detection", "Topological provisioning"],
+                        papers: ["HashiCorp Terraform architecture docs", "Open Policy Agent papers and docs"],
+                        books: ["Brikman, Terraform: Up & Running", "Humble & Farley, Continuous Delivery"],
+                        tools: ["Terraform", "OpenTofu", "Atlantis", "Argo CD", "OPA", "Vault"],
+                        interview: ["Por que state é sensível?", "Como lidar com drift emergencial?"],
+                        projects: ["Plataforma lakehouse provisionada por Terraform e GitOps"],
+                        exercises: ["Criar módulo reutilizável", "Bloquear bucket público via policy"],
+                        skills: ["Terraform", "GitOps", "OPA", "State", "Drift"]
+                    }),
+                    topic({
+                        name: "SRE, Resiliência e Disaster Recovery",
+                        workload: "26-34h",
+                        prerequisites: ["Observabilidade", "Infraestrutura cloud"],
+                        objectives: ["Projetar confiabilidade mensurável", "Preparar recuperação realista para dados e metadados"],
+                        theory: ["SLO", "Error budget", "RTO", "RPO", "DR drills", "Chaos engineering", "Capacity planning", "Incident command"],
+                        practical: ["Criar plano DR de lakehouse e catálogo", "Executar game day de falha regional"],
+                        algorithms: ["Burn-rate alerting", "Failover decision tree", "Backup verification"],
+                        papers: ["Beyer et al., Site Reliability Engineering, 2016", "Basiri et al., Chaos engineering, 2016"],
+                        books: ["Beyer et al., Site Reliability Engineering", "Nygard, Release It!"],
+                        tools: ["Prometheus", "Grafana", "PagerDuty", "LitmusChaos", "Velero"],
+                        interview: ["RTO e RPO são decisão técnica ou de negócio?", "Como testar backup sem confiança cega?"],
+                        projects: ["Game day de plataforma de dados com relatório de gaps"],
+                        exercises: ["Definir SLO de catálogo", "Restaurar metadados em ambiente isolado"],
+                        skills: ["SRE", "DR", "RTO", "RPO", "Chaos"]
+                    }),
+                    topic({
+                        name: "FinOps e Otimização de Custo",
+                        workload: "24-32h",
+                        prerequisites: ["Cloud", "Query optimization"],
+                        objectives: ["Atribuir custo a domínio e decisão técnica", "Reduzir desperdício sem sacrificar confiabilidade"],
+                        theory: ["Unit economics", "Showback/chargeback", "Reserved/spot", "Autoscaling", "Storage lifecycle", "Query cost", "Tagging"],
+                        practical: ["Criar dashboard de custo por produto de dados", "Otimizar workload com rightsizing e pruning"],
+                        algorithms: ["Cost attribution", "Anomaly detection", "Bin packing", "Workload scheduling"],
+                        papers: ["FinOps Foundation, FinOps Framework", "Forsgren, Humble & Kim, Accelerate, 2018"],
+                        books: ["Reis & Housley, Fundamentals of Data Engineering", "Beyer et al., Site Reliability Engineering"],
+                        tools: ["AWS Cost Explorer", "GCP Billing", "Kubecost", "Infracost", "Databricks system tables"],
+                        interview: ["Como provar economia sem degradar SLA?", "Por que custo por query é métrica de produto?"],
+                        projects: ["FinOps dashboard com custo por domínio, pipeline e query"],
+                        exercises: ["Identificar top 10 queries caras", "Simular spot vs reserved"],
+                        skills: ["FinOps", "Cost Attribution", "Rightsizing", "Autoscaling", "Showback"]
+                    })
+                ]
+            },
+            {
+                id: "10",
+                title: "MLOps",
+                desc: "Industrialização de modelos: dados, features, treino, registro, deploy, monitoramento e governança.",
+                insight: "Modelo em produção é sistema distribuído com estatística dentro. Trate como produto crítico.",
+                radar: [86, 78, 88, 94, 82, 68],
+                topics: [
+                    topic({
+                        name: "Ciclo de Vida de ML e Experiment Tracking",
+                        workload: "24-32h",
+                        prerequisites: ["Estatística", "Engenharia de software"],
+                        objectives: ["Versionar dados, código, parâmetros e métricas", "Separar experimento reproduzível de notebook exploratório"],
+                        theory: ["Experiment tracking", "Data versioning", "Model registry", "Reproducibility", "Train/validation/test", "Leakage", "Baseline"],
+                        practical: ["Criar pipeline reproduzível com MLflow", "Registrar modelo com dataset e métricas"],
+                        algorithms: ["Cross-validation", "Hyperparameter search", "Seed control"],
+                        papers: ["Sculley et al., Hidden technical debt in machine learning systems, 2015"],
+                        books: ["Chip Huyen, Designing Machine Learning Systems", "Treveil et al., Introducing MLOps"],
+                        tools: ["MLflow", "Weights & Biases", "DVC", "LakeFS", "Git"],
+                        interview: ["O que torna um experimento reproduzível?", "Como evitar leakage em feature temporal?"],
+                        projects: ["Template de experimento versionado ponta a ponta"],
+                        exercises: ["Reproduzir treino a partir de commit", "Detectar leakage em dataset temporal"],
+                        skills: ["MLflow", "Reproducibility", "Registry", "DVC", "Leakage"]
+                    }),
+                    topic({
+                        name: "Feature Stores e Treino-Serving Skew",
+                        workload: "26-34h",
+                        prerequisites: ["Modelagem", "Streaming"],
+                        objectives: ["Servir features consistentes para treino e inferência", "Controlar point-in-time correctness"],
+                        theory: ["Offline store", "Online store", "Point-in-time joins", "Feature freshness", "Training-serving skew", "Entity keys", "Materialization"],
+                        practical: ["Construir feature store com Feast", "Validar point-in-time join sem vazamento"],
+                        algorithms: ["As-of join", "Feature materialization", "TTL eviction", "Freshness monitoring"],
+                        papers: ["Feast project papers and design docs", "Uber Michelangelo feature platform articles"],
+                        books: ["Chip Huyen, Designing Machine Learning Systems", "Reis & Housley, Fundamentals of Data Engineering"],
+                        tools: ["Feast", "Tecton", "Redis", "BigQuery", "Spark"],
+                        interview: ["Como point-in-time correctness evita fraude estatística?", "Quando online store é necessário?"],
+                        projects: ["Feature store para scoring online com materialização e freshness SLO"],
+                        exercises: ["Criar as-of join", "Simular treino-serving skew"],
+                        skills: ["Feature Store", "Feast", "Point-in-time", "Freshness", "Online Store"]
+                    }),
+                    topic({
+                        name: "Pipelines de Treino, Validação e Deploy",
+                        workload: "26-34h",
+                        prerequisites: ["CI/CD", "Kubernetes"],
+                        objectives: ["Automatizar treino e promoção com gates de qualidade", "Separar pipeline de dados, treino e deploy"],
+                        theory: ["TFX", "Kubeflow", "Pipeline components", "Model validation", "Canary", "Shadow deployment", "Rollback"],
+                        practical: ["Criar pipeline com validação de modelo e dados", "Fazer deploy canário com métrica guardrail"],
+                        algorithms: ["Pipeline DAG", "Model comparison", "Canary analysis"],
+                        papers: ["Baylor et al., TFX: A TensorFlow-Based Production-Scale ML Platform, 2017", "Breck et al., The ML Test Score, 2017"],
+                        books: ["Treveil et al., Introducing MLOps", "Humble & Farley, Continuous Delivery"],
+                        tools: ["Kubeflow", "TFX", "Airflow", "Argo Workflows", "MLflow"],
+                        interview: ["Qual gate impede modelo pior em produção?", "Como reverter modelo com schema novo?"],
+                        projects: ["Pipeline ML com validação, registry, canary e rollback"],
+                        exercises: ["Criar componente reutilizável", "Comparar modelo candidato contra baseline"],
+                        skills: ["Kubeflow", "TFX", "Canary", "Validation", "Registry"]
+                    }),
+                    topic({
+                        name: "Serving, Monitoramento e Drift",
+                        workload: "26-34h",
+                        prerequisites: ["APIs", "Estatística", "SRE"],
+                        objectives: ["Servir modelos com latência, escala e observabilidade", "Detectar data drift, concept drift e degradação"],
+                        theory: ["Batch inference", "Online inference", "KServe", "Model server", "Data drift", "Concept drift", "Calibration", "Feedback loop"],
+                        practical: ["Servir modelo via KServe ou BentoML", "Monitorar drift com Evidently"],
+                        algorithms: ["KS test", "PSI", "Population stability", "Embedding drift", "Canary scoring"],
+                        papers: ["Gama et al., A survey on concept drift adaptation, 2014"],
+                        books: ["Chip Huyen, Designing Machine Learning Systems", "Sculley et al., Hidden Technical Debt in ML Systems"],
+                        tools: ["KServe", "BentoML", "Seldon", "Evidently", "WhyLabs"],
+                        interview: ["Data drift sempre exige retreino?", "Como monitorar modelo sem label imediato?"],
+                        projects: ["Serviço de inferência com monitoramento de drift e latência"],
+                        exercises: ["Calcular PSI", "Simular degradação sem label"],
+                        skills: ["KServe", "Drift", "Inference", "Evidently", "Monitoring"]
+                    }),
+                    topic({
+                        name: "Aceleradores, Treino Distribuído e Custo de ML",
+                        workload: "24-32h",
+                        prerequisites: ["Infraestrutura", "Álgebra linear"],
+                        objectives: ["Entender GPU/TPU e paralelismo de treino", "Otimizar custo de inferência e treinamento"],
+                        theory: ["GPU memory", "TPU", "Data parallelism", "Model parallelism", "Mixed precision", "Batching", "Quantization", "Autoscaling"],
+                        practical: ["Medir throughput por batch e precisão", "Configurar job distribuído simples"],
+                        algorithms: ["All-reduce", "Gradient accumulation", "Mixed precision training", "Dynamic batching"],
+                        papers: ["Li et al., Scaling distributed machine learning with the parameter server, 2014", "Micikevicius et al., Mixed precision training, 2017"],
+                        books: ["Goodfellow, Bengio & Courville, Deep Learning", "Kleppmann, Designing Data-Intensive Applications"],
+                        tools: ["PyTorch", "Ray", "Horovod", "NVIDIA Triton", "Kubernetes GPUs"],
+                        interview: ["Batch maior sempre melhora throughput?", "Quando quantização prejudica métrica?"],
+                        projects: ["Benchmark de inferência com batching, quantização e GPU"],
+                        exercises: ["Calcular memória de batch", "Comparar FP32 e mixed precision"],
+                        skills: ["GPU", "TPU", "Distributed Training", "Quantization", "Batching"]
+                    })
+                ]
+            },
+            {
+                id: "11",
+                title: "LLMs",
+                desc: "Infraestrutura para modelos fundacionais: dados, embeddings, busca vetorial, RAG, serving, avaliação e segurança.",
+                insight: "RAG é engenharia de dados com avaliação probabilística: sem curadoria, chunking e observabilidade, vira busca cara com texto bonito.",
+                radar: [96, 86, 92, 98, 88, 72],
+                topics: [
+                    topic({
+                        name: "Transformers, Tokenização e Embeddings",
+                        workload: "30-40h",
+                        prerequisites: ["Álgebra linear", "Probabilidade", "Deep learning básico"],
+                        objectives: ["Entender a arquitetura que sustenta LLMs", "Relacionar tokens, atenção e embeddings a custo e qualidade"],
+                        theory: ["Tokenization", "BPE", "Self-attention", "Positional encoding", "Transformers", "Embeddings", "Cosine similarity", "Context window"],
+                        practical: ["Comparar tokenizadores em documentos de negócio", "Avaliar embeddings em busca semântica"],
+                        algorithms: ["Scaled dot-product attention", "BPE", "Mean pooling", "Approximate nearest neighbors"],
+                        papers: ["Vaswani et al., Attention Is All You Need, 2017", "Devlin et al., BERT, 2018", "Brown et al., Language Models are Few-Shot Learners, 2020"],
+                        books: ["Jurafsky & Martin, Speech and Language Processing", "Goodfellow, Bengio & Courville, Deep Learning"],
+                        tools: ["tiktoken", "SentenceTransformers", "Hugging Face", "PyTorch"],
+                        interview: ["Por que tokenização afeta custo?", "O que embedding representa e o que não representa?"],
+                        projects: ["Explorador de tokens e embeddings para corpus empresarial"],
+                        exercises: ["Calcular similaridade entre embeddings", "Medir tokens por tipo de documento"],
+                        skills: ["Transformers", "BPE", "Embeddings", "Attention", "Tokenization"]
+                    }),
+                    topic({
+                        name: "Bancos Vetoriais e Busca Aproximada",
+                        workload: "26-34h",
+                        prerequisites: ["Álgebra linear", "Teoria da informação"],
+                        objectives: ["Projetar índices vetoriais com recall, latência e custo explícitos", "Escolher métrica e estratégia de atualização"],
+                        theory: ["ANN", "HNSW", "IVF", "PQ", "Cosine", "Dot product", "Euclidean distance", "Hybrid search", "Metadata filtering"],
+                        practical: ["Comparar HNSW e IVF por recall/latência", "Criar busca híbrida com filtros de permissão"],
+                        algorithms: ["HNSW", "IVF", "Product quantization", "BM25", "Reciprocal rank fusion"],
+                        papers: ["Malkov & Yashunin, HNSW, 2018", "Johnson, Douze & Jégou, Billion-scale similarity search with GPUs, 2017"],
+                        books: ["Manning, Raghavan & Schütze, Introduction to Information Retrieval", "Jurafsky & Martin, Speech and Language Processing"],
+                        tools: ["FAISS", "Milvus", "Qdrant", "Weaviate", "pgvector", "Elasticsearch"],
+                        interview: ["Recall 100% é necessário em RAG?", "Como filtrar por ACL sem vazar contexto?"],
+                        projects: ["Benchmark de vector search com HNSW, filtros e busca híbrida"],
+                        exercises: ["Medir recall@k", "Comparar cosseno e dot product"],
+                        skills: ["HNSW", "FAISS", "pgvector", "Hybrid Search", "ANN"]
+                    }),
+                    topic({
+                        name: "RAG, Chunking e Re-ranking",
+                        workload: "30-40h",
+                        prerequisites: ["Busca vetorial", "Governança"],
+                        objectives: ["Construir recuperação com proveniência e avaliação", "Reduzir alucinação por contexto correto, não por esperança"],
+                        theory: ["RAG", "Chunking semântico", "Overlap", "Query rewriting", "Hybrid retrieval", "Re-ranking", "Citations", "Groundedness", "Context compression"],
+                        practical: ["Criar pipeline RAG com chunking por estrutura", "Avaliar answer faithfulness e retrieval quality"],
+                        algorithms: ["BM25", "Dense retrieval", "Cross-encoder re-ranking", "MMR", "RAG fusion"],
+                        papers: ["Lewis et al., Retrieval-Augmented Generation, 2020", "Karpukhin et al., Dense Passage Retrieval, 2020", "Gao et al., RAG survey, 2023"],
+                        books: ["Manning et al., Introduction to Information Retrieval", "Jurafsky & Martin, Speech and Language Processing"],
+                        tools: ["LlamaIndex", "LangChain", "Haystack", "Ragas", "DeepEval"],
+                        interview: ["Chunk maior sempre melhora RAG?", "Como provar que resposta está ancorada na fonte?"],
+                        projects: ["RAG corporativo com ACL, citações, re-ranking e avaliação contínua"],
+                        exercises: ["Comparar estratégias de chunking", "Criar conjunto de perguntas douradas"],
+                        skills: ["RAG", "Chunking", "Re-ranking", "Groundedness", "Evaluation"]
+                    }),
+                    topic({
+                        name: "Serving de LLMs e Otimização de Inferência",
+                        workload: "28-36h",
+                        prerequisites: ["Infraestrutura", "GPU", "Transformers"],
+                        objectives: ["Servir LLMs com latência, throughput e custo controlados", "Entender batching, cache e quantização"],
+                        theory: ["KV cache", "PagedAttention", "Continuous batching", "Speculative decoding", "Quantization", "LoRA adapters", "Context caching", "Rate limiting"],
+                        practical: ["Subir vLLM com métricas de tokens/s", "Comparar quantização e tamanho de contexto"],
+                        algorithms: ["PagedAttention", "Beam search", "Top-k/top-p sampling", "Speculative decoding", "Dynamic batching"],
+                        papers: ["Kwon et al., Efficient Memory Management for Large Language Model Serving with PagedAttention, 2023", "Dettmers et al., QLoRA, 2023"],
+                        books: ["Goodfellow, Bengio & Courville, Deep Learning", "Chip Huyen, Designing Machine Learning Systems"],
+                        tools: ["vLLM", "TGI", "TensorRT-LLM", "llama.cpp", "KServe"],
+                        interview: ["O que limita throughput: GPU, memória ou scheduler?", "Quantização muda comportamento do modelo?"],
+                        projects: ["Gateway de LLM com roteamento, limites, cache e métricas de custo"],
+                        exercises: ["Medir tokens/s por batch", "Comparar FP16 e quantizado"],
+                        skills: ["vLLM", "PagedAttention", "Quantization", "KV Cache", "Batching"]
+                    }),
+                    topic({
+                        name: "Avaliação, Segurança e Governança de LLMs",
+                        workload: "28-36h",
+                        prerequisites: ["Estatística", "Governança", "RAG"],
+                        objectives: ["Medir qualidade de respostas e riscos", "Operar LLMs com privacidade, auditoria e guardrails"],
+                        theory: ["LLM evaluation", "Golden datasets", "Human eval", "Toxicity", "PII leakage", "Prompt injection", "Jailbreaks", "Guardrails", "Model cards"],
+                        practical: ["Criar avaliação offline e online para RAG", "Testar prompt injection e vazamento de PII"],
+                        algorithms: ["LLM-as-judge calibration", "Policy filtering", "PII redaction", "Adversarial testing"],
+                        papers: ["Bender et al., On the dangers of stochastic parrots, 2021", "Perez et al., Red Teaming Language Models, 2022"],
+                        books: ["NIST AI Risk Management Framework", "Chip Huyen, Designing Machine Learning Systems"],
+                        tools: ["OpenAI Evals", "Ragas", "DeepEval", "Guardrails AI", "Presidio"],
+                        interview: ["LLM-as-judge é confiável sozinho?", "Como mitigar prompt injection em RAG?"],
+                        projects: ["Suite de avaliação e red teaming para assistente RAG interno"],
+                        exercises: ["Criar dataset de ataques", "Medir groundedness e toxicidade"],
+                        skills: ["LLM Eval", "Guardrails", "Red Teaming", "PII", "Model Risk"]
+                    })
+                ]
+            },
+            {
+                id: "12",
+                title: "Staff Engineering e Arquitetura",
+                desc: "Influência técnica, estratégia, arquitetura evolutiva e liderança sem autoridade formal.",
+                insight: "O trabalho Staff é aumentar a qualidade das decisões técnicas da organização, não apenas entregar mais tarefas.",
+                radar: [72, 78, 88, 90, 88, 100],
+                topics: [
+                    topic({
+                        name: "Estratégia Técnica e Trade-offs Arquiteturais",
+                        workload: "26-34h",
+                        prerequisites: ["Experiência em sistemas de produção"],
+                        objectives: ["Tomar decisões explícitas sob restrição", "Alinhar arquitetura a estratégia de negócio e plataforma"],
+                        theory: ["Fitness functions", "Architecture characteristics", "Trade-off analysis", "Evolutionary architecture", "Build vs buy", "Platform roadmap"],
+                        practical: ["Escrever estratégia técnica de 12 meses", "Criar matriz de decisão para lakehouse, warehouse e streaming"],
+                        algorithms: ["Weighted scoring", "Risk matrix", "Cost-benefit model"],
+                        papers: ["Ford, Parsons & Kua, Evolutionary Architecture, 2017"],
+                        books: ["Ford et al., Software Architecture: The Hard Parts", "Richards & Ford, Fundamentals of Software Architecture", "Larson, Staff Engineer"],
+                        tools: ["ADR", "C4 Model", "Miro", "Structurizr", "Architecture fitness tests"],
+                        interview: ["Como decidir entre centralizar e federar?", "Qual trade-off você aceitaria e monitoraria?"],
+                        projects: ["Estratégia de modernização de plataforma com fases, riscos e métricas"],
+                        exercises: ["Criar ADR com alternativas reais", "Definir fitness functions para arquitetura"],
+                        skills: ["Architecture", "Trade-offs", "Strategy", "ADR", "Roadmap"]
+                    }),
+                    topic({
+                        name: "RFCs, ADRs, C4 e Comunicação Técnica",
+                        workload: "20-28h",
+                        prerequisites: ["Arquitetura básica", "Escrita técnica"],
+                        objectives: ["Comunicar decisões complexas de forma revisável", "Criar memória institucional útil"],
+                        theory: ["RFC", "ADR", "C4 Model", "Design docs", "Review process", "Decision log", "Narrative structure"],
+                        practical: ["Escrever RFC para mudança de CDC", "Desenhar C4 de plataforma de dados"],
+                        algorithms: ["Decision tree", "Stakeholder mapping", "Review workflow"],
+                        papers: ["Kruchten, The 4+1 View Model of Architecture, 1995"],
+                        books: ["Brown, The C4 Model for Visualising Software Architecture", "Larson, Staff Engineer"],
+                        tools: ["Structurizr", "PlantUML", "Mermaid", "Docs-as-code", "GitHub PRs"],
+                        interview: ["Quando ADR é melhor que reunião?", "Como evitar diagrama que envelhece em uma semana?"],
+                        projects: ["Repositório docs-as-code com RFCs, ADRs e C4 versionados"],
+                        exercises: ["Reescrever decisão vaga como ADR", "Criar C4 container diagram"],
+                        skills: ["RFC", "ADR", "C4", "Docs-as-code", "Communication"]
+                    }),
+                    topic({
+                        name: "Data Mesh, Produtos de Dados e Plataforma Self-service",
+                        workload: "28-36h",
+                        prerequisites: ["Governança", "Arquitetura", "Produto"],
+                        objectives: ["Federar ownership sem perder interoperabilidade", "Projetar plataforma que reduz carga cognitiva dos times"],
+                        theory: ["Domain ownership", "Data as a product", "Self-serve platform", "Federated governance", "Team APIs", "Golden paths", "Cognitive load"],
+                        practical: ["Definir contrato de produto de dados", "Criar golden path para publicação com governança embutida"],
+                        algorithms: ["Capability mapping", "Maturity model", "Adoption funnel"],
+                        papers: ["Dehghani, Data Mesh principles, 2019-2022"],
+                        books: ["Dehghani, Data Mesh", "Skelton & Pais, Team Topologies", "Larson, An Elegant Puzzle"],
+                        tools: ["Backstage", "DataHub", "dbt", "Terraform modules", "Scorecards"],
+                        interview: ["Data Mesh sem plataforma vira o quê?", "Como medir se produto de dados é bom?"],
+                        projects: ["Blueprint de plataforma self-service com scorecard de produto de dados"],
+                        exercises: ["Criar checklist de produto de dados", "Mapear domínios e interfaces"],
+                        skills: ["Data Mesh", "Data Products", "Self-service", "Golden Path", "Team Topologies"]
+                    }),
+                    topic({
+                        name: "Métricas de Engenharia, Incidentes e Cultura",
+                        workload: "22-30h",
+                        prerequisites: ["SRE", "Liderança técnica"],
+                        objectives: ["Medir saúde sem incentivar teatro de métricas", "Conduzir incidentes e aprendizado organizacional"],
+                        theory: ["DORA", "SPACE", "Lead time", "Change failure rate", "MTTR", "Blameless postmortem", "Incident command", "Psychological safety"],
+                        practical: ["Criar scorecard de plataforma", "Facilitar postmortem com ações rastreáveis"],
+                        algorithms: ["Metric guardrails", "Burn-rate analysis", "Root cause mapping"],
+                        papers: ["Forsgren, Humble & Kim, Accelerate, 2018", "Google SRE postmortem culture essays"],
+                        books: ["Forsgren, Humble & Kim, Accelerate", "Beyer et al., Site Reliability Engineering", "Larson, An Elegant Puzzle"],
+                        tools: ["DORA dashboards", "PagerDuty", "Jira", "Linear", "Grafana"],
+                        interview: ["Qual métrica você recusaria usar?", "Como transformar incidente em melhoria sistêmica?"],
+                        projects: ["Programa de métricas DORA/SPACE com revisão mensal de plataforma"],
+                        exercises: ["Escrever postmortem sem culpa", "Definir guardrails contra métrica vaidosa"],
+                        skills: ["DORA", "SPACE", "Postmortem", "MTTR", "Culture"]
+                    }),
+                    topic({
+                        name: "Influência Staff, Mentoria e Execução Transversal",
+                        workload: "24-32h",
+                        prerequisites: ["Experiência sênior", "Comunicação técnica"],
+                        objectives: ["Influenciar sem autoridade formal", "Multiplicar capacidade técnica de outros times"],
+                        theory: ["Staff archetypes", "Technical vision", "Sponsorship", "Mentorship", "Conflict resolution", "Stakeholder alignment", "Delegation", "Operating cadence"],
+                        practical: ["Criar plano de influência para migração transversal", "Mentorar tech leads por RFCs e revisão de design"],
+                        algorithms: ["Stakeholder map", "Risk register", "Decision cadence", "Feedback loops"],
+                        papers: ["Larson, Staff Engineer interviews and archetypes"],
+                        books: ["Larson, Staff Engineer", "Larson, An Elegant Puzzle", "Skelton & Pais, Team Topologies"],
+                        tools: ["RFC process", "Architecture review board", "Office hours", "Design review templates"],
+                        interview: ["Como você age quando dois times têm incentivos opostos?", "Como medir impacto sem contar PRs?"],
+                        projects: ["Programa de arquitetura transversal com office hours, RFCs e scorecards"],
+                        exercises: ["Mapear stakeholders de migração", "Criar plano de mentoria para domínio crítico"],
+                        skills: ["Influence", "Mentorship", "Execution", "Stakeholders", "Technical Vision"]
+                    })
+                ]
+            }
+        ];
+
+        let currentModule = 0;
+        let radarChart = null;
+
+        function initSidebar() {
+            const nav = document.getElementById('sidebarNav');
+            nav.innerHTML = roadmapData.map((m, idx) => `
+                <button onclick="selectModule(${idx})" class="sidebar-item w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all group ${idx === 0 ? 'active' : ''}">
+                    <div class="w-10 h-10 rounded-lg bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center text-[11px] font-black shrink-0 transition-colors">
+                        ${m.id}
+                    </div>
+                    <span class="text-[11px] font-black hidden md:block truncate uppercase tracking-tight text-slate-500 group-[.active]:text-slate-900">${m.title}</span>
+                </button>
+            `).join('');
+        }
+
+        function countTopicItems(topic) {
+            return ["objectives", "theory", "practical", "algorithms", "papers", "books", "tools", "interview", "projects", "exercises", "skills"]
+                .reduce((total, key) => total + (topic[key]?.length || 0), 0);
+        }
+
+        function renderList(title, items, marker = "bg-slate-300") {
+            if (!items?.length) return "";
+
+            return `
+                <section>
+                    <h6 class="text-[10px] font-black uppercase text-slate-400 mb-2 tracking-[0.18em]">${title}</h6>
+                    <ul class="space-y-1.5">
+                        ${items.map(item => `
+                            <li class="flex gap-2 text-[11px] leading-relaxed text-slate-600">
+                                <span class="w-1.5 h-1.5 rounded-full ${marker} mt-1.5 shrink-0"></span>
+                                <span>${item}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </section>
+            `;
+        }
+
+        function renderTags(items) {
+            if (!items?.length) return "";
+
+            return `
+                <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-200/70">
+                    ${items.map(s => `<span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 font-bold text-[9px] uppercase tracking-tighter"># ${s}</span>`).join('')}
+                </div>
+            `;
+        }
+
+        function flattenForSearch(value) {
+            if (Array.isArray(value)) return value.map(flattenForSearch).join(" ");
+            if (value && typeof value === "object") return Object.values(value).map(flattenForSearch).join(" ");
+            return String(value || "");
+        }
+
+        function selectModule(idx) {
+            currentModule = idx;
+            const module = roadmapData[idx];
+            const moduleItemCount = module.topics.reduce((total, t) => total + countTopicItems(t), 0);
+            
+            document.querySelectorAll('.sidebar-item').forEach((el, i) => {
+                el.classList.toggle('active', i === idx);
+            });
+
+            document.getElementById('moduleHeader').innerHTML = `
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span class="bg-amber-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Domínio ${module.id}</span>
+                    <span class="bg-white border border-slate-200 text-slate-500 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">${module.topics.length} disciplinas</span>
+                    <span class="bg-white border border-slate-200 text-slate-500 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">${moduleItemCount} itens</span>
+                </div>
+                <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">${module.title}</h2>
+                <p class="text-slate-500 mt-3 text-sm leading-relaxed max-w-2xl">${module.desc}</p>
+            `;
+
+            document.getElementById('moduleStats').innerText = module.insight;
+            
+            const grid = document.getElementById('topicsGrid');
+            grid.innerHTML = module.topics.map((t, i) => `
+                <div class="topic-card bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm transition-all hover:border-amber-300">
+                    <button onclick="toggleTopic(this)" class="w-full p-5 flex items-start justify-between gap-4 text-left focus:outline-none bg-white hover:bg-slate-50/50 transition-colors">
+                        <div class="flex items-start gap-4 min-w-0">
+                            <span class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-[10px] text-white font-black shrink-0">${i+1}</span>
+                            <div class="min-w-0">
+                                <span class="block font-extrabold text-slate-800 text-sm uppercase tracking-tight leading-snug break-words">${t.name}</span>
+                                <div class="flex flex-wrap gap-1.5 mt-2">
+                                    <span class="bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded text-[9px] font-black uppercase">${t.level}</span>
+                                    <span class="bg-slate-50 text-slate-500 border border-slate-100 px-2 py-0.5 rounded text-[9px] font-black uppercase">${t.workload}</span>
+                                    <span class="bg-slate-50 text-slate-500 border border-slate-100 px-2 py-0.5 rounded text-[9px] font-black uppercase">${countTopicItems(t)} itens</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="chevron transition-transform duration-500 text-slate-300 text-xs shrink-0 mt-2">▼</span>
+                    </button>
+                    <div class="topic-expansion">
+                        <div class="px-6 pb-6 pt-5 border-t border-slate-100 bg-slate-50/70">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                ${renderList("Pré-requisitos", t.prerequisites, "bg-blue-400")}
+                                ${renderList("Objetivos", t.objectives, "bg-amber-500")}
+                                ${renderList("Prática esperada", t.practical, "bg-emerald-500")}
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                ${renderList("Teoria", t.theory, "bg-slate-400")}
+                                ${renderList("Algoritmos e técnicas", t.algorithms, "bg-indigo-400")}
+                                ${renderList("Livros", t.books, "bg-amber-500")}
+                                ${renderList("Papers e referências", t.papers, "bg-rose-400")}
+                                ${renderList("Ferramentas", t.tools, "bg-cyan-500")}
+                                ${renderList("Entrevista Staff", t.interview, "bg-violet-500")}
+                                ${renderList("Projetos", t.projects, "bg-emerald-500")}
+                                ${renderList("Exercícios", t.exercises, "bg-slate-500")}
+                            </div>
+
+                            <div class="mt-6">
+                                ${renderTags(t.skills)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            updateRadar(module.radar);
+        }
+
+        function toggleTopic(btn) {
+            const card = btn.closest('.topic-card');
+            const isOpen = card.classList.contains('open');
+            
+            // Opcional: Fecha outros para foco (comentar se quiser multi-aberto)
+            document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('open'));
+            
+            if (!isOpen) {
+                card.classList.add('open');
+            }
+        }
+
+        function updateRadar(data) {
+            if (typeof Chart === "undefined") {
+                return;
+            }
+
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            if (radarChart) radarChart.destroy();
+
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Teoria', 'Sistemas', 'Software', 'Dados', 'Distrib.', 'Liderança'],
+                    datasets: [{
+                        data: data,
+                        backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                        borderColor: '#f59e0b',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#f59e0b',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 100,
+                            ticks: { display: false },
+                            grid: { color: '#f1f5f9' },
+                            angleLines: { color: '#f1f5f9' },
+                            pointLabels: { 
+                                font: { size: 9, weight: '800', family: 'Inter' },
+                                color: '#94a3b8'
+                            }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Busca Global
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            if (term.length < 2) {
+                document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('ring-2', 'ring-amber-400'));
+                return;
+            }
+
+            roadmapData.forEach((mod, idx) => {
+                const found = mod.title.toLowerCase().includes(term) || 
+                              mod.topics.some(t => flattenForSearch(t).toLowerCase().includes(term));
+                
+                const btn = document.querySelectorAll('.sidebar-item')[idx];
+                if (found) {
+                    btn.classList.add('ring-2', 'ring-amber-400');
+                } else {
+                    btn.classList.remove('ring-2', 'ring-amber-400');
+                }
+            });
+        });
+
+        window.onload = () => {
+            initSidebar();
+            selectModule(0);
+        };
+    </script>
+</body>
+</html>

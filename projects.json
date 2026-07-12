@@ -1,0 +1,98 @@
+[
+  {
+    "id": "software-engineer",
+    "titulo": "Engenharia de Dados",
+    "subtitulo": "Atlas de Engenharia de Dados — Staff Level",
+    "descricao": "Roadmap completo para formar um Staff/Principal Data Engineer, Data Architect ou Research Engineer: fundamentos matemáticos, sistemas distribuídos, lakehouse, governança, MLOps, LLMs e Machine Learning Aplicado.",
+    "url": "software-engineer/atlas_de_engenharia_de_dados.html",
+    "dominios": 13,
+    "disciplinas": 73,
+    "cor": "amber",
+    "icone": "&#931;",
+    "status": "ativo"
+  },
+  {
+    "id": "direito-penal",
+    "titulo": "Direito Penal e Processo Penal",
+    "subtitulo": "Pós-Graduação em Direito Penal e Processual Penal",
+    "descricao": "Formação avançada em Direito Penal e Processual Penal em padrão de pós-graduação: fundamentos dogmáticos, criminologia, processo penal, parte especial, legislação especial e prática criminal.",
+    "url": "direito-penal/index.html",
+    "dominios": 9,
+    "disciplinas": 32,
+    "cor": "indigo",
+    "icone": "&#9878;",
+    "status": "ativo"
+  },
+  {
+    "id": "ciencia-do-gatilho",
+    "titulo": "A Ciência do Gatilho",
+    "subtitulo": "Neurociência e Tomada de Decisão",
+    "descricao": "Compreenda a neurociência aplicada à tomada de decisão e a fisiologia sob estresse no uso de armamento.",
+    "url": "ciencia-do-gatilho/index.html",
+    "dominios": 3,
+    "disciplinas": 7,
+    "cor": "rose",
+    "icone": "🎯",
+    "status": "ativo"
+  },
+  {
+    "id": "doutrina-policial",
+    "titulo": "Doutrina Policial e Perícia Forense",
+    "subtitulo": "Ciências Jurídico-Operacionais",
+    "descricao": "Formação completa em doutrina de operações, inteligência policial e ciências forenses aplicadas.",
+    "url": "doutrina-policial/index.html",
+    "dominios": 7,
+    "disciplinas": 19,
+    "cor": "emerald",
+    "icone": "🚔",
+    "status": "ativo"
+  },
+  {
+    "id": "engenharia-armamento",
+    "titulo": "Engenharia de Armamento e Balística",
+    "subtitulo": "Da Ciência dos Materiais à Perícia",
+    "descricao": "Estudo aprofundado dos materiais, mecanismos e balística interna e externa no armamento.",
+    "url": "engenharia-armamento/index.html",
+    "dominios": 8,
+    "disciplinas": 27,
+    "cor": "amber",
+    "icone": "🔫",
+    "status": "ativo"
+  },
+  {
+    "id": "neurociencia-cognitiva",
+    "titulo": "Neurociência Cognitiva",
+    "subtitulo": "Neurociência Comportamental e Tática",
+    "descricao": "Estudo sobre os processos cognitivos subjacentes ao comportamento em situações extremas.",
+    "url": "neurociencia-cognitiva/index.html",
+    "dominios": 6,
+    "disciplinas": 22,
+    "cor": "indigo",
+    "icone": "🧠",
+    "status": "ativo"
+  },
+  {
+    "id": "engenharia-de-dados-pos",
+    "titulo": "Engenharia de Dados (Pós)",
+    "subtitulo": "Projeto Pedagógico de Curso",
+    "descricao": "Ementário oficial de uma especialização focada em arquitetura de dados e big data.",
+    "url": "engenharia-de-dados-pos/index.html",
+    "dominios": 4,
+    "disciplinas": 13,
+    "cor": "rose",
+    "icone": "⚙️",
+    "status": "ativo"
+  },
+  {
+    "id": "direito-operacional",
+    "titulo": "Direito Operacional e o Ambiente de Confronto",
+    "subtitulo": "Ciências Jurídico-Operacionais",
+    "descricao": "Interseção entre direito penal, direito administrativo, criminologia e doutrina policial no ambiente real de confronto: sistema persecutório, uso diferenciado da força, guerra informacional e controle da atividade policial.",
+    "url": "direito-operacional/index.html",
+    "dominios": 10,
+    "disciplinas": 21,
+    "cor": "rose",
+    "icone": "⚔️",
+    "status": "ativo"
+  }
+]

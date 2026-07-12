@@ -1,0 +1,74 @@
+{
+  "id": "D04.03",
+  "dominio_id": "D04",
+  "nome": "Otimização de Consultas e Joins Distribuídos",
+  "nivel": "Staff",
+  "carga_horaria": "30-40h",
+  "prerequisitos": [
+    "SQL",
+    "Complexidade",
+    "Sistemas distribuídos básicos"
+  ],
+  "objetivos": [
+    "Entender CBO e planos físicos",
+    "Reduzir shuffle, skew e leitura desnecessária"
+  ],
+  "pratica_esperada": [
+    "Otimizar consulta Spark com skew",
+    "Comparar broadcast vs shuffle com estatísticas controladas"
+  ],
+  "teoria": [
+    "logical-plan",
+    "physical-plan",
+    "cost-based-optimization",
+    "statistics",
+    "predicate-pushdown",
+    "broadcast-join",
+    "shuffle-join",
+    "sort-merge-join",
+    "data-skew"
+  ],
+  "algoritmos_tecnicas": [
+    "dynamic-programming-join-order",
+    "hash-join",
+    "sort-merge-join",
+    "bloom-join",
+    "adaptive-query-execution"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Graefe, Query Evaluation Techniques for Large Databases",
+    "Petrov, Database Internals"
+  ],
+  "papers_fundamentais": [
+    "Selinger et al., Access path selection in a relational database management system, 1979",
+    "Armbrust et al., Spark SQL, 2015"
+  ],
+  "ferramentas": [
+    "Spark UI",
+    "Trino EXPLAIN",
+    "PostgreSQL EXPLAIN",
+    "Snowflake Query Profile"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como estatística ruim quebra CBO?",
+    "O que fazer com data skew em join grande?"
+  ],
+  "projetos_reais": [
+    "Laboratório de planos de execução com datasets enviesados"
+  ],
+  "exercicios": [
+    "Forçar e comparar estratégias de join",
+    "Medir efeito de predicate pushdown"
+  ],
+  "tags": [
+    "CBO",
+    "EXPLAIN",
+    "Broadcast",
+    "Shuffle",
+    "Skew"
+  ]
+}

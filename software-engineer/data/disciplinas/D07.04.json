@@ -1,0 +1,76 @@
+{
+  "id": "D07.04",
+  "dominio_id": "D07",
+  "nome": "Motores Federados e Execução Vetorizada",
+  "nivel": "Staff",
+  "carga_horaria": "24-32h",
+  "prerequisitos": [
+    "Query optimization",
+    "Álgebra linear básica"
+  ],
+  "objetivos": [
+    "Consultar múltiplas fontes sem mover dados desnecessariamente",
+    "Entender execução colunar e vetorizada"
+  ],
+  "pratica_esperada": [
+    "Federar lakehouse, Postgres e object storage",
+    "Comparar DuckDB local e Trino remoto"
+  ],
+  "teoria": [
+    "trino",
+    "presto",
+    "spark",
+    "duckdb",
+    "predicate-pushdown",
+    "connector-model",
+    "vectorized-execution",
+    "apache-arrow",
+    "substrait",
+    "velox"
+  ],
+  "algoritmos_tecnicas": [
+    "vectorized-scan",
+    "late-materialization",
+    "pushdown-planning",
+    "adaptive-execution"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Stonebraker & Hellerstein, Readings in Database Systems",
+    "Petrov, Database Internals"
+  ],
+  "papers_fundamentais": [
+    "Sethi et al., Presto: SQL on everything, 2019",
+    "Richardson et al., Apache Arrow, 2017",
+    "Pedreira et al., Velox, 2022"
+  ],
+  "ferramentas": [
+    "Trino",
+    "Presto",
+    "DuckDB",
+    "Arrow",
+    "Velox",
+    "Substrait"
+  ],
+  "perguntas_entrevista_staff": [
+    "Quando federação vira gargalo?",
+    "O que Arrow padroniza na memória?"
+  ],
+  "projetos_reais": [
+    "Query federada com pushdown mensurado por fonte"
+  ],
+  "exercicios": [
+    "Comparar query com e sem pushdown",
+    "Inspecionar batches Arrow"
+  ],
+  "tags": [
+    "Trino",
+    "Arrow",
+    "DuckDB",
+    "Pushdown",
+    "Vectorization"
+  ]
+}

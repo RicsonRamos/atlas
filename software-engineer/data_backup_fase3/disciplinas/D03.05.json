@@ -1,0 +1,71 @@
+{
+  "id": "D03.05",
+  "dominio_id": "D03",
+  "nome": "Observabilidade de Software e Dados",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "APIs",
+    "Pipelines"
+  ],
+  "objetivos": [
+    "Conectar logs, métricas, traces e qualidade de dados",
+    "Diagnosticar incidentes por causa raiz, não por sintoma"
+  ],
+  "pratica_esperada": [
+    "Instrumentar DAG com OpenTelemetry",
+    "Criar SLO de frescor, completude e validade"
+  ],
+  "teoria": [
+    "structured-logging",
+    "metrics",
+    "tracing",
+    "slo",
+    "sli",
+    "error-budget",
+    "data-observability",
+    "cardinality-control"
+  ],
+  "algoritmos_tecnicas": [
+    "anomaly-detection-baseline",
+    "sampling",
+    "trace-correlation"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Beyer et al., Site Reliability Engineering",
+    "Majors, Fong-Jones & Miranda, Observability Engineering"
+  ],
+  "papers_fundamentais": [
+    "Sigelman et al., Dapper, a large-scale distributed systems tracing infrastructure, 2010"
+  ],
+  "ferramentas": [
+    "OpenTelemetry",
+    "Prometheus",
+    "Grafana",
+    "Datadog",
+    "Monte Carlo",
+    "OpenLineage"
+  ],
+  "perguntas_entrevista_staff": [
+    "Qual a diferença entre monitoramento e observabilidade?",
+    "Como evitar cardinalidade explosiva em métricas?"
+  ],
+  "projetos_reais": [
+    "Painel de saúde de pipelines com SLOs e traces por execução"
+  ],
+  "exercicios": [
+    "Criar trace de ponta a ponta",
+    "Definir error budget para frescor de dados"
+  ],
+  "tags": [
+    "Tracing",
+    "SLO",
+    "OpenTelemetry",
+    "Data Observability",
+    "SLI"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "D01.09",
+  "dominio_id": "D01",
+  "nome": "Otimização Matemática",
+  "nivel": "Staff",
+  "carga_horaria": "28-36h",
+  "prerequisitos": [
+    "Cálculo",
+    "Álgebra linear",
+    "Probabilidade"
+  ],
+  "objetivos": [
+    "Entender treinamento de modelos e otimização de recursos",
+    "Formular problemas de custo, escalonamento e alocação"
+  ],
+  "pratica_esperada": [
+    "Modelar alocação de clusters como otimização com restrições",
+    "Comparar SGD e Adam em treino simples"
+  ],
+  "teoria": [
+    "gradiente",
+    "newton",
+    "convexidade",
+    "programacao-linear",
+    "programacao-inteira",
+    "simplex",
+    "lagrange",
+    "sgd",
+    "adam",
+    "coordinate-descent"
+  ],
+  "algoritmos_tecnicas": [
+    "gradient-descent",
+    "newton-raphson",
+    "simplex",
+    "branch-and-bound",
+    "sgd",
+    "adam",
+    "coordinate-descent"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Boyd & Vandenberghe, Convex Optimization",
+    "Nocedal & Wright, Numerical Optimization",
+    "Nemhauser & Wolsey, Integer and Combinatorial Optimization"
+  ],
+  "papers_fundamentais": [
+    "Dantzig, Linear programming and extensions, 1963",
+    "Kingma & Ba, Adam: A method for stochastic optimization, 2014"
+  ],
+  "ferramentas": [
+    "OR-Tools",
+    "CVXPY",
+    "Pyomo",
+    "SciPy optimize"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como formular custo de cloud como programação linear?",
+    "Quando convexidade muda sua confiança no ótimo encontrado?"
+  ],
+  "projetos_reais": [
+    "Otimizador de escalonamento de workloads com restrições de SLA e custo"
+  ],
+  "exercicios": [
+    "Resolver problema simples pelo Simplex",
+    "Comparar SGD, Adam e coordinate descent"
+  ],
+  "tags": [
+    "Convexidade",
+    "LP",
+    "Integer Programming",
+    "SGD",
+    "Adam"
+  ]
+}

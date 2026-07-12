@@ -1,0 +1,65 @@
+{
+  "id": "D13.03",
+  "dominio_id": "D13",
+  "nome": "Sistemas de Recomendação",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Álgebra Linear e Cálculo Tensorial",
+    "Feature Stores e Treino-Serving Skew"
+  ],
+  "objetivos": [
+    "Projetar sistemas de recomendação para diferentes regimes de dado e latência",
+    "Avaliar qualidade de ranking além de métricas de classificação simples"
+  ],
+  "pratica_esperada": [
+    "Implementar filtragem colaborativa por fatoração de matrizes",
+    "Avaliar um recomendador por NDCG e comparar com baseline por popularidade"
+  ],
+  "teoria": [
+    "filtragem-baseada-em-conteudo",
+    "filtragem-colaborativa",
+    "problema-de-partida-fria",
+    "fatores-latentes",
+    "sistemas-sensiveis-a-contexto-e-tempo"
+  ],
+  "algoritmos_tecnicas": [
+    "singular-value-decomposition-svd",
+    "alternating-least-squares",
+    "neural-collaborative-filtering"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Aggarwal, Recommender Systems: The Textbook"
+  ],
+  "papers_fundamentais": [
+    "Koren, Bell & Volinsky, Matrix Factorization Techniques for Recommender Systems, 2009",
+    "He et al., Neural Collaborative Filtering, 2017"
+  ],
+  "ferramentas": [
+    "Implicit",
+    "Surprise",
+    "TensorFlow Recommenders"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como mitigar o problema de partida fria sem sacrificar relevância para usuários estabelecidos?",
+    "Por que NDCG é preferível a acurácia simples para avaliar ranking de recomendação?"
+  ],
+  "projetos_reais": [
+    "Sistema de recomendação híbrido (conteúdo + colaborativo) com avaliação offline por NDCG e MRR"
+  ],
+  "exercicios": [
+    "Implementar fatoração de matriz via ALS em dataset de avaliações",
+    "Calcular NDCG e Recall@K para dois modelos de recomendação concorrentes"
+  ],
+  "tags": [
+    "RecSys",
+    "CollaborativeFiltering",
+    "MatrixFactorization",
+    "NDCG",
+    "ColdStart"
+  ]
+}

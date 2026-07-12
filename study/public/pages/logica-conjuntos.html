@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Investigação interativa: Lógica Proposicional e Teoria dos Conjuntos. Bloco 01 do Roadmap." />
+  <title>Lógica & Conjuntos | Roadmap DE & IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #111120;
+      --bg-card2:  #14142a;
+      --border:    #1e1e35;
+      --border2:   #2a2a40;
+      --text:      #e8e8f0;
+      --text-muted:#a0a0c0;
+      --text-dim:  #60608b;
+      --text-deep: #40407a;
+      --accent:    #BD93F9;
+      --accent-dim:#BD93F920;
+      --accent-mid:#BD93F940;
+      --link:      #6C63FF;
+
+      --c-g1: #50FA7B;
+      --c-g2: #FF79C6;
+      --c-g3: #8BE9FD;
+      --c-med: #FFB86C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--link); }
+
+    /* ── Nav ── */
+    nav.top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+      height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1rem; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+      background: var(--accent-dim); border: 1px solid var(--accent-mid);
+      border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+    .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+    .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+
+    /* ── Layout ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 5rem 1.25rem 3rem; display: flex; flex-direction: column; gap: 2rem; }
+
+    .page-header { text-align: center; margin-bottom: 0.5rem; }
+    .page-header h1 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 0.6rem; }
+    .page-header h1 .accent { color: var(--accent); }
+    .page-header p { color: var(--text-muted); font-size: 0.85rem; max-width: 600px; margin: 0 auto; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 0.8rem; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; }
+
+    /* ── Tabs ── */
+    .tabs-nav { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .tab-btn {
+      padding: 0.5rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      background: transparent; border: 1px solid transparent; color: var(--text-dim); transition: all 0.2s ease; border-bottom: none;
+    }
+    .tab-btn:hover { color: var(--text-muted); background: #ffffff06; }
+    .tab-btn.active { background: var(--bg-card); border-color: var(--border); border-bottom-color: var(--bg-card); color: var(--text); position: relative; top: 1px; }
+
+    /* ── Card & Views ── */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; }
+    .view-section { display: none; animation: fadeIn 0.35s ease both; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); }
+    h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--text); }
+    p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    strong { color: var(--text); font-weight: 700; }
+
+    /* ── Utilities ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+    .feature-box { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; }
+    
+    /* ── Table ── */
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: center; }
+    th { background: var(--bg); border: 1px solid var(--border); padding: 0.6rem; color: var(--text-dim); font-weight: 700; }
+    td { border: 1px solid var(--border); padding: 0.6rem; color: var(--text); }
+    .t-true { color: #50FA7B; font-weight: 700; }
+    .t-false { color: #ff5555; font-weight: 700; }
+    .highlight-col { background: var(--accent-dim); color: var(--accent); }
+
+    /* ── Form Controls ── */
+    select { width: 100%; background: var(--bg-card2); border: 1px solid var(--border2); color: var(--text); padding: 0.6rem; border-radius: 6px; outline: none; margin-bottom: 1rem; font-family: inherit; }
+    select:focus { border-color: var(--accent); }
+    
+    /* ── Conjuntos UI ── */
+    .set-btns { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .set-btn { background: var(--bg); border: 1px solid var(--border2); color: var(--text-muted); padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .set-btn.active { background: var(--accent); color: #0d0d14; border-color: var(--accent); }
+    
+    .canvas-container { position: relative; width: 100%; max-width: 400px; margin: 0 auto; aspect-ratio: 4/3; }
+    .canvas-container canvas { width: 100%; height: 100%; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
+    
+    .chart-wrap { position: relative; width: 100%; height: 300px; margin-top: 1.5rem; }
+
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="/" class="back-btn">← Roadmap</a>
+      <div class="nav-brand"><span>BLOCO 01</span> Fundamentos Matemáticos</div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <div class="chip-row">
+        <span class="badge" style="background:#BD93F920;color:#BD93F9;">BLOCO 01</span>
+        <span class="badge" style="background:#6C63FF20;color:#9988ff;">CORE</span>
+      </div>
+      <h1>Lógica & <span class="accent">Conjuntos</span></h1>
+      <p>Uma exploração interativa sobre como a Lógica Matemática e a Teoria dos Conjuntos formam a base fundamental do pensamento estruturado.</p>
+    </div>
+
+    <div class="tabs-nav" id="tabs-nav">
+      <button class="tab-btn active" data-target="view-intro">🏠 Início</button>
+      <button class="tab-btn" data-target="view-logic">⊨ Lógica Proposicional</button>
+      <button class="tab-btn" data-target="view-sets">∅ Conjuntos</button>
+      <button class="tab-btn" data-target="view-data">📊 Análise de Dados</button>
+    </div>
+
+    <div class="card">
+      
+      <!-- INÍCIO -->
+      <section id="view-intro" class="view-section active">
+        <h2>O Tecido da Razão</h2>
+        <p>A matemática e a computação são indissociáveis da lógica e dos conjuntos. Entender essas estruturas é dominar a linguagem da máquina.</p>
+        <div class="grid-2">
+          <div class="feature-box">
+            <h3 style="color:var(--c-g1);">Lógica Proposicional</h3>
+            <p style="font-size:0.8rem;">O alicerce do raciocínio dedutivo. Entenda como proposições simples se combinam através de operadores lógicos (AND, OR, NOT) para formar deduções complexas.</p>
+          </div>
+          <div class="feature-box">
+            <h3 style="color:var(--c-g2);">Teoria dos Conjuntos</h3>
+            <p style="font-size:0.8rem;">O estudo de coleções de objetos matemáticos. A base geométrica que visualiza as mesmas operações da lógica (União, Interseção, Diferença).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LÓGICA -->
+      <section id="view-logic" class="view-section">
+        <h2>Lógica Proposicional</h2>
+        <p>Teste diferentes operadores lógicos e visualize seus resultados imediatamente através de uma Tabela Verdade interativa.</p>
+        
+        <div class="grid-2">
+          <div>
+            <h3>A Linguagem da Verdade</h3>
+            <p style="font-size:0.8rem;">Utilizamos letras para representar proposições (p, q) e operadores para conectá-las.</p>
+            <div class="feature-box" style="margin-bottom:1rem;padding:1rem;">
+              <strong style="color:var(--accent);">∧ Conjunção (E)</strong><br/>
+              <span style="font-size:0.75rem;color:var(--text-muted);">Só é V se ambas forem V.</span>
+            </div>
+            <div class="feature-box" style="margin-bottom:1rem;padding:1rem;">
+              <strong style="color:var(--accent);">∨ Disjunção (OU)</strong><br/>
+              <span style="font-size:0.75rem;color:var(--text-muted);">É V se pelo menos uma for V.</span>
+            </div>
+            <div class="feature-box" style="padding:1rem;">
+              <strong style="color:var(--accent);">→ Implicação (SE... ENTÃO)</strong><br/>
+              <span style="font-size:0.75rem;color:var(--text-muted);">Só é F quando a premissa é V e a conclusão é F.</span>
+            </div>
+          </div>
+          
+          <div>
+            <h3>Tabela Verdade</h3>
+            <select id="logic-selector">
+              <option value="and">Conjunção (p ∧ q)</option>
+              <option value="or">Disjunção (p ∨ q)</option>
+              <option value="implies">Implicação (p → q)</option>
+              <option value="iff">Bicondicional (p ↔ q)</option>
+              <option value="xor">Ou Exclusivo (p ⊕ q)</option>
+            </select>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>p</th>
+                  <th>q</th>
+                  <th class="highlight-col" id="table-header">p ∧ q</th>
+                </tr>
+              </thead>
+              <tbody id="truth-body"></tbody>
+            </table>
+            
+            <p id="logic-desc" style="font-size:0.8rem; margin-top:1rem; padding:1rem; background:var(--bg); border:1px solid var(--border); border-radius:8px;"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONJUNTOS -->
+      <section id="view-sets" class="view-section">
+        <h2>Teoria dos Conjuntos</h2>
+        <p>A representação visual do agrupamento de elementos. Utilize os botões para desenhar dinamicamente diagramas de Venn representando as operações fundamentais.</p>
+        
+        <div class="grid-2" style="align-items:center;">
+          <div style="order:2;">
+            <div class="set-btns">
+              <button class="set-btn active" data-op="union">União (A ∪ B)</button>
+              <button class="set-btn" data-op="intersection">Interseção (A ∩ B)</button>
+              <button class="set-btn" data-op="diffA">Diferença (A - B)</button>
+              <button class="set-btn" data-op="symdiff">Diferença Simétrica</button>
+            </div>
+            <div class="canvas-container">
+              <canvas id="vennCanvas"></canvas>
+            </div>
+          </div>
+          
+          <div style="order:1;">
+            <h3>Operações Espaciais</h3>
+            <p id="set-desc" style="padding:1rem; background:var(--bg); border-left:3px solid var(--c-g2); font-size:0.85rem; border-radius:4px;"></p>
+            <div class="feature-box" style="margin-top:1rem; padding:1rem;">
+              <strong>Conjunto A:</strong> { x | x é um número par }<br/>
+              <strong>Conjunto B:</strong> { x | x é múltiplo de 3 }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DADOS -->
+      <section id="view-data" class="view-section">
+        <h2 style="text-align:center;">A Conexão (Isomorfismo)</h2>
+        <p style="text-align:center;">A Lógica e os Conjuntos espelham um ao outro. (E ↔ Interseção, OU ↔ União).</p>
+        
+        <div style="margin-top:2rem;">
+          <h3 style="text-align:center;">Dificuldade Percebida por Operação</h3>
+          <p style="text-align:center;font-size:0.8rem;">Pesquisa acadêmica (0 a 100). Clique para alternar o contexto.</p>
+          <div style="text-align:center;margin-bottom:1rem;">
+            <button id="toggleDataBtn" class="set-btn" style="background:var(--bg-card2);">Ver Conjuntos</button>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="difficultyChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // Tab Logic
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.view-section');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.target).classList.add('active');
+        
+        // Fix canvas resize on tab switch
+        if(btn.dataset.target === 'view-sets') drawVenn(document.querySelector('.set-btn.active').dataset.op);
+      });
+    });
+
+    // Lógica
+    const logicData = {
+      and: { sym: 'p ∧ q', text: 'V apenas quando AMBAS são V.', calc: (p,q)=>p&&q },
+      or: { sym: 'p ∨ q', text: 'V se PELO MENOS UMA for V.', calc: (p,q)=>p||q },
+      implies: { sym: 'p → q', text: 'F apenas quando premissa é V e conclusão é F.', calc: (p,q)=>!p||q },
+      iff: { sym: 'p ↔ q', text: 'V apenas quando ambas têm o MESMO valor.', calc: (p,q)=>p===q },
+      xor: { sym: 'p ⊕ q', text: 'V apenas se tiverem valores DIFERENTES.', calc: (p,q)=>p!==q }
+    };
+    
+    function format(b) { return b ? '<span class="t-true">V</span>' : '<span class="t-false">F</span>'; }
+    
+    function renderLogic() {
+      const op = logicData[document.getElementById('logic-selector').value];
+      document.getElementById('table-header').innerText = op.sym;
+      document.getElementById('logic-desc').innerText = op.text;
+      
+      const states = [[true,true],[true,false],[false,true],[false,false]];
+      const body = document.getElementById('truth-body');
+      body.innerHTML = '';
+      states.forEach(s => {
+        body.innerHTML += `<tr><td>${format(s[0])}</td><td>${format(s[1])}</td><td class="highlight-col">${format(op.calc(s[0],s[1]))}</td></tr>`;
+      });
+    }
+    document.getElementById('logic-selector').addEventListener('change', renderLogic);
+    renderLogic();
+
+    // Conjuntos
+    const setDescs = {
+      union: "A União contém elementos que estão em A, B ou ambos. Corresponde ao 'OU' lógico.",
+      intersection: "A Interseção contém apenas os elementos presentes simultaneamente em A e B. Corresponde ao 'E'.",
+      diffA: "A Diferença (A-B) contém os elementos de A que NÃO estão em B.",
+      symdiff: "A Diferença Simétrica contém elementos de A ou B, mas não de ambos. Corresponde ao 'XOR'."
+    };
+
+    const canvas = document.getElementById('vennCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    function drawVenn(op) {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      
+      const w = rect.width, h = rect.height;
+      const cy = h/2, r = Math.min(w,h)*0.3;
+      const cA = { x: w/2 - r*0.5, y: cy, r };
+      const cB = { x: w/2 + r*0.5, y: cy, r };
+      
+      ctx.clearRect(0,0,w,h);
+      ctx.lineWidth = 2;
+      const fill = 'rgba(189, 147, 249, 0.4)'; // accent
+      const stroke = '#e8e8f0'; // text
+      
+      if(op === 'union') {
+        ctx.fillStyle = fill;
+        ctx.beginPath(); ctx.arc(cA.x, cA.y, cA.r, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cB.x, cB.y, cB.r, 0, Math.PI*2); ctx.fill();
+      } else if(op === 'intersection') {
+        ctx.save(); ctx.beginPath(); ctx.arc(cA.x, cA.y, cA.r, 0, Math.PI*2); ctx.clip();
+        ctx.fillStyle = fill; ctx.beginPath(); ctx.arc(cB.x, cB.y, cB.r, 0, Math.PI*2); ctx.fill(); ctx.restore();
+      } else if(op === 'diffA') {
+        ctx.fillStyle = fill; ctx.beginPath(); ctx.arc(cA.x, cA.y, cA.r, 0, Math.PI*2); ctx.fill();
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath(); ctx.arc(cB.x, cB.y, cB.r, 0, Math.PI*2); ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+      } else if(op === 'symdiff') {
+        ctx.globalCompositeOperation = 'xor';
+        ctx.fillStyle = fill;
+        ctx.beginPath(); ctx.arc(cA.x, cA.y, cA.r, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cB.x, cB.y, cB.r, 0, Math.PI*2); ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+      }
+      
+      ctx.strokeStyle = stroke;
+      ctx.beginPath(); ctx.arc(cA.x, cA.y, cA.r, 0, Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(cB.x, cB.y, cB.r, 0, Math.PI*2); ctx.stroke();
+      
+      ctx.fillStyle = stroke; ctx.font = 'bold 20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('A', cA.x - r*0.6, cy); ctx.fillText('B', cB.x + r*0.6, cy);
+    }
+
+    document.querySelectorAll('.set-btn[data-op]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        document.querySelectorAll('.set-btn[data-op]').forEach(b=>b.classList.remove('active'));
+        e.target.classList.add('active');
+        const op = e.target.dataset.op;
+        document.getElementById('set-desc').innerText = setDescs[op];
+        drawVenn(op);
+      });
+    });
+    // Init
+    document.getElementById('set-desc').innerText = setDescs['union'];
+
+    // Chart.js
+    Chart.defaults.color = '#60608b';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    
+    let chartMode = 'logic';
+    const cData = {
+      logic: { lbls: ['Conjunção', 'Disjunção', 'Negação', 'Implicação', 'Bicondicional'], d: [15, 20, 10, 85, 60], col: '#50FA7B' },
+      sets: { lbls: ['Interseção', 'União', 'Complemento', 'Subconjunto', 'Prod. Cartesiano'], d: [12, 18, 25, 65, 75], col: '#FF79C6' }
+    };
+
+    const dChart = new Chart(document.getElementById('difficultyChart'), {
+      type: 'bar',
+      data: {
+        labels: cData.logic.lbls,
+        datasets: [{ label: 'Dificuldade (0-100)', data: cData.logic.d, backgroundColor: cData.logic.col }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, max: 100, grid: { color: '#1e1e3540', drawBorder: false } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    document.getElementById('toggleDataBtn').addEventListener('click', e => {
+      chartMode = chartMode === 'logic' ? 'sets' : 'logic';
+      dChart.data.labels = cData[chartMode].lbls;
+      dChart.data.datasets[0].data = cData[chartMode].d;
+      dChart.data.datasets[0].backgroundColor = cData[chartMode].col;
+      dChart.update();
+      e.target.innerText = chartMode === 'logic' ? 'Ver Conjuntos' : 'Ver Lógica';
+    });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoria de Grafos & Orquestração de Sistemas</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- KaTeX para renderização matemática impecável -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f7ff',
+                            100: '#ebf0ff',
+                            200: '#dae2ff',
+                            300: '#d1b3ff',
+                            400: '#c5a3ff',
+                            500: '#BD93F9',
+                            600: '#a371f7',
+                            700: '#8b51f5',
+                            800: '#6a2ee6',
+                            900: '#4815b5',
+                            950: '#29067a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #111120;
+      --bg-card2:  #14142a;
+      --border:    #1e1e35;
+      --border2:   #2a2a40;
+      --text:      #e8e8f0;
+      --text-muted:#a0a0c0;
+      --text-dim:  #60608b;
+      --text-deep: #40407a;
+      --accent:    #BD93F9;
+      --accent-dim:#BD93F920;
+      --accent-mid:#BD93F940;
+      --link:      #6C63FF;
+    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            scroll-behavior: smooth;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--link);
+        }
+
+    /* ── Nav ── */
+    nav.top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+      height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1rem; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+      background: var(--accent-dim); border: 1px solid var(--accent-mid);
+      border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+    .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+    .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+
+    /* ── Layout ── */
+    .dracula-main { max-width: 1100px; margin: 0 auto; padding: 5rem 1.25rem 3rem; display: flex; flex-direction: column; gap: 2rem; }
+
+    .page-header { text-align: center; margin-bottom: 0.5rem; }
+    .page-header h1 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 0.6rem; }
+    .page-header h1 .accent { color: var(--accent); }
+    .page-header p { color: var(--text-muted); font-size: 0.85rem; max-width: 600px; margin: 0 auto; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 0.8rem; }
+    .badge-top { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; }
+
+    /* ── Tabs ── */
+    .tabs-nav { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .tab-btn {
+      padding: 0.5rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      background: transparent; border: 1px solid transparent; color: var(--text-dim); transition: all 0.2s ease; border-bottom: none;
+    }
+    .tab-btn:hover { color: var(--text-muted); background: #ffffff06; }
+    .tab-btn.active { background: var(--bg-card); border-color: var(--border); border-bottom-color: var(--bg-card); color: var(--text); position: relative; top: 1px; }
+
+    .view-section { display: none; animation: fadeIn 0.35s ease both; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .code-container {
+            background: #080c14;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Visualizer nodes transition */
+        .node-circle {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .link-line {
+            transition: stroke 0.3s ease, stroke-width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="/" class="back-btn">← Roadmap</a>
+      <div class="nav-brand"><span>BLOCO 01</span> Grafos e DAGs</div>
+    </div>
+  </nav>
+
+  <main class="dracula-main">
+    <div class="page-header">
+      <div class="chip-row">
+        <span class="badge-top" style="background:#BD93F920;color:#BD93F9;">BLOCO 01</span>
+        <span class="badge-top" style="background:#6C63FF20;color:#9988ff;">CORE</span>
+      </div>
+      <h1>Grafos, Varredura & <span class="accent">Orquestração</span></h1>
+      <p>Plataforma Imersiva de Engenharia de Dados & Sistemas em Larga Escala</p>
+    </div>
+
+    <div class="tabs-nav" id="tabs-nav">
+      <button class="tab-btn active" data-target="view-intro">🏠 Fundamentos</button>
+      <button class="tab-btn" data-target="view-varredura" style="color:#50FA7B;">🕸️ Varredura BFS/DFS</button>
+      <button class="tab-btn" data-target="view-ordenacao" style="color:#BD93F9;">🔢 Ordenação Topológica</button>
+      <button class="tab-btn" data-target="view-airflow" style="color:#8BE9FD;">🌬️ Arquitetura Airflow</button>
+      <button class="tab-btn" data-target="view-quiz" style="color:#FFB86C;">📝 Avaliação</button>
+    </div>
+
+    <div class="card">
+      <section id="view-intro" class="view-section active">
+            <!-- Seção de Introdução -->
+            <section id="intro" class="space-y-6 pt-4">
+                <div class="p-8 rounded-2xl bg-gradient-to-b from-brand-950/40 via-slate-900/40 to-slate-950 border border-slate-800 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+                    <div class="max-w-4xl space-y-4">
+                        <span class="text-xs font-bold text-brand-400 uppercase tracking-widest px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20">
+                            Evolução de Sistemas de Larga Escala
+                        </span>
+                        <h2 class="text-3xl lg:text-4xl font-extrabold text-white leading-tight">
+                            Teoria de Grafos, Varredura e Orquestração
+                        </h2>
+                        <p class="text-base lg:text-lg text-slate-300 leading-relaxed font-light">
+                            A evolução das arquiteturas de sistemas distribuídos e das plataformas de processamento de dados em larga escala consolidou a teoria de grafos como a espinha dorsal metodológica para o desenvolvimento de pipelines modernos. Modelos matemáticos abstratos de representação de relações binárias tornaram-se ferramentas operacionais indispensáveis para garantir a previsibilidade, consistência e governança de dados.
+                        </p>
+                        <p class="text-sm text-slate-400">
+                            A modelagem por meio de <strong class="text-brand-300">Grafos Acíclicos Dirigidos (DAGs)</strong> estende-se desde compiladores e históricos de controle de versão até orquestradores de tarefas e sistemas distribuídos de registros (<em>blockchains</em>).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 1: Fundamentos Matemáticos -->
+            <section id="fundamentos" class="space-y-6">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                    <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg">
+                        <i class="fa-solid fa-square-root-variable text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">1. Fundamentos Matemáticos e Estruturais</h3>
+                        <p class="text-xs text-slate-400">Dígrafos, Alcançabilidade, Fechamento e Reduções Transitivas</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4 text-slate-300 leading-relaxed text-sm">
+                        <p>
+                            No âmbito da matemática computacional, um grafo direcionado (ou dígrafo) é definido formalmente por uma tupla:
+                        </p>
+                        <div class="py-3 px-5 rounded-lg bg-slate-900/60 border border-slate-800 flex justify-center text-lg font-mono text-indigo-300">
+                            $$G = (V, E)$$
+                        </div>
+                        <p>
+                            onde <strong class="text-white">\(V\)</strong> representa um conjunto finito de vértices (ou nós) e <strong class="text-white">\(E\)</strong> constitui um conjunto de pares ordenados de vértices, denominados arestas direcionadas. Cada aresta <span class="text-indigo-400">\(e = (u, v)\)</span> denota uma relação unidirecional que parte de um vértice de origem <span class="text-indigo-400">\(u\)</span> e aponta para um vértice de destino <span class="text-indigo-400">\(v\)</span>.
+                        </p>
+                        <p>
+                            Um caminho dentro de um grafo direcionado é caracterizado por uma sequência ordenada de arestas em que o vértice final de cada elemento coincide com o vértice inicial do elemento subsequente. Um ciclo direcionado ocorre quando existe um caminho não trivial que se inicia e termina no mesmo vértice. Logo, um <strong class="text-white">Grafo Acíclico Dirigido (DAG)</strong> é definido como um grafo direcionado desprovido de quaisquer ciclos não triviais.
+                        </p>
+                    </div>
+
+                    <!-- Cards de Operações Algébricas -->
+                    <div class="space-y-4">
+                        <div class="p-5 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-colors">
+                            <span class="text-[10px] font-bold text-brand-400 uppercase tracking-widest block mb-1">Operações Algébricas</span>
+                            <h4 class="text-base font-semibold text-white mb-2">Fechamento Transitivo</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                                Um grafo \(G^+ = (V, E^+)\) contendo uma aresta \((u, v)\) se, e somente se, existir qualquer caminho não trivial de \(u\) para \(v\) em \(G\). Essencial para acelerar consultas de alcançabilidade.
+                            </p>
+                            <div class="text-[11px] font-mono text-emerald-400/90 py-1 px-2.5 rounded bg-emerald-500/5 border border-emerald-500/10 inline-block">
+                                Consulta: \(\mathcal{O}(1)\) amortizado
+                            </div>
+                        </div>
+
+                        <div class="p-5 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-colors">
+                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest block mb-1">Operações Algébricas</span>
+                            <h4 class="text-base font-semibold text-white mb-2">Redução Transitiva</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                                O grafo minimal \(G^- = (V, E^-)\) que preserva a exata relação de alcançabilidade de \(G\), eliminando todas as arestas consideradas redundantes do sistema.
+                            </p>
+                            <div class="text-[11px] font-mono text-indigo-400/90 py-1 px-2.5 rounded bg-indigo-500/5 border border-indigo-500/10 inline-block">
+                                Reduz custos de visualização de pipelines
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+      </section>
+
+      <section id="view-varredura" class="view-section">
+            <!-- Seção 2: Simulador Visual de Algoritmos (BFS & DFS) -->
+            <section id="varredura" class="space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg">
+                            <i class="fa-solid fa-network-wired text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">2. Algoritmos de Varredura de Grafos</h3>
+                            <p class="text-xs text-slate-400">Busca em Largura (BFS) vs Busca em Profundidade (DFS)</p>
+                        </div>
+                    </div>
+                    <!-- Controles Rápidos -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="changeTraversalMode('bfs')" id="btn-bfs-mode" class="px-4 py-1.5 text-xs font-semibold rounded-lg bg-emerald-500 text-slate-950 font-bold transition-all shadow-md shadow-emerald-500/10">
+                            BFS Mode
+                        </button>
+                        <button onclick="changeTraversalMode('dfs')" id="btn-dfs-mode" class="px-4 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">
+                            DFS Mode
+                        </button>
+                        <button onclick="changeTraversalMode('kahn')" id="btn-kahn-mode" class="px-4 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">
+                            Kahn Mode
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Painel Esquerdo: Teoria -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                            <h4 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-emerald-400"></i> Busca em Largura (BFS)
+                            </h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                A BFS prioriza a proximidade radial a partir de um vértice de partida específico. Utiliza uma fila <strong class="text-emerald-400">FIFO (First-In, First-Out)</strong> para propagar-se em camadas progressivas e concêntricas. Garante a descoberta de caminhos mínimos absolutos em grafos sem peso nas arestas.
+                            </p>
+                        </div>
+
+                        <div class="p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                            <h4 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-gears text-indigo-400"></i> Busca em Profundidade (DFS)
+                            </h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                A DFS avança de forma linear ao longo de um único ramo até atingir um nó terminal. Ao deparar-se com um beco sem saída, executa o <strong class="text-indigo-400">backtracking</strong>. Utiliza uma pilha <strong class="text-indigo-400">LIFO (Last-In, First-Out)</strong>, normalmente via recursão, gerenciando estados por marcação cromática (Branco, Cinza, Preto).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Playground Central Interativo -->
+                    <div id="playground" class="lg:col-span-7 flex flex-col rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden relative shadow-2xl">
+                        <div class="p-4 bg-slate-900 border-b border-slate-800/60 flex items-center justify-between flex-wrap gap-2">
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-flask text-brand-400"></i> Simulador de Grafos em Tempo Real
+                            </span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="toggleCycle()" class="px-2.5 py-1 text-[11px] font-semibold rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all flex items-center gap-1">
+                                    <i id="cycle-icon" class="fa-solid fa-circle-notch"></i> <span id="cycle-btn-text">Adicionar Ciclo</span>
+                                </button>
+                                <button onclick="resetGraphAnimation()" class="px-2.5 py-1 text-[11px] font-semibold rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">
+                                    <i class="fa-solid fa-arrow-rotate-left mr-1"></i> Resetar
+                                </button>
+                                <button id="play-btn" onclick="startGraphAnimation()" class="px-3.5 py-1 text-[11px] font-bold rounded bg-brand-500 hover:bg-brand-600 text-white transition-all flex items-center gap-1 shadow-lg shadow-brand-500/15">
+                                    <i class="fa-solid fa-play"></i> Rodar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- SVG de Renderização de Grafo -->
+                        <div class="relative flex-1 bg-[#070b13] flex justify-center items-center min-h-[380px] p-4 select-none">
+                            <svg id="graph-svg" class="w-full h-[380px]" viewBox="0 0 600 380">
+                                <!-- As arestas e nós serão injetados e controlados via JS -->
+                            </svg>
+
+                            <!-- Painel Flutuante do Log Técnico -->
+                            <div class="absolute bottom-4 left-4 right-4 bg-slate-950/90 border border-slate-800/80 rounded-xl p-3.5 space-y-1.5 backdrop-blur shadow-xl">
+                                <div class="flex justify-between items-center border-b border-slate-800/50 pb-1.5 mb-1.5">
+                                    <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Monitor do Executor do Grafo</span>
+                                    <span id="traversal-type-badge" class="text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded">MODO: BFS</span>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                                    <div>
+                                        <span class="text-[10px] text-slate-500 block">Fila / Pilha / Graus:</span>
+                                        <span id="visualizer-structure" class="font-mono font-bold text-brand-300 truncate block">[]</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-slate-500 block">Explorados (Ordem):</span>
+                                        <span id="visualizer-visited" class="font-mono font-bold text-emerald-400 truncate block">[]</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-slate-500 block">Ação do Passo:</span>
+                                        <span id="visualizer-action" class="font-mono text-slate-300 text-[11px] font-medium block truncate">Pronto para rodar</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-slate-500 block">Deteção de Ciclos:</span>
+                                        <span id="visualizer-cycle-detect" class="font-mono font-bold text-slate-400 block">Sem ciclos</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabela Comparativa de Complexidade (Tabela 1 adaptada) -->
+                <div class="mt-8 overflow-hidden rounded-xl border border-slate-800 bg-slate-950/40">
+                    <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+                        <h4 class="text-sm font-semibold text-white">Tabela 1: Comparação Metódica entre BFS e DFS</h4>
+                        <span class="text-xs text-indigo-400">Análise de Performance Computacional</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-900/60 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+                                <tr>
+                                    <th class="px-6 py-4">Critério de Análise</th>
+                                    <th class="px-6 py-4">Busca em Largura (BFS)</th>
+                                    <th class="px-6 py-4">Busca em Profundidade (DFS)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 font-medium">
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Estrutura de Controle</td>
+                                    <td class="px-6 py-4 font-mono text-xs text-emerald-400">Fila (Queue - FIFO)</td>
+                                    <td class="px-6 py-4 font-mono text-xs text-indigo-400">Pilha (Stack - LIFO / Recursão)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Complexidade de Tempo</td>
+                                    <td class="px-6 py-4 font-mono text-xs text-emerald-400">$$\mathcal{O}(|V| + |E|)$$ (linear)</td>
+                                    <td class="px-6 py-4 font-mono text-xs text-indigo-400">$$\mathcal{O}(|V| + |E|)$$ (linear)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Complexidade de Espaço</td>
+                                    <td class="px-6 py-4 font-mono text-xs text-emerald-400">$$\mathcal{O}(|V|)$$ (fronteira máxima)</td>
+                                    <td class="px-6 py-4 font-mono text-xs text-indigo-400">$$\mathcal{O}(|V|)$$ (profundidade máxima)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Otimização de Caminho</td>
+                                    <td class="px-6 py-4 text-emerald-300 text-xs">Garante caminho mínimo em grafos não valorados</td>
+                                    <td class="px-6 py-4 text-indigo-300 text-xs">Não garante caminho mínimo (apenas alcançabilidade)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Rastreamento de Estados</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Vetor <code class="font-mono text-emerald-400">num</code> de descobertas e vetor <code class="font-mono text-emerald-400">pa</code> de pais</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Marcação de cores (Branco, Cinza, Preto)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Detecção de Ciclos</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Indireta e de alta complexidade em grafos dirigidos</td>
+                                    <td class="px-6 py-4 text-indigo-300 text-xs font-semibold">Altamente eficiente via detecção de arestas de retorno</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+      </section>
+
+      <section id="view-ordenacao" class="view-section">
+            <!-- Seção 3: Ordenação Topológica -->
+            <section id="ordenacao" class="space-y-6">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                    <div class="p-2 bg-purple-500/10 text-purple-400 rounded-lg">
+                        <i class="fa-solid fa-arrow-down-1-9 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">3. Ordenação Topológica e Solução de Dependências</h3>
+                        <p class="text-xs text-slate-400">Algoritmo de Kahn, Programação Dinâmica e Caminho Crítico</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+                        <p>
+                            A ordenação topológica de um grafo direcionado consiste no arranjo linear de seus vértices de tal maneira que, para toda aresta direcionada <span class="text-brand-300">\(e = (u, v)\)</span>, o vértice de origem \(u\) preceda obrigatoriamente o vértice de destino \(v\) na sequência final.
+                        </p>
+                        <p>
+                            Essa operação é viável <strong class="text-brand-400">unicamente se o grafo for um DAG</strong>. Caso exista um único ciclo no grafo, a ordenação topológica é matematicamente impossível.
+                        </p>
+
+                        <!-- Bloco de Formulação de Caminho Crítico (Programação Dinâmica) -->
+                        <div class="p-5 rounded-xl bg-slate-900/40 border border-slate-800 space-y-4">
+                            <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-widest block font-bold">Resolução de Caminho Crítico via DP</span>
+                            <p class="text-xs text-slate-400">
+                                A aciclicidade dos DAGs viabiliza o emprego de técnicas de Programação Dinâmica (DP) em tempo linear de \(\mathcal{O}(|V| + |E|)\). Definindo-se \(dp[v]\) como o comprimento do caminho mais longo terminando em \(v\):
+                            </p>
+                            <div class="py-3 text-center bg-[#070b13] rounded-lg border border-slate-800 font-serif text-lg text-slate-100">
+                                $$dp[v] = \max_{(u, v) \in E} \{ dp[u] + w(u, v) \}$$
+                            </div>
+                            <p class="text-[11px] text-slate-500">
+                                Processando os estados estritamente na sequência definida por uma ordenação topológica prévia, garante-se que todos os valores predecessores já foram perfeitamente consolidados.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Abas de Comparação Kahn vs DFS -->
+                    <div class="space-y-4 flex flex-col">
+                        <div class="flex border-b border-slate-800">
+                            <button onclick="switchTab('kahn')" id="tab-btn-kahn" class="flex-1 py-2.5 font-semibold text-xs uppercase tracking-wider text-brand-400 border-b-2 border-brand-500 focus:outline-none transition-all">
+                                Algoritmo de Kahn (BFS)
+                            </button>
+                            <button onclick="switchTab('dfs-mod')" id="tab-btn-dfs-mod" class="flex-1 py-2.5 font-semibold text-xs uppercase tracking-wider text-slate-400 hover:text-white focus:outline-none transition-all">
+                                DFS Modificada
+                            </button>
+                        </div>
+
+                        <!-- Conteúdo da Aba Kahn -->
+                        <div id="tab-content-kahn" class="flex-1 p-5 rounded-xl bg-slate-900/30 border border-slate-800/80 space-y-3">
+                            <h4 class="text-sm font-semibold text-white">Kahn: Fluxo Iterativo focado em Graus de Entrada</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Computa os graus de entrada de cada nó, inserindo todos os nós com grau nulo em uma fila de execução. Enquanto a fila não estiver vazia, remove o vértice, insere-o na ordenação e decrementa as dependências de seus vizinhos. Se sobrar graus positivos, há um ciclo.
+                            </p>
+                            <ul class="space-y-2 text-xs text-slate-300 font-mono bg-slate-950 p-4 rounded-lg border border-slate-800">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> in_degree[v] inicializados</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Fila com nós sem dependências</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Desempate Lexicográfico direto</li>
+                                <li class="flex items-center gap-2 text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Altamente paralelizável</li>
+                            </ul>
+                        </div>
+
+                        <!-- Conteúdo da Aba DFS -->
+                        <div id="tab-content-dfs-mod" class="hidden flex-1 p-5 rounded-xl bg-slate-900/30 border border-slate-800/80 space-y-3">
+                            <h4 class="text-sm font-semibold text-white">DFS Modificada: Exploração e Adição Recursiva de Folhas</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Executa uma varredura profunda no grafo e, à medida que a recursão atinge um nó sem arestas de saída direcionadas a nós não visitados, ele é finalizado e adicionado ao início da lista de saída consolidada. Exige controle de nós ativos na pilha (<code class="font-mono text-indigo-400">on_stack</code>) para detectar ciclos.
+                            </p>
+                            <ul class="space-y-2 text-xs text-slate-300 font-mono bg-slate-950 p-4 rounded-lg border border-slate-800">
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Chamadas Recursivas via LIFO</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Detecção precisa com on_stack</li>
+                                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Isolamento cirúrgico de ciclos</li>
+                                <li class="flex items-center gap-2 text-rose-400"><span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span> Sequencial por natureza</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+      </section>
+
+      <section id="view-airflow" class="view-section">
+            <!-- Seção 4: Arquitetura Apache Airflow -->
+            <section id="airflow" class="space-y-6">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                    <div class="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
+                        <i class="fa-solid fa-wind text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">4. Arquitetura de Orquestração com Apache Airflow</h3>
+                        <p class="text-xs text-slate-400">Microsserviços de Agendamento, Execução e Comparação v2 vs v3</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+                    <p>
+                        A transposição prática dos conceitos da teoria de grafos para a engenharia de sistemas modernos reflete-se na arquitetura de orquestradores de fluxo de trabalho. No Apache Airflow, o fluxo é formalizado como uma coleção de tarefas organizadas sob a lógica de um DAG, definindo a ordem e as restrições de execução.
+                    </p>
+                </div>
+
+                <!-- Arquitetura Interativa Visual do Airflow -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Mapa de Componentes -->
+                    <div class="lg:col-span-2 rounded-2xl border border-slate-800 bg-[#070b13] p-6 space-y-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] pointer-events-none"></div>
+                        <h4 class="text-sm font-bold text-slate-200 uppercase tracking-wider mb-2">Painel de Arquitetura Interativa</h4>
+
+                        <!-- Toggle do Cenário Airflow 2 vs 3 -->
+                        <div class="flex justify-center mb-6">
+                            <div class="inline-flex rounded-lg bg-slate-900 p-1 border border-slate-800">
+                                <button onclick="setAirflowVersion(2)" id="btn-af-v2" class="px-4 py-1.5 text-xs font-semibold rounded-md bg-slate-800 text-white transition-all">
+                                    Apache Airflow 2
+                                </button>
+                                <button onclick="setAirflowVersion(3)" id="btn-af-v3" class="px-4 py-1.5 text-xs font-semibold rounded-md text-slate-400 hover:text-white transition-all">
+                                    Apache Airflow 3 (Moderno)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Grid de Blocos da Arquitetura -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 relative">
+                            <!-- Scheduler -->
+                            <div id="arch-scheduler" onclick="showComponentDetails('scheduler')" class="p-4 rounded-xl bg-slate-950 border border-brand-500/40 hover:border-brand-500 cursor-pointer transition-all space-y-2 group shadow-lg">
+                                <span class="text-brand-400 group-hover:text-brand-300 transition-colors"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                                <h5 class="text-xs font-bold text-white">Scheduler</h5>
+                                <p class="text-[10px] text-slate-400">O coração analítico de alta frequência do ecossistema.</p>
+                            </div>
+
+                            <!-- Database -->
+                            <div id="arch-db" onclick="showComponentDetails('db')" class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-slate-700 cursor-pointer transition-all space-y-2 group">
+                                <span class="text-indigo-400 group-hover:text-indigo-300 transition-colors"><i class="fa-solid fa-database"></i></span>
+                                <h5 class="text-xs font-bold text-white">Metadata DB</h5>
+                                <p class="text-[10px] text-slate-400">Banco relacional de metadados das tarefas.</p>
+                            </div>
+
+                            <!-- Workers -->
+                            <div id="arch-workers" onclick="showComponentDetails('workers')" class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-slate-700 cursor-pointer transition-all space-y-2 group">
+                                <span class="text-emerald-400 group-hover:text-emerald-300 transition-colors"><i class="fa-solid fa-server"></i></span>
+                                <h5 class="text-xs font-bold text-white">Workers</h5>
+                                <p class="text-[10px] text-slate-400">A camada física de processamento computacional.</p>
+                            </div>
+
+                            <!-- API Server (v3) -->
+                            <div id="arch-apiserver" onclick="showComponentDetails('apiserver')" class="p-4 rounded-xl bg-slate-950/40 border border-slate-800/20 cursor-not-allowed transition-all space-y-2 group relative col-span-2 sm:col-span-1 opacity-40">
+                                <span id="apiserver-icon" class="text-slate-500"><i class="fa-solid fa-shield-halved"></i></span>
+                                <h5 class="text-xs font-bold text-slate-400">API Server (FastAPI)</h5>
+                                <p class="text-[10px] text-slate-500">Exclusivo do Airflow 3 para isolamento de segurança.</p>
+                                <span id="apiserver-badge" class="absolute top-2 right-2 text-[8px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">Bloqueado v2</span>
+                            </div>
+
+                            <!-- Webserver -->
+                            <div id="arch-webserver" onclick="showComponentDetails('webserver')" class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-slate-700 cursor-pointer transition-all space-y-2 group">
+                                <span class="text-sky-400 group-hover:text-sky-300 transition-colors"><i class="fa-solid fa-window-restore"></i></span>
+                                <h5 class="text-xs font-bold text-white">Webserver</h5>
+                                <p class="text-[10px] text-slate-400">Interface visual e renderização de metadados.</p>
+                            </div>
+
+                            <!-- Triggerers -->
+                            <div id="arch-triggerer" onclick="showComponentDetails('triggerer')" class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:border-slate-700 cursor-pointer transition-all space-y-2 group">
+                                <span class="text-purple-400 group-hover:text-purple-300 transition-colors"><i class="fa-solid fa-bolt"></i></span>
+                                <h5 class="text-xs font-bold text-white">Triggerers</h5>
+                                <p class="text-[10px] text-slate-400">Monitoramento assíncrono baseado em asyncio.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalhamento de Componentes Ativos -->
+                    <div class="flex flex-col rounded-2xl border border-slate-800 bg-slate-950 p-6 space-y-4">
+                        <div class="border-b border-slate-800 pb-3">
+                            <span class="text-[10px] font-bold text-brand-400 uppercase tracking-widest block mb-1">Visualizador de Detalhes</span>
+                            <h4 id="comp-title" class="text-base font-bold text-white">Selecione um Componente</h4>
+                        </div>
+                        <div id="comp-description" class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                            <p>Clique em qualquer componente da arquitetura à esquerda para inspecionar seu papel, especificações e diferenças nas versões 2 e 3 do Apache Airflow.</p>
+                        </div>
+                        <div id="comp-highlight-card" class="mt-auto p-3.5 rounded-lg bg-brand-500/5 border border-brand-500/10 hidden">
+                            <span class="text-[9px] font-bold text-brand-400 uppercase tracking-widest block mb-1">Destaque de Evolução</span>
+                            <p id="comp-highlight-text" class="text-[11px] text-slate-400"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabela Comparativa de Recursos e Conexões DB (Tabela 3 adaptada) -->
+                <div class="mt-8 overflow-hidden rounded-xl border border-slate-800 bg-slate-950/40">
+                    <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+                        <h4 class="text-sm font-semibold text-white">Tabela 2: Matriz de Evolução de Recursos e Banco de Dados</h4>
+                        <span class="text-xs text-blue-400">Airflow 2 vs Airflow 3</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-900/60 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+                                <tr>
+                                    <th class="px-6 py-4">Componente / Parâmetro</th>
+                                    <th class="px-6 py-4">Cenário Apache Airflow 2</th>
+                                    <th class="px-6 py-4">Cenário Apache Airflow 3</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 font-medium">
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Acesso ao Metadata DB</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Direto por meio das tarefas e conexões de workers.</td>
+                                    <td class="px-6 py-4 text-emerald-400 text-xs">Totalmente mediado via barramento FastAPI (API Server).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Motores DB Suportados</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">PostgreSQL, MySQL, SQLite, MsSQL (removido na v2.9.0).</td>
+                                    <td class="px-6 py-4 text-blue-300 text-xs">PostgreSQL (v13 a v17), MySQL (v8.0, v8.4), SQLite (v3.15+).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Mecanismo de Conexão</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Declarado via URI direto nas variáveis de ambiente.</td>
+                                    <td class="px-6 py-4 text-slate-300 text-xs font-mono text-[11px]">Estruturas declarativas em arquivos provider.yaml.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Alta Disponibilidade</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Modelos ativos com travamento lógico no banco de metadados.</td>
+                                    <td class="px-6 py-4 text-emerald-400 text-xs">Scheduler replicas em modelo ativo-ativo escalável via API Server.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Agrupamento de Tarefas</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">SubDAGs (legados e instáveis) e TaskGroups estruturais.</td>
+                                    <td class="px-6 py-4 text-slate-300 text-xs">TaskGroups consolidados como o padrão exclusivo de organização visual.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 5: Linhagem de Dados -->
+            <section id="linhagem" class="space-y-6">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                    <div class="p-2 bg-pink-500/10 text-pink-400 rounded-lg">
+                        <i class="fa-solid fa-bezier-curve text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">5. Linhagem de Dados & Integração OpenLineage-Marquez</h3>
+                        <p class="text-xs text-slate-400">Rastreamento informacional ativo vs Grafos de Orquestração</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Esquerda: Conceito -->
+                    <div class="lg:col-span-5 space-y-4 text-slate-300 text-sm leading-relaxed">
+                        <p>
+                            A distinção teórica entre os grafos de orquestração e os de linhagem de dados reside na entidade central de mapeamento. Enquanto a orquestração monitora a dependência temporal de execução de tarefas físicas, a <strong class="text-white">Linhagem de Dados (Data Lineage)</strong> foca na proveniência e transformação histórica de ativos informacionais.
+                        </p>
+
+                        <div class="p-5 rounded-xl bg-slate-900/30 border border-slate-800 space-y-3">
+                            <h4 class="text-sm font-semibold text-white">A Importância na Governança</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                A linhagem de dados mitiga incidentes silenciosos em sistemas complexos, como degradação contínua de modelos de Aprendizado de Máquina (ML) e a introdução de vieses no processamento de dados brutos (<em>bias & fairness</em>) ao auditar a proveniência detalhada de cada variável.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Direita: Simulador de Linhagem e Metadados Spark/OpenLineage -->
+                    <div class="lg:col-span-7 flex flex-col rounded-2xl border border-slate-800 bg-[#070b13] overflow-hidden">
+                        <div class="p-4 bg-slate-900 border-b border-slate-800/60 flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-timeline text-pink-400"></i> Rastreamento de Linhagem de Dados
+                            </span>
+                            <span class="text-[10px] font-mono text-pink-400">Clique nos ativos para inspecionar</span>
+                        </div>
+
+                        <!-- Pipeline de Ativos de Dados Interativo -->
+                        <div class="p-6 bg-slate-950 flex flex-col md:flex-row items-center justify-around gap-6 min-h-[160px] relative">
+                            <!-- Raw Logs -->
+                            <div onclick="selectLineageAsset('raw')" id="asset-raw" class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-850 hover:border-pink-500 cursor-pointer transition-all text-center space-y-1.5 w-36 shadow-lg relative group">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tabela Origem</span>
+                                <div class="text-xs font-bold text-white truncate">api_raw_logs</div>
+                                <div class="text-[9px] font-mono text-slate-500">PostgreSQL (v15)</div>
+                                <div class="absolute -right-3 top-1/2 -translate-y-1/2 text-slate-700 hidden md:block">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </div>
+                            </div>
+
+                            <!-- Clean Table (Spark ETL) -->
+                            <div onclick="selectLineageAsset('clean')" id="asset-clean" class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-850 hover:border-pink-500 cursor-pointer transition-all text-center space-y-1.5 w-36 shadow-lg relative group">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Transformação</span>
+                                <div class="text-xs font-bold text-white truncate">clean_events</div>
+                                <div class="text-[9px] font-mono text-emerald-400">Apache Spark (v3)</div>
+                                <div class="absolute -right-3 top-1/2 -translate-y-1/2 text-slate-700 hidden md:block">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </div>
+                            </div>
+
+                            <!-- Analytics Cube -->
+                            <div onclick="selectLineageAsset('analytics')" id="asset-analytics" class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-850 hover:border-pink-500 cursor-pointer transition-all text-center space-y-1.5 w-36 shadow-lg group">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ativo Final</span>
+                                <div class="text-xs font-bold text-white truncate">analytics_cube</div>
+                                <div class="text-[9px] font-mono text-blue-400">dbt (BigQuery)</div>
+                            </div>
+                        </div>
+
+                        <!-- Metadados de Coleta em Tempo Real -->
+                        <div class="p-5 border-t border-slate-800 bg-[#060910] space-y-3 font-mono text-xs">
+                            <div class="flex justify-between items-center text-[10px] text-slate-500 border-b border-slate-900 pb-2">
+                                <span>METADADOS DE EXECUÇÃO INJETADOS (SPARK / INI)</span>
+                                <span id="asset-metadata-badge" class="text-pink-400">ATIVO: NENHUM SELECIONADO</span>
+                            </div>
+                            <pre id="lineage-code-display" class="text-[11px] text-pink-300/90 whitespace-pre-wrap overflow-x-auto leading-relaxed">Selecione um ativo no fluxo de linhagem acima para visualizar o dump de metadados injetados no barramento do OpenLineage em conformidade com o padrão AIP-60.</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabela de Integração de Plataformas (Tabela 4 adaptada) -->
+                <div class="mt-8 overflow-hidden rounded-xl border border-slate-800 bg-slate-950/40">
+                    <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+                        <h4 class="text-sm font-semibold text-white">Tabela 3: Matriz de Integração de Linhagem e Plataformas</h4>
+                        <span class="text-xs text-pink-400">OpenLineage Ecosystem</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-900/60 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+                                <tr>
+                                    <th class="px-6 py-4">Plataforma Analítica</th>
+                                    <th class="px-6 py-4">Mecanismo de Coleta</th>
+                                    <th class="px-6 py-4">Limitações e Restrições</th>
+                                    <th class="px-6 py-4">Impacto de Performance</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 font-medium">
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Marquez (OpenSource)</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">API síncrona HTTP compatível com OpenLineage.</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Exige redirecionamento de portas em ambiente local (porta 2345) para evitar conflitos na 5432 com o Airflow.</td>
+                                    <td class="px-6 py-4 text-emerald-400 text-xs">Mínimo; chamadas assíncronas no barramento.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">Microsoft Purview</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Ingestão reativa via Azure Event Hubs.</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Não suporta linhagem granular de colunas; views relacionais são salvas puramente como tabelas de dados.</td>
+                                    <td class="px-6 py-4 text-emerald-400 text-xs">Baixo; eventos emitidos reativamente pós-execução.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/20 transition-colors">
+                                    <td class="px-6 py-4 text-white">GCP Cloud Composer</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Chamadas RPC diretas na Data Lineage API.</td>
+                                    <td class="px-6 py-4 text-slate-400 text-xs">Não suporta backends de linhagem personalizados configurados nativamente no Airflow.</td>
+                                    <td class="px-6 py-4 text-rose-400 text-xs">1 a 2 segundos adicionais de processamento por tarefa (failsafe).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+      </section>
+
+      <section id="view-quiz" class="view-section">
+            <!-- Seção 6: Quiz de Avaliação Técnica -->
+            <section id="quiz" class="space-y-6 mt-16 border-t border-slate-800/80 pt-12">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                    <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg">
+                        <i class="fa-solid fa-graduation-cap text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">6. Centro de Avaliação de Conhecimento Técnico</h3>
+                        <p class="text-xs text-slate-400">Verificação interativa de conceitos teóricos e práticos</p>
+                    </div>
+                </div>
+
+                <div class="max-w-4xl mx-auto rounded-2xl border border-slate-800 bg-[#070b13] p-6 lg:p-8 space-y-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[90px] pointer-events-none"></div>
+
+                    <!-- Header do Quiz -->
+                    <div class="flex justify-between items-center border-b border-slate-800/80 pb-4">
+                        <span class="text-xs font-mono font-bold text-emerald-400">PROGRESSO: PERGUNTA <span id="quiz-current">1</span> DE <span id="quiz-total">4</span></span>
+                        <span class="text-xs font-mono font-bold text-slate-400">Pontuação: <span id="quiz-score" class="text-emerald-400">0%</span></span>
+                    </div>
+
+                    <!-- Pergunta -->
+                    <div class="space-y-4">
+                        <h4 id="quiz-question-text" class="text-base lg:text-lg font-bold text-white leading-relaxed"></h4>
+
+                        <!-- Alternativas -->
+                        <div id="quiz-options-container" class="space-y-3">
+                            <!-- Injetado dinamicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Rodapé do Quiz -->
+                    <div class="flex justify-between items-center border-t border-slate-800/80 pt-4 mt-6">
+                        <span id="quiz-feedback" class="text-xs font-bold font-mono"></span>
+                        <button id="quiz-next-btn" onclick="nextQuestion()" class="px-5 py-2 text-xs font-bold rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 transition-all shadow-md shadow-emerald-500/10 flex items-center gap-1.5 opacity-50 cursor-not-allowed" disabled>
+                            Avançar <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+      </section>
+    </div> <!-- end card -->
+        </main>
+    </div>
+
+    <!-- LÓGICA DE PROGRAMAÇÃO INTERATIVA EM JAVASCRIPT -->
+    <script>
+        // Lógica de Abas (Dracula Layout)
+        const tabsBtns = document.querySelectorAll('.tab-btn');
+        const viewSections = document.querySelectorAll('.view-section');
+        tabsBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            tabsBtns.forEach(t => t.classList.remove('active'));
+            viewSections.forEach(s => s.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.target).classList.add('active');
+          });
+        });
+
+        // Dados do simulador de grafo
+        const graphData = {
+            nodes: [
+                { id: 0, label: "Logs", x: 80, y: 190, color: "white" },
+                { id: 1, label: "API Events", x: 80, y: 70, color: "white" },
+                { id: 2, label: "Spark ETL A", x: 230, y: 190, color: "white" },
+                { id: 3, label: "Spark ETL B", x: 230, y: 70, color: "white" },
+                { id: 4, label: "DW Aggregator", x: 380, y: 130, color: "white" },
+                { id: 5, label: "ML Features", x: 520, y: 70, color: "white" },
+                { id: 6, label: "BI Report", x: 520, y: 190, color: "white" }
+            ],
+            edges: [
+                { source: 0, target: 2 },
+                { source: 1, target: 3 },
+                { source: 2, target: 4 },
+                { source: 3, target: 4 },
+                { source: 4, target: 5 },
+                { source: 4, target: 6 }
+            ]
+        };
+
+        let traversalMode = 'bfs'; // 'bfs', 'dfs', 'kahn'
+        let animationRunning = false;
+        let animationQueue = [];
+        let animationInterval = null;
+        let cycleAdded = false;
+
+        function initGraph() {
+            const svg = document.getElementById("graph-svg");
+            svg.innerHTML = '';
+
+            // Marcador de ponta de seta (Seta para aresta direcionada)
+            const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+            const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+            marker.setAttribute("id", "arrowhead");
+            marker.setAttribute("viewBox", "0 0 10 10");
+            marker.setAttribute("refX", "22"); // Recuo para tocar a borda externa do nó
+            marker.setAttribute("refY", "5");
+            marker.setAttribute("markerWidth", "6");
+            marker.setAttribute("markerHeight", "6");
+            marker.setAttribute("orient", "auto-start-reverse");
+            
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", "M 0 0 L 10 5 L 0 10 z");
+            path.setAttribute("fill", "#475569");
+            
+            marker.appendChild(path);
+            defs.appendChild(marker);
+            svg.appendChild(defs);
+
+            // Renderizar arestas
+            graphData.edges.forEach((edge, index) => {
+                const src = graphData.nodes.find(n => n.id === edge.source);
+                const tgt = graphData.nodes.find(n => n.id === edge.target);
+                
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", src.x);
+                line.setAttribute("y1", src.y);
+                line.setAttribute("x2", tgt.x);
+                line.setAttribute("y2", tgt.y);
+                line.setAttribute("stroke", "#334155");
+                line.setAttribute("stroke-width", "2");
+                line.setAttribute("class", "link-line");
+                line.setAttribute("id", `edge-${edge.source}-${edge.target}`);
+                line.setAttribute("marker-end", "url(#arrowhead)");
+                svg.appendChild(line);
+            });
+
+            // Renderizar nós
+            graphData.nodes.forEach((node) => {
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                g.setAttribute("transform", `translate(${node.x}, ${node.y})`);
+                g.setAttribute("class", "cursor-pointer");
+
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("r", "16");
+                circle.setAttribute("fill", getHexColor(node.color));
+                circle.setAttribute("stroke", "#1e293b");
+                circle.setAttribute("stroke-width", "3");
+                circle.setAttribute("id", `node-${node.id}`);
+                circle.setAttribute("class", "node-circle shadow-lg");
+
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("y", "32");
+                text.setAttribute("text-anchor", "middle");
+                text.setAttribute("fill", "#94a3b8");
+                text.setAttribute("font-size", "10px");
+                text.setAttribute("font-family", "Inter");
+                text.setAttribute("font-weight", "600");
+                text.textContent = node.label;
+
+                const textVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                textVal.setAttribute("dy", "4");
+                textVal.setAttribute("text-anchor", "middle");
+                textVal.setAttribute("fill", "#0b0f19");
+                textVal.setAttribute("font-size", "10px");
+                textVal.setAttribute("font-family", "JetBrains Mono");
+                textVal.setAttribute("font-weight", "bold");
+                textVal.setAttribute("id", `node-val-${node.id}`);
+                textVal.textContent = node.id;
+
+                g.appendChild(circle);
+                g.appendChild(text);
+                g.appendChild(textVal);
+                svg.appendChild(g);
+            });
+
+            // Atualizar contadores na barra lateral
+            document.getElementById("sidebar-node-count").textContent = graphData.nodes.length;
+            document.getElementById("sidebar-edge-count").textContent = graphData.edges.length;
+        }
+
+        function getHexColor(colorName) {
+            switch(colorName) {
+                case 'white': return '#e2e8f0'; // Não descoberto
+                case 'gray': return '#94a3b8'; // Descobrindo (cinza)
+                case 'black': return '#0f172a'; // Finalizado (preto)
+                case 'active': return '#637bff'; // Processando no momento
+                case 'visited': return '#10b981'; // Visitado / Pronto
+                case 'cycle-err': return '#f43f5e'; // Ciclo detectado
+                default: return '#e2e8f0';
+            }
+        }
+
+        function updateNodeVisual(id, color, valueText) {
+            const circle = document.getElementById(`node-${id}`);
+            const valText = document.getElementById(`node-val-${id}`);
+            if(circle) {
+                circle.setAttribute("fill", getHexColor(color));
+                if (color === 'active' || color === 'visited' || color === 'cycle-err') {
+                    circle.setAttribute("stroke", "#ffffff");
+                } else {
+                    circle.setAttribute("stroke", "#1e293b");
+                }
+            }
+            if(valText && valueText !== undefined) {
+                valText.textContent = valueText;
+                if (color === 'active' || color === 'visited' || color === 'cycle-err') {
+                    valText.setAttribute("fill", "#ffffff");
+                } else {
+                    valText.setAttribute("fill", "#0b0f19");
+                }
+            }
+        }
+
+        function updateEdgeVisual(srcId, tgtId, color) {
+            const edge = document.getElementById(`edge-${srcId}-${tgtId}`);
+            if(edge) {
+                if(color === 'active') {
+                    edge.setAttribute("stroke", "#637bff");
+                    edge.setAttribute("stroke-width", "4");
+                } else if(color === 'visited') {
+                    edge.setAttribute("stroke", "#10b981");
+                    edge.setAttribute("stroke-width", "3");
+                } else if(color === 'cycle') {
+                    edge.setAttribute("stroke", "#f43f5e");
+                    edge.setAttribute("stroke-width", "4");
+                } else {
+                    edge.setAttribute("stroke", "#334155");
+                    edge.setAttribute("stroke-width", "2");
+                }
+            }
+        }
+
+        function changeTraversalMode(mode) {
+            traversalMode = mode;
+            resetGraphAnimation();
+            const btns = ['bfs', 'dfs', 'kahn'];
+            btns.forEach(b => {
+                const btn = document.getElementById(`btn-${b}-mode`);
+                if(b === mode) {
+                    btn.className = "px-4 py-1.5 text-xs font-semibold rounded-lg bg-emerald-500 text-slate-950 font-bold transition-all shadow-md shadow-emerald-500/10";
+                } else {
+                    btn.className = "px-4 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all";
+                }
+            });
+
+            const badge = document.getElementById("traversal-type-badge");
+            badge.textContent = `MODO: ${mode.toUpperCase()}`;
+        }
+
+        function toggleCycle() {
+            const btnText = document.getElementById("cycle-btn-text");
+            const icon = document.getElementById("cycle-icon");
+            
+            if(!cycleAdded) {
+                // Adiciona uma aresta do nó 4 para o nó 0 criando um ciclo
+                graphData.edges.push({ source: 4, target: 0 });
+                cycleAdded = true;
+                btnText.textContent = "Remover Ciclo";
+                icon.className = "fa-solid fa-ban text-rose-400";
+            } else {
+                graphData.edges = graphData.edges.filter(e => !(e.source === 4 && e.target === 0));
+                cycleAdded = false;
+                btnText.textContent = "Adicionar Ciclo";
+                icon.className = "fa-solid fa-circle-notch";
+            }
+            resetGraphAnimation();
+        }
+
+        function resetGraphAnimation() {
+            if(animationInterval) clearInterval(animationInterval);
+            animationRunning = false;
+            document.getElementById("play-btn").innerHTML = '<i class="fa-solid fa-play"></i> Rodar';
+            initGraph();
+            document.getElementById("visualizer-structure").textContent = "[]";
+            document.getElementById("visualizer-visited").textContent = "[]";
+            document.getElementById("visualizer-action").textContent = "Pronto para rodar";
+            document.getElementById("visualizer-cycle-detect").textContent = "Sem ciclos";
+            document.getElementById("visualizer-cycle-detect").className = "font-mono font-bold text-slate-400 block";
+        }
+
+        function startGraphAnimation() {
+            if(animationRunning) {
+                resetGraphAnimation();
+                return;
+            }
+            animationRunning = true;
+            document.getElementById("play-btn").innerHTML = '<i class="fa-solid fa-stop"></i> Parar';
+            
+            if(traversalMode === 'bfs') {
+                runBFSAnimation();
+            } else if(traversalMode === 'dfs') {
+                runDFSAnimation();
+            } else if(traversalMode === 'kahn') {
+                runKahnAnimation();
+            }
+        }
+
+        function runBFSAnimation() {
+            // BFS comecando do No 0
+            const queue = [0];
+            const visited = [];
+            const actionLogs = [];
+            
+            // Simular passos
+            actionLogs.push({ action: "Inicializando BFS", queue: [0], visited: [], activeNode: null, activeEdge: null });
+            
+            const localVisited = new Set();
+            localVisited.add(0);
+
+            let queueCopy = [0];
+            while(queueCopy.length > 0) {
+                const u = queueCopy.shift();
+                actionLogs.push({ action: `Removendo nó ${u} da Fila`, queue: [...queueCopy], visited: [...visited], activeNode: u, activeEdge: null, nodeColor: 'active' });
+                
+                visited.push(u);
+                actionLogs.push({ action: `Finalizado processamento do nó ${u}`, queue: [...queueCopy], visited: [...visited], activeNode: u, activeEdge: null, nodeColor: 'visited' });
+
+                // Pegar vizinhos
+                const neighbors = graphData.edges.filter(e => e.source === u).map(e => e.target);
+                for(let v of neighbors) {
+                    if(!localVisited.has(v)) {
+                        localVisited.add(v);
+                        queueCopy.push(v);
+                        actionLogs.push({ 
+                            action: `Descoberta aresta (${u} -> ${v}), enfileirando ${v}`, 
+                            queue: [...queueCopy], 
+                            visited: [...visited], 
+                            activeNode: v, 
+                            activeEdge: { s: u, t: v },
+                            nodeColor: 'gray' 
+                        });
+                    } else if(cycleAdded && v === 0) {
+                        actionLogs.push({ 
+                            action: `Ciclo detectado! Aresta de retorno (${u} -> ${v})`, 
+                            queue: [...queueCopy], 
+                            visited: [...visited], 
+                            activeNode: v, 
+                            activeEdge: { s: u, t: v },
+                            nodeColor: 'cycle-err' 
+                        });
+                    }
+                }
+            }
+
+            executeSteps(actionLogs);
+        }
+
+        function runDFSAnimation() {
+            const visited = [];
+            const actionLogs = [];
+            const colorState = Array(graphData.nodes.length).fill('white'); // white, gray, black
+            const onStack = Array(graphData.nodes.length).fill(false);
+            let cycleFound = false;
+
+            actionLogs.push({ action: "Inicializando DFS com marcação tripartite", stack: [], visited: [], activeNode: null });
+
+            function dfsVisit(u) {
+                if(cycleFound) return;
+                colorState[u] = 'gray';
+                onStack[u] = true;
+                
+                actionLogs.push({ 
+                    action: `Nó ${u} descoberto (Estado Cinza)`, 
+                    stack: getStack(onStack), 
+                    visited: [...visited], 
+                    activeNode: u, 
+                    nodeColor: 'gray' 
+                });
+
+                const neighbors = graphData.edges.filter(e => e.source === u).map(e => e.target);
+                for(let v of neighbors) {
+                    if(colorState[v] === 'white') {
+                        actionLogs.push({ 
+                            action: `Avançando na aresta (${u} -> ${v})`, 
+                            stack: getStack(onStack), 
+                            visited: [...visited], 
+                            activeNode: v, 
+                            activeEdge: { s: u, t: v } 
+                        });
+                        dfsVisit(v);
+                    } else if(onStack[v]) {
+                        cycleFound = true;
+                        actionLogs.push({ 
+                            action: `CICLO DETECTADO! Aresta de retorno para nó ativo na pilha: (${u} -> ${v})`, 
+                            stack: getStack(onStack), 
+                            visited: [...visited], 
+                            activeNode: v, 
+                            activeEdge: { s: u, t: v },
+                            nodeColor: 'cycle-err',
+                            isCycle: true
+                        });
+                    }
+                }
+
+                if(cycleFound) return;
+                colorState[u] = 'black';
+                onStack[u] = false;
+                visited.unshift(u); // Adiciona ao inicio para simular topologica baseada em DFS
+                actionLogs.push({ 
+                    action: `Finalizado ${u} (Estado Preto), empurrado à lista de saída`, 
+                    stack: getStack(onStack), 
+                    visited: [...visited], 
+                    activeNode: u, 
+                    nodeColor: 'black' 
+                });
+            }
+
+            // Garante visita em todos os nos
+            for(let i=0; i < graphData.nodes.length; i++) {
+                if(colorState[i] === 'white' && !cycleFound) {
+                    dfsVisit(i);
+                }
+            }
+
+            executeSteps(actionLogs);
+        }
+
+        function getStack(onStackArray) {
+            const stack = [];
+            onStackArray.forEach((val, idx) => {
+                if(val) stack.push(idx);
+            });
+            return stack;
+        }
+
+        function runKahnAnimation() {
+            const actionLogs = [];
+            const inDegree = Array(graphData.nodes.length).fill(0);
+            
+            // Computa graus de entrada
+            graphData.edges.forEach(e => {
+                inDegree[e.target]++;
+            });
+
+            actionLogs.push({ 
+                action: "Inicializando Kahn: Computando Graus de Entrada", 
+                structure: [...inDegree], 
+                visited: [], 
+                activeNode: null 
+            });
+
+            const queue = [];
+            inDegree.forEach((deg, idx) => {
+                if(deg === 0) queue.push(idx);
+            });
+
+            actionLogs.push({ 
+                action: "Enfileirando nós com grau de entrada ZERO", 
+                structure: [...inDegree], 
+                queue: [...queue],
+                visited: [], 
+                activeNode: null 
+            });
+
+            const topoOrder = [];
+            let inDegreeState = [...inDegree];
+
+            while(queue.length > 0) {
+                const u = queue.shift();
+                topoOrder.push(u);
+
+                actionLogs.push({ 
+                    action: `Removendo ${u} sem dependências upstream`, 
+                    structure: [...inDegreeState], 
+                    queue: [...queue],
+                    visited: [...topoOrder], 
+                    activeNode: u, 
+                    nodeColor: 'active' 
+                });
+
+                const neighbors = graphData.edges.filter(e => e.source === u).map(e => e.target);
+                for(let v of neighbors) {
+                    inDegreeState[v]--;
+                    actionLogs.push({ 
+                        action: `Decrementando dependência de ${v} (Grau atual: ${inDegreeState[v]})`, 
+                        structure: [...inDegreeState], 
+                        queue: [...queue],
+                        visited: [...topoOrder], 
+                        activeNode: v,
+                        activeEdge: { s: u, t: v }
+                    });
+
+                    if(inDegreeState[v] === 0) {
+                        queue.push(v);
+                        actionLogs.push({ 
+                            action: `Grau de ${v} zerado, adicionando à fila de prontos`, 
+                            structure: [...inDegreeState], 
+                            queue: [...queue],
+                            visited: [...topoOrder], 
+                            activeNode: v,
+                            nodeColor: 'gray'
+                        });
+                    }
+                }
+            }
+
+            if(topoOrder.length < graphData.nodes.length) {
+                actionLogs.push({ 
+                    action: "Kahn Concluído: Ciclo Detectado! Tamanho da lista ordenada é menor que o total de nós.", 
+                    structure: [...inDegreeState], 
+                    queue: [...queue],
+                    visited: [...topoOrder], 
+                    activeNode: null,
+                    isCycle: true
+                });
+            } else {
+                actionLogs.push({ 
+                    action: "Kahn Concluído com Sucesso! Grafo é um DAG válido.", 
+                    structure: [...inDegreeState], 
+                    queue: [...queue],
+                    visited: [...topoOrder], 
+                    activeNode: null
+                });
+            }
+
+            executeSteps(actionLogs);
+        }
+
+        function executeSteps(steps) {
+            let currentStep = 0;
+            
+            animationInterval = setInterval(() => {
+                if(currentStep >= steps.length) {
+                    clearInterval(animationInterval);
+                    document.getElementById("play-btn").innerHTML = '<i class="fa-solid fa-play"></i> Rodar';
+                    animationRunning = false;
+                    return;
+                }
+
+                const step = steps[currentStep];
+                
+                // Resetar estilos de arestas e nós temporariamente antes de pintar o estado atual
+                if(step.activeEdge) {
+                    updateEdgeVisual(step.activeEdge.s, step.activeEdge.t, step.isCycle ? 'cycle' : 'active');
+                }
+
+                if(step.activeNode !== null) {
+                    updateNodeVisual(step.activeNode, step.nodeColor || 'active');
+                }
+
+                // Atualizar painéis textuais
+                document.getElementById("visualizer-action").textContent = step.action;
+                
+                if(traversalMode === 'bfs') {
+                    document.getElementById("visualizer-structure").textContent = JSON.stringify(step.queue);
+                    document.getElementById("visualizer-visited").textContent = JSON.stringify(step.visited);
+                } else if(traversalMode === 'dfs') {
+                    document.getElementById("visualizer-structure").textContent = JSON.stringify(step.stack);
+                    document.getElementById("visualizer-visited").textContent = JSON.stringify(step.visited);
+                } else if(traversalMode === 'kahn') {
+                    document.getElementById("visualizer-structure").textContent = "Graus: " + JSON.stringify(step.structure);
+                    document.getElementById("visualizer-visited").textContent = JSON.stringify(step.visited);
+                }
+
+                if(step.nodeColor === 'visited' || step.nodeColor === 'black') {
+                    updateNodeVisual(step.activeNode, 'visited');
+                }
+
+                if(step.isCycle) {
+                    document.getElementById("visualizer-cycle-detect").textContent = "CICLO DETECTADO!";
+                    document.getElementById("visualizer-cycle-detect").className = "font-mono font-bold text-rose-500 block animate-bounce";
+                }
+
+                currentStep++;
+            }, 1000);
+        }
+
+        function switchTab(tabId) {
+            const tabs = ['kahn', 'dfs-mod'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                const content = document.getElementById(`tab-content-${t}`);
+                if(t === tabId) {
+                    btn.className = "flex-1 py-2.5 font-semibold text-xs uppercase tracking-wider text-brand-400 border-b-2 border-brand-500 focus:outline-none transition-all";
+                    content.classList.remove("hidden");
+                } else {
+                    btn.className = "flex-1 py-2.5 font-semibold text-xs uppercase tracking-wider text-slate-400 hover:text-white focus:outline-none transition-all";
+                    content.classList.add("hidden");
+                }
+            });
+        }
+
+        const componentDetails = {
+            scheduler: {
+                title: "Scheduler (Agendador)",
+                desc: "O cérebro do Apache Airflow. Opera em um loop contínuo estruturado em três fases: criação de instâncias de execução de DAGs (DagRuns), varredura em busca de tarefas elegíveis (TaskInstances) e enfileiramento das tarefas no Executor.",
+                highlight: "No Airflow 3, replicas de Scheduler operam de forma 100% ativa-ativa escaláveis horizontalmente sem concorrência destrutiva, pois as conexões são totalmente mediadas via API Server (FastAPI), eliminando o gargalo de bloqueio centralizado no DB."
+            },
+            db: {
+                title: "Metadata DB (Banco de Metadados)",
+                desc: "Repositório central de dados. Armazena estados de tarefas, variáveis, conexões e histórico de execuções. Geralmente usa PostgreSQL ou MySQL. Exige alto desempenho transacional.",
+                highlight: "O Airflow 3 isola completamente o acesso ao Banco de Dados. Workers e Webservers não tocam mais o banco diretamente, blindando o banco e minimizando conexões simultâneas."
+            },
+            workers: {
+                title: "Workers (Trabalhadores)",
+                desc: "Os cavalos de batalha do sistema. São as instâncias de computação física que de fato processam as instruções das tarefas (Task Instances) despachadas pelo Executor.",
+                highlight: "Com a remoção do acesso direto ao DB na v3, os Workers agora executam num ambiente de rede isolado, comunicando-se apenas por chamadas de API de baixo custo de rede."
+            },
+            apiserver: {
+                title: "API Server (FastAPI) - Exclusivo v3",
+                desc: "A camada de isolamento crítico introduzida no Airflow 3. Todas as ações dos componentes (Scheduler, Workers e Webserver) de leitura ou gravação de dados transitam exclusivamente por este microsserviço síncrono.",
+                highlight: "Eleva substancialmente a segurança. Impede injeção de conexões diretas, mitiga vazamentos de senhas e remove a necessidade de prover conexões de banco de dados diretamente aos Workers."
+            },
+            webserver: {
+                title: "Webserver (Interface Gráfica)",
+                desc: "Gera o painel visual onde os usuários monitoram os DAGs, reexecutam tarefas, analisam logs e gerenciam variáveis globais de sistema.",
+                highlight: "Para fins de segurança em produção, o parâmetro test_connection no airflow.cfg deve ser definido como Disabled para evitar testes de conectividade arbitrários via Webserver."
+            },
+            triggerer: {
+                title: "Triggerer (Mecanismo Assíncrono)",
+                desc: "Executa loops de eventos assíncronos baseados no asyncio do Python para gerenciar tarefas adiadas (deferrable operators).",
+                highlight: "Permite monitorar eventos externos de longa duração sem ocupar um slot precioso de processador (Worker thread) durante a espera."
+            }
+        };
+
+        let currentAirflowVersion = 2;
+
+        function setAirflowVersion(ver) {
+            currentAirflowVersion = ver;
+            const btnV2 = document.getElementById("btn-af-v2");
+            const btnV3 = document.getElementById("btn-af-v3");
+            const apiServerBlock = document.getElementById("arch-apiserver");
+            const apiServerBadge = document.getElementById("apiserver-badge");
+            const apiServerIcon = document.getElementById("apiserver-icon");
+
+            if(ver === 3) {
+                btnV3.className = "px-4 py-1.5 text-xs font-semibold rounded-md bg-slate-800 text-white transition-all";
+                btnV2.className = "px-4 py-1.5 text-xs font-semibold rounded-md text-slate-400 hover:text-white transition-all";
+                
+                apiServerBlock.className = "p-4 rounded-xl bg-slate-950 border border-emerald-500/40 hover:border-emerald-500 cursor-pointer transition-all space-y-2 group shadow-lg";
+                apiServerBadge.className = "absolute top-2 right-2 text-[8px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400";
+                apiServerBadge.textContent = "ATIVO v3";
+                apiServerIcon.className = "text-emerald-400 group-hover:text-emerald-300 transition-colors";
+            } else {
+                btnV2.className = "px-4 py-1.5 text-xs font-semibold rounded-md bg-slate-800 text-white transition-all";
+                btnV3.className = "px-4 py-1.5 text-xs font-semibold rounded-md text-slate-400 hover:text-white transition-all";
+                
+                apiServerBlock.className = "p-4 rounded-xl bg-slate-950/40 border border-slate-800/20 cursor-not-allowed transition-all space-y-2 group relative col-span-2 sm:col-span-1 opacity-40";
+                apiServerBadge.className = "absolute top-2 right-2 text-[8px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400";
+                apiServerBadge.textContent = "Bloqueado v2";
+                apiServerIcon.className = "text-slate-500";
+            }
+            showComponentDetails('scheduler');
+        }
+
+        function showComponentDetails(compId) {
+            if(compId === 'apiserver' && currentAirflowVersion === 2) return;
+            
+            const detail = componentDetails[compId];
+            document.getElementById("comp-title").textContent = detail.title;
+            document.getElementById("comp-description").innerHTML = `<p>${detail.desc}</p>`;
+            document.getElementById("comp-highlight-text").textContent = detail.highlight;
+            document.getElementById("comp-highlight-card").classList.remove("hidden");
+
+            // Atualiza destaque na borda do bloco clicado
+            const blocks = ['scheduler', 'db', 'workers', 'apiserver', 'webserver', 'triggerer'];
+            blocks.forEach(b => {
+                const block = document.getElementById(`arch-${b}`);
+                if(block) {
+                    if(b === compId) {
+                        block.classList.add("border-brand-500");
+                        block.classList.remove("border-slate-800/80");
+                    } else {
+                        block.classList.remove("border-brand-500");
+                        if (b !== 'apiserver' || currentAirflowVersion === 3) {
+                            block.classList.add("border-slate-800/80");
+                        }
+                    }
+                }
+            });
+        }
+
+        const assetMetadata = {
+            raw: {
+                badge: "Tabela Origem: api_raw_logs",
+                code: `[OpenLineage Metadados - API v1]
+{
+  "eventType": "START",
+  "run": {
+    "runId": "65b93d7c-38fa-4e89-8041-6927a44f128d"
+  },
+  "job": {
+    "namespace": "airflow-database-ingest",
+    "name": "raw_logs_ingestion"
+  },
+  "inputs": [
+    {
+      "namespace": "postgres://prod-db:5432",
+      "name": "public.api_raw_logs",
+      "facets": {
+        "schema": {
+          "fields": [
+            {"name": "id", "type": "UUID"},
+            {"name": "event_timestamp", "type": "TIMESTAMP"},
+            {"name": "payload", "type": "JSONB"}
+          ]
+        }
+      }
+    }
+  ]
+}`
+            },
+            clean: {
+                badge: "Transformação: clean_events (Apache Spark)",
+                code: `[Spark OpenLineage SparkListener]
+# Propriedades globais de rastreamento do Spark Engine
+spark.openlineage.parentJobNamespace = "airflow-composer-dag"
+spark.openlineage.parentJobName = "etl_logs_pipeline.clean_events_task"
+spark.openlineage.parentRunId = "a71e8bbd-71b3-46c5-a0bc-979929d60cb4"
+
+# Metadados coletados síncronos
+{
+  "job": {
+    "namespace": "spark-analytics-cluster",
+    "name": "spark_clean_logs_job"
+  },
+  "inputs": [
+    {"namespace": "postgres://prod-db:5432", "name": "public.api_raw_logs"}
+  ],
+  "outputs": [
+    {
+      "namespace": "bigquery://prod-dw-project",
+      "name": "refined_analytics.clean_events"
+    }
+  ]
+}`
+            },
+            analytics: {
+                badge: "Ativo Final: analytics_cube (dbt Compiler)",
+                code: `[dbt Manifest Compilation Lineage]
+- model: refined_analytics.clean_events
+  description: "Dados limpos e estruturados de eventos de API"
+  
+- model: analysis.analytics_cube
+  description: "Cubo agregado multidimensional para analistas"
+  depends_on:
+    - ref('refined_analytics.clean_events')
+  
+# Integração dbt Explorer & OpenLineage catalog
+{
+  "eventType": "COMPLETE",
+  "job": {
+    "namespace": "dbt-cloud-run",
+    "name": "analytics_dbt_run"
+  }
+}`
+            }
+        };
+
+        function selectLineageAsset(assetId) {
+            const assets = ['raw', 'clean', 'analytics'];
+            assets.forEach(a => {
+                const el = document.getElementById(`asset-${a}`);
+                if(a === assetId) {
+                    el.className = "p-3.5 rounded-xl bg-slate-900/85 border-2 border-pink-500 scale-105 cursor-pointer transition-all text-center space-y-1.5 w-36 shadow-xl relative group";
+                } else {
+                    el.className = "p-3.5 rounded-xl bg-slate-900/80 border border-slate-850 hover:border-pink-500 cursor-pointer transition-all text-center space-y-1.5 w-36 shadow-lg relative group";
+                }
+            });
+
+            document.getElementById("asset-metadata-badge").textContent = "ATIVO: " + assetMetadata[assetId].badge;
+            document.getElementById("lineage-code-display").textContent = assetMetadata[assetId].code;
+        }
+
+        const quizQuestions = [
+            {
+                question: "O que acontece se uma aresta de ciclo direcionado for introduzida em um grafo e tentarmos rodar o Algoritmo de Kahn?",
+                options: [
+                    "A ordenação topológica é completada com nós duplicados.",
+                    "O algoritmo entra em loop infinito e trava o sistema físico.",
+                    "O algoritmo conclui, mas a lista de nós ordenados resultante terá tamanho inferior ao total de nós do grafo, denunciando a presença de dependências cíclicas intransponíveis.",
+                    "O algoritmo detecta a inconsistência e força a inversão determinística de direção das arestas redundantes para que o ciclo seja desfeito."
+                ],
+                correct: 2,
+                feedback: "Perfeito! Em termos lógicos, quando há ciclos, alguns nós nunca atingirão grau de entrada zero e, por consequência, o tamanho final da lista será inferior a |V|."
+            },
+            {
+                question: "Qual inovação estrutural de segurança foi introduzida no Apache Airflow 3 em relação ao banco de dados relacional de metadados?",
+                options: [
+                    "Migração integral de banco NoSQL para garantir escalabilidade horizontal de DAGs.",
+                    "Criação do API Server mediado por FastAPI, isolando conexões diretas do Metadata DB de workers e tarefas.",
+                    "Adoção exclusiva do motor Microsoft SQL Server como driver estável central de transações concorrentes.",
+                    "Introdução de travas de arquivo .lock no diretório local de arquivos do DAG Processor."
+                ],
+                correct: 1,
+                feedback: "Correto! O FastAPI API Server atua de forma síncrona impedindo acessos diretos de terceiros à infraestrutura de banco de dados física."
+            },
+            {
+                question: "Qual das seguintes fórmulas representa o cálculo do caminho crítico (Caminho mais longo) de um DAG em programação dinâmica?",
+                options: [
+                    "\\(dp[v] = \\min \\{ dp[u] + w(u,v) \\}\\)",
+                    "\\(dp[v] = \\max_{(u, v) \\in E} \\{ dp[u] + w(u, v) \\}\\)",
+                    "\\(dp[v] = \\sum dp[u] \\times w(u, v)\\)",
+                    "\\(dp[v] = dp[v-1] + |E|\\)"
+                ],
+                correct: 1,
+                feedback: "Incrível! A ordenação topológica do DAG garante que os caminhos parciais já estejam totalmente consolidados e otimizados antes de computarmos os nós seguintes."
+            },
+            {
+                question: "Como o OpenLineage vincula a execução de tarefas distribuídas no Apache Spark com a tarefa de origem disparada no Apache Airflow?",
+                options: [
+                    "Executando scraping contínuo de logs de hardware em busca de strings comuns.",
+                    "Forçando o uso de um banco de dados temporário SQLite compartilhado.",
+                    "Através da injeção de parâmetros estruturados de chaves de rastreamento de parentesco (como parentJobNamespace, parentJobName, parentRunId) na submissão de jobs do Spark.",
+                    "Utilizando conexões síncronas com o GCP Cloud Composer via túnel SSH exclusivo."
+                ],
+                correct: 2,
+                feedback: "Certíssimo! Esses descritores de integridade são injetados diretamente na configuração de submissão do Spark para o encadeamento determinístico da linhagem multinível."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let correctAnswersCount = 0;
+        let quizAnswered = false;
+
+        function loadQuizQuestion() {
+            quizAnswered = false;
+            const q = quizQuestions[currentQuizIndex];
+            document.getElementById("quiz-current").textContent = currentQuizIndex + 1;
+            document.getElementById("quiz-question-text").textContent = q.question;
+            
+            const container = document.getElementById("quiz-options-container");
+            container.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-900/60 transition-all flex items-start gap-3 group text-xs lg:text-sm";
+                btn.onclick = () => selectQuizOption(idx);
+                btn.id = `quiz-opt-${idx}`;
+                
+                const badge = document.createElement("span");
+                badge.className = "w-5 h-5 rounded-full border border-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400 group-hover:border-brand-500 transition-colors shrink-0";
+                badge.textContent = String.fromCharCode(65 + idx); // A, B, C, D
+
+                const textSpan = document.createElement("span");
+                textSpan.className = "text-slate-300 leading-relaxed font-medium";
+                textSpan.textContent = opt;
+
+                btn.appendChild(badge);
+                btn.appendChild(textSpan);
+                container.appendChild(btn);
+            });
+
+            document.getElementById("quiz-feedback").textContent = '';
+            const nextBtn = document.getElementById("quiz-next-btn");
+            nextBtn.className = "px-5 py-2 text-xs font-bold rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 transition-all shadow-md shadow-emerald-500/10 flex items-center gap-1.5 opacity-50 cursor-not-allowed";
+            nextBtn.disabled = true;
+
+            // Renderizar fórmulas do KaTeX injetadas nas questões
+            renderMathInElement(document.getElementById("quiz-question-text"));
+        }
+
+        function selectQuizOption(optionIdx) {
+            if(quizAnswered) return;
+            quizAnswered = true;
+
+            const q = quizQuestions[currentQuizIndex];
+            const feedbackText = document.getElementById("quiz-feedback");
+            const nextBtn = document.getElementById("quiz-next-btn");
+
+            // Destaca escolhas
+            for(let i=0; i < q.options.length; i++) {
+                const btn = document.getElementById(`quiz-opt-${i}`);
+                btn.disabled = true;
+                if(i === q.correct) {
+                    btn.className = "w-full text-left p-4 rounded-xl bg-emerald-500/10 border-2 border-emerald-500 transition-all flex items-start gap-3 text-xs lg:text-sm";
+                } else if(i === optionIdx) {
+                    btn.className = "w-full text-left p-4 rounded-xl bg-rose-500/10 border-2 border-rose-500 transition-all flex items-start gap-3 text-xs lg:text-sm";
+                } else {
+                    btn.className = "w-full text-left p-4 rounded-xl bg-slate-950/40 border border-slate-900 opacity-50 transition-all flex items-start gap-3 text-xs lg:text-sm";
+                }
+            }
+
+            if(optionIdx === q.correct) {
+                correctAnswersCount++;
+                feedbackText.textContent = "✓ Resposta Correta! " + q.feedback;
+                feedbackText.className = "text-xs font-bold font-mono text-emerald-400 max-w-xl leading-relaxed";
+            } else {
+                feedbackText.textContent = "✗ Ops, alternativa incorreta. A resposta correta foi destacada.";
+                feedbackText.className = "text-xs font-bold font-mono text-rose-400 max-w-xl leading-relaxed";
+            }
+
+            // Atualiza Pontuação
+            const pct = Math.round((correctAnswersCount / quizQuestions.length) * 100);
+            document.getElementById("quiz-score").textContent = pct + "%";
+
+            nextBtn.className = "px-5 py-2 text-xs font-bold rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 transition-all shadow-md shadow-emerald-500/10 flex items-center gap-1.5 opacity-100";
+            nextBtn.disabled = false;
+        }
+
+        function nextQuestion() {
+            if(!quizAnswered) return;
+            currentQuizIndex++;
+            if(currentQuizIndex < quizQuestions.length) {
+                loadQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function showQuizResults() {
+            const container = document.getElementById("quiz-options-container");
+            const feedbackText = document.getElementById("quiz-feedback");
+            const nextBtn = document.getElementById("quiz-next-btn");
+            const currentText = document.getElementById("quiz-current");
+
+            document.getElementById("quiz-question-text").textContent = "Avaliação Concluída!";
+            currentText.textContent = quizQuestions.length;
+            
+            const pct = Math.round((correctAnswersCount / quizQuestions.length) * 100);
+            
+            container.innerHTML = `
+                <div class="p-8 text-center bg-slate-900/40 rounded-xl border border-slate-800 space-y-4">
+                    <div class="text-4xl text-emerald-400 font-extrabold">${pct}%</div>
+                    <p class="text-sm text-slate-300">Você acertou ${correctAnswersCount} de ${quizQuestions.length} questões técnicos de alto nível.</p>
+                    <p class="text-xs text-slate-400">Sua proficiência conceitual em orquestração distribuída e algoritmos de grafos foi consolidada com sucesso.</p>
+                    <button onclick="restartQuiz()" class="px-5 py-2.5 text-xs font-semibold rounded-lg bg-brand-500 hover:bg-brand-600 text-white transition-all shadow-md mt-4">
+                        Refazer Avaliação
+                    </button>
+                </div>
+            `;
+            feedbackText.textContent = "";
+            nextBtn.style.display = 'none';
+        }
+
+        function restartQuiz() {
+            currentQuizIndex = 0;
+            correctAnswersCount = 0;
+            document.getElementById("quiz-score").textContent = "0%";
+            document.getElementById("quiz-next-btn").style.display = 'flex';
+            loadQuizQuestion();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            if(menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+            }
+        }
+
+        // Inicialização de Componentes Globais na inicialização da página
+        window.onload = function() {
+            initGraph();
+            setAirflowVersion(2);
+            selectLineageAsset('raw');
+            loadQuizQuestion();
+        };
+    </script>
+</body>
+</html>

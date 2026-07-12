@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direitos da Advocacia vs. Segurança Operacional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Chosen Palette: Slate and Neutral with Blue (Legal/Trust) and Amber (Security/Warning) accents -->
+    <!-- Application Structure Plan: The SPA uses a structured, sequential layout to guide the user through a complex legal-operational conflict. 
+         1. Introduction sets the context. 
+         2. A dual-pane tab system allows users to compare the foundational rights of lawyers vs. the duties of police, preventing visual overwhelm. 
+         3. An interactive timeline (accordion) breaks down the physical execution of a warrant, explaining the dynamic access rules at each phase. 
+         4. A visual data chart provides a quantitative abstraction of the inverse relationship between operation volatility and lawyer access. 
+         This structure is chosen because the source topic is a balancing act; forcing the user to interactively switch perspectives aids in understanding the necessary compromises. -->
+    <!-- Visualization & Content Choices: 
+         - Tabs (HTML/JS): Used for Legal Foundations to allow side-by-side conceptual comparison without clutter.
+         - Accordion Timeline (HTML/JS): Used for Operation Dynamics to show chronological progression and specific rules per phase.
+         - Line Chart (Chart.js): Used to visualize the conceptual "Level of Access vs. Security Risk" over the timeline. Justification: Shows the dynamic nature of the restriction (it's not absolute, it fluctuates). 
+         - CONFIRMING: NO SVG used. NO Mermaid JS used. Icons are Unicode. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Custom scrollbar for aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+        .accordion-content.open {
+            max-height: 500px; /* Arbitrary large number */
+            padding-bottom: 1rem;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button[aria-expanded="true"] .accordion-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation / Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">⚖️</span>
+                    <span class="font-bold text-slate-800 text-lg tracking-tight">Prerrogativas & Operações</span>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#contexto" class="text-slate-500 hover:text-blue-600 font-medium transition-colors cursor-pointer nav-link">Contexto</a>
+                    <a href="#fundamentos" class="text-slate-500 hover:text-blue-600 font-medium transition-colors cursor-pointer nav-link">Fundamentos Legais</a>
+                    <a href="#dinamica" class="text-slate-500 hover:text-blue-600 font-medium transition-colors cursor-pointer nav-link">Dinâmica Operacional</a>
+                    <a href="#analise" class="text-slate-500 hover:text-blue-600 font-medium transition-colors cursor-pointer nav-link">Análise de Risco</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- Section: Context & Introduction -->
+        <section id="contexto" class="scroll-mt-24">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 md:p-12 text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center justify-center p-3 bg-blue-50 rounded-full mb-6 text-blue-600 text-3xl">
+                    🛡️
+                </div>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+                    Acompanhamento de Busca e Apreensão: <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-amber-500">O Ponto de Equilíbrio</span>
+                </h1>
+                <p class="text-lg text-slate-600 leading-relaxed mb-8">
+                    Este painel interativo explora a complexa relação entre o cumprimento de mandados judiciais por forças policiais e as prerrogativas da advocacia. O objetivo é compreender como garantir o <strong>amplo direito de defesa</strong> sem comprometer a <strong>segurança dos policiais</strong>, a cadeia de custódia e o sigilo das investigações no momento crítico da operação.
+                </p>
+                <p class="text-sm text-slate-500 italic">
+                    Interaja com os elementos abaixo para explorar os limites legais, a dinâmica da área de segurança e a jurisprudência sobre o tema.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section: Legal Foundations (Interactive Tabs) -->
+        <section id="fundamentos" class="scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">1. Fundamentos e Perspectivas</h2>
+                <p class="text-slate-600">
+                    O conflito surge do choque entre duas normas fundamentais. Selecione as abas abaixo para entender as premissas que guiam a ação do Advogado e da Autoridade Policial.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <!-- Tab Headers -->
+                <div class="flex border-b border-slate-200">
+                    <button class="tab-btn flex-1 py-4 px-6 text-center font-semibold text-slate-500 hover:text-blue-600 hover:bg-slate-50 transition-colors focus:outline-none border-b-2 border-transparent" data-target="tab-advogado">
+                        <span class="mr-2">⚖️</span> Prerrogativas do Advogado
+                    </button>
+                    <button class="tab-btn flex-1 py-4 px-6 text-center font-semibold text-slate-500 hover:text-amber-600 hover:bg-slate-50 transition-colors focus:outline-none border-b-2 border-transparent" data-target="tab-policia">
+                        <span class="mr-2">🚓</span> Segurança Operacional (Polícia)
+                    </button>
+                </div>
+
+                <!-- Tab Contents -->
+                <div class="p-6 md:p-8">
+                    <!-- Tab 1: Advogado -->
+                    <div id="tab-advogado" class="tab-content">
+                        <h3 class="text-xl font-bold text-blue-800 mb-4">O Direito ao Acompanhamento</h3>
+                        <p class="text-slate-700 mb-4 leading-relaxed">
+                            O Estatuto da Advocacia e da OAB (Lei 8.906/94) garante prerrogativas para assegurar a defesa do cidadão. O advogado não é um mero espectador, mas um fiscalizador da legalidade do ato.
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
+                                <h4 class="font-bold text-blue-900 mb-2">Art. 7º, EOAB</h4>
+                                <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                                    <li>Direito de ingressar livremente em qualquer edifício ou recinto onde funcione repartição policial.</li>
+                                    <li>Direito de comunicar-se com seus clientes, reservadamente.</li>
+                                    <li>Direito de assistir a seus clientes durante a apuração de infrações.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-800 mb-2">O que não pode ser negado</h4>
+                                <p class="text-sm text-slate-600">
+                                    A restrição de acesso ao advogado <strong>não pode ser absoluta</strong>. Uma vez contido o risco inicial (imobilização do local), o advogado deve ter acesso ao Auto de Busca e Apreensão e poder conferir os itens que estão sendo recolhidos.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Policia -->
+                    <div id="tab-policia" class="tab-content">
+                        <h3 class="text-xl font-bold text-amber-800 mb-4">A Necessidade de Restrição Controlada</h3>
+                        <p class="text-slate-700 mb-4 leading-relaxed">
+                            O cumprimento de mandados envolve variáveis imprevisíveis (risco de confronto, destruição de provas, fuga). A autoridade policial tem o dever legal de gerenciar o local do crime e a segurança de todos, inclusive do próprio advogado.
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-amber-50 p-5 rounded-lg border border-amber-100">
+                                <h4 class="font-bold text-amber-900 mb-2">Deveres Policiais (CPP)</h4>
+                                <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                                    <li><strong>Art. 169, CPP:</strong> Preservação do local para não alterar o estado das coisas até a chegada dos peritos/término das buscas.</li>
+                                    <li>Garantia da integridade física da equipe tática e dos moradores/investigados.</li>
+                                    <li>Manutenção da Cadeia de Custódia das provas apreendidas.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-800 mb-2">Justificativa da Restrição</h4>
+                                <p class="text-sm text-slate-600">
+                                    O "amplo acesso" do advogado a todos os cômodos simultaneamente com a equipe tática é restringido para criar uma <strong>Área de Segurança</strong>. A presença indiscriminada pode causar quebra de protocolo tático ou contaminação de evidências.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Operation Dynamics (Accordion) -->
+        <section id="dinamica" class="scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">2. A Dinâmica da Operação</h2>
+                <p class="text-slate-600">
+                    Como o conflito se resolve na prática? Clique nas fases abaixo para entender como a jurisprudência orienta a modulação do acesso do advogado durante a execução física do mandado.
+                </p>
+            </div>
+
+            <div class="space-y-4" id="timeline-accordion">
+                <!-- Phase 1 -->
+                <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+                    <button class="accordion-button w-full px-6 py-4 flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors focus:outline-none" aria-expanded="false" onclick="toggleAccordion(this)">
+                        <div class="flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-600 font-bold mr-4 text-sm">1</span>
+                            <span class="font-semibold text-slate-800 text-left">Chegada e Domínio do Ambiente (Entrada Tática)</span>
+                        </div>
+                        <span class="accordion-icon text-slate-400">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 bg-white">
+                        <div class="py-4 border-t border-slate-100">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex-1">
+                                    <h4 class="text-red-600 font-semibold mb-2 text-sm uppercase tracking-wide">Status: Acesso Fortemente Restrito</h4>
+                                    <p class="text-slate-600 text-sm">Neste momento, a polícia entra no local (muitas vezes de forma forçada). O ambiente é considerado <em>volátil</em> e <em>inseguro</em>.</p>
+                                </div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded border border-slate-200 text-sm">
+                                    <strong>Diretriz:</strong> O advogado, se já presente, é mantido em um perímetro externo de segurança. Não há violação de prerrogativas aqui, pois prevalece o risco iminente à vida e o protocolo de contenção.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+                    <button class="accordion-button w-full px-6 py-4 flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors focus:outline-none" aria-expanded="false" onclick="toggleAccordion(this)">
+                        <div class="flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-600 font-bold mr-4 text-sm">2</span>
+                            <span class="font-semibold text-slate-800 text-left">Leitura do Mandado e Contenção Inicial</span>
+                        </div>
+                        <span class="accordion-icon text-slate-400">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 bg-white">
+                        <div class="py-4 border-t border-slate-100">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex-1">
+                                    <h4 class="text-amber-600 font-semibold mb-2 text-sm uppercase tracking-wide">Status: Acesso Controlado Autorizado</h4>
+                                    <p class="text-slate-600 text-sm">O local está fisicamente seguro (armas recolhidas, moradores agrupados). A autoridade policial formaliza a ação.</p>
+                                </div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded border border-slate-200 text-sm">
+                                    <strong>Diretriz:</strong> O advogado deve ter permissão imediata para ingressar na área segura designada, conferir a ordem judicial (o mandado) e prestar a primeira assistência ao cliente (acalmá-lo, orientá-lo sobre o direito ao silêncio).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+                    <button class="accordion-button w-full px-6 py-4 flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors focus:outline-none" aria-expanded="false" onclick="toggleAccordion(this)">
+                        <div class="flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold mr-4 text-sm">3</span>
+                            <span class="font-semibold text-slate-800 text-left">Execução das Buscas (Furreios/Vistorias)</span>
+                        </div>
+                        <span class="accordion-icon text-slate-400">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 bg-white">
+                        <div class="py-4 border-t border-slate-100">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex-1">
+                                    <h4 class="text-blue-600 font-semibold mb-2 text-sm uppercase tracking-wide">Status: Acompanhamento Visual</h4>
+                                    <p class="text-slate-600 text-sm">Agentes percorrem cômodos procurando evidências descritas no mandado.</p>
+                                </div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded border border-slate-200 text-sm">
+                                    <strong>Diretriz:</strong> O "amplo acesso" físico do advogado aos cômodos junto com a equipe é frequentemente negado para evitar tumulto ou contaminação. No entanto, o advogado tem o direito de <strong>acompanhar visualmente</strong> a arrecadação de objetos, geralmente de um ponto específico (sala, corredor), garantindo que não haja excessos por parte dos agentes.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+                    <button class="accordion-button w-full px-6 py-4 flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors focus:outline-none" aria-expanded="false" onclick="toggleAccordion(this)">
+                        <div class="flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-600 font-bold mr-4 text-sm">4</span>
+                            <span class="font-semibold text-slate-800 text-left">Formalização e Inventário (Auto de Apreensão)</span>
+                        </div>
+                        <span class="accordion-icon text-slate-400">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 bg-white">
+                        <div class="py-4 border-t border-slate-100">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex-1">
+                                    <h4 class="text-green-600 font-semibold mb-2 text-sm uppercase tracking-wide">Status: Acesso Total</h4>
+                                    <p class="text-slate-600 text-sm">As buscas terminaram. Os itens encontrados estão sendo catalogados e ensacados (cadeia de custódia).</p>
+                                </div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded border border-slate-200 text-sm">
+                                    <strong>Diretriz:</strong> O advogado tem o direito cristalino de examinar o Auto de Busca e Apreensão, conferir se os objetos listados conferem com a realidade e assinar o termo (ou registrar ressalvas). Impedir este acesso configura violação grave de prerrogativas.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Data / Conceptual Visual Analysis -->
+        <section id="analise" class="scroll-mt-24">
+            <div class="mb-8 text-center max-w-3xl mx-auto">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">3. Gráfico: O Paradoxo da Operação</h2>
+                <p class="text-slate-600">
+                    O gráfico interativo abaixo ilustra como a necessidade de restrição por segurança é inversamente proporcional ao nível de acesso permitido ao advogado ao longo do tempo da operação. 
+                    <em>Passe o mouse sobre os pontos para ver os detalhes.</em>
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <!-- CHART CONTAINER - Crucial for responsive sizing -->
+                <div class="chart-container">
+                    <canvas id="balanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Conclusion Box -->
+            <div class="mt-8 bg-slate-800 text-slate-100 p-6 rounded-xl text-center shadow-md">
+                <h3 class="text-lg font-bold mb-2">Conclusão: A Área de Segurança é Legal, o Isolamento Absoluto Não.</h3>
+                <p class="text-sm text-slate-300 max-w-2xl mx-auto">
+                    A criação de um perímetro limitador para o advogado durante as buscas físicas é uma medida razoável de segurança operacional (evita tumulto, protege a prova e os policiais). Contudo, essa restrição espacial <strong>não pode impedir</strong> o advogado de contatar o cliente após o ambiente estar seguro e de fiscalizar o inventário dos bens apreendidos.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 border-t border-slate-200 py-8 text-center mt-12">
+        <p class="text-slate-500 text-sm">
+            Painel Interativo de Análise Jurídica - 2026<br>
+            Baseado nas diretrizes do EOAB, CPP e protocolos de segurança pública.
+        </p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // 1. Navigation Smooth Scrolling
+        document.querySelectorAll('.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 2. Tab Switching Logic
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Initialize active tab
+        document.querySelector('[data-target="tab-advogado"]').classList.add('border-blue-600', 'text-blue-600', 'bg-slate-50');
+        document.getElementById('tab-advogado').classList.add('active');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active states from all buttons and hide contents
+                tabBtns.forEach(b => {
+                    b.classList.remove('border-blue-600', 'text-blue-600', 'border-amber-600', 'text-amber-600', 'bg-slate-50');
+                    b.classList.add('border-transparent', 'text-slate-500');
+                });
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Add active state to clicked button
+                const target = btn.getAttribute('data-target');
+                if (target === 'tab-advogado') {
+                    btn.classList.add('border-blue-600', 'text-blue-600', 'bg-slate-50');
+                } else {
+                    btn.classList.add('border-amber-600', 'text-amber-600', 'bg-slate-50');
+                }
+                btn.classList.remove('border-transparent', 'text-slate-500');
+
+                // Show target content
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        // 3. Accordion Logic
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+            // Close all others (optional: comment out if you want multiple open)
+            document.querySelectorAll('.accordion-button').forEach(btn => {
+                btn.setAttribute('aria-expanded', 'false');
+                btn.nextElementSibling.classList.remove('open');
+            });
+
+            // Toggle current
+            if (!isExpanded) {
+                button.setAttribute('aria-expanded', 'true');
+                content.classList.add('open');
+            }
+        }
+
+        // Open the first accordion by default on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const firstAccordionBtn = document.querySelector('.accordion-button');
+            if (firstAccordionBtn) {
+                toggleAccordion(firstAccordionBtn);
+            }
+            initChart();
+        });
+
+        // 4. Chart.js Initialization
+        function initChart() {
+            const ctx = document.getElementById('balanceChart').getContext('2d');
+            
+            // Define data arrays based on the narrative
+            const phases = [
+                ['Fase 1:', 'Entrada Tática'], 
+                ['Fase 2:', 'Contenção do Local'], 
+                ['Fase 3:', 'Execução das Buscas'], 
+                ['Fase 4:', 'Inventário/Formalização']
+            ];
+            
+            // Abstract scores out of 10
+            const restrictionLevel = [9, 5, 7, 1]; // Risco/Necessidade de restringir acesso
+            const lawyerAccess = [1, 5, 3, 9];    // Nível de acesso físico/visual garantido
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: phases,
+                    datasets: [
+                        {
+                            label: 'Risco Tático (Restrição)',
+                            data: restrictionLevel,
+                            borderColor: '#f59e0b', // amber-500
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#f59e0b',
+                            pointRadius: 5,
+                            pointHoverRadius: 8
+                        },
+                        {
+                            label: 'Acesso do Advogado',
+                            data: lawyerAccess,
+                            borderColor: '#2563eb', // blue-600
+                            backgroundColor: 'transparent',
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            pointBackgroundColor: '#2563eb',
+                            pointRadius: 5,
+                            pointHoverRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // CRUCIAL for chart-container sizing
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 13
+                                },
+                                usePointStyle: true,
+                                boxWidth: 8
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleFont: { family: "'Inter', sans-serif", size: 14 },
+                            bodyFont: { family: "'Inter', sans-serif", size: 13 },
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        // Custom text based on data point to explain the concept
+                                        const val = context.parsed.y;
+                                        if (context.datasetIndex === 0) { // Risco
+                                            if (val >= 8) label += 'Crítico (Prioridade Total)';
+                                            else if (val >= 5) label += 'Moderado (Requer cautela)';
+                                            else label += 'Baixo (Local seguro)';
+                                        } else { // Acesso
+                                            if (val >= 8) label += 'Amplo (Direito pleno)';
+                                            else if (val >= 5) label += 'Controlado (Local específico)';
+                                            else if (val >= 3) label += 'Visual (Sem toque)';
+                                            else label += 'Restrito (Aguardar contenção)';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                display: false // Hide abstract numbers, focus on concept
+                            },
+                            grid: {
+                                color: '#f1f5f9'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Intensidade / Nível',
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                }
+            });
+        }
+    </script>
+</body>
+</html>

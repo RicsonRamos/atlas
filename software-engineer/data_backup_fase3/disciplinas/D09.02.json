@@ -1,0 +1,72 @@
+{
+  "id": "D09.02",
+  "dominio_id": "D09",
+  "nome": "Kubernetes e Operators para Dados",
+  "nivel": "Staff",
+  "carga_horaria": "28-38h",
+  "prerequisitos": [
+    "Linux",
+    "Containers"
+  ],
+  "objetivos": [
+    "Executar workloads elásticos e stateful com segurança",
+    "Entender operators de Spark, Flink, Trino e Airflow"
+  ],
+  "pratica_esperada": [
+    "Deploy Spark operator com isolamento de namespace",
+    "Configurar autoscaling e limites por equipe"
+  ],
+  "teoria": [
+    "pods",
+    "deployments",
+    "statefulsets",
+    "jobs",
+    "crds",
+    "operators",
+    "scheduling",
+    "requests-limits",
+    "persistent-volumes",
+    "network-policies"
+  ],
+  "algoritmos_tecnicas": [
+    "bin-packing-scheduler",
+    "leader-election",
+    "reconciliation-loop"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Hightower, Burns & Beda, Kubernetes: Up and Running",
+    "Burns, Designing Distributed Systems"
+  ],
+  "papers_fundamentais": [
+    "Burns et al., Borg, Omega, and Kubernetes, 2016"
+  ],
+  "ferramentas": [
+    "Kubernetes",
+    "Helm",
+    "Kustomize",
+    "Spark Operator",
+    "Flink Kubernetes Operator"
+  ],
+  "perguntas_entrevista_staff": [
+    "Operator é só Helm chart?",
+    "Como requests e limits afetam custo e estabilidade?"
+  ],
+  "projetos_reais": [
+    "Cluster local com operadores de Spark e Flink, quotas e network policies"
+  ],
+  "exercicios": [
+    "Criar CRD simples",
+    "Diagnosticar pod OOMKilled"
+  ],
+  "tags": [
+    "Kubernetes",
+    "Operators",
+    "Helm",
+    "Scheduling",
+    "CRD"
+  ]
+}

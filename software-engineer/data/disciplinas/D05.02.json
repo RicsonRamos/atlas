@@ -1,0 +1,71 @@
+{
+  "id": "D05.02",
+  "dominio_id": "D05",
+  "nome": "CDC, Logs Transacionais e Evolução de Schema",
+  "nivel": "Staff",
+  "carga_horaria": "28-36h",
+  "prerequisitos": [
+    "Bancos transacionais",
+    "Kafka básico"
+  ],
+  "objetivos": [
+    "Capturar mudança sem sobrecarregar produção",
+    "Gerenciar compatibilidade de schema em eventos"
+  ],
+  "pratica_esperada": [
+    "Configurar Debezium com snapshot e streaming",
+    "Definir política de evolução Avro/Protobuf"
+  ],
+  "teoria": [
+    "cdc",
+    "wal-binlog",
+    "snapshot-inicial",
+    "log-sequence-number",
+    "schema-registry",
+    "backward-compatibility",
+    "forward-compatibility",
+    "outbox-pattern"
+  ],
+  "algoritmos_tecnicas": [
+    "log-tailing",
+    "snapshot-isolation",
+    "schema-compatibility-check",
+    "outbox-relay"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Narkhede, Shapira & Palino, Kafka: The Definitive Guide",
+    "Kleppmann, Designing Data-Intensive Applications"
+  ],
+  "papers_fundamentais": [
+    "Pat Helland, Life beyond distributed transactions, 2007"
+  ],
+  "ferramentas": [
+    "Debezium",
+    "Kafka",
+    "Schema Registry",
+    "Avro",
+    "Protobuf"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como evitar evento perdido durante snapshot inicial?",
+    "Backward compatibility é suficiente para todos os consumidores?"
+  ],
+  "projetos_reais": [
+    "CDC completo Postgres -> Kafka -> Lakehouse com evolução de schema"
+  ],
+  "exercicios": [
+    "Quebrar e corrigir schema Avro",
+    "Implementar outbox transacional"
+  ],
+  "tags": [
+    "CDC",
+    "Debezium",
+    "Schema Registry",
+    "Outbox",
+    "Avro"
+  ]
+}

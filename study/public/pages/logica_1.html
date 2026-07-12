@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computação e Lógica: A Arquitetura do Pensamento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg:        #0d0d14;
+            --bg-card:   #111120;
+            --bg-card2:  #14142a;
+            --border:    #1e1e35;
+            --border2:   #2a2a40;
+            --text:      #e8e8f0;
+            --text-muted:#a0a0c0;
+            --text-dim:  #60608b;
+            --text-deep: #40407a;
+            --accent:    #BD93F9;
+            --accent-dim:rgba(189, 147, 249, 0.1);
+            --accent-mid:rgba(189, 147, 249, 0.2);
+            --link:      #6C63FF;
+
+            --c-g1: #50FA7B;
+            --c-g2: #FF79C6;
+            --c-g3: #8BE9FD;
+            --c-med: #FFB86C;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg) !important;
+            color: var(--text) !important;
+            overflow-x: hidden;
+            padding-top: 56px; /* Espaço para o cabeçalho fixo */
+        }
+
+        .code-font { font-family: 'Fira Code', monospace; }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        .logic-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gate-active {
+            background-color: var(--accent-dim) !important;
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 12px var(--accent-mid) !important;
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: repeating-linear-gradient(to bottom, var(--border2) 0, var(--border2) 5px, transparent 5px, transparent 10px);
+        }
+
+        @media (max-width: 768px) {
+            .chart-container { height: 300px; }
+        }
+
+        /* Sobrescrever classes utilitárias do Tailwind para adequação ao tema escuro */
+        .bg-white { background-color: var(--bg-card) !important; }
+        .bg-stone-100 { background-color: var(--bg-card2) !important; }
+        .border-stone-100 { border-color: var(--border) !important; }
+        .border-stone-200 { border-color: var(--border2) !important; }
+        .text-stone-900 { color: var(--text) !important; }
+        .text-stone-600 { color: var(--text-muted) !important; }
+        .text-stone-500 { color: var(--text-dim) !important; }
+        .bg-stone-900 { background-color: var(--bg-card2) !important; }
+        .bg-stone-800 { background-color: var(--bg) !important; }
+        .border-stone-700 { border-color: var(--border2) !important; }
+        .text-stone-400 { color: var(--text-muted) !important; }
+        .bg-stone-200 { background-color: var(--border2) !important; color: var(--text-muted) !important; }
+        .text-blue-600 { color: var(--accent) !important; }
+        .bg-blue-600 { background-color: var(--accent) !important; color: #0d0d14 !important; }
+        .border-blue-400 { border-color: var(--accent) !important; }
+        .bg-blue-50 { background-color: var(--accent-dim) !important; }
+        footer.bg-stone-100 { background-color: var(--bg) !important; border-top: 1px solid var(--border) !important; }
+        tr.border-b { border-color: var(--border) !important; }
+        tbody tr:hover { background-color: rgba(255, 255, 255, 0.02); }
+        .border-white { border-color: var(--bg) !important; }
+        #btn-A, #btn-B {
+            background-color: var(--border2) !important;
+            color: var(--text-muted) !important;
+            border: 2px solid var(--border) !important;
+        }
+        #btn-A.bg-blue-600, #btn-B.bg-blue-600 {
+            background-color: var(--accent) !important;
+            color: #0d0d14 !important;
+            border-color: var(--accent) !important;
+        }
+
+        /* ── Nav ── */
+        nav.top-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+            height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .nav-left { display: flex; align-items: center; gap: 1rem; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+            background: var(--accent-dim); border: 1px solid var(--accent-mid);
+            border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+            text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+        }
+        .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+        .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+        .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+    </style>
+</head>
+<body class="antialiased">
+    <nav class="top-nav">
+        <div class="nav-left">
+            <a href="/" class="back-btn">← Roadmap</a>
+            <div class="nav-brand"><span>BLOCO 01</span> Fundamentos Computacionais</div>
+        </div>
+        <div class="hidden md:flex space-x-8 text-sm font-medium">
+            <a href="#historia" class="hover:text-purple-400 transition" style="color: var(--text-muted); text-decoration: none; font-size: 0.8rem; font-weight: 700;">História</a>
+            <a href="#laboratorio" class="hover:text-purple-400 transition" style="color: var(--text-muted); text-decoration: none; font-size: 0.8rem; font-weight: 700;">Laboratório</a>
+            <a href="#paradigmas" class="hover:text-purple-400 transition" style="color: var(--text-muted); text-decoration: none; font-size: 0.8rem; font-weight: 700;">Paradigmas</a>
+            <a href="#futuro" class="hover:text-purple-400 transition" style="color: var(--text-muted); text-decoration: none; font-size: 0.8rem; font-weight: 700;">Futuro</a>
+        </div>
+    </nav>
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <section class="mb-24 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-stone-900 leading-tight">A Lógica é a Alma da Máquina</h1>
+            <p class="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed">
+                Da filosofia grega aos processadores de nanômetro, a lógica fornece as regras fundamentais que permitem às máquinas "pensar", decidir e transformar dados em realidade digital.
+            </p>
+        </section>
+        <section id="historia" class="mb-32">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-4">O Fio Condutor da Evolução</h2>
+                <p class="text-stone-600">Esta seção explora como a lógica evoluiu de um exercício puramente retórico para a base matemática da era da informação.</p>
+            </div>
+            <div class="relative space-y-12">
+                <div class="absolute left-4 md:left-1/2 top-0 bottom-0 timeline-line -translate-x-1/2"></div>
+                <!-- Timeline Items -->
+                <div class="relative flex flex-col md:flex-row items-center justify-between">
+                    <div class="md:w-5/12 bg-white p-6 rounded-xl border border-stone-100 shadow-sm z-10">
+                        <span class="text-blue-600 font-bold text-sm uppercase">Século IV a.C.</span>
+                        <h3 class="text-xl font-bold mt-1">Silogismo Aristotélico</h3>
+                        <p class="text-stone-600 mt-2 text-sm leading-relaxed">Aristóteles estabelece as primeiras regras formais de dedução, permitindo que conclusões sejam derivadas de premissas.</p>
+                    </div>
+                    <div class="w-8 h-8 bg-blue-600 rounded-full border-4 border-white shadow-md z-20 my-4 md:my-0"></div>
+                    <div class="md:w-5/12"></div>
+                </div>
+                <div class="relative flex flex-col md:flex-row-reverse items-center justify-between">
+                    <div class="md:w-5/12 bg-white p-6 rounded-xl border border-stone-100 shadow-sm z-10">
+                        <span class="text-blue-600 font-bold text-sm uppercase">1854</span>
+                        <h3 class="text-xl font-bold mt-1">Álgebra de Boole</h3>
+                        <p class="text-stone-600 mt-2 text-sm leading-relaxed">George Boole publica as leis do pensamento, reduzindo a lógica a operações matemáticas binárias (0 e 1).</p>
+                    </div>
+                    <div class="w-8 h-8 bg-blue-600 rounded-full border-4 border-white shadow-md z-20 my-4 md:my-0"></div>
+                    <div class="md:w-5/12"></div>
+                </div>
+                <div class="relative flex flex-col md:flex-row items-center justify-between">
+                    <div class="md:w-5/12 bg-white p-6 rounded-xl border border-stone-100 shadow-sm z-10">
+                        <span class="text-blue-600 font-bold text-sm uppercase">1937</span>
+                        <h3 class="text-xl font-bold mt-1">Circuitos e Shannon</h3>
+                        <p class="text-stone-600 mt-2 text-sm leading-relaxed">Claude Shannon prova que a álgebra booleana pode ser implementada fisicamente através de relés e interruptores.</p>
+                    </div>
+                    <div class="w-8 h-8 bg-blue-600 rounded-full border-4 border-white shadow-md z-20 my-4 md:my-0"></div>
+                    <div class="md:w-5/12"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Laboratório de Portas Lógicas -->
+        <section id="laboratorio" class="mb-32 p-8 bg-stone-100 rounded-3xl border border-stone-200">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-bold mb-4">Laboratório de Portas Lógicas</h2>
+                <p class="text-stone-600 max-w-2xl mx-auto">Experimente como a combinação de sinais simples gera decisões complexas. Alterne as entradas A e B para ver o resultado.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-200">
+                    <div class="flex justify-around mb-8">
+                        <div class="text-center">
+                            <label class="block text-xs font-bold uppercase mb-2">Entrada A</label>
+                            <button onclick="toggleInput('A')" id="btn-A" class="w-16 h-16 rounded-full bg-stone-200 text-2xl font-bold hover:scale-105 transition">0</button>
+                        </div>
+                        <div class="text-center">
+                            <label class="block text-xs font-bold uppercase mb-2">Entrada B</label>
+                            <button onclick="toggleInput('B')" id="btn-B" class="w-16 h-16 rounded-full bg-stone-200 text-2xl font-bold hover:scale-105 transition">0</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div id="gate-AND" class="logic-card p-4 rounded-xl border border-stone-100 flex justify-between items-center">
+                            <span class="font-mono font-bold">PORTA AND (E)</span>
+                            <span class="code-font text-xl font-bold text-blue-600" id="res-AND">0</span>
+                        </div>
+                        <div id="gate-OR" class="logic-card p-4 rounded-xl border border-stone-100 flex justify-between items-center">
+                            <span class="font-mono font-bold">PORTA OR (OU)</span>
+                            <span class="code-font text-xl font-bold text-blue-600" id="res-OR">0</span>
+                        </div>
+                        <div id="gate-XOR" class="logic-card p-4 rounded-xl border border-stone-100 flex justify-between items-center">
+                            <span class="font-mono font-bold">PORTA XOR (OU EXCL.)</span>
+                            <span class="code-font text-xl font-bold text-blue-600" id="res-XOR">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-200 flex flex-col justify-center">
+                    <h4 class="font-bold mb-4 text-center">Tabela Verdade Dinâmica</h4>
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-stone-200">
+                                <th class="py-2 text-left">A</th>
+                                <th class="py-2 text-left">B</th>
+                                <th class="py-2 text-left">AND</th>
+                                <th class="py-2 text-left">OR</th>
+                                <th class="py-2 text-left">XOR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="truth-table-body">
+                            <!-- Inserido via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Paradigmas Lógicos -->
+        <section id="paradigmas" class="mb-32">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Múltiplas Formas de Pensar</h2>
+                    <p class="text-stone-600 mb-8 leading-relaxed">
+                        A computação não se limita à lógica binária. Diferentes sistemas lógicos são aplicados para resolver problemas específicos, desde diagnósticos médicos até sistemas de busca.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <button onclick="showParadigm('prop')" class="w-full text-left p-4 rounded-xl border border-stone-200 hover:border-blue-400 transition focus:ring-2 focus:ring-blue-200 outline-none">
+                            <span class="font-bold block">Lógica Proposicional</span>
+                            <span class="text-sm text-stone-500 italic">O fundamento binário simples (Verdadeiro ou Falso).</span>
+                        </button>
+                        <button onclick="showParadigm('pred')" class="w-full text-left p-4 rounded-xl border border-stone-200 hover:border-blue-400 transition focus:ring-2 focus:ring-blue-200 outline-none">
+                            <span class="font-bold block">Lógica de Predicados</span>
+                            <span class="text-sm text-stone-500 italic">Permite quantificadores como "Para todo" ou "Existe". Base da IA simbólica.</span>
+                        </button>
+                        <button onclick="showParadigm('fuzzy')" class="w-full text-left p-4 rounded-xl border border-stone-200 hover:border-blue-400 transition focus:ring-2 focus:ring-blue-200 outline-none">
+                            <span class="font-bold block">Lógica Fuzzy (Difusa)</span>
+                            <span class="text-sm text-stone-500 italic">Lida com graus de verdade. Essencial para controle de hardware.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-xl">
+                    <div id="paradigm-content" class="min-h-[250px] flex flex-col justify-center">
+                        <h3 id="p-title" class="text-2xl font-bold text-blue-600 mb-4">Selecione um Paradigma</h3>
+                        <p id="p-desc" class="text-stone-600 leading-relaxed">Clique em uma das opções ao lado para explorar como cada sistema lógico influencia o desenvolvimento de software e hardware moderno.</p>
+                        <div class="chart-container mt-6">
+                            <canvas id="paradigmChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Futuro -->
+        <section id="futuro" class="mb-32">
+            <div class="bg-stone-900 text-white rounded-3xl p-8 md:p-16 relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl">
+                    <h2 class="text-4xl font-bold mb-6 italic">A Próxima Fronteira: Lógica Quântica</h2>
+                    <p class="text-stone-400 text-lg leading-relaxed mb-8">
+                        Diferente dos bits tradicionais, os qubits operam em superposição. Aqui, as leis da lógica se expandem, permitindo processamentos que seriam impossíveis em arquiteturas clássicas.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="bg-stone-800 px-4 py-2 rounded-lg border border-stone-700 text-sm">Superposição</div>
+                        <div class="bg-stone-800 px-4 py-2 rounded-lg border border-stone-700 text-sm">Emaranhamento</div>
+                        <div class="bg-stone-800 px-4 py-2 rounded-lg border border-stone-700 text-sm">Paralelismo Massivo</div>
+                    </div>
+                </div>
+                <!-- Elemento decorativo simulando circuito -->
+                <div class="absolute right-0 top-0 w-1/3 h-full opacity-10 pointer-events-none flex items-center justify-center text-8xl font-mono">
+                    1010<br>0110<br>1100
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-100 border-t border-stone-200 py-12 mt-24">
+        <div class="max-w-6xl mx-auto px-6 text-center text-stone-500 text-sm">
+            <p class="mb-4">Desenvolvido como síntese educacional sobre a evolução da lógica computacional.</p>
+            <p>&copy; 2024 Gemini Explorer | Lógica & Tecnologia</p>
+        </div>
+    </footer>
+
+    <script>
+        // State Management
+        let inputs = { A: 0, B: 0 };
+        let currentChart = null;
+
+        // Logic Gate Simulator
+        function toggleInput(id) {
+            inputs[id] = inputs[id] === 0 ? 1 : 0;
+            const btn = document.getElementById(`btn-${id}`);
+            btn.textContent = inputs[id];
+            btn.classList.toggle('bg-blue-600', inputs[id] === 1);
+            btn.classList.toggle('text-white', inputs[id] === 1);
+            btn.classList.toggle('bg-stone-200', inputs[id] === 0);
+            btn.classList.toggle('text-black', inputs[id] === 0);
+            updateLogic();
+        }
+
+        function updateLogic() {
+            const andRes = inputs.A && inputs.B ? 1 : 0;
+            const orRes = inputs.A || inputs.B ? 1 : 0;
+            const xorRes = inputs.A !== inputs.B ? 1 : 0;
+
+            document.getElementById('res-AND').textContent = andRes;
+            document.getElementById('res-OR').textContent = orRes;
+            document.getElementById('res-XOR').textContent = xorRes;
+
+            document.getElementById('gate-AND').className = `logic-card p-4 rounded-xl border ${andRes ? 'gate-active border-blue-400' : 'border-stone-100'} flex justify-between items-center`;
+            document.getElementById('gate-OR').className = `logic-card p-4 rounded-xl border ${orRes ? 'gate-active border-blue-400' : 'border-stone-100'} flex justify-between items-center`;
+            document.getElementById('gate-XOR').className = `logic-card p-4 rounded-xl border ${xorRes ? 'gate-active border-blue-400' : 'border-stone-100'} flex justify-between items-center`;
+
+            renderTruthTable();
+        }
+
+        function renderTruthTable() {
+            const combinations = [
+                [0, 0], [0, 1], [1, 0], [1, 1]
+            ];
+            const tbody = document.getElementById('truth-table-body');
+            tbody.innerHTML = '';
+
+            combinations.forEach(([a, b]) => {
+                const isCurrent = (inputs.A === a && inputs.B === b);
+                const tr = document.createElement('tr');
+                if (isCurrent) tr.className = 'bg-blue-50 font-bold';
+                tr.className += ' border-b border-stone-100';
+                
+                tr.innerHTML = `
+                    <td class="py-2">${a}</td>
+                    <td class="py-2">${b}</td>
+                    <td class="py-2">${a && b}</td>
+                    <td class="py-2">${a || b}</td>
+                    <td class="py-2">${a !== b ? 1 : 0}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Paradigm Content and Charting
+        const paradigms = {
+            prop: {
+                title: 'Lógica Proposicional',
+                desc: 'A base de tudo. Sentenças que são verdadeiras ou falsas sem nuances. É a lógica usada para construir os processadores que usamos hoje.',
+                data: [100, 20, 10, 5],
+                labels: ['Semicondutores', 'Sistemas de Controle', 'Compiladores', 'IA Moderna']
+            },
+            pred: {
+                title: 'Lógica de Predicados',
+                desc: 'Vai além das frases simples, permitindo definir relações complexas entre objetos. É fundamental para bancos de dados relacionais e sistemas de recomendação.',
+                data: [40, 95, 60, 30],
+                labels: ['Bancos de Dados', 'Sistemas Especialistas', 'NLP', 'Ontologias']
+            },
+            fuzzy: {
+                title: 'Lógica Fuzzy',
+                desc: 'Trabalha com "verdades parciais" entre 0 e 1. Usada onde as definições não são rígidas, como sistemas de freio ABS ou controle de temperatura de ambientes.',
+                data: [15, 80, 25, 90],
+                labels: ['Eletrônicos', 'Automação', 'Visão Computacional', 'Termostatos']
+            }
+        };
+
+        function showParadigm(key) {
+            const p = paradigms[key];
+            document.getElementById('p-title').textContent = p.title;
+            document.getElementById('p-desc').textContent = p.desc;
+            updateChart(p.labels, p.data);
+        }
+
+        function updateChart(labels, data) {
+            const ctx = document.getElementById('paradigmChart').getContext('2d');
+            
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            currentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Relevância por Setor (%)',
+                        data: data,
+                        backgroundColor: 'rgba(189, 147, 249, 0.6)',
+                        borderColor: '#BD93F9',
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { display: false }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        window.onload = () => {
+            Chart.defaults.color = '#60608b';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            updateLogic();
+            showParadigm('prop');
+        };
+    </script>
+</body>
+</html>

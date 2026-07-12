@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Estruturas de Dados Avançadas. Bloco 01 do Roadmap." />
+  <title>Estruturas de Dados | Roadmap DE & IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #111120;
+      --bg-card2:  #14142a;
+      --border:    #1e1e35;
+      --border2:   #2a2a40;
+      --text:      #e8e8f0;
+      --text-muted:#a0a0c0;
+      --text-dim:  #60608b;
+      --text-deep: #40407a;
+      --accent:    #BD93F9;
+      --accent-dim:#BD93F920;
+      --accent-mid:#BD93F940;
+      --link:      #6C63FF;
+
+      --c-g1: #50FA7B;
+      --c-g2: #FF79C6;
+      --c-g3: #8BE9FD;
+      --c-med: #FFB86C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--link); }
+
+    /* ── Nav ── */
+    nav.top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+      height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1rem; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+      background: var(--accent-dim); border: 1px solid var(--accent-mid);
+      border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+    .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+    .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+
+    /* ── Layout ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 5rem 1.25rem 3rem; display: flex; flex-direction: column; gap: 2rem; }
+
+    .page-header { text-align: center; margin-bottom: 0.5rem; }
+    .page-header h1 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 0.6rem; }
+    .page-header h1 .accent { color: var(--accent); }
+    .page-header p { color: var(--text-muted); font-size: 0.85rem; max-width: 600px; margin: 0 auto; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 0.8rem; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; }
+
+    /* ── Tabs ── */
+    .tabs-nav { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .tab-btn {
+      padding: 0.5rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      background: transparent; border: 1px solid transparent; color: var(--text-dim); transition: all 0.2s ease; border-bottom: none;
+    }
+    .tab-btn:hover { color: var(--text-muted); background: #ffffff06; }
+    .tab-btn.active { background: var(--bg-card); border-color: var(--border); border-bottom-color: var(--bg-card); color: var(--text); position: relative; top: 1px; }
+
+    /* ── Card & Views ── */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; }
+    .view-section { display: none; animation: fadeIn 0.35s ease both; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); }
+    h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--text); }
+    p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    strong { color: var(--text); font-weight: 700; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+    .feature-box { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; }
+    
+    .chart-wrap { position: relative; width: 100%; height: 300px; margin-top: 1.5rem; }
+
+    /* Hash Tables */
+    .input-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    input[type=text], input[type=number] {
+      flex: 1; background: var(--bg-card2); border: 1px solid var(--border2); color: var(--text);
+      padding: 0.5rem; border-radius: 6px; font-family: 'JetBrains Mono', monospace; outline: none;
+    }
+    input[type=text]:focus, input[type=number]:focus { border-color: var(--accent); }
+    button.btn-action {
+      background: var(--text-deep); color: var(--text); border: none; padding: 0 1rem;
+      border-radius: 6px; cursor: pointer; font-weight: 700; transition: background 0.2s;
+    }
+    button.btn-action:hover { background: var(--accent); color: var(--bg); }
+
+    .bucket-row { display: flex; align-items: stretch; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .bucket-idx { width: 40px; background: var(--border); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-weight: 700; border-radius: 6px; }
+    .bucket-content { flex: 1; min-height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; padding: 4px; gap: 4px; flex-wrap: wrap; transition: background 0.3s; }
+    .bucket-content.highlight { background: var(--border2); }
+    .hash-node { background: var(--bg-card); border: 1px solid var(--c-g2); color: var(--text); font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* Heaps */
+    .heap-vis { display: flex; flex-wrap: wrap; gap: 0.5rem; min-height: 60px; padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; justify-content: center; align-items: center; }
+    .heap-node { background: var(--bg-card); border: 1px solid var(--c-med); border-radius: 6px; padding: 0.5rem 1rem; display: flex; flex-direction: column; align-items: center; min-width: 80px; }
+    .heap-node-task { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-align: center; }
+    .heap-node-prio { font-size: 1rem; font-weight: 900; color: var(--c-med); font-family: 'JetBrains Mono', monospace; }
+    .info-box { height: 40px; border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; background: var(--bg-card2); }
+
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="/" class="back-btn">← Roadmap</a>
+      <div class="nav-brand"><span>BLOCO 01</span> Fundamentos Matemáticos</div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <div class="chip-row">
+        <span class="badge" style="background:#BD93F920;color:#BD93F9;">BLOCO 01</span>
+        <span class="badge" style="background:#6C63FF20;color:#9988ff;">CORE</span>
+      </div>
+      <h1>Estruturas de <span class="accent">Dados</span></h1>
+      <p>A escolha da estrutura de dados correta pode ser a diferença entre um sistema que processa milhões de requisições por segundo e um que falha sob carga.</p>
+    </div>
+
+    <div class="tabs-nav" id="tabs-nav">
+      <button class="tab-btn active" data-target="view-intro">🏠 Início</button>
+      <button class="tab-btn" data-target="view-btree" style="color:var(--c-g1);">🌳 B+ Trees</button>
+      <button class="tab-btn" data-target="view-hash" style="color:var(--c-g2);"># Hash Tables</button>
+      <button class="tab-btn" data-target="view-bloom" style="color:var(--c-g3);">🌸 Bloom</button>
+      <button class="tab-btn" data-target="view-heaps" style="color:var(--c-med);">▲ Heaps</button>
+    </div>
+
+    <div class="card">
+      
+      <!-- INÍCIO -->
+      <section id="view-intro" class="view-section active">
+        <h2>Além do Básico</h2>
+        <p>Entenda interativamente como funcionam as engrenagens dos sistemas de software modernos.</p>
+        <div class="grid-2">
+          <div class="feature-box">
+            <h3 style="color:var(--c-g1);">B+ Trees</h3>
+            <p style="font-size:0.8rem;">Projetadas para sistemas de disco (bancos de dados relacionais). Minimizam as operações de I/O por terem alto fator de ramificação.</p>
+          </div>
+          <div class="feature-box">
+            <h3 style="color:var(--c-g2);">Hash Tables</h3>
+            <p style="font-size:0.8rem;">O(1) para buscas. A base de caches (Redis) e dicionários de linguagens. Utilizam funções hash para mapear chaves a índices.</p>
+          </div>
+          <div class="feature-box">
+            <h3 style="color:var(--c-g3);">Bloom Filters</h3>
+            <p style="font-size:0.8rem;">Estrutura probabilística. Troca 100% de precisão (falsos positivos possíveis) por altíssima eficiência de memória e velocidade.</p>
+          </div>
+          <div class="feature-box">
+            <h3 style="color:var(--c-med);">Heaps</h3>
+            <p style="font-size:0.8rem;">Fila de prioridade O(1) para o máximo/mínimo. Usados em agendamento do SO e roteamento de redes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- B+ TREES -->
+      <section id="view-btree" class="view-section">
+        <h2 style="color:var(--c-g1);">B+ Trees (Árvores B+)</h2>
+        <p>B+ Trees mantêm os dados ordenados e permitem buscas eficientes com poucos acessos a disco (I/O) devido ao seu alto fator de ramificação ("fanout").</p>
+        
+        <div class="feature-box" style="margin-bottom:1.5rem;">
+          <h4 style="color:var(--text);font-size:0.85rem;">Casos de Uso Comuns</h4>
+          <p style="font-size:0.8rem;margin:0;">• Índices de BD (MySQL, Postgres)<br/>• Sistemas de Arquivos (ext4, NTFS)<br/>• Range Queries (Consultas por intervalo)</p>
+        </div>
+
+        <p style="text-align:center;font-size:0.85rem;font-weight:700;">Comparativo: Acessos ao Disco (I/O) em buscas</p>
+        <div class="chart-wrap">
+          <canvas id="btreeChart"></canvas>
+        </div>
+      </section>
+
+      <!-- HASH TABLES -->
+      <section id="view-hash" class="view-section">
+        <h2 style="color:var(--c-g2);">Hash Tables (Encadeamento)</h2>
+        <p>Mapeiam chaves para valores computando um índice através de uma Função Hash. Explore como colisões são tratadas usando encadeamento (listas ligadas nos buckets).</p>
+        
+        <div class="grid-2" style="align-items:start;">
+          <div class="feature-box">
+            <h4 style="color:var(--text);font-size:0.85rem;">Casos de Uso Comuns</h4>
+            <p style="font-size:0.8rem;margin:0;">• Caches (Memcached, Redis)<br/>• Dicionários (Python dicts, JS Objects)<br/>• Tabelas de Roteamento</p>
+            <p style="font-size:0.75rem;color:var(--text-dim);margin-top:1rem;">Neste simulador, a função Hash calcula o (Soma dos caracteres) % 5.</p>
+          </div>
+          
+          <div>
+            <div class="input-row">
+              <input type="text" id="hashInput" placeholder="Digite uma chave..." />
+              <button id="hashBtn" class="btn-action">Inserir</button>
+            </div>
+            <div id="buckets-container">
+              <!-- Gerado via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BLOOM FILTERS -->
+      <section id="view-bloom" class="view-section">
+        <h2 style="color:var(--c-g3);">Bloom Filters</h2>
+        <p>Estrutura de dados probabilística usada para testar se um elemento é membro de um conjunto. Falsos positivos são possíveis, mas falsos negativos não.</p>
+        
+        <div class="feature-box" style="margin-bottom:1.5rem;">
+          <h4 style="color:var(--text);font-size:0.85rem;">Casos de Uso Comuns</h4>
+          <p style="font-size:0.8rem;margin:0;">• Prevenir I/O de disco desnecessário (Cassandra)<br/>• Filtros de URLs maliciosas no Chrome<br/>• Recomendadores de conteúdo (não sugerir itens já vistos)</p>
+        </div>
+
+        <p style="text-align:center;font-size:0.85rem;font-weight:700;">Probabilidade de Falso Positivo (Tamanho Fixo: 1000 bits, 3 Hashes)</p>
+        <div class="chart-wrap">
+          <canvas id="bloomChart"></canvas>
+        </div>
+      </section>
+
+      <!-- HEAPS -->
+      <section id="view-heaps" class="view-section">
+        <h2 style="color:var(--c-med);">Heaps (Filas de Prioridade)</h2>
+        <p>Garantem acesso O(1) constante ao elemento "máximo" ou "mínimo", mantendo a árvore parcialmente ordenada a cada inserção/extração (bubble up / sink down).</p>
+        
+        <div class="grid-2">
+          <div class="feature-box">
+            <h4 style="color:var(--text);font-size:0.85rem;">Casos de Uso Comuns</h4>
+            <p style="font-size:0.8rem;margin:0;">• Roteamento (Dijkstra)<br/>• Agendamento do SO<br/>• Ordenação HeapSort</p>
+          </div>
+          
+          <div>
+            <div class="input-row">
+              <input type="text" id="heapTask" placeholder="Tarefa..." style="flex:2;" />
+              <input type="number" id="heapPriority" placeholder="Prio (1-99)" min="1" max="99" style="flex:1;" />
+              <button id="heapInsertBtn" class="btn-action">Add</button>
+            </div>
+            
+            <button id="heapExtractBtn" class="btn-action" style="width:100%;margin-bottom:0.5rem;background:var(--bg);border:1px solid var(--c-med);color:var(--text);">↑ Extrair Maior Prioridade</button>
+            <div id="extractedInfo" class="info-box" style="margin-bottom:1rem;color:var(--c-med);">Fila intacta</div>
+          </div>
+        </div>
+
+        <p style="text-align:center;font-size:0.85rem;font-weight:700;margin-top:1rem;">Representação Linear do Max-Heap</p>
+        <div id="heapVisualizer" class="heap-vis"></div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // Tab Logic
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.view-section');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.target).classList.add('active');
+      });
+    });
+
+    // Chart Global Config
+    Chart.defaults.color = '#60608b';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    const SCALE_OPTS = {
+      y: { beginAtZero: true, grid: { color: '#1e1e3540', drawBorder: false } },
+      x: { grid: { display: false } }
+    };
+
+    // B+ Trees Chart
+    new Chart(document.getElementById('btreeChart'), {
+      type: 'line',
+      data: {
+        labels: ['10k', '50k', '100k', '500k', '1M', '5M', '10M'],
+        datasets: [
+          { label: 'B+ Tree', data: [3, 3, 3, 4, 4, 4, 5], borderColor: '#50FA7B', backgroundColor: '#50FA7B20', borderWidth: 3, fill: true, tension: 0.3 },
+          { label: 'BST', data: [14, 16, 17, 19, 20, 23, 24], borderColor: '#ff5555', borderWidth: 2, borderDash: [5, 5], fill: false, tension: 0.3 }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false, scales: SCALE_OPTS }
+    });
+
+    // Bloom Filter Chart
+    const bloomLabels = [], bloomData = [];
+    for(let n=0; n<=1000; n+=50) {
+      bloomLabels.push(n);
+      bloomData.push((Math.pow(1 - Math.exp(-3 * n / 1000), 3) * 100).toFixed(2));
+    }
+    new Chart(document.getElementById('bloomChart'), {
+      type: 'line',
+      data: {
+        labels: bloomLabels,
+        datasets: [{ label: 'Falso Positivo (%)', data: bloomData, borderColor: '#8BE9FD', backgroundColor: '#8BE9FD20', fill: true, pointRadius: 0, pointHoverRadius: 6 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, scales: SCALE_OPTS, plugins: { legend: { display: false } } }
+    });
+
+    // Hash Tables
+    const bucketContainer = document.getElementById('buckets-container');
+    for(let i=0; i<5; i++) {
+      bucketContainer.innerHTML += `
+        <div class="bucket-row">
+          <div class="bucket-idx">${i}</div>
+          <div class="bucket-content" id="bucket-${i}"></div>
+        </div>
+      `;
+    }
+    
+    document.getElementById('hashBtn').addEventListener('click', () => {
+      const input = document.getElementById('hashInput');
+      const val = input.value.trim();
+      if(!val) return;
+      
+      let sum = 0; for(let i=0; i<val.length; i++) sum += val.charCodeAt(i);
+      const idx = sum % 5;
+      
+      const b = document.getElementById('bucket-'+idx);
+      b.innerHTML += `<div class="hash-node">${val}</div>`;
+      b.classList.add('highlight');
+      setTimeout(() => b.classList.remove('highlight'), 300);
+      input.value = '';
+    });
+    document.getElementById('hashInput').addEventListener('keypress', e => e.key === 'Enter' && document.getElementById('hashBtn').click());
+
+    // Max Heap
+    class MaxHeap {
+      constructor() { this.heap = []; }
+      insert(task, prio) {
+        this.heap.push({task, prio: parseInt(prio, 10)});
+        this.bubbleUp();
+      }
+      bubbleUp() {
+        let idx = this.heap.length - 1;
+        while(idx > 0) {
+          let pIdx = Math.floor((idx-1)/2);
+          if(this.heap[pIdx].prio >= this.heap[idx].prio) break;
+          [this.heap[pIdx], this.heap[idx]] = [this.heap[idx], this.heap[pIdx]];
+          idx = pIdx;
+        }
+      }
+      extractMax() {
+        if(this.heap.length === 0) return null;
+        const max = this.heap[0];
+        const end = this.heap.pop();
+        if(this.heap.length > 0) {
+          this.heap[0] = end;
+          let idx = 0, len = this.heap.length;
+          while(true) {
+            let left = 2*idx+1, right = 2*idx+2, swap = null;
+            if(left < len && this.heap[left].prio > this.heap[idx].prio) swap = left;
+            if(right < len && this.heap[right].prio > (swap === null ? this.heap[idx].prio : this.heap[left].prio)) swap = right;
+            if(swap === null) break;
+            [this.heap[idx], this.heap[swap]] = [this.heap[swap], this.heap[idx]];
+            idx = swap;
+          }
+        }
+        return max;
+      }
+    }
+    
+    const hp = new MaxHeap();
+    hp.insert("Email Urgente", 90); hp.insert("Backup BD", 75); hp.insert("Log", 20);
+    
+    function renderHeap() {
+      const vis = document.getElementById('heapVisualizer');
+      if(hp.heap.length === 0) { vis.innerHTML = '<span style="color:var(--text-dim);font-size:0.8rem;">Fila vazia...</span>'; return; }
+      vis.innerHTML = hp.heap.map(i => `
+        <div class="heap-node">
+          <div class="heap-node-task" title="${i.task}">${i.task}</div>
+          <div class="heap-node-prio">${i.prio}</div>
+        </div>
+      `).join('');
+    }
+    renderHeap();
+    
+    document.getElementById('heapInsertBtn').addEventListener('click', () => {
+      const t = document.getElementById('heapTask').value.trim() || `Tarefa ${Math.floor(Math.random()*100)}`;
+      const p = document.getElementById('heapPriority').value || Math.floor(Math.random()*99)+1;
+      hp.insert(t, p);
+      document.getElementById('heapTask').value = ''; document.getElementById('heapPriority').value = '';
+      renderHeap();
+      document.getElementById('extractedInfo').innerHTML = `Inserido: <span style="color:var(--text);margin-left:4px;">${t} (P:${p})</span>`;
+    });
+    
+    document.getElementById('heapExtractBtn').addEventListener('click', () => {
+      const max = hp.extractMax();
+      if(!max) { document.getElementById('extractedInfo').innerText = 'Fila vazia!'; return; }
+      renderHeap();
+      document.getElementById('extractedInfo').innerHTML = `Processando: <span style="background:var(--accent-dim);color:var(--accent);padding:2px 6px;border-radius:4px;margin-left:4px;">${max.task} (P:${max.prio})</span>`;
+    });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{
+  "id": "D07.02",
+  "dominio_id": "D07",
+  "nome": "Apache Iceberg",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Parquet",
+    "Transações",
+    "Object storage"
+  ],
+  "objetivos": [
+    "Entender snapshots, manifests e evolução de tabela",
+    "Operar tabelas Iceberg com múltiplos motores"
+  ],
+  "pratica_esperada": [
+    "Criar tabela Iceberg com evolução de partição",
+    "Executar time travel e rollback"
+  ],
+  "teoria": [
+    "snapshots",
+    "manifest-lists",
+    "hidden-partitioning",
+    "schema-evolution",
+    "partition-evolution",
+    "time-travel",
+    "equality-deletes",
+    "position-deletes"
+  ],
+  "algoritmos_tecnicas": [
+    "snapshot-isolation",
+    "manifest-pruning",
+    "merge-on-read-delete-planning"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Reis & Housley, Fundamentals of Data Engineering",
+    "Kleppmann, Designing Data-Intensive Applications"
+  ],
+  "papers_fundamentais": [
+    "Ryan Blue et al., Apache Iceberg: An open table format, 2018-2020"
+  ],
+  "ferramentas": [
+    "Iceberg",
+    "Spark",
+    "Trino",
+    "Flink",
+    "Nessie",
+    "Glue Catalog"
+  ],
+  "perguntas_entrevista_staff": [
+    "O que hidden partitioning resolve?",
+    "Como Iceberg permite evolução de partição?"
+  ],
+  "projetos_reais": [
+    "Lakehouse Iceberg multi-engine com Spark e Trino"
+  ],
+  "exercicios": [
+    "Inspecionar manifests",
+    "Executar rollback de snapshot"
+  ],
+  "tags": [
+    "Iceberg",
+    "Snapshots",
+    "Manifests",
+    "Hidden Partitioning",
+    "Time Travel"
+  ]
+}

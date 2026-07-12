@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tratado interativo sobre Teoria da Computação, Complexidade Computacional e Lógica Matemática — com equações renderizadas, navegação inteligente e simuladores.">
+    <title>Computação & Lógica — Tratado Interativo</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for equation rendering (DOCX/Google Docs compatible approach) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });"></script>
+
+    <style>
+        /* ===== CSS DESIGN SYSTEM ===== */
+        :root {
+            /* Color Palette - Deep Academic */
+            --bg-primary: #0d0d14;
+            --bg-secondary: #111120;
+            --bg-card: #14142a;
+            --bg-card-hover: #1e1e35;
+            --bg-glass: rgba(17, 17, 32, 0.7);
+            --bg-glass-strong: rgba(17, 17, 32, 0.92);
+
+            --accent-1: #BD93F9;
+            --accent-2: #c5b3ff;
+            --accent-3: #8BE9FD;
+            --accent-4: #FF79C6;
+            --accent-5: #FFB86C;
+            --accent-gradient: linear-gradient(135deg, #BD93F9, #c5b3ff, #8BE9FD);
+            --accent-gradient-warm: linear-gradient(135deg, #FF79C6, #FFB86C);
+
+            --text-primary: #e8e8f0;
+            --text-secondary: #9d99b3;
+            --text-muted: #6b6880;
+            --text-heading: #ffffff;
+
+            --border-subtle: rgba(189, 147, 249, 0.15);
+            --border-accent: rgba(189, 147, 249, 0.4);
+
+            /* Typography */
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-heading: 'Playfair Display', Georgia, serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+
+            /* Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Sidebar */
+            --sidebar-width: 320px;
+        }
+
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-animation .orb:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            background: var(--accent-1);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .bg-animation .orb:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            background: var(--accent-3);
+            top: 50%;
+            right: -10%;
+            animation-delay: -7s;
+        }
+
+        .bg-animation .orb:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-4);
+            bottom: -10%;
+            left: 30%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -80px) scale(1.1); }
+            50% { transform: translate(-30px, 60px) scale(0.95); }
+            75% { transform: translate(70px, 30px) scale(1.05); }
+        }
+
+        /* ===== LAYOUT ===== */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--bg-glass-strong);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-right: 1px solid var(--border-subtle);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-normal);
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            padding: var(--space-xl);
+            border-bottom: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .sidebar-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .sidebar-logo h2 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            color: var(--text-heading);
+            font-weight: 800;
+        }
+
+        .sidebar-search {
+            position: relative;
+            margin-top: var(--space-sm);
+        }
+
+        .sidebar-search input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            padding-left: 2.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .sidebar-search input:focus {
+            border-color: var(--accent-1);
+            background: rgba(108, 92, 231, 0.08);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+        }
+
+        .sidebar-search .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-md);
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-accent) transparent;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: var(--border-accent);
+            border-radius: 4px;
+        }
+
+        .nav-chapter {
+            margin-bottom: var(--space-md);
+        }
+
+        .nav-chapter-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
+            user-select: none;
+        }
+
+        .nav-chapter-title:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-chapter-title .chapter-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: var(--accent-gradient);
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .nav-chapter-title .chevron {
+            margin-left: auto;
+            transition: transform var(--transition-fast);
+            font-size: 0.7rem;
+        }
+
+        .nav-chapter-title.expanded .chevron {
+            transform: rotate(90deg);
+        }
+
+        .nav-sections {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-normal);
+        }
+
+        .nav-sections.open {
+            max-height: 600px;
+        }
+
+        .nav-section-link {
+            display: block;
+            padding: 6px var(--space-md);
+            padding-left: 3rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-section-link::before {
+            content: '';
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .nav-section-link:hover {
+            color: var(--accent-2);
+            background: rgba(108, 92, 231, 0.06);
+        }
+
+        .nav-section-link:hover::before {
+            background: var(--accent-2);
+        }
+
+        .nav-section-link.active {
+            color: var(--accent-2);
+            background: rgba(108, 92, 231, 0.1);
+            font-weight: 500;
+        }
+
+        .nav-section-link.active::before {
+            background: var(--accent-2);
+            width: 6px;
+            height: 6px;
+            box-shadow: 0 0 8px var(--accent-1);
+        }
+
+        /* Sidebar footer */
+        .sidebar-footer {
+            padding: var(--space-md) var(--space-xl);
+            border-top: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+
+        .progress-bar-container {
+            margin-bottom: var(--space-sm);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 4px;
+            transition: width var(--transition-slow);
+            width: 0%;
+        }
+
+        /* ===== TOGGLE SIDEBAR BUTTON ===== */
+        .sidebar-toggle {
+            position: fixed;
+            top: var(--space-md);
+            left: var(--space-md);
+            z-index: 1001;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-glass-strong);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--accent-1);
+            border-color: var(--accent-1);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            padding: var(--space-3xl) var(--space-2xl);
+            padding-top: 6rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center top, rgba(108, 92, 231, 0.15), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 6px 16px;
+            background: rgba(108, 92, 231, 0.12);
+            border: 1px solid rgba(108, 92, 231, 0.3);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-2);
+            margin-bottom: var(--space-xl);
+            letter-spacing: 0.04em;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .hero-badge .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 900;
+            color: var(--text-heading);
+            line-height: 1.15;
+            margin-bottom: var(--space-lg);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto var(--space-xl);
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-2xl);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .stat-number {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            line-height: 1;
+        }
+
+        .hero-stat .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== CONTENT SECTIONS ===== */
+        .content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl) var(--space-3xl);
+        }
+
+        /* Chapter Header */
+        .chapter-header {
+            position: relative;
+            padding: var(--space-3xl) 0 var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .chapter-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+        }
+
+        .chapter-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-3);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .chapter-header h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1.25;
+        }
+
+        /* Section containers */
+        .section {
+            margin-bottom: var(--space-2xl);
+            scroll-margin-top: 2rem;
+        }
+
+        .section h3 {
+            font-family: var(--font-body);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .section h3 .section-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(108, 92, 231, 0.12);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-2);
+            margin: var(--space-lg) 0 var(--space-md);
+        }
+
+        .section p {
+            margin-bottom: var(--space-md);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-lg);
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-3);
+            margin-bottom: var(--space-sm);
+        }
+
+        .card h4 {
+            color: var(--text-heading);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* Definition card */
+        .definition-card {
+            border-left: 3px solid var(--accent-1);
+        }
+
+        /* Theorem card */
+        .theorem-card {
+            border-left: 3px solid var(--accent-3);
+        }
+
+        /* Example card */
+        .example-card {
+            border-left: 3px solid var(--accent-5);
+        }
+
+        /* Exercise card */
+        .exercise-card {
+            border-left: 3px solid var(--accent-4);
+        }
+
+        /* ===== EQUATION BLOCKS ===== */
+        .equation-block {
+            background: rgba(108, 92, 231, 0.06);
+            border: 1px solid rgba(108, 92, 231, 0.15);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg) var(--space-xl);
+            margin: var(--space-md) 0;
+            text-align: center;
+            font-size: 1.05rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .equation-block .eq-label {
+            position: absolute;
+            right: var(--space-md);
+            top: var(--space-sm);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        /* Inline equation highlight */
+        .katex {
+            font-size: 1em !important;
+        }
+
+        .equation-block .katex {
+            font-size: 1.15em !important;
+        }
+
+        /* ===== COLLAPSIBLE SECTIONS ===== */
+        .collapsible {
+            margin-bottom: var(--space-md);
+        }
+
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            user-select: none;
+        }
+
+        .collapsible-header:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-accent);
+        }
+
+        .collapsible-header .toggle-icon {
+            font-size: 0.8rem;
+            transition: transform var(--transition-fast);
+            color: var(--accent-2);
+        }
+
+        .collapsible-header.open .toggle-icon {
+            transform: rotate(90deg);
+        }
+
+        .collapsible-header h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-heading);
+        }
+
+        .collapsible-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-normal), padding var(--transition-normal);
+        }
+
+        .collapsible-body.open {
+            max-height: 5000px;
+            padding-top: var(--space-md);
+        }
+
+        /* ===== ASCII ART / DIAGRAM ===== */
+        .diagram-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            margin: var(--space-lg) 0;
+            overflow-x: auto;
+        }
+
+        .diagram-container pre {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--accent-2);
+            line-height: 1.5;
+            white-space: pre;
+        }
+
+        .diagram-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: var(--space-sm);
+        }
+
+        /* ===== INTERACTIVE SIMULATORS ===== */
+        .simulator {
+            background: var(--bg-card);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin: var(--space-xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .simulator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .simulator-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: var(--space-lg);
+        }
+
+        .simulator-title .sim-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 3px 10px;
+            background: rgba(0, 206, 201, 0.15);
+            color: var(--accent-3);
+            border-radius: 100px;
+            border: 1px solid rgba(0, 206, 201, 0.3);
+        }
+
+        .sim-input-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .sim-input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .sim-input-group input,
+        .sim-input-group select {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+
+        .sim-input-group input:focus,
+        .sim-input-group select:focus {
+            border-color: var(--accent-1);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+        }
+
+        .sim-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 10px 24px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            margin-right: var(--space-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .sim-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.35);
+        }
+
+        .sim-btn.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .sim-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .sim-output {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: var(--space-lg);
+            margin-top: var(--space-md);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--accent-2);
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .sim-output .step-accepted {
+            color: var(--accent-3);
+            font-weight: 600;
+        }
+
+        .sim-output .step-rejected {
+            color: var(--accent-4);
+            font-weight: 600;
+        }
+
+        .sim-output .step-highlight {
+            color: var(--accent-5);
+        }
+
+        /* ===== STATE DIAGRAM (SVG) ===== */
+        .state-diagram {
+            display: flex;
+            justify-content: center;
+            margin: var(--space-lg) 0;
+            overflow-x: auto;
+        }
+
+        .state-diagram svg {
+            max-width: 100%;
+        }
+
+        /* ===== TRANSITION TABLE ===== */
+        .transition-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-md) 0;
+            font-size: 0.88rem;
+        }
+
+        .transition-table th {
+            background: rgba(108, 92, 231, 0.12);
+            color: var(--accent-2);
+            font-weight: 700;
+            padding: var(--space-sm) var(--space-md);
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .transition-table td {
+            padding: var(--space-sm) var(--space-md);
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+        }
+
+        .transition-table tr:hover td {
+            background: rgba(108, 92, 231, 0.06);
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            margin: var(--space-lg) 0;
+        }
+
+        .tab-headers {
+            display: flex;
+            gap: 2px;
+            border-bottom: 2px solid var(--border-subtle);
+            margin-bottom: var(--space-lg);
+            overflow-x: auto;
+        }
+
+        .tab-header {
+            padding: var(--space-sm) var(--space-lg);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: var(--transition-fast);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .tab-header:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-header.active {
+            color: var(--accent-2);
+            border-bottom-color: var(--accent-1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        /* ===== SPOILER / SOLUTION ===== */
+        .spoiler {
+            margin: var(--space-md) 0;
+        }
+
+        .spoiler-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 8px 20px;
+            background: rgba(253, 121, 168, 0.1);
+            border: 1px solid rgba(253, 121, 168, 0.3);
+            border-radius: var(--radius-sm);
+            color: var(--accent-4);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .spoiler-btn:hover {
+            background: rgba(253, 121, 168, 0.18);
+        }
+
+        .spoiler-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-normal);
+        }
+
+        .spoiler-content.revealed {
+            max-height: 3000px;
+        }
+
+        .spoiler-content .inner {
+            padding-top: var(--space-md);
+        }
+
+        /* ===== KEY CONCEPTS PILLS ===== */
+        .concepts-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin: var(--space-md) 0;
+        }
+
+        .concept-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(108, 92, 231, 0.08);
+            border: 1px solid rgba(108, 92, 231, 0.2);
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--accent-2);
+            transition: var(--transition-fast);
+            cursor: default;
+        }
+
+        .concept-pill:hover {
+            background: rgba(108, 92, 231, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* ===== WARNING / ALERT BOXES ===== */
+        .alert-box {
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
+            margin: var(--space-md) 0;
+            font-size: 0.9rem;
+        }
+
+        .alert-box.warning {
+            background: rgba(253, 121, 168, 0.08);
+            border: 1px solid rgba(253, 121, 168, 0.2);
+            border-left: 3px solid var(--accent-4);
+        }
+
+        .alert-box.warning .alert-title {
+            color: var(--accent-4);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+
+        .alert-box.info {
+            background: rgba(0, 206, 201, 0.06);
+            border: 1px solid rgba(0, 206, 201, 0.2);
+            border-left: 3px solid var(--accent-3);
+        }
+
+        .alert-box.info .alert-title {
+            color: var(--accent-3);
+        }
+
+        /* ===== BIBLIOGRAPHY ===== */
+        .bib-item {
+            padding: var(--space-md);
+            border-left: 2px solid var(--border-accent);
+            margin-bottom: var(--space-md);
+            font-size: 0.88rem;
+        }
+
+        .bib-item .bib-author {
+            color: var(--accent-2);
+            font-weight: 600;
+        }
+
+        .bib-item .bib-title {
+            font-style: italic;
+            color: var(--text-primary);
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: var(--transition-normal);
+            z-index: 999;
+            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.35);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(108, 92, 231, 0.5);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .hero {
+                padding-top: 5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-wrapper {
+                padding: 0 var(--space-md) var(--space-2xl);
+            }
+
+            .hero {
+                padding: var(--space-2xl) var(--space-md);
+                padding-top: 5rem;
+            }
+
+            .hero-stats {
+                gap: var(--space-lg);
+            }
+
+            .card {
+                padding: var(--space-lg);
+            }
+
+            .simulator {
+                padding: var(--space-lg);
+            }
+        }
+
+        /* ===== OVERLAY ===== */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-normal);
+        }
+
+        .sidebar-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ===== LIST STYLES ===== */
+        .content-list {
+            list-style: none;
+            margin: var(--space-md) 0;
+        }
+
+        .content-list li {
+            padding: var(--space-sm) 0;
+            padding-left: var(--space-lg);
+            position: relative;
+            font-size: 0.93rem;
+        }
+
+        .content-list li::before {
+            content: '›';
+            position: absolute;
+            left: 4px;
+            color: var(--accent-1);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Dark mode equation colors */
+        .katex .mord, .katex .mbin, .katex .mrel,
+        .katex .mopen, .katex .mclose, .katex .mpunct,
+        .katex .mop, .katex .minner {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Animated Background -->
+<div class="bg-animation">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+</div>
+
+<!-- Sidebar Toggle (mobile) -->
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar Navigation -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <a href="/" style="display: inline-flex; align-items: center; gap: 6px; padding: 0.35rem 0.8rem; background: var(--accent-gradient); border: none; border-radius: 6px; color: white; font-size: 0.72rem; font-weight: 700; text-decoration: none; transition: var(--transition-fast); margin-bottom: var(--space-md); width: max-content; box-shadow: 0 4px 12px rgba(189, 147, 249, 0.25);" onmouseenter="this.style.transform='translateX(-2px)'" onmouseleave="this.style.transform='none'">
+            ← Roadmap
+        </a>
+        <div class="sidebar-logo">
+            <div class="logo-icon">λ</div>
+            <h2>Computação & Lógica</h2>
+        </div>
+        <div class="sidebar-search">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Buscar conteúdo..." aria-label="Buscar">
+        </div>
+    </div>
+
+    <div class="sidebar-nav" id="sidebarNav">
+        <!-- Chapter 1 -->
+        <div class="nav-chapter">
+            <div class="nav-chapter-title expanded" onclick="toggleChapter(this)">
+                <span class="chapter-number">1</span>
+                Autômatos e Linguagens
+                <span class="chevron">▶</span>
+            </div>
+            <div class="nav-sections open">
+                <a class="nav-section-link" onclick="scrollToSection('ch1-motivacao')">Motivação</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch1-definicao')">Definição Formal (AFD)</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch1-afn')">AFN e Equivalência</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch1-bombeamento')">Lema do Bombeamento</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch1-estudo')">Estudo de Caso</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch1-sim')">🎮 Simulador AFD</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch1-exercicios')">Exercícios</a>
+            </div>
+        </div>
+
+        <!-- Chapter 2 -->
+        <div class="nav-chapter">
+            <div class="nav-chapter-title" onclick="toggleChapter(this)">
+                <span class="chapter-number">2</span>
+                Linguagens Livres de Contexto
+                <span class="chevron">▶</span>
+            </div>
+            <div class="nav-sections">
+                <a class="nav-section-link" onclick="scrollToSection('ch2-motivacao')">Motivação</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch2-definicao')">GLC — Definição Formal</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch2-fnc')">Forma Normal de Chomsky</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch2-ap')">Autômato com Pilha</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch2-estudo')">Estudo de Caso</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch2-exercicios')">Exercícios</a>
+            </div>
+        </div>
+
+        <!-- Chapter 3 -->
+        <div class="nav-chapter">
+            <div class="nav-chapter-title" onclick="toggleChapter(this)">
+                <span class="chapter-number">3</span>
+                Computabilidade
+                <span class="chevron">▶</span>
+            </div>
+            <div class="nav-sections">
+                <a class="nav-section-link" onclick="scrollToSection('ch3-motivacao')">Motivação</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch3-turing')">Máquina de Turing</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch3-modelos')">Modelos Alternativos</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch3-fractran')">FRACTRAN</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch3-sim')">🎮 Simulador FRACTRAN</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch3-exercicios')">Exercícios</a>
+            </div>
+        </div>
+
+        <!-- Chapter 4 -->
+        <div class="nav-chapter">
+            <div class="nav-chapter-title" onclick="toggleChapter(this)">
+                <span class="chapter-number">4</span>
+                Complexidade Computacional
+                <span class="chevron">▶</span>
+            </div>
+            <div class="nav-sections">
+                <a class="nav-section-link" onclick="scrollToSection('ch4-motivacao')">Motivação</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch4-classes')">Classes P, NP, PSPACE</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch4-reducoes')">Reduções Polinomiais</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch4-estudo')">Estudo de Caso: 3SAT → VC</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch4-exercicios')">Exercícios</a>
+            </div>
+        </div>
+
+        <!-- Chapter 5 -->
+        <div class="nav-chapter">
+            <div class="nav-chapter-title" onclick="toggleChapter(this)">
+                <span class="chapter-number">5</span>
+                Lógica e Incompletude
+                <span class="chevron">▶</span>
+            </div>
+            <div class="nav-sections">
+                <a class="nav-section-link" onclick="scrollToSection('ch5-motivacao')">Motivação</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch5-logica')">Lógica de Primeira Ordem</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch5-godel')">Teoremas de Gödel</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch5-comparacao')">Enderton vs. Mendelson</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch5-aritmetizacao')">Aritmetização de Gödel</a>
+                <a class="nav-section-link" onclick="scrollToSection('ch5-exercicios')">Exercícios</a>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="nav-chapter">
+            <div class="nav-chapter-title" onclick="toggleChapter(this)">
+                <span class="chapter-number">∞</span>
+                Conclusões
+                <span class="chevron">▶</span>
+            </div>
+            <div class="nav-sections">
+                <a class="nav-section-link" onclick="scrollToSection('conclusao')">Conclusões Lógicas</a>
+                <a class="nav-section-link" onclick="scrollToSection('referencias')">Referências</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="progress-bar-container">
+            <div class="progress-label">
+                <span>Progresso de Leitura</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+    <!-- Hero Section -->
+    <header class="hero" id="top">
+        <div class="hero-badge">
+            <span class="pulse"></span>
+            Tratado Interativo com Equações Renderizadas
+        </div>
+        <h1>
+            Teoria da <span class="gradient-text">Computação</span>,<br>
+            Complexidade & <span class="gradient-text">Lógica Matemática</span>
+        </h1>
+        <p class="hero-subtitle">
+            Um tratado progressivo e rigoroso — de autômatos finitos à incompletude de Gödel —
+            com equações compatíveis com DOCX/Google Docs, simuladores interativos e navegação inteligente.
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Capítulos</span>
+            </div>
+            <div class="hero-stat">
+                <span class="stat-number">150+</span>
+                <span class="stat-label">Equações</span>
+            </div>
+            <div class="hero-stat">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Simuladores</span>
+            </div>
+            <div class="hero-stat">
+                <span class="stat-number">15+</span>
+                <span class="stat-label">Exercícios</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="content-wrapper">
+
+        <!-- ============================================================ -->
+        <!-- CHAPTER 1 -->
+        <!-- ============================================================ -->
+        <div class="chapter-header" id="ch1">
+            <div class="chapter-label">Capítulo 1</div>
+            <h2>Autômatos e Linguagens Regulares</h2>
+        </div>
+
+        <section class="section" id="ch1-motivacao">
+            <h3><span class="section-icon">💡</span> Motivação</h3>
+            <p>Como delimitar de forma rigorosa as capacidades e os limites de um dispositivo de computação que opera com uma quantidade estritamente finita e imutável de memória?</p>
+            <p>O estudo dos autômatos de estados finitos originou-se na necessidade de modelar processos físicos e biológicos cujo comportamento futuro depende exclusivamente de um histórico finito de eventos. Na década de 1940, Warren McCulloch e Walter Pitts propuseram a modelagem de redes neurais biológicas por meio de estados discretos.</p>
+
+            <h4>Fundamentos Algébricos</h4>
+            <p><strong>Alfabeto</strong> ($\Sigma$): Um conjunto finito e não vazio de símbolos discretos.</p>
+            <p><strong>Cadeia</strong>: Sequência finita de símbolos de $\Sigma$. Comprimento: $|w|$. Cadeia vazia: $\varepsilon$, com $|\varepsilon| = 0$.</p>
+            <p><strong>Linguagem</strong>: Um subconjunto de $\Sigma^*$ (todas as cadeias sobre $\Sigma$).</p>
+
+            <h4>Operações Regulares</h4>
+            <p>Sejam $A$ e $B$ linguagens sobre $\Sigma$:</p>
+            <div class="equation-block">
+                <span class="eq-label">(1.1)</span>
+                $$A \cup B = \{w \mid w \in A \text{ ou } w \in B\}$$
+            </div>
+            <div class="equation-block">
+                <span class="eq-label">(1.2)</span>
+                $$A \circ B = \{xy \mid x \in A \text{ e } y \in B\}$$
+            </div>
+            <div class="equation-block">
+                <span class="eq-label">(1.3)</span>
+                $$A^* = \{w_1 w_2 \dots w_k \mid k \ge 0 \text{ e cada } w_i \in A\}$$
+            </div>
+        </section>
+
+        <section class="section" id="ch1-definicao">
+            <h3><span class="section-icon">📐</span> Definição Formal</h3>
+            <div class="card definition-card">
+                <div class="card-label">Definição — Autômato Finito Determinístico</div>
+                <h4>AFD — 5-upla</h4>
+                <div class="equation-block">
+                    $$M = (Q, \Sigma, \delta, q_0, F)$$
+                </div>
+                <ul class="content-list">
+                    <li>$Q$ — conjunto finito de estados.</li>
+                    <li>$\Sigma$ — alfabeto finito de entrada.</li>
+                    <li>$\delta: Q \times \Sigma \to Q$ — função de transição.</li>
+                    <li>$q_0 \in Q$ — estado inicial.</li>
+                    <li>$F \subseteq Q$ — estados de aceitação.</li>
+                </ul>
+            </div>
+
+            <h4>Transição Estendida</h4>
+            <p>Define-se indutivamente $\delta^*: Q \times \Sigma^* \to Q$:</p>
+            <div class="equation-block">
+                <span class="eq-label">(1.4)</span>
+                $$\delta^*(q, \varepsilon) = q$$
+            </div>
+            <div class="equation-block">
+                <span class="eq-label">(1.5)</span>
+                $$\delta^*(q, wa) = \delta(\delta^*(q, w), a) \quad \text{onde } w \in \Sigma^*,\ a \in \Sigma$$
+            </div>
+            <p>Linguagem reconhecida: $L(M) = \{w \in \Sigma^* \mid \delta^*(q_0, w) \in F\}$.</p>
+        </section>
+
+        <section class="section" id="ch1-afn">
+            <h3><span class="section-icon">🔀</span> AFN e Equivalência</h3>
+            <p>No AFN, a função de transição mapeia para o conjunto das partes de estados, permitindo transições $\varepsilon$:</p>
+            <div class="equation-block">
+                <span class="eq-label">(1.6)</span>
+                $$\delta_N: Q \times \Sigma_{\varepsilon} \to \mathcal{P}(Q) \quad \text{onde } \Sigma_{\varepsilon} = \Sigma \cup \{\varepsilon\}$$
+            </div>
+
+            <div class="card theorem-card">
+                <div class="card-label">Teorema — Equivalência AFD ↔ AFN</div>
+                <h4>Construção de Subconjuntos</h4>
+                <p>Dado $N = (Q, \Sigma, \delta, q_0, F)$, o AFD equivalente $M = (Q', \Sigma, \delta', q_0', F')$:</p>
+                <div class="equation-block">
+                    $$Q' = \mathcal{P}(Q)$$
+                </div>
+                <div class="equation-block">
+                    $$\delta'(R, a) = \{q \in Q \mid q \in E(\delta(r, a)) \text{ para algum } r \in R\}$$
+                </div>
+                <div class="equation-block">
+                    $$q_0' = E(\{q_0\}) \qquad F' = \{R \in Q' \mid R \cap F \neq \emptyset\}$$
+                </div>
+                <p>onde $E(R)$ é o fecho-$\varepsilon$ do conjunto $R$.</p>
+            </div>
+        </section>
+
+        <section class="section" id="ch1-bombeamento">
+            <h3><span class="section-icon">♻️</span> Lema do Bombeamento</h3>
+            <div class="card theorem-card">
+                <div class="card-label">Teorema — Lema do Bombeamento para Linguagens Regulares</div>
+                <p>Se $A$ for regular, existe $p$ (comprimento de bombeamento) tal que qualquer $s \in A$ com $|s| \ge p$ pode ser dividida em $s = xyz$ satisfazendo:</p>
+                <div class="equation-block">
+                    $$xy^iz \in A \quad \forall\, i \ge 0, \qquad |y| > 0, \qquad |xy| \le p$$
+                </div>
+            </div>
+
+            <div class="collapsible">
+                <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                    <span class="toggle-icon">▶</span>
+                    <h4>Prova: $L = \{0^n 1^n \mid n \ge 0\}$ não é regular</h4>
+                </div>
+                <div class="collapsible-body">
+                    <div class="inner">
+                        <p>Suponha $L$ regular. Seja $p$ o comprimento de bombeamento. Escolha $s = 0^p 1^p \in L$, $|s| \ge p$.</p>
+                        <p>Pelo lema, $s = xyz$ com $|xy| \le p$ e $|y| > 0$. Como $|xy| \le p$, $xy$ contém apenas $0$s. Logo $y = 0^j$ para algum $j > 0$.</p>
+                        <p>Bombeando para $i = 2$: $xy^2z = 0^{p+j} 1^p$. Como $j > 0$, o número de $0$s excede o de $1$s, logo $xy^2z \notin L$. <strong>Contradição.</strong> ∎</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ch1-estudo">
+            <h3><span class="section-icon">🔬</span> Estudo de Caso: AFD para cadeias terminadas em 001</h3>
+
+            <div class="card definition-card">
+                <div class="card-label">Configuração Formal</div>
+                <p>$M_2 = (Q, \Sigma, \delta, q_{\emptyset}, F)$ com:</p>
+                <ul class="content-list">
+                    <li>$Q = \{q_{\emptyset},\, q_0,\, q_{00},\, q_{001}\}$</li>
+                    <li>$\Sigma = \{0, 1\}$</li>
+                    <li>Estado inicial: $q_{\emptyset}$</li>
+                    <li>$F = \{q_{001}\}$</li>
+                </ul>
+            </div>
+
+            <h4>Tabela de Transição</h4>
+            <table class="transition-table">
+                <thead>
+                    <tr><th>Estado</th><th>Entrada: 0</th><th>Entrada: 1</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>$q_{\emptyset}$</td><td>$q_0$</td><td>$q_{\emptyset}$</td></tr>
+                    <tr><td>$q_0$</td><td>$q_{00}$</td><td>$q_{\emptyset}$</td></tr>
+                    <tr><td>$q_{00}$</td><td>$q_{00}$</td><td>$q_{001}$</td></tr>
+                    <tr><td>$q_{001}$</td><td>$q_0$</td><td>$q_{\emptyset}$</td></tr>
+                </tbody>
+            </table>
+
+            <div class="diagram-container">
+                <div class="diagram-label">Diagrama de Estados</div>
+                <pre>
+     +--- 1 ---+
+     |         |
+     v         |
+[ q_empty ]----+       +--- 0 ---+
+   |       ^            |         |
+   0       |            v         |
+   |       +---- 1 ---[ q_0 ]     |
+   v                    |         |
+ [ q_00 ]<------ 0 -----+---------+
+   |   ^
+   |   |
+   1   0
+   |   |
+   v   |
+(( q_001 ))
+                </pre>
+            </div>
+        </section>
+
+        <!-- AFD SIMULATOR -->
+        <section class="section" id="ch1-sim">
+            <div class="simulator">
+                <div class="simulator-title">
+                    🎮 Simulador de AFD — Cadeias terminadas em 001
+                    <span class="sim-badge">Interativo</span>
+                </div>
+
+                <div class="sim-input-group">
+                    <label for="afdInput">Cadeia de Entrada (0s e 1s)</label>
+                    <input type="text" id="afdInput" placeholder="Ex: 0001, 10001, 0011..." value="0001" maxlength="50">
+                </div>
+
+                <button class="sim-btn" onclick="runAFDSimulator()">▶ Executar</button>
+                <button class="sim-btn secondary" onclick="stepAFD()">⏭ Passo a Passo</button>
+                <button class="sim-btn secondary" onclick="resetAFD()">↺ Reiniciar</button>
+
+                <div class="sim-output" id="afdOutput">Clique em "Executar" para simular o AFD...</div>
+            </div>
+        </section>
+
+        <section class="section" id="ch1-exercicios">
+            <h3><span class="section-icon">📝</span> Exercícios</h3>
+
+            <div class="card exercise-card">
+                <div class="card-label">Exercício Resolvido 1</div>
+                <p>Mostre que $L_{\text{par}} = \{w \in \{0,1\}^* \mid w \text{ tem nº par de 0s e nº par de 1s}\}$ é regular.</p>
+                <div class="spoiler">
+                    <button class="spoiler-btn" onclick="toggleSpoiler(this)">👁 Ver Solução</button>
+                    <div class="spoiler-content">
+                        <div class="inner">
+                            <p>Projeta-se $M_3 = (Q, \Sigma, \delta, q_{ee}, F)$ com $Q = \{q_{ee}, q_{io}, q_{oi}, q_{ii}\}$ e $F = \{q_{ee}\}$:</p>
+                            <div class="equation-block">
+                                $$\delta(q_{ee}, 0) = q_{oe}, \quad \delta(q_{ee}, 1) = q_{eo}$$
+                            </div>
+                            <div class="equation-block">
+                                $$\delta(q_{oe}, 0) = q_{ee}, \quad \delta(q_{oe}, 1) = q_{oo}$$
+                            </div>
+                            <div class="equation-block">
+                                $$\delta(q_{eo}, 0) = q_{oo}, \quad \delta(q_{eo}, 1) = q_{ee}$$
+                            </div>
+                            <div class="equation-block">
+                                $$\delta(q_{oo}, 0) = q_{eo}, \quad \delta(q_{oo}, 1) = q_{oe}$$
+                            </div>
+                            <p>Como o AFD $M_3$ reconhece $L_{\text{par}}$, a linguagem é regular. ∎</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card exercise-card">
+                <div class="card-label">Exercício Proposto 1</div>
+                <p>Utilize o Lema do Bombeamento para demonstrar que $L_{\text{bal}} = \{a^n b^n a^n \mid n \ge 0\}$ não é regular.</p>
+            </div>
+        </section>
+
+        <div class="alert-box warning">
+            <div class="alert-title">⚠ Erros Comuns</div>
+            <p><strong>Comprimento de bombeamento:</strong> $p$ não é um número fixo escolhido pelo projetista — é uma constante existencial garantida pelo lema.</p>
+            <p><strong>Fecho-epsilon:</strong> Ao converter AFN→AFD, esquecer de aplicar $E(R)$ ao estado inicial e às transições.</p>
+        </div>
+
+
+        <!-- ============================================================ -->
+        <!-- CHAPTER 2 -->
+        <!-- ============================================================ -->
+        <div class="chapter-header" id="ch2">
+            <div class="chapter-label">Capítulo 2</div>
+            <h2>Linguagens Livres de Contexto e Autômatos com Pilha</h2>
+        </div>
+
+        <section class="section" id="ch2-motivacao">
+            <h3><span class="section-icon">💡</span> Motivação</h3>
+            <p>Como expandir sistematicamente o modelo de computação finita para validar linguagens com estruturas recursivas ou aninhadas de profundidade ilimitada?</p>
+            <p>Na década de 1950, Noam Chomsky formalizou regras estruturais para linguagens naturais e verificou que linguagens regulares eram insuficientes para capturar a hierarquia sintática da linguagem humana.</p>
+        </section>
+
+        <section class="section" id="ch2-definicao">
+            <h3><span class="section-icon">📐</span> Gramática Livre de Contexto</h3>
+            <div class="card definition-card">
+                <div class="card-label">Definição — GLC</div>
+                <h4>4-upla</h4>
+                <div class="equation-block">
+                    $$G = (V, \Sigma, R, S)$$
+                </div>
+                <ul class="content-list">
+                    <li>$V$ — conjunto finito de variáveis (não-terminais).</li>
+                    <li>$\Sigma$ — alfabeto de terminais, $V \cap \Sigma = \emptyset$.</li>
+                    <li>$R \subseteq V \times (V \cup \Sigma)^*$ — regras de produção ($A \to w$).</li>
+                    <li>$S \in V$ — variável inicial.</li>
+                </ul>
+                <p>Linguagem gerada: $L(G) = \{w \in \Sigma^* \mid S \Rightarrow^* w\}$.</p>
+            </div>
+        </section>
+
+        <section class="section" id="ch2-fnc">
+            <h3><span class="section-icon">🔧</span> Forma Normal de Chomsky</h3>
+            <div class="card definition-card">
+                <div class="card-label">Definição — FNC</div>
+                <p>Todas as regras de produção devem ter a forma:</p>
+                <div class="equation-block">
+                    $$A \to BC \qquad \text{ou} \qquad A \to a$$
+                </div>
+                <p>com $A, B, C \in V$, $a \in \Sigma$, $B, C \neq S$. Se $\varepsilon \in L(G)$: permite-se $S \to \varepsilon$.</p>
+            </div>
+        </section>
+
+        <section class="section" id="ch2-ap">
+            <h3><span class="section-icon">📚</span> Autômato com Pilha</h3>
+            <div class="card definition-card">
+                <div class="card-label">Definição — AP (Não-Determinístico)</div>
+                <h4>6-upla</h4>
+                <div class="equation-block">
+                    $$M = (Q, \Sigma, \Gamma, \delta, q_0, F)$$
+                </div>
+                <ul class="content-list">
+                    <li>$\Gamma$ — alfabeto da pilha.</li>
+                    <li>$\delta: Q \times \Sigma_\varepsilon \times \Gamma_\varepsilon \to \mathcal{P}(Q \times \Gamma_\varepsilon)$ — função de transição.</li>
+                </ul>
+            </div>
+
+            <div class="card example-card">
+                <div class="card-label">Exemplo</div>
+                <p>$L = \{0^n 1^n \mid n \ge 0\}$ é gerada por $G_2 = (\{S\}, \{0,1\}, R, S)$ com:</p>
+                <div class="equation-block">
+                    $$S \to 0S1 \mid \varepsilon$$
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ch2-estudo">
+            <h3><span class="section-icon">🔬</span> Estudo de Caso: Conversão para FNC</h3>
+
+            <p>Gramática $G_3 = (\{S, A, B\}, \{0, 1\}, R, S)$ com produções:</p>
+            <div class="equation-block">
+                $$S \to 0A0 \mid 1B1 \mid \varepsilon \qquad A \to S \mid 0 \qquad B \to S \mid 1$$
+            </div>
+
+            <div class="tabs">
+                <div class="tab-headers">
+                    <div class="tab-header active" onclick="switchTab(this, 'fnc-tab')">Passo 1: Nova Inicial</div>
+                    <div class="tab-header" onclick="switchTab(this, 'fnc-tab')">Passo 2: ε-regras</div>
+                    <div class="tab-header" onclick="switchTab(this, 'fnc-tab')">Passo 3: Unitárias</div>
+                    <div class="tab-header" onclick="switchTab(this, 'fnc-tab')">Passo 4: Binarização</div>
+                </div>
+                <div class="tab-content active" data-tab-group="fnc-tab">
+                    <p>Introduz-se $S_0 \to S$, garantindo que a variável inicial não surja à direita:</p>
+                    <div class="equation-block">
+                        $$S_0 \to S,\quad S \to 0A0 \mid 1B1 \mid \varepsilon,\quad A \to S \mid 0,\quad B \to S \mid 1$$
+                    </div>
+                </div>
+                <div class="tab-content" data-tab-group="fnc-tab">
+                    <p>$S$ é anulável ($S \to \varepsilon$). Remove-se e criam-se variações:</p>
+                    <div class="equation-block">
+                        $$S_0 \to S \mid \varepsilon \quad S \to 0A0 \mid 00 \mid 1B1 \mid 11$$
+                    </div>
+                    <div class="equation-block">
+                        $$A \to S \mid 0 \qquad B \to S \mid 1$$
+                    </div>
+                </div>
+                <div class="tab-content" data-tab-group="fnc-tab">
+                    <p>Substituem-se regras unitárias $X \to Y$ pelas produções de $Y$:</p>
+                    <div class="equation-block">
+                        $$S_0 \to 0A0 \mid 00 \mid 1B1 \mid 11 \mid \varepsilon$$
+                    </div>
+                    <div class="equation-block">
+                        $$S \to 0A0 \mid 00 \mid 1B1 \mid 11$$
+                    </div>
+                </div>
+                <div class="tab-content" data-tab-group="fnc-tab">
+                    <p>Gramática final em FNC com $U_0 \to 0$, $U_1 \to 1$, $C_1 \to AU_0$, $C_2 \to BU_1$:</p>
+                    <div class="equation-block">
+                        $$S_0 \to U_0C_1 \mid U_0U_0 \mid U_1C_2 \mid U_1U_1 \mid \varepsilon$$
+                    </div>
+                    <div class="equation-block">
+                        $$S \to U_0C_1 \mid U_0U_0 \mid U_1C_2 \mid U_1U_1$$
+                    </div>
+                    <div class="equation-block">
+                        $$A \to U_0C_1 \mid U_0U_0 \mid U_1C_2 \mid U_1U_1 \mid 0$$
+                    </div>
+                    <div class="equation-block">
+                        $$B \to U_0C_1 \mid U_0U_0 \mid U_1C_2 \mid U_1U_1 \mid 1$$
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ch2-exercicios">
+            <h3><span class="section-icon">📝</span> Exercícios</h3>
+            <div class="card exercise-card">
+                <div class="card-label">Exercício Resolvido 1</div>
+                <p>Construa uma GLC que gere parênteses balanceados $L_{\text{par}} = \{w \in \{(,)\}^* \mid w \text{ balanceada}\}$.</p>
+                <div class="spoiler">
+                    <button class="spoiler-btn" onclick="toggleSpoiler(this)">👁 Ver Solução</button>
+                    <div class="spoiler-content">
+                        <div class="inner">
+                            <p>$G = (\{S\}, \{(,)\}, R, S)$ com:</p>
+                            <div class="equation-block">$$S \to (S) \mid SS \mid \varepsilon$$</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- CHAPTER 3 -->
+        <!-- ============================================================ -->
+        <div class="chapter-header" id="ch3">
+            <div class="chapter-label">Capítulo 3</div>
+            <h2>Teoria da Computabilidade e Modelos de Computação</h2>
+        </div>
+
+        <section class="section" id="ch3-motivacao">
+            <h3><span class="section-icon">💡</span> Motivação</h3>
+            <p>Existe uma definição matemática absoluta para o conceito intuitivo de "algoritmo", e quais são os limites intransponíveis daquilo que pode ser resolvido de forma mecânica?</p>
+            <p>Na década de 1930, para resolver o <em>Entscheidungsproblem</em> de Hilbert, Alan Turing, Alonzo Church e Stephen Kleene estabeleceram as bases da Teoria da Computabilidade.</p>
+        </section>
+
+        <section class="section" id="ch3-turing">
+            <h3><span class="section-icon">📐</span> Máquina de Turing</h3>
+            <div class="card definition-card">
+                <div class="card-label">Definição — Máquina de Turing de Fita Única</div>
+                <h4>7-upla</h4>
+                <div class="equation-block">
+                    $$M = (Q, \Sigma, \Gamma, \delta, q_0, q_{\text{accept}}, q_{\text{reject}})$$
+                </div>
+                <ul class="content-list">
+                    <li>$\Sigma$ — alfabeto de entrada (sem $\sqcup$).</li>
+                    <li>$\Gamma \supseteq \Sigma$ com $\sqcup \in \Gamma$ — alfabeto da fita.</li>
+                    <li>$\delta: Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$ — função de transição.</li>
+                    <li>$q_{\text{accept}} \neq q_{\text{reject}}$ — estados de parada.</li>
+                </ul>
+            </div>
+
+            <p>Uma linguagem é <strong>Turing-reconhecível</strong> se $\exists$ MT $M$: $L = \{w \mid M \text{ aceita } w\}$.</p>
+            <p>Uma linguagem é <strong>decidível</strong> se $\exists$ decisor $M$ que para em toda entrada.</p>
+        </section>
+
+        <section class="section" id="ch3-modelos">
+            <h3><span class="section-icon">🔄</span> Modelos Alternativos e a Tese de Church-Turing</h3>
+
+            <div class="card">
+                <div class="card-label">Funções Recursivas Parciais (μ-recursivas)</div>
+                <p>Modelo puramente matemático de Kleene e Gödel: funções básicas (sucessor, zero, projeção) fechadas sob composição, recursão primitiva e minimização não-limitada ($\mu$).</p>
+            </div>
+
+            <div class="card">
+                <div class="card-label">Máquinas de Minsky (Contadores)</div>
+                <p>Controle finito + contadores inteiros $\ge 0$ com incremento/decremento condicional:</p>
+                <div class="equation-block">
+                    $$\text{Op} = \text{Dec } v\ s_n\ s_z \mid \text{Inc } v\ s' \quad (v \in V,\ s_n, s_z, s' \in S)$$
+                </div>
+                <p>Minsky demonstrou: <strong>2 contadores</strong> são suficientes para simular qualquer MT.</p>
+            </div>
+        </section>
+
+        <section class="section" id="ch3-fractran">
+            <h3><span class="section-icon">🎯</span> FRACTRAN (Conway)</h3>
+            <p>Programa = sequência ordenada de frações positivas:</p>
+            <div class="equation-block">
+                $$\left(\frac{p_1}{q_1},\ \frac{p_2}{q_2},\ \dots,\ \frac{p_k}{q_k}\right)$$
+            </div>
+            <p>Estado codificado em inteiro $N$. Multiplica $N$ pela primeira fração que produz inteiro. Registradores nos expoentes de primos: $N = 2^a \cdot 3^b \cdot 5^c \cdots$</p>
+
+            <div class="card example-card">
+                <div class="card-label">Exemplo — Programa de Adição</div>
+                <p>Programa $\left(\frac{5}{2},\ \frac{5}{3}\right)$ computa $a + b$ com $N_0 = 2^a \cdot 3^b$.</p>
+                <p>Resultado em expoente de $5$.</p>
+            </div>
+        </section>
+
+        <!-- FRACTRAN SIMULATOR -->
+        <section class="section" id="ch3-sim">
+            <div class="simulator">
+                <div class="simulator-title">
+                    🎮 Simulador FRACTRAN — Adição
+                    <span class="sim-badge">Interativo</span>
+                </div>
+
+                <div style="display: flex; gap: var(--space-md); flex-wrap: wrap;">
+                    <div class="sim-input-group" style="flex: 1; min-width: 120px;">
+                        <label for="fractranA">Valor de a</label>
+                        <input type="number" id="fractranA" value="2" min="0" max="20">
+                    </div>
+                    <div class="sim-input-group" style="flex: 1; min-width: 120px;">
+                        <label for="fractranB">Valor de b</label>
+                        <input type="number" id="fractranB" value="1" min="0" max="20">
+                    </div>
+                </div>
+
+                <button class="sim-btn" onclick="runFRACTRAN()">▶ Executar</button>
+                <button class="sim-btn secondary" onclick="document.getElementById('fractranOutput').textContent = 'Aguardando...'">↺ Limpar</button>
+
+                <div class="sim-output" id="fractranOutput">Clique em "Executar" para simular FRACTRAN...</div>
+            </div>
+        </section>
+
+        <section class="section" id="ch3-exercicios">
+            <h3><span class="section-icon">📝</span> Exercícios</h3>
+            <div class="card exercise-card">
+                <div class="card-label">Exercício Resolvido 1</div>
+                <p>Demonstre como simular decremento condicional com teste de zero em FRACTRAN.</p>
+                <div class="spoiler">
+                    <button class="spoiler-btn" onclick="toggleSpoiler(this)">👁 Ver Solução</button>
+                    <div class="spoiler-content">
+                        <div class="inner">
+                            <p>Fração de sucesso (se $R_j > 0$):</p>
+                            <div class="equation-block">
+                                $$f_{\text{sucesso}} = \frac{p_{s_k}}{p_{s_i} \cdot p_{r_j}}$$
+                            </div>
+                            <p>Fração de desvio (teste de zero):</p>
+                            <div class="equation-block">
+                                $$f_{\text{falha}} = \frac{p_{s_l}}{p_{s_i}}$$
+                            </div>
+                            <p>$f_{\text{sucesso}}$ precede $f_{\text{falha}}$ na lista, garantindo prioridade.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- CHAPTER 4 -->
+        <!-- ============================================================ -->
+        <div class="chapter-header" id="ch4">
+            <div class="chapter-label">Capítulo 4</div>
+            <h2>Complexidade Computacional e Intratabilidade</h2>
+        </div>
+
+        <section class="section" id="ch4-motivacao">
+            <h3><span class="section-icon">💡</span> Motivação</h3>
+            <p>Como classificar de maneira quantitativa os problemas decidíveis de acordo com os recursos de tempo e memória consumidos por um algoritmo?</p>
+        </section>
+
+        <section class="section" id="ch4-classes">
+            <h3><span class="section-icon">📐</span> Classes de Complexidade</h3>
+
+            <h4>Notação Assintótica</h4>
+            <div class="equation-block">
+                <span class="eq-label">(4.1)</span>
+                $$f(n) = O(g(n)) \iff \exists\, c, n_0 > 0 :\ f(n) \le c \cdot g(n)\ \ \forall\, n \ge n_0$$
+            </div>
+            <div class="equation-block">
+                <span class="eq-label">(4.2)</span>
+                $$f(n) = \Omega(g(n)) \iff \exists\, c, n_0 > 0 :\ f(n) \ge c \cdot g(n)\ \ \forall\, n \ge n_0$$
+            </div>
+            <div class="equation-block">
+                <span class="eq-label">(4.3)</span>
+                $$f(n) = \Theta(g(n)) \iff f(n) = O(g(n)) \wedge f(n) = \Omega(g(n))$$
+            </div>
+
+            <div class="card definition-card">
+                <div class="card-label">Definições Fundamentais</div>
+                <div class="equation-block">
+                    $$\textbf{P} = \bigcup_{k \ge 1} \text{TIME}(n^k)$$
+                </div>
+                <div class="equation-block">
+                    $$\textbf{NP} = \bigcup_{k \ge 1} \text{NTIME}(n^k)$$
+                </div>
+            </div>
+
+            <h4>Redução Polinomial</h4>
+            <div class="equation-block">
+                <span class="eq-label">(4.4)</span>
+                $$A \le_P B \iff \exists\, f \text{ computável em tempo polinomial}:\ w \in A \Leftrightarrow f(w) \in B$$
+            </div>
+
+            <h4>NP-Completude</h4>
+            <p>$B$ é NP-Completa se: $B \in \textbf{NP}$ e $\forall\, A \in \textbf{NP}:\ A \le_P B$.</p>
+
+            <div class="card theorem-card">
+                <div class="card-label">Teorema — Savitch</div>
+                <p>Para qualquer $f(n) \ge \log n$:</p>
+                <div class="equation-block">
+                    $$\text{NSPACE}(f(n)) \subseteq \text{SPACE}(f(n)^2)$$
+                </div>
+                <p>Implicação: $\textbf{PSPACE} = \textbf{NPSPACE}$.</p>
+            </div>
+        </section>
+
+        <section class="section" id="ch4-reducoes">
+            <h3><span class="section-icon">🔗</span> Hierarquia de Classes</h3>
+            <div class="equation-block">
+                $$\textbf{P} \subseteq \textbf{NP} \subseteq \textbf{PSPACE} = \textbf{NPSPACE} \subseteq \textbf{EXPTIME}$$
+            </div>
+        </section>
+
+        <section class="section" id="ch4-estudo">
+            <h3><span class="section-icon">🔬</span> Estudo de Caso: 3SAT → Vertex Cover</h3>
+
+            <p>Para $\phi$ com $m$ cláusulas e $n$ variáveis:</p>
+
+            <div class="card">
+                <div class="card-label">Gadget de Variável</div>
+                <p>Para cada $x_i$, par de vértices $(x_i, \neg x_i)$ com aresta $e_i$.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-label">Gadget de Cláusula</div>
+                <p>Para cada $C_j = (l_{j1} \lor l_{j2} \lor l_{j3})$: triângulo de 3 vértices + arestas de restrição.</p>
+            </div>
+
+            <div class="equation-block">
+                <span class="eq-label">(4.5)</span>
+                $$k = n + 2m$$
+            </div>
+        </section>
+
+        <section class="section" id="ch4-exercicios">
+            <h3><span class="section-icon">📝</span> Exercícios</h3>
+            <div class="card exercise-card">
+                <div class="card-label">Exercício Resolvido 1</div>
+                <p>Demonstre que P é fechada sob complemento.</p>
+                <div class="spoiler">
+                    <button class="spoiler-btn" onclick="toggleSpoiler(this)">👁 Ver Solução</button>
+                    <div class="spoiler-content">
+                        <div class="inner">
+                            <p>Se $L \in \textbf{P}$, $\exists$ MT $M$ que decide $L$ em $O(n^k)$. Construa $M'$ permutando $q_{\text{accept}}$ e $q_{\text{reject}}$. $M'$ decide $\bar{L}$ em $O(n^k)$. Logo $\bar{L} \in \textbf{P}$. ∎</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- CHAPTER 5 -->
+        <!-- ============================================================ -->
+        <div class="chapter-header" id="ch5">
+            <div class="chapter-label">Capítulo 5</div>
+            <h2>Fundamentos da Lógica Matemática, Incompletude e Indecidibilidade</h2>
+        </div>
+
+        <section class="section" id="ch5-motivacao">
+            <h3><span class="section-icon">💡</span> Motivação</h3>
+            <p>Como garantir que as regras sintáticas mecânicas de demonstração na lógica de primeira ordem capturam todas as sentenças universalmente verdadeiras, e quais são os limites absolutos dessa provabilidade?</p>
+        </section>
+
+        <section class="section" id="ch5-logica">
+            <h3><span class="section-icon">📐</span> Lógica de Primeira Ordem</h3>
+
+            <div class="card definition-card">
+                <div class="card-label">Definição — Estrutura Interpretativa</div>
+                <div class="equation-block">
+                    $$\mathfrak{A} = (|\mathfrak{A}|, I) \quad \text{onde } |\mathfrak{A}| \neq \emptyset$$
+                </div>
+                <p>$I$ é a função de interpretação que confere significado a símbolos funcionais e relacionais.</p>
+            </div>
+
+            <h4>Validade Lógica</h4>
+            <div class="equation-block">
+                <span class="eq-label">(5.1)</span>
+                $$\models \phi \iff \mathfrak{A} \models \phi[s] \quad \text{para toda estrutura } \mathfrak{A} \text{ e atribuição } s$$
+            </div>
+        </section>
+
+        <section class="section" id="ch5-godel">
+            <h3><span class="section-icon">🏛️</span> Teoremas de Gödel</h3>
+
+            <div class="card theorem-card">
+                <div class="card-label">Gödelização — Numeração de Gödel</div>
+                <div class="equation-block">
+                    <span class="eq-label">(5.2)</span>
+                    $$G(\alpha_0, \dots, \alpha_k) = 2^{\ulcorner \alpha_0 \urcorner} \cdot 3^{\ulcorner \alpha_1 \urcorner} \cdots p_k^{\ulcorner \alpha_k \urcorner}$$
+                </div>
+            </div>
+
+            <div class="card theorem-card">
+                <div class="card-label">Lema do Ponto Fixo de Gödel</div>
+                <p>Seja $T$ uma teoria aritmética estendendo AE. Para qualquer $\beta(y)$ com uma variável livre:</p>
+                <div class="equation-block">
+                    <span class="eq-label">(5.3)</span>
+                    $$T \vdash \sigma \leftrightarrow \beta(\mathbf{S}^{\ulcorner \sigma \urcorner} 0)$$
+                </div>
+            </div>
+
+            <div class="card theorem-card" style="border-left-color: var(--accent-4);">
+                <div class="card-label" style="color: var(--accent-4);">1º Teorema da Incompletude</div>
+                <p>Se $T$ é consistente, recursivamente axiomatizável e estende AE, então $T$ é <strong>incompleta</strong>:</p>
+                <div class="equation-block">
+                    <span class="eq-label">(5.4)</span>
+                    $$T \not\vdash \mathcal{G} \quad \text{e} \quad T \not\vdash \neg \mathcal{G}$$
+                </div>
+            </div>
+
+            <div class="card theorem-card" style="border-left-color: var(--accent-4);">
+                <div class="card-label" style="color: var(--accent-4);">2º Teorema da Incompletude</div>
+                <p>A consistência de $T$ não pode ser demonstrada em $T$:</p>
+                <div class="equation-block">
+                    <span class="eq-label">(5.5)</span>
+                    $$T \not\vdash \text{Cons}_T$$
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ch5-comparacao">
+            <h3><span class="section-icon">⚖️</span> Enderton vs. Mendelson</h3>
+
+            <div class="tabs">
+                <div class="tab-headers">
+                    <div class="tab-header active" onclick="switchTab(this, 'comp-tab')">Regras de Inferência</div>
+                    <div class="tab-header" onclick="switchTab(this, 'comp-tab')">Teorema da Dedução</div>
+                    <div class="tab-header" onclick="switchTab(this, 'comp-tab')">Completude</div>
+                </div>
+                <div class="tab-content active" data-tab-group="comp-tab">
+                    <div class="card">
+                        <div class="card-label">Enderton</div>
+                        <p>MP como <strong>única regra</strong>. Generalização é <strong>metateorema</strong>.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Mendelson</div>
+                        <p>MP + Generalização (Gen) como <strong>regras primitivas</strong>.</p>
+                    </div>
+                </div>
+                <div class="tab-content" data-tab-group="comp-tab">
+                    <div class="card">
+                        <div class="card-label">Enderton — Sem Restrições</div>
+                        <p>$\Gamma, A \vdash B \implies \Gamma \vdash A \to B$ (direto).</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Mendelson — Com Restrição</div>
+                        <p>$\Gamma, A \vdash B \implies \Gamma \vdash A \to B$, <strong>desde que</strong> nenhuma aplicação de Gen sobre variável livre de $A$ dependa de $A$.</p>
+                    </div>
+                </div>
+                <div class="tab-content" data-tab-group="comp-tab">
+                    <div class="card">
+                        <div class="card-label">Mendelson</div>
+                        <p>Completude proposicional (Lema de Kalmár) → estende via Henkin para 1ª ordem.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Enderton</div>
+                        <p>Completude unificada: saturação por testemunhas de Henkin diretamente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ch5-aritmetizacao">
+            <h3><span class="section-icon">🔢</span> Aritmetização da Sintaxe de Peano</h3>
+
+            <h4>Códigos do Sistema $\mathcal{S}$ de Mendelson</h4>
+            <table class="transition-table">
+                <thead>
+                    <tr><th>Símbolo</th><th>Código</th><th>Símbolo</th><th>Código</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>$($</td><td>3</td><td>$)$</td><td>5</td></tr>
+                    <tr><td>$,$</td><td>7</td><td>$\neg$</td><td>9</td></tr>
+                    <tr><td>$\to$</td><td>11</td><td>$\forall$</td><td>13</td></tr>
+                    <tr><td>$0$</td><td>15</td><td>$'$</td><td>17</td></tr>
+                    <tr><td>$=$</td><td>19</td><td>$x_i$</td><td>$21+8i$</td></tr>
+                </tbody>
+            </table>
+
+            <h4>Exemplo: Codificação de $x_1 = 0$</h4>
+            <p>Sequência de símbolos: $(,\ x_1,\ =,\ 0,\ )$ → códigos $(3,\, 29,\, 19,\, 15,\, 5)$:</p>
+            <div class="equation-block">
+                <span class="eq-label">(5.6)</span>
+                $$\ulcorner x_1 = 0 \urcorner = 2^3 \cdot 3^{29} \cdot 5^{19} \cdot 7^{15} \cdot 11^5$$
+            </div>
+        </section>
+
+        <section class="section" id="ch5-exercicios">
+            <h3><span class="section-icon">📝</span> Exercícios</h3>
+            <div class="card exercise-card">
+                <div class="card-label">Exercício Resolvido 1</div>
+                <p>Explique o Lema do Ponto Fixo e como ele evita o Paradoxo do Mentiroso.</p>
+                <div class="spoiler">
+                    <button class="spoiler-btn" onclick="toggleSpoiler(this)">👁 Ver Solução</button>
+                    <div class="spoiler-content">
+                        <div class="inner">
+                            <p>O Paradoxo do Mentiroso ("esta sentença é falsa") gera contradição semântica. No formalismo de Gödel:</p>
+                            <ul class="content-list">
+                                <li>O Ponto Fixo constrói $\sigma$ com $T \vdash \sigma \leftrightarrow \beta(\mathbf{S}^{\ulcorner \sigma \urcorner}0)$.</li>
+                                <li>Tarski provou que verdade é <strong>indefinível</strong> na própria linguagem.</li>
+                                <li>Provabilidade ($\mathcal{P}_T(x,y)$) <strong>é</strong> expressável — é computável.</li>
+                                <li>Escolhendo $\beta(y) = \forall x\, \neg \mathcal{P}_T(x, y)$, obtemos $\mathcal{G}$: "eu não sou provável".</li>
+                                <li>A ausência de prova para $\mathcal{G}$ significa <strong>incompletude</strong>, não paradoxo. ∎</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- CONCLUSIONS -->
+        <!-- ============================================================ -->
+        <div class="chapter-header" id="conclusao">
+            <div class="chapter-label">Conclusões</div>
+            <h2>Conclusões Lógicas e Práticas</h2>
+        </div>
+
+        <section class="section">
+            <p>A investigação unificada da Teoria da Computação, da Complexidade Computacional e da Lógica Matemática revela que esses campos compartilham a mesma essência estrutural. Os limites de provabilidade de Gödel (1931) encontram reflexo nas barreiras de decidibilidade de Turing (1936): o loop infinito de uma fita equivale à existência de sentenças verdadeiras sem prova formal.</p>
+
+            <p>A <strong>Tese de Church-Turing</strong> unifica hardware e software sob regras de transição lógicas universais. A classificação assintótica da Complexidade delimita os limites práticos da engenharia. A lógica de primeira ordem ergue-se como o formalismo rigoroso que valida todo o arcabouço dedutivo.</p>
+
+            <div class="alert-box info">
+                <div class="alert-title">💎 Insight Fundamental</div>
+                <p>A computação e a matemática constituem um único e magnífico monumento ao pensamento abstrato universal.</p>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- REFERENCES -->
+        <!-- ============================================================ -->
+        <section class="section" id="referencias">
+            <h3><span class="section-icon">📚</span> Bibliografia</h3>
+            <div class="bib-item">
+                <span class="bib-author">Michael Sipser</span>,
+                <span class="bib-title">Introduction to the Theory of Computation</span>, 3rd Ed.
+                Capítulos 1-3 (Linguagens, Church-Turing), 7-8 (Complexidade).
+            </div>
+            <div class="bib-item">
+                <span class="bib-author">Herbert B. Enderton</span>,
+                <span class="bib-title">A Mathematical Introduction to Logic</span>, 2nd Ed.
+                Capítulos 2 (Lógica de 1ª Ordem) e 3 (Indecidibilidade).
+            </div>
+            <div class="bib-item">
+                <span class="bib-author">Elliott Mendelson</span>,
+                <span class="bib-title">Introduction to Mathematical Logic</span>, 6th Ed.
+                Capítulos 2 (Lógica e Modelos) e 3 (Aritmética Formal de Peano).
+            </div>
+        </section>
+
+        <!-- ===== EQUATION COMPATIBILITY SECTION ===== -->
+        <section class="section" id="equation-compat">
+            <h3><span class="section-icon">📄</span> Compatibilidade com DOCX / Google Docs</h3>
+            <div class="card">
+                <div class="card-label">Sobre as Equações</div>
+                <p>Todas as equações deste documento foram convertidas de notação LaTeX inline para formato compatível com:</p>
+                <ul class="content-list">
+                    <li><strong>DOCX (Word):</strong> Use inserir → Equação e cole a notação LaTeX diretamente (suportado desde Word 2016+).</li>
+                    <li><strong>Google Docs:</strong> Use o add-on <em>Auto-LaTeX Equations</em> ou <em>Hypatia Create</em> para renderizar automaticamente.</li>
+                    <li><strong>Web (este site):</strong> Renderizado via <strong>KaTeX</strong> para máxima performance.</li>
+                </ul>
+                <p>Formato padrão utilizado: <code>$...$</code> para inline, <code>$$...$$</code> para display.</p>
+            </div>
+        </section>
+
+    </div><!-- .content-wrapper -->
+</main>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="Voltar ao topo">↑</button>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ===== SIDEBAR NAVIGATION =====
+function toggleChapter(el) {
+    const sections = el.nextElementSibling;
+    const isExpanded = el.classList.contains('expanded');
+
+    el.classList.toggle('expanded');
+    sections.classList.toggle('open');
+}
+
+function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Close sidebar on mobile
+        if (window.innerWidth <= 1024) {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('visible');
+        }
+    }
+}
+
+// Sidebar toggle (mobile)
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    sidebarOverlay.classList.toggle('visible');
+});
+
+sidebarOverlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    sidebarOverlay.classList.remove('visible');
+});
+
+// ===== SEARCH =====
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    const links = document.querySelectorAll('.nav-section-link');
+    links.forEach(link => {
+        const text = link.textContent.toLowerCase();
+        link.style.display = text.includes(query) || query === '' ? '' : 'none';
+    });
+});
+
+// ===== READING PROGRESS =====
+const progressFill = document.getElementById('progressFill');
+const progressPercent = document.getElementById('progressPercent');
+
+window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = Math.min(Math.round((scrolled / total) * 100), 100);
+    progressFill.style.width = percent + '%';
+    progressPercent.textContent = percent + '%';
+
+    // Scroll to top button
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    if (scrolled > 500) {
+        scrollTopBtn.classList.add('visible');
+    } else {
+        scrollTopBtn.classList.remove('visible');
+    }
+
+    // Active section tracking
+    updateActiveSection();
+});
+
+function updateActiveSection() {
+    const sections = document.querySelectorAll('.section[id], .chapter-header[id]');
+    const links = document.querySelectorAll('.nav-section-link');
+    let currentId = '';
+
+    sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 150) {
+            currentId = section.id;
+        }
+    });
+
+    links.forEach(link => {
+        const onclickStr = link.getAttribute('onclick') || '';
+        if (onclickStr.includes(currentId) && currentId) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+// ===== COLLAPSIBLE =====
+function toggleCollapsible(header) {
+    header.classList.toggle('open');
+    const body = header.nextElementSibling;
+    body.classList.toggle('open');
+}
+
+// ===== TABS =====
+function switchTab(tabHeader, tabGroup) {
+    const parent = tabHeader.closest('.tabs');
+    const headers = parent.querySelectorAll('.tab-header');
+    const contents = parent.querySelectorAll('.tab-content');
+    const index = Array.from(headers).indexOf(tabHeader);
+
+    headers.forEach(h => h.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
+
+    tabHeader.classList.add('active');
+    contents[index].classList.add('active');
+}
+
+// ===== SPOILER =====
+function toggleSpoiler(btn) {
+    const content = btn.nextElementSibling;
+    content.classList.toggle('revealed');
+    btn.textContent = content.classList.contains('revealed') ? '🙈 Ocultar Solução' : '👁 Ver Solução';
+}
+
+// ===== AFD SIMULATOR =====
+const afdTransitions = {
+    'q_empty': { '0': 'q_0', '1': 'q_empty' },
+    'q_0':     { '0': 'q_00', '1': 'q_empty' },
+    'q_00':    { '0': 'q_00', '1': 'q_001' },
+    'q_001':   { '0': 'q_0', '1': 'q_empty' }
+};
+
+const stateNames = {
+    'q_empty': 'q∅',
+    'q_0': 'q₀',
+    'q_00': 'q₀₀',
+    'q_001': 'q₀₀₁'
+};
+
+let afdStepIndex = 0;
+let afdCurrentState = 'q_empty';
+
+function runAFDSimulator() {
+    const input = document.getElementById('afdInput').value.trim();
+    const output = document.getElementById('afdOutput');
+
+    if (!/^[01]*$/.test(input)) {
+        output.innerHTML = '<span class="step-rejected">❌ Erro: Use apenas 0s e 1s.</span>';
+        return;
+    }
+
+    let state = 'q_empty';
+    let trace = `<span class="step-highlight">═══ Simulação do AFD M₂ ═══</span>\n`;
+    trace += `Entrada: "${input}" (|w| = ${input.length})\n\n`;
+    trace += `Estado Inicial: ${stateNames[state]}\n`;
+    trace += `${'─'.repeat(40)}\n`;
+
+    for (let i = 0; i < input.length; i++) {
+        const symbol = input[i];
+        const prev = state;
+        state = afdTransitions[state][symbol];
+        trace += `Passo ${i + 1}: δ(${stateNames[prev]}, ${symbol}) = ${stateNames[state]}\n`;
+    }
+
+    trace += `${'─'.repeat(40)}\n`;
+    const accepted = state === 'q_001';
+    if (accepted) {
+        trace += `\n<span class="step-accepted">✅ ACEITA — Estado final: ${stateNames[state]} ∈ F</span>`;
+    } else {
+        trace += `\n<span class="step-rejected">❌ REJEITADA — Estado final: ${stateNames[state]} ∉ F</span>`;
+    }
+
+    output.innerHTML = trace;
+}
+
+function stepAFD() {
+    const input = document.getElementById('afdInput').value.trim();
+    const output = document.getElementById('afdOutput');
+
+    if (!/^[01]*$/.test(input)) {
+        output.innerHTML = '<span class="step-rejected">❌ Erro: Use apenas 0s e 1s.</span>';
+        return;
+    }
+
+    if (afdStepIndex === 0) {
+        afdCurrentState = 'q_empty';
+        output.innerHTML = `<span class="step-highlight">═══ Passo a Passo ═══</span>\n`;
+        output.innerHTML += `Entrada: "${input}"\nEstado Inicial: ${stateNames[afdCurrentState]}\n${'─'.repeat(40)}\n`;
+    }
+
+    if (afdStepIndex < input.length) {
+        const symbol = input[afdStepIndex];
+        const prev = afdCurrentState;
+        afdCurrentState = afdTransitions[afdCurrentState][symbol];
+        output.innerHTML += `Passo ${afdStepIndex + 1}: δ(${stateNames[prev]}, ${symbol}) = ${stateNames[afdCurrentState]}\n`;
+        afdStepIndex++;
+
+        if (afdStepIndex === input.length) {
+            output.innerHTML += `${'─'.repeat(40)}\n`;
+            const accepted = afdCurrentState === 'q_001';
+            if (accepted) {
+                output.innerHTML += `\n<span class="step-accepted">✅ ACEITA — ${stateNames[afdCurrentState]} ∈ F</span>`;
+            } else {
+                output.innerHTML += `\n<span class="step-rejected">❌ REJEITADA — ${stateNames[afdCurrentState]} ∉ F</span>`;
+            }
+        }
+    }
+}
+
+function resetAFD() {
+    afdStepIndex = 0;
+    afdCurrentState = 'q_empty';
+    document.getElementById('afdOutput').textContent = 'Reiniciado. Clique "Executar" ou "Passo a Passo".';
+}
+
+// ===== FRACTRAN SIMULATOR =====
+function runFRACTRAN() {
+    const a = parseInt(document.getElementById('fractranA').value) || 0;
+    const b = parseInt(document.getElementById('fractranB').value) || 0;
+    const output = document.getElementById('fractranOutput');
+    const fractions = [[5, 2], [5, 3]]; // 5/2, 5/3
+
+    let N = Math.pow(2, a) * Math.pow(3, b);
+    let trace = `<span class="step-highlight">═══ Simulação FRACTRAN: Adição ═══</span>\n`;
+    trace += `Programa: (5/2, 5/3)\n`;
+    trace += `Entrada: a = ${a}, b = ${b}\n`;
+    trace += `N₀ = 2^${a} · 3^${b} = ${N}\n`;
+    trace += `${'─'.repeat(45)}\n`;
+
+    let step = 0;
+    const maxSteps = 200;
+
+    while (step < maxSteps) {
+        let applied = false;
+        for (let i = 0; i < fractions.length; i++) {
+            const [p, q] = fractions[i];
+            const result = N * p / q;
+            if (Number.isInteger(result)) {
+                step++;
+                const factorization = factorize(result);
+                trace += `Passo ${step}: N · (${p}/${q}) = ${N} · ${p}/${q} = ${result}`;
+                trace += ` ${factorization}\n`;
+                N = result;
+                applied = true;
+                break;
+            }
+        }
+        if (!applied) break;
+    }
+
+    trace += `${'─'.repeat(45)}\n`;
+
+    // Extract result from exponent of 5
+    let result = 0;
+    let temp = N;
+    while (temp % 5 === 0) {
+        result++;
+        temp /= 5;
+    }
+
+    trace += `\n<span class="step-accepted">✅ RESULTADO: N_final = ${N} = 5^${result}</span>\n`;
+    trace += `<span class="step-accepted">   a + b = ${a} + ${b} = ${result}</span>`;
+
+    output.innerHTML = trace;
+}
+
+function factorize(n) {
+    if (n <= 1) return '';
+    let factors = [];
+    const primes = [2, 3, 5, 7, 11, 13];
+    let temp = n;
+    for (const p of primes) {
+        let exp = 0;
+        while (temp % p === 0) {
+            exp++;
+            temp /= p;
+        }
+        if (exp > 0) factors.push(`${p}^${exp}`);
+    }
+    if (temp > 1) factors.push(temp.toString());
+    return factors.length > 0 ? `(${factors.join(' · ')})` : '';
+}
+
+// ===== INITIAL RENDER =====
+document.addEventListener('DOMContentLoaded', () => {
+    // Responsive sidebar
+    if (window.innerWidth <= 1024) {
+        sidebarToggle.style.display = 'flex';
+    }
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 1024) {
+            sidebarToggle.style.display = 'flex';
+        } else {
+            sidebarToggle.style.display = 'none';
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('visible');
+        }
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+{
+  "id": "D01.02",
+  "dominio_id": "D01",
+  "nome": "Teoria dos Conjuntos, Relações e Funções",
+  "nivel": "Staff",
+  "carga_horaria": "26-32h",
+  "prerequisitos": [
+    "Lógica proposicional",
+    "Álgebra básica"
+  ],
+  "objetivos": [
+    "Conectar fundamentos de conjuntos à álgebra relacional",
+    "Modelar permissões, joins, domínios e grafos com rigor"
+  ],
+  "pratica_esperada": [
+    "Derivar operações SQL a partir de operações de conjuntos",
+    "Modelar hierarquia de permissões como reticulado"
+  ],
+  "teoria": [
+    "axiomas",
+    "conjuntos-infinitos",
+    "cardinalidade",
+    "relacoes",
+    "funcoes",
+    "produto-cartesiano",
+    "conjunto-potencia",
+    "classes-de-equivalencia",
+    "relacoes-de-ordem",
+    "ordens-parciais",
+    "lattice",
+    "reticulados",
+    "algebra-relacional",
+    "semantica-de-select-join-intersect-e-except"
+  ],
+  "algoritmos_tecnicas": [
+    "fecho-transitivo",
+    "particionamento-por-equivalencia",
+    "ordenacao-parcial",
+    "calculo-relacional"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Halmos, Naive Set Theory",
+    "Enderton, Elements of Set Theory",
+    "Abiteboul, Hull & Vianu, Foundations of Databases"
+  ],
+  "papers_fundamentais": [
+    "Codd, A relational model of data for large shared data banks, 1970"
+  ],
+  "ferramentas": [
+    "SQL",
+    "Datalog",
+    "dbt tests",
+    "Graphviz"
+  ],
+  "perguntas_entrevista_staff": [
+    "Por que JOIN é produto cartesiano filtrado?",
+    "Como relações de ordem aparecem em governança e lineage?"
+  ],
+  "projetos_reais": [
+    "Implementar um avaliador mínimo de álgebra relacional sobre CSVs"
+  ],
+  "exercicios": [
+    "Provar propriedades de equivalência em deduplicação",
+    "Desenhar um lattice de privilégios para um domínio de dados"
+  ],
+  "tags": [
+    "Conjuntos",
+    "Relações",
+    "Funções",
+    "Lattice",
+    "Álgebra Relacional"
+  ]
+}

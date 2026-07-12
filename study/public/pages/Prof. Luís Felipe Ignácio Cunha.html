@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html lang="pt-br"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prof. Luís Felipe Ignácio Cunha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg:        #0d0d14;
+            --bg-card:   #111120;
+            --bg-card2:  #14142a;
+            --border:    #1e1e35;
+            --border2:   #2a2a40;
+            --text:      #e8e8f0;
+            --text-muted:#a0a0c0;
+            --text-dim:  #60608b;
+            --accent:    #BD93F9;
+            --accent-dim:rgba(189, 147, 249, 0.12);
+            --accent-mid:rgba(189, 147, 249, 0.25);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding-top: 56px;
+            line-height: 1.6;
+        }
+
+        /* ── Nav ── */
+        nav.top-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+            height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .nav-left { display: flex; align-items: center; gap: 1rem; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+            background: var(--accent-dim); border: 1px solid var(--accent-mid);
+            border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+            text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+        }
+        .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+        .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+        .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+
+        /* UFF Original Header Override */
+        body > header {
+            background-color: var(--bg-card) !important;
+            border-bottom: 1px solid var(--border) !important;
+            padding: 1.5rem 0 !important;
+            margin-top: 0 !important;
+        }
+        body > header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        body > header h1 {
+            font-size: 1.4rem !important;
+            font-weight: 800 !important;
+            color: var(--text) !important;
+        }
+        body > header nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        body > header nav a {
+            color: var(--text-muted) !important;
+            text-decoration: none !important;
+            font-size: 0.9rem !important;
+            font-weight: 600 !important;
+            transition: color 0.2s !important;
+        }
+        body > header nav a:hover {
+            color: var(--accent) !important;
+        }
+
+        /* Layout Override */
+        main {
+            max-width: 1000px;
+            margin: 2rem auto !important;
+            padding: 0 1.5rem !important;
+        }
+        .biografia {
+            background-color: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 12px;
+            padding: 2.5rem !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        h2 {
+            font-size: 1.6rem !important;
+            font-weight: 800 !important;
+            color: var(--text) !important;
+            margin-bottom: 1.5rem !important;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+        b, i {
+            color: var(--text) !important;
+        }
+        .biografia p {
+            color: var(--text-muted) !important;
+            font-size: 0.95rem !important;
+            margin-bottom: 1rem !important;
+        }
+        a {
+            color: var(--accent) !important;
+            text-decoration: none !important;
+            transition: opacity 0.2s !important;
+        }
+        a:hover {
+            opacity: 0.8 !important;
+            text-decoration: underline !important;
+        }
+        ul {
+            list-style-type: none !important;
+            padding-left: 0 !important;
+            margin-bottom: 1.5rem !important;
+        }
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        ul li::before {
+            content: "•";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        ul li a {
+            font-size: 0.95rem !important;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+        iframe {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border) !important;
+            background-color: #000;
+        }
+        
+        /* Footer */
+        body > footer {
+            text-align: center;
+            padding: 2rem 0 !important;
+            border-top: 1px solid var(--border) !important;
+            background-color: var(--bg) !important;
+            color: var(--text-muted) !important;
+            font-size: 0.85rem !important;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <a href="/" class="back-btn">← Roadmap</a>
+            <div class="nav-brand"><span>BLOCO 01</span> Matemática Discreta - UFF</div>
+        </div>
+    </nav>
+    <header>
+        <div class="container">
+            <h1>Luís Felipe Ignácio Cunha</h1>
+            <nav>
+                <ul>
+                    <li><a href="https://profs.ic.uff.br/~lfignacio/index.html">Home</a></li>
+                    <li><a href="https://profs.ic.uff.br/~lfignacio/about.html">About me</a></li>
+                    <li><a href="https://profs.ic.uff.br/~lfignacio/research.html">Research</a></li>
+                    <li><a href="https://profs.ic.uff.br/~lfignacio/teaching.html">Teaching</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="sobre">
+            <div class="container">
+                <div class="biografia">
+<h2>Fundamentos Matemáticos para Computacão / Matemática Discreta</h2>
+<p class="text-justify"><b><i>Ementa:</i></b></p>
+
+<p class="text-justify"><b><i>Ementa:</i></b></p>
+
+<p class="text-justify">
+Lógica proposicional; Lógica de primeira ordem; Teoria dos conjuntos; Análise Combinatória; Técnicas de Demonstração; Introdução a Análise de Algoritmos
+
+</p>
+
+<p class="text-justify">
+<b><i>Bibliografia:</i></b></p>
+
+<p class="text-justify">
+GERSTING, J. Fundamentos Matemáticos para a Ciência da Computação - Um tratamento moderno da Matemática Discreta. 5a edição. Rio de Janeiro, LTC, 2004.
+<br>
+
+SANTOS, J.P.O, MELLO, M.P, MURARI, I.T.C. Introdução à Análise Combinatória. Ed. Unicamp, 2002.
+<br>
+
+MENEZES, P.B. Matemática Discreta para Computação e Informática. Porto Alegre: Sagra Luzzatto. 2008.
+<br>
+
+IEZZI, G, MURAKAMI, C., Fundamentos de Matemática Elementa. Vol. 1, Ed. Atual, 1983.
+
+</p>
+
+
+<p class="text-justify">
+<b><i>Playlist:</i></b></p>
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PL6mfjjCaO1WrEJ0JKRyXO3QjaPkJaSvAS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</center>
+
+<br>
+No meu canal do YouTube há outras playlists desse curso, com aulas fazendo exercícios e tirando dúvidas. Vejam lá.
+
+
+<br>
+
+
+<p class="text-justify">
+<b><i>Slides - Todo o curso:</i></b></p>
+
+
+<ul class="text-justify">
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula0.pdf" target="_blank" style="color: #006666">Aula 0 - Apresentação do curso</a></li>
+
+<br>
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula1.pdf" target="_blank" style="color: #006666">Aula 1 - Enunciados e Simbolização</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula2.pdf" target="_blank" style="color: #006666">Aula 2 - Tabelas e Equivalências </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula3.pdf" target="_blank" style="color: #006666">Aula 3 - Negação e Argumentos </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula4.pdf" target="_blank" style="color: #006666">Aula 4 - Enunciados Quantificados </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula5.pdf" target="_blank" style="color: #006666">Aula 5 - Equivalências de Enunciados Quantificados </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula6.pdf" target="_blank" style="color: #006666">Aula 6 - Passos Lógicos e Demonstrações </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula7.pdf" target="_blank" style="color: #006666">Aula 7 - Teoria dos Conjuntos: noções iniciais </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula8.pdf" target="_blank" style="color: #006666">Aula 8 - Álgebra dos conjuntos e cardinalidade dos conjuntos </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula9.pdf" target="_blank" style="color: #006666">Aula 9 - Princípio Aditivo, Multiplicativo e Aplicações </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula10.pdf" target="_blank" style="color: #006666">Aula 10 - Combinações com Repetição </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula11.pdf" target="_blank" style="color: #006666">Aula 11 - Triângulo de Pascal </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula12.pdf" target="_blank" style="color: #006666">Aula 12 - Binômio de Newton </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula13.pdf" target="_blank" style="color: #006666">Aula 13 - Técnicas de Demonstrações (parte I) </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula14.pdf" target="_blank" style="color: #006666">Aula 14 - Técnicas de Demonstrações (parte II) </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula15.pdf" target="_blank" style="color: #006666">Aula 15 - Indução Matemática </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/FMCAula16.pdf" target="_blank" style="color: #006666">Aula 16 - Relações de Recorrência </a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/PIM.pdf" target="_blank" style="color: #006666">Prova da Indução Matemática</a></li>
+
+
+</ul>
+
+<p class="text-justify">
+<b><i>Listas:</i></b></p>
+
+
+<ul class="text-justify">
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista1.pdf" target="_blank" style="color: #006666">Lista 1</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista2.pdf" target="_blank" style="color: #006666">Lista 2</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista3.pdf" target="_blank" style="color: #006666">Lista 3</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista4.pdf" target="_blank" style="color: #006666">Lista 4</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista5.pdf" target="_blank" style="color: #006666">Lista 5</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista6.pdf" target="_blank" style="color: #006666">Lista 6</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista7.pdf" target="_blank" style="color: #006666">Lista 7</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista8.pdf" target="_blank" style="color: #006666">Lista 8</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/lista9.pdf" target="_blank" style="color: #006666">Lista 9</a></li>
+
+<br>
+
+
+<!-- <li><a href="fmc/atividades/lista10.pdf"target="_blank" style="color: #006666">Lista 10</a></li> -->
+
+
+</ul>
+
+
+
+<p class="text-justify">
+<b><i>Exercícios de Revisão:</i></b></p>
+
+
+<ul class="text-justify">
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/rev1.pdf" target="_blank" style="color: #006666">Revisão 1</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/rev2.pdf" target="_blank" style="color: #006666">Revisão 2</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/rev3.pdf" target="_blank" style="color: #006666">Revisão 3</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/rev4.pdf" target="_blank" style="color: #006666">Revisão 4</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/rev5.pdf" target="_blank" style="color: #006666">Revisão 5</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/rev1-5.pdf" target="_blank" style="color: #006666">Revisão 1 a 5</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/rev6.pdf" target="_blank" style="color: #006666">Revisão 6</a></li>
+
+<br>
+
+
+<li><a href="https://profs.ic.uff.br/~lfignacio/fmc/atividades/rev7.pdf" target="_blank" style="color: #006666">Revisão 7</a></li>
+
+<br>
+
+
+</ul>
+
+<br>
+No meu canal do YouTube há outras playlists desse curso, com aulas fazendo exercícios e tirando dúvidas. Vejam lá.
+
+
+
+<br>
+      <p class="text-justify"><i>
+Se você tem alguma dúvida ou sugestão, sinta-se à vontade em me mandar uma mensagem. <a href="mailto:lfignacio@ic.uff.br" style="color: #006666">email</a>.</i>
+      </p>
+
+
+    </div>
+
+</div>
+            
+        </section>
+
+        <section id="sobre">
+            </section>
+
+        <section id="pesquisa">
+            </section>
+
+        <section id="publicacoes">
+            </section>
+
+        <section id="contato">
+            </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 - Professor Luís Felipe Ignácio Cunha</p>
+        </div>
+    </footer>
+
+
+</body></html>

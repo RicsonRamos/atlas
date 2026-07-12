@@ -1,0 +1,71 @@
+{
+  "id": "D09.04",
+  "dominio_id": "D09",
+  "nome": "SRE, Resiliência e Disaster Recovery",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Observabilidade",
+    "Infraestrutura cloud"
+  ],
+  "objetivos": [
+    "Projetar confiabilidade mensurável",
+    "Preparar recuperação realista para dados e metadados"
+  ],
+  "pratica_esperada": [
+    "Criar plano DR de lakehouse e catálogo",
+    "Executar game day de falha regional"
+  ],
+  "teoria": [
+    "slo",
+    "error-budget",
+    "rto",
+    "rpo",
+    "dr-drills",
+    "chaos-engineering",
+    "capacity-planning",
+    "incident-command"
+  ],
+  "algoritmos_tecnicas": [
+    "burn-rate-alerting",
+    "failover-decision-tree",
+    "backup-verification"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Beyer et al., Site Reliability Engineering",
+    "Nygard, Release It!"
+  ],
+  "papers_fundamentais": [
+    "Beyer et al., Site Reliability Engineering, 2016",
+    "Basiri et al., Chaos engineering, 2016"
+  ],
+  "ferramentas": [
+    "Prometheus",
+    "Grafana",
+    "PagerDuty",
+    "LitmusChaos",
+    "Velero"
+  ],
+  "perguntas_entrevista_staff": [
+    "RTO e RPO são decisão técnica ou de negócio?",
+    "Como testar backup sem confiança cega?"
+  ],
+  "projetos_reais": [
+    "Game day de plataforma de dados com relatório de gaps"
+  ],
+  "exercicios": [
+    "Definir SLO de catálogo",
+    "Restaurar metadados em ambiente isolado"
+  ],
+  "tags": [
+    "SRE",
+    "DR",
+    "RTO",
+    "RPO",
+    "Chaos"
+  ]
+}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos Matemáticos da Computação (CK0181) (Graduação)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg:        #0d0d14;
+            --bg-card:   #111120;
+            --bg-card2:  #14142a;
+            --border:    #1e1e35;
+            --border2:   #2a2a40;
+            --text:      #e8e8f0;
+            --text-muted:#a0a0c0;
+            --text-dim:  #60608b;
+            --accent:    #BD93F9;
+            --accent-dim:rgba(189, 147, 249, 0.12);
+            --accent-mid:rgba(189, 147, 249, 0.25);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding-top: 86px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ── Nav ── */
+        nav.top-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+            height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .nav-left { display: flex; align-items: center; gap: 1rem; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+            background: var(--accent-dim); border: 1px solid var(--accent-mid);
+            border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+            text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+        }
+        .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+        .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+        .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+
+        /* Container & Cards */
+        .page-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem;
+        }
+        .content-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            background: -webkit-linear-gradient(0deg, #BD93F9, #FF79C6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        ul li::before {
+            content: "•";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        ul ul {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+        }
+        ul ul li::before {
+            content: "◦";
+            color: var(--text-muted);
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+        p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        b {
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <a href="/" class="back-btn">← Roadmap</a>
+            <div class="nav-brand"><span>BLOCO 01</span> FMC (CK0181) - UFC</div>
+        </div>
+    </nav>
+    <div class="page-container">
+        <div class="content-card">
+            <h1>UFC - Curso de Engenharia de Computação</h1>
+<h2>Fundamentos Matemáticos da Computação (CK0181)</h2>
+
+<hr>
+<b>Semestre:</b> 2021.2 <br>
+<b>Horário:</b> Segundas e Sextas 08:00-10:00<br>
+<b>Local:</b> Aulas Remotas<br>
+<b>Atendimento:</b> Por meio do SIGAA da disciplina ou pelo email: <b>rudini @ dc . ufc . br</b><br>
+
+<hr>
+<h2>Apresentação</h2>
+<ul>
+<li><p><a href="https://www.youtube.com/playlist?list=PL6mfjjCaO1WrEJ0JKRyXO3QjaPkJaSvAS">Vídeo-aulas - Playlist no Youtube</a></p>
+</li><li><p><a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.ementa.pdf">Ementa oficial DC-UFC</a></p>
+</li><li><p><a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.notas.pdf">Notas</a> (<a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.grafico.pdf">Gráfico notas</a>)</p>
+</li><li><p><a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.slides.pdf">Slides PDF</a> (<a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.slides.tex">TeX</a>)</p>
+</li></ul>
+
+<hr>
+<h2>Listas de Exercícios</h2>
+<ul>
+<li><p><a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.lista1.pdf">Lista 1</a> <b>(Prova 06-Novembro-2021)</b></p>
+</li><li><p><a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.lista2.pdf">Lista 2</a> <b>(Prova 18-Dezembro-2021)</b></p>
+</li><li><p><a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.lista3.pdf">Lista 3</a> <b>(Prova 05-Fevereiro-2022)</b></p>
+</li></ul>
+
+<hr>
+<h2>Ementa:</h2>
+
+A ementa do curso é a seguinte:
+
+
+<ul>
+<li>Introdução a Lógica Matemática</li>
+   <ul>
+   <li>Formalismo (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula01.pdf">pdf</a>)</li>
+   <li>Sentenças e Tabelas Verdade (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula02.pdf">pdf</a>)</li>
+   <li>Implicações Lógicas, Equivalências (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula03.pdf">pdf</a>)</li>
+   <li>Quantificadores e Fórmulas (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula04.pdf">pdf</a>)</li>
+   </ul>
+<li>Introdução à Teoria dos Conjuntos</li>
+   <ul>
+   <li>Introdução (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula06.pdf">pdf</a>)</li>
+   <li>Definições (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula07.pdf">pdf</a>)</li>
+   <li>Os Axiomas (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula08.pdf">pdf</a>)</li>
+   <li>Operações Elementares (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula09.pdf">pdf</a>)</li>
+   <li>Propriedades (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula10.pdf">pdf</a>)</li>
+   </ul>
+<li>Demonstrações</li>
+   <ul>
+   <li>Noções Básicas de Demonstração: Vacuidade, Contradição, Construção (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula05.pdf">pdf</a>)</li>
+   <li>Números Naturais (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula17.pdf">pdf</a>)</li>
+   <li>Princípio da Indução Matemática (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula18.pdf">pdf</a>)</li>
+   <li>Conjuntos Infinitos (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula20.pdf">pdf</a>)</li>
+   </ul>
+<li>Relações, Funções e Ordens</li>
+   <ul>
+   <li>Pares Ordenados (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula11.pdf">pdf</a>)</li>
+   <li>Relações Binárias (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula12.pdf">pdf</a>)</li>
+   <li>Relações Binárias em um Conjunto (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula13.pdf">pdf</a>)</li>
+   <li>Equivalências e Partições (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula14.pdf">pdf</a>)</li>
+   <li>Ordens Parciais (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula15.pdf">pdf</a>)</li>
+   <li>Funções (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula16.pdf">pdf</a>)</li>
+   <li>Sequências e Recorrências (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula21.pdf">pdf</a>)</li>
+   </ul>
+<li>Contagem</li>
+   <ul>
+   <li>Princípio da Casa dos Pombos (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula19.pdf">pdf</a>)</li>
+   <li>Princípio da Inclusão e Exclusão (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula22.pdf">pdf</a>)</li>
+   <li>Permutações (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula23.pdf">pdf</a>)</li>
+   <li>Combinações (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula24.pdf">pdf</a>)</li>
+   <li>Probabilidade Discreta (<a href="https://sites.dc.ufc.br/~rudini/ufc/md.aula25.pdf">pdf</a>)</li>
+   </ul>
+<li>Introdução a Teoria dos Grafos</li>
+   <ul>
+   <li>Introdução: definições e resultados básicos</li>
+   <li>Conjunto independente e clique</li>
+   </ul>
+</ul>
+
+<hr>
+<h2>Livro-texto:</h2>
+
+<ul>
+<li><b>Edward R. Scheinerman</b>, <i>Matemática Discreta, uma introdução</i>, Editora Cengage Learning, 2011.</li>
+<li><b>Anamaria Gomide, Jorge Stolfi</b>, <i><a href="https://www.ic.unicamp.br/~stolfi/fmc-book/2018-01-02-js/livro.pdf">Elementos de Matemática Discreta para Computação</a></i>, UNICAMP, 2018. (<a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.livro.unicamp.pdf">PDF livro</a>) (<a href="https://sites.dc.ufc.br/~rudini/ufc/2021ii/fmc.livro.anotado.pdf">PDF anotações professor</a>)</li>
+</ul>
+
+<hr>
+<h2>Bibliografia adicional:</h2>
+<ul>
+<li><b>L. Lovasz, J. Pelikan, K. Vesztergombi</b>, <i>Matemática Discreta</i>, Editora SBM, 2005.</li>
+<li><b>Judith L. Gersting</b>, <i>Fundamentos Matemáticos para a Ciência da Computação</i>, Editora LTC, 4o Edição, 2001.</li>
+</ul>
+        </div>
+    </div>
+</body>
+</html>

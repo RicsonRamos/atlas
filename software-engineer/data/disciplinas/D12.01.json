@@ -1,0 +1,68 @@
+{
+  "id": "D12.01",
+  "dominio_id": "D12",
+  "nome": "Estratégia Técnica e Trade-offs Arquiteturais",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Experiência em sistemas de produção"
+  ],
+  "objetivos": [
+    "Tomar decisões explícitas sob restrição",
+    "Alinhar arquitetura a estratégia de negócio e plataforma"
+  ],
+  "pratica_esperada": [
+    "Escrever estratégia técnica de 12 meses",
+    "Criar matriz de decisão para lakehouse, warehouse e streaming"
+  ],
+  "teoria": [
+    "fitness-functions",
+    "architecture-characteristics",
+    "trade-off-analysis",
+    "evolutionary-architecture",
+    "build-vs-buy",
+    "platform-roadmap"
+  ],
+  "algoritmos_tecnicas": [
+    "weighted-scoring",
+    "risk-matrix",
+    "cost-benefit-model"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Ford et al., Software Architecture: The Hard Parts",
+    "Richards & Ford, Fundamentals of Software Architecture",
+    "Larson, Staff Engineer"
+  ],
+  "papers_fundamentais": [
+    "Ford, Parsons & Kua, Evolutionary Architecture, 2017"
+  ],
+  "ferramentas": [
+    "ADR",
+    "C4 Model",
+    "Miro",
+    "Structurizr",
+    "Architecture fitness tests"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como decidir entre centralizar e federar?",
+    "Qual trade-off você aceitaria e monitoraria?"
+  ],
+  "projetos_reais": [
+    "Estratégia de modernização de plataforma com fases, riscos e métricas"
+  ],
+  "exercicios": [
+    "Criar ADR com alternativas reais",
+    "Definir fitness functions para arquitetura"
+  ],
+  "tags": [
+    "Architecture",
+    "Trade-offs",
+    "Strategy",
+    "ADR",
+    "Roadmap"
+  ]
+}

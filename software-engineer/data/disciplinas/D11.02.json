@@ -1,0 +1,75 @@
+{
+  "id": "D11.02",
+  "dominio_id": "D11",
+  "nome": "Bancos Vetoriais e Busca Aproximada",
+  "nivel": "Staff",
+  "carga_horaria": "26-34h",
+  "prerequisitos": [
+    "Álgebra linear",
+    "Teoria da informação"
+  ],
+  "objetivos": [
+    "Projetar índices vetoriais com recall, latência e custo explícitos",
+    "Escolher métrica e estratégia de atualização"
+  ],
+  "pratica_esperada": [
+    "Comparar HNSW e IVF por recall/latência",
+    "Criar busca híbrida com filtros de permissão"
+  ],
+  "teoria": [
+    "ann",
+    "hnsw",
+    "ivf",
+    "pq",
+    "cosine",
+    "dot-product",
+    "euclidean-distance",
+    "hybrid-search",
+    "metadata-filtering"
+  ],
+  "algoritmos_tecnicas": [
+    "hnsw",
+    "ivf",
+    "product-quantization",
+    "bm25",
+    "reciprocal-rank-fusion"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Manning, Raghavan & Schütze, Introduction to Information Retrieval",
+    "Jurafsky & Martin, Speech and Language Processing"
+  ],
+  "papers_fundamentais": [
+    "Malkov & Yashunin, HNSW, 2018",
+    "Johnson, Douze & Jégou, Billion-scale similarity search with GPUs, 2017"
+  ],
+  "ferramentas": [
+    "FAISS",
+    "Milvus",
+    "Qdrant",
+    "Weaviate",
+    "pgvector",
+    "Elasticsearch"
+  ],
+  "perguntas_entrevista_staff": [
+    "Recall 100% é necessário em RAG?",
+    "Como filtrar por ACL sem vazar contexto?"
+  ],
+  "projetos_reais": [
+    "Benchmark de vector search com HNSW, filtros e busca híbrida"
+  ],
+  "exercicios": [
+    "Medir recall@k",
+    "Comparar cosseno e dot product"
+  ],
+  "tags": [
+    "HNSW",
+    "FAISS",
+    "pgvector",
+    "Hybrid Search",
+    "ANN"
+  ]
+}

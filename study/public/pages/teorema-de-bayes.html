@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Teorema de Bayes e Classificadores Bayesianos." />
+  <title>Teorema de Bayes | Roadmap DE & IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #111120;
+      --bg-card2:  #14142a;
+      --border:    #1e1e35;
+      --border2:   #2a2a40;
+      --text:      #e8e8f0;
+      --text-muted:#a0a0c0;
+      --text-dim:  #60608b;
+      --text-deep: #40407a;
+      --accent:    #BD93F9;
+      --accent-dim:#BD93F920;
+      --accent-mid:#BD93F940;
+      --link:      #6C63FF;
+
+      --c-g1: #50FA7B;
+      --c-g2: #FF79C6;
+      --c-g3: #8BE9FD;
+      --c-med: #FFB86C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--link); }
+
+    /* ── Nav ── */
+    nav.top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(13, 13, 20, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 1.5rem;
+      height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1rem; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 0.3rem 0.75rem;
+      background: var(--accent-dim); border: 1px solid var(--accent-mid);
+      border-radius: 6px; color: var(--accent); font-size: 0.72rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .back-btn:hover { background: var(--accent-mid); transform: translateX(-2px); }
+    .nav-brand { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+    .nav-brand span { font-size: 0.65rem; background: var(--accent-dim); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+
+    /* ── Layout ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 5rem 1.25rem 3rem; display: flex; flex-direction: column; gap: 2rem; }
+
+    .page-header { text-align: center; margin-bottom: 0.5rem; }
+    .page-header h1 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 0.6rem; }
+    .page-header h1 .accent { color: var(--accent); }
+    .page-header p { color: var(--text-muted); font-size: 0.85rem; max-width: 600px; margin: 0 auto; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 0.8rem; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; }
+
+    /* ── Tabs ── */
+    .tabs-nav { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .tab-btn {
+      padding: 0.5rem 1.2rem; border-radius: 8px 8px 0 0; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      background: transparent; border: 1px solid transparent; color: var(--text-dim); transition: all 0.2s ease; border-bottom: none;
+    }
+    .tab-btn:hover { color: var(--text-muted); background: #ffffff06; }
+    .tab-btn.active { background: var(--bg-card); border-color: var(--border); border-bottom-color: var(--bg-card); color: var(--text); position: relative; top: 1px; }
+
+    /* ── Card & Views ── */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; }
+    .view-section { display: none; animation: fadeIn 0.35s ease both; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); }
+    h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.8rem; color: var(--text); }
+    p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    strong { color: var(--text); font-weight: 700; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+    .feature-box { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; }
+    
+    .chart-wrap { position: relative; width: 100%; height: 300px; margin-top: 1.5rem; }
+
+    /* Custom Controls */
+    input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin-bottom: 1rem; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; margin-top: -6px; }
+    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--border2); border-radius: 2px; }
+    
+    /* Formula explorer */
+    .formula-container { display: flex; align-items: center; justify-content: center; gap: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 2rem; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; flex-wrap: wrap; }
+    .formula-term { padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; color: var(--text-dim); }
+    .formula-term:hover { background: var(--bg-card2); color: var(--text); }
+    .formula-term.active { background: var(--accent-dim); color: var(--accent); font-weight: 700; }
+    .formula-frac { display: flex; flex-direction: column; align-items: center; }
+    .formula-frac .top { border-bottom: 2px solid var(--border); padding-bottom: 0.2rem; margin-bottom: 0.2rem; }
+
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="/" class="back-btn">← Roadmap</a>
+      <div class="nav-brand"><span>BLOCO 01</span> Fundamentos Matemáticos</div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <div class="chip-row">
+        <span class="badge" style="background:#BD93F920;color:#BD93F9;">BLOCO 01</span>
+        <span class="badge" style="background:#6C63FF20;color:#9988ff;">CORE</span>
+      </div>
+      <h1>Decifrando o <span class="accent">Teorema de Bayes</span></h1>
+      <p>Descubra como a matemática atualiza nossas crenças com base em novas evidências e como isso se tornou o alicerce do aprendizado de máquina (ML) moderno.</p>
+    </div>
+
+    <div class="tabs-nav" id="tabs-nav">
+      <button class="tab-btn active" data-target="view-intro">🏠 O Teorema</button>
+      <button class="tab-btn" data-target="view-simulador" style="color:var(--c-g1);">🎛️ Simulador (Base Rate)</button>
+      <button class="tab-btn" data-target="view-naive" style="color:var(--c-g2);">🧠 Classificador Naive</button>
+      <button class="tab-btn" data-target="view-apps" style="color:var(--c-g3);">🚀 Aplicações</button>
+    </div>
+
+    <div class="card">
+      
+      <!-- O TEOREMA -->
+      <section id="view-intro" class="view-section active">
+        <h2>A Anatomia da Probabilidade</h2>
+        <p>O Teorema descreve a probabilidade de um evento baseado em conhecimento a priori. Clique nos elementos da fórmula para entender.</p>
+        
+        <div class="formula-container mt-8 mb-8">
+          <span id="term-posterior" class="formula-term active">P(A|B)</span>
+          <span style="color:var(--text);">=</span>
+          <div class="formula-frac">
+            <div class="top" style="display:flex;gap:0.5rem;align-items:center;">
+              <span id="term-likelihood" class="formula-term">P(B|A)</span>
+              <span style="color:var(--text);font-size:1.5rem;">×</span>
+              <span id="term-prior" class="formula-term">P(A)</span>
+            </div>
+            <span id="term-evidence" class="formula-term">P(B)</span>
+          </div>
+        </div>
+
+        <div class="feature-box" style="min-height:180px;">
+          <h3 id="exp-title" style="color:var(--accent);">Probabilidade A Posteriori (Posterior)</h3>
+          <p id="exp-text">A probabilidade de que a hipótese A seja verdadeira, dado que a evidência B ocorreu. É o que queremos descobrir: nossa crença atualizada após ver os dados.</p>
+          <div style="background:var(--bg-card2); padding:1rem; border-left:3px solid var(--accent); border-radius:4px;">
+            <strong style="color:var(--accent);">Exemplo:</strong> <span id="exp-example" style="font-size:0.85rem;color:var(--text-muted);">A probabilidade de um email ser SPAM (A) dado que ele contém a palavra "Grátis" (B).</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SIMULADOR -->
+      <section id="view-simulador" class="view-section">
+        <h2 style="color:var(--c-g1);">O Paradoxo do Teste Positivo (Base Rate Fallacy)</h2>
+        <p>Imagine um teste para uma doença rara. Ajuste os controles para ver como nossa intuição costuma falhar.</p>
+        
+        <div class="grid-2 mt-8" style="align-items:center;">
+          <div class="feature-box">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+              <label style="font-size:0.85rem; font-weight:700;">Prevalência (A priori)</label>
+              <span id="val-prev" style="color:var(--accent); font-weight:800; font-family:'JetBrains Mono';">1.0%</span>
+            </div>
+            <input type="range" id="slider-prev" min="0.1" max="50" step="0.1" value="1.0">
+            <p style="font-size:0.75rem; margin-top:-8px;">% da população doente.</p>
+
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; margin-top:1rem;">
+              <label style="font-size:0.85rem; font-weight:700;">Sensibilidade (Likelihood)</label>
+              <span id="val-sens" style="color:var(--c-g1); font-weight:800; font-family:'JetBrains Mono';">99.0%</span>
+            </div>
+            <input type="range" id="slider-sens" min="50" max="100" step="0.1" value="99.0">
+            <p style="font-size:0.75rem; margin-top:-8px;">Acerto em doentes (Teste Positivo).</p>
+
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px; margin-top:1rem;">
+              <label style="font-size:0.85rem; font-weight:700;">Especificidade</label>
+              <span id="val-spec" style="color:var(--c-g2); font-weight:800; font-family:'JetBrains Mono';">95.0%</span>
+            </div>
+            <input type="range" id="slider-spec" min="50" max="100" step="0.1" value="95.0">
+            <p style="font-size:0.75rem; margin-top:-8px;">Acerto em saudáveis (Define falsos positivos).</p>
+          </div>
+
+          <div style="text-align:center;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Probabilidade de estar doente</p>
+            <div id="result-prob" style="font-size:3.5rem; font-weight:900; color:var(--accent); line-height:1; margin:0.5rem 0; font-family:'JetBrains Mono';">16.6%</div>
+            <p style="font-size:0.8rem; color:var(--text-muted);">dado um teste POSITIVO</p>
+            
+            <div class="chart-wrap" style="height:200px;">
+              <canvas id="bayesChart"></canvas>
+            </div>
+            <p id="insight-text" style="font-size:0.75rem; background:var(--bg); border:1px solid var(--border); padding:0.5rem; border-radius:6px; margin-top:1rem;"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAIVE BAYES -->
+      <section id="view-naive" class="view-section">
+        <h2 style="color:var(--c-g2);">O Classificador "Naive" Bayes</h2>
+        <p>Como transformar Bayes em Machine Learning? Fazendo uma suposição "ingênua" de independência.</p>
+        
+        <div class="grid-2 mt-8">
+          <div>
+            <h3>O Salto para ML</h3>
+            <p style="font-size:0.85rem;">Em problemas reais, temos múltiplas features (X1, X2...). O algoritmo assume que elas são <em>independentes entre si</em> dado a classe. É "ingênuo" porque na vida real há correlações.</p>
+            <div class="feature-box" style="margin-top:1rem; text-align:center; padding:1rem; font-family:'JetBrains Mono'; font-size:0.75rem; border-color:var(--c-g2);">
+              P(C|X₁,X₂) ∝ P(X₁|C) × P(X₂|C) × P(C)
+            </div>
+          </div>
+          
+          <div class="feature-box" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+            <div style="background:var(--bg-card2); padding:0.5rem 1rem; border:1px solid var(--border); border-radius:6px; margin-bottom:0.5rem; width:100%;">X₁: Palavra "Desconto"</div>
+            <div style="background:var(--bg-card2); padding:0.5rem 1rem; border:1px solid var(--border); border-radius:6px; margin-bottom:0.5rem; width:100%;">X₂: Palavra "Grátis"</div>
+            <div style="background:var(--bg-card2); padding:0.5rem 1rem; border:1px solid var(--border); border-radius:6px; margin-bottom:1rem; width:100%;">X₃: Muitos "!!!"</div>
+            
+            <div style="color:var(--text-dim); margin-bottom:1rem;">↓↓↓</div>
+            <div style="background:var(--accent); color:#0d0d14; padding:0.8rem 2rem; border-radius:99px; font-weight:900;">SPAM?</div>
+            <p style="font-size:0.7rem; color:var(--text-muted); margin-top:1rem;">O modelo multiplica as probabilidades individuais separadamente. Simples, rápido e eficaz.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- APLICAÇÕES -->
+      <section id="view-apps" class="view-section">
+        <h2 style="color:var(--c-g3);">Aplicações no Mundo Real</h2>
+        <p>Onde o classificador brilha na indústria.</p>
+        
+        <div class="grid-3 mt-8">
+          <div class="feature-box">
+            <h3 style="color:var(--accent); font-size:1.1rem;">Filtros de Spam</h3>
+            <p style="font-size:0.8rem; margin:0;">O modelo calcula a probabilidade de um email pertencer à classe "Spam" avaliando a frequência das palavras baseadas no histórico.</p>
+          </div>
+          <div class="feature-box">
+            <h3 style="color:var(--c-g1); font-size:1.1rem;">Análise de Sentimentos</h3>
+            <p style="font-size:0.8rem; margin:0;">Classificação de tweets ou reviews. Frequentemente usado como baseline devido à velocidade com dados de texto.</p>
+          </div>
+          <div class="feature-box">
+            <h3 style="color:var(--c-med); font-size:1.1rem;">Sistemas de Recomendação</h3>
+            <p style="font-size:0.8rem; margin:0;">Filtragem colaborativa para prever se um usuário vai gostar de um item assumindo visualizações como independentes.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // Tab Logic
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.view-section');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.target).classList.add('active');
+      });
+    });
+
+    // Formula Explorer
+    const formulaData = {
+      posterior: { title: "Probabilidade A Posteriori (Posterior)", text: "O que queremos descobrir: nossa crença atualizada após ver os dados.", example: "Probabilidade de ser SPAM dado que contém 'Grátis'." },
+      likelihood: { title: "Verossimilhança (Likelihood)", text: "Probabilidade de observar a evidência, assumindo que a hipótese é verdadeira.", example: "Proporção de emails SPAM conhecidos que contêm 'Grátis'." },
+      prior: { title: "Probabilidade A Priori (Prior)", text: "Crença inicial antes da nova evidência.", example: "Probabilidade geral de receber um SPAM (ex: 40%)." },
+      evidence: { title: "Evidência (Marginal Likelihood)", text: "Probabilidade total da evidência. Fator de normalização.", example: "A probabilidade de 'Grátis' aparecer em qualquer email." }
+    };
+
+    const terms = document.querySelectorAll('.formula-term');
+    terms.forEach(term => {
+      term.addEventListener('click', e => {
+        terms.forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+        const d = formulaData[e.target.id.replace('term-', '')];
+        document.getElementById('exp-title').innerText = d.title;
+        document.getElementById('exp-text').innerText = d.text;
+        document.getElementById('exp-example').innerText = d.example;
+      });
+    });
+
+    // Chart Global
+    Chart.defaults.color = '#60608b';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    // Simulador
+    const sPrev = document.getElementById('slider-prev');
+    const sSens = document.getElementById('slider-sens');
+    const sSpec = document.getElementById('slider-spec');
+    const vPrev = document.getElementById('val-prev');
+    const vSens = document.getElementById('val-sens');
+    const vSpec = document.getElementById('val-spec');
+    const res = document.getElementById('result-prob');
+    const insight = document.getElementById('insight-text');
+
+    let doughnutChart = new Chart(document.getElementById('bayesChart'), {
+      type: 'doughnut',
+      data: { labels: ['VP (Doentes)', 'FP (Saudáveis)'], datasets: [{ data: [1,1], backgroundColor: ['#50FA7B', '#FF79C6'], borderWidth: 0 }] },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
+    });
+
+    function calc() {
+      let pr = parseFloat(sPrev.value)/100, se = parseFloat(sSens.value)/100, sp = parseFloat(sSpec.value)/100;
+      vPrev.innerText = sPrev.value+'%'; vSens.innerText = sSens.value+'%'; vSpec.innerText = sSpec.value+'%';
+      
+      let tp = se * pr;
+      let fp = (1-sp) * (1-pr);
+      let prob = tp / (tp+fp);
+      let pp = (prob*100).toFixed(1);
+      
+      res.innerText = pp+'%';
+      doughnutChart.data.datasets[0].data = [tp, fp];
+      doughnutChart.update();
+
+      if(prob < 0.2) insight.innerHTML = "A doença é rara. A maioria dos positivos são <strong>falsos alarmes</strong> da especificidade imperfeita (Falácia da Taxa Base).";
+      else if(prob < 0.8) insight.innerHTML = "O teste ajuda, mas ainda há incerteza devido à relação entre prevalência e falsos positivos.";
+      else insight.innerHTML = "Forte Evidência! Com alta prevalência ou especificidade quase perfeita, o teste positivo é confiável.";
+    }
+
+    [sPrev, sSens, sSpec].forEach(el => el.addEventListener('input', calc));
+    calc();
+
+  </script>
+</body>
+</html>

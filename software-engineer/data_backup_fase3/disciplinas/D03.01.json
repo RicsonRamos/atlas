@@ -1,0 +1,74 @@
+{
+  "id": "D03.01",
+  "dominio_id": "D03",
+  "nome": "Linguagens para Plataformas de Dados",
+  "nivel": "Staff",
+  "carga_horaria": "30-40h",
+  "prerequisitos": [
+    "Estruturas de dados",
+    "Sistemas básicos"
+  ],
+  "objetivos": [
+    "Usar Python, SQL, Scala, Rust e Java com consciência de runtime",
+    "Escolher linguagem pelo perfil de latência, ecossistema e segurança"
+  ],
+  "pratica_esperada": [
+    "Criar biblioteca Python tipada com Pydantic",
+    "Implementar transformação crítica em Rust ou Scala"
+  ],
+  "teoria": [
+    "typing",
+    "generics",
+    "memory-safety",
+    "ffi",
+    "jvm",
+    "gil",
+    "ownership-memoria-rust",
+    "dataframes",
+    "udfs"
+  ],
+  "algoritmos_tecnicas": [
+    "iterator-pipelines",
+    "vectorized-transforms",
+    "serde",
+    "lazy-evaluation"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Ramalho, Fluent Python",
+    "Matsakis & Klock, The Rust Language, 2014",
+    "Odersky, Spoon & Venners, Programming in Scala"
+  ],
+  "papers_fundamentais": [
+    "Armbrust et al., Spark SQL, 2015"
+  ],
+  "ferramentas": [
+    "Python",
+    "Pydantic",
+    "Polars",
+    "Scala",
+    "Rust",
+    "mypy"
+  ],
+  "perguntas_entrevista_staff": [
+    "Quando trocar pandas por Polars?",
+    "Como typing reduz incidentes de dados?"
+  ],
+  "projetos_reais": [
+    "SDK interno para ingestão com validação, typing e retries"
+  ],
+  "exercicios": [
+    "Criar tipos para campos sensíveis",
+    "Comparar performance pandas, Polars e Spark local"
+  ],
+  "tags": [
+    "Python",
+    "Typing",
+    "Pydantic",
+    "Polars",
+    "Rust"
+  ]
+}

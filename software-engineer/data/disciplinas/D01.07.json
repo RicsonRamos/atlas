@@ -1,0 +1,80 @@
+{
+  "id": "D01.07",
+  "dominio_id": "D01",
+  "nome": "Estatística, Experimentos e Inferência Causal",
+  "nivel": "Staff",
+  "carga_horaria": "34-42h",
+  "prerequisitos": [
+    "Probabilidade",
+    "Álgebra linear"
+  ],
+  "objetivos": [
+    "Desenhar experimentos e interpretar métricas com rigor",
+    "Separar correlação, regressão e causalidade"
+  ],
+  "pratica_esperada": [
+    "Planejar experimento de plataforma com cálculo de poder",
+    "Analisar mudança de SLA evitando p-hacking"
+  ],
+  "teoria": [
+    "inferencia-estatistica",
+    "intervalo-de-confianca",
+    "teste-z",
+    "teste-t",
+    "anova",
+    "qui-quadrado",
+    "correlacao",
+    "regressao",
+    "glm",
+    "poder-estatistico",
+    "correcao-de-bonferroni",
+    "fdr",
+    "a-b-testing",
+    "causal-inference"
+  ],
+  "algoritmos_tecnicas": [
+    "ols",
+    "logistic-regression",
+    "bootstrap-ci",
+    "difference-in-differences",
+    "propensity-score"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Casella & Berger, Statistical Inference",
+    "Wasserman, All of Statistics",
+    "Imbens & Rubin, Causal Inference"
+  ],
+  "papers_fundamentais": [
+    "Benjamini & Hochberg, Controlling the false discovery rate, 1995",
+    "Rubin, Estimating causal effects of treatments, 1974"
+  ],
+  "ferramentas": [
+    "R",
+    "statsmodels",
+    "DoWhy",
+    "EconML",
+    "SciPy"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como evitar falso positivo em dezenas de métricas?",
+    "Explique causalidade para uma decisão de produto"
+  ],
+  "projetos_reais": [
+    "Framework de avaliação A/B para mudanças em plataforma de dados"
+  ],
+  "exercicios": [
+    "Calcular intervalo de confiança de latência",
+    "Aplicar Bonferroni e FDR em múltiplos testes"
+  ],
+  "tags": [
+    "Inferência",
+    "A/B Testing",
+    "GLM",
+    "Causalidade",
+    "FDR"
+  ]
+}

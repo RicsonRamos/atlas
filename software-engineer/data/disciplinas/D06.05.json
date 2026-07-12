@@ -1,0 +1,72 @@
+{
+  "id": "D06.05",
+  "dominio_id": "D06",
+  "nome": "Semântica de Streaming Distribuído",
+  "nivel": "Staff",
+  "carga_horaria": "30-40h",
+  "prerequisitos": [
+    "Streaming",
+    "Consistência"
+  ],
+  "objetivos": [
+    "Entender processamento stateful em escala",
+    "Projetar garantias de entrega, estado e tempo de evento"
+  ],
+  "pratica_esperada": [
+    "Implementar agregação stateful com late events",
+    "Avaliar recuperação de falha com checkpoint"
+  ],
+  "teoria": [
+    "event-time",
+    "processing-time",
+    "watermarks",
+    "state-backends",
+    "checkpoint-barriers",
+    "exactly-once-sinks",
+    "windowing",
+    "backpressure"
+  ],
+  "algoritmos_tecnicas": [
+    "chandy-lamport-snapshot",
+    "two-phase-commit-sink",
+    "rocksdb-state-backend",
+    "windowed-aggregation"
+  ],
+  "arquiteturas": [],
+  "estruturas_dados": [],
+  "modelos_matematicos": [],
+  "protocolos": [],
+  "livros": [
+    "Hueske & Kalavri, Stream Processing with Apache Flink",
+    "Kleppmann, Designing Data-Intensive Applications"
+  ],
+  "papers_fundamentais": [
+    "Chandy & Lamport, Distributed snapshots, 1985",
+    "Akidau et al., The Dataflow Model, 2015",
+    "Carbone et al., Apache Flink, 2015"
+  ],
+  "ferramentas": [
+    "Flink",
+    "Spark Structured Streaming",
+    "Kafka Streams",
+    "RocksDB"
+  ],
+  "perguntas_entrevista_staff": [
+    "Como watermark decide completude?",
+    "Exactly-once entre Kafka e lakehouse exige o quê?"
+  ],
+  "projetos_reais": [
+    "Pipeline Flink com estado, checkpoint, replay e sink transacional"
+  ],
+  "exercicios": [
+    "Simular evento atrasado",
+    "Quebrar e recuperar checkpoint"
+  ],
+  "tags": [
+    "Flink",
+    "Watermarks",
+    "State",
+    "Checkpoint",
+    "Exactly-once"
+  ]
+}

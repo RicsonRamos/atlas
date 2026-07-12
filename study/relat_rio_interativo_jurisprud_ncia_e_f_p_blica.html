@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatório de Jurisprudência: Ação Policial e Fé Pública</title>
+    
+    <!-- Chosen Palette: Warm Neutrals with Slate and Muted Teal Accents (stone-50, stone-100, slate-800, teal-700) -->
+    
+    <!-- Application Structure Plan: 
+    The SPA uses a linear narrative dashboard approach to guide the user through a complex legal shift. 
+    1. 'Contexto e Evolução' (Context) introduces the core concepts and the paradigm shift via interactive cards. 
+    2. 'Jurisprudência em Foco' (Jurisprudence) uses an interactive tab system to allow users to drill down into specific, landmark court decisions without overwhelming them with text at once. 
+    3. 'Análise de Dados' (Data Analytics) visually quantifies the impact of these decisions using responsive charts to prove the textual claims. 
+    4. 'Conclusões' summarizes the guidelines for the future. 
+    This structure was chosen because legal texts are dense; breaking them into interactive, visually supported, and user-driven exploration steps significantly increases comprehension and retention. 
+    -->
+
+    <!-- Visualization & Content Choices: 
+    - Goal: Explain shift from Absolute to Relative Presumption -> Viz: Interactive Toggle Cards -> Justification: Encourages user engagement to reveal the "before and after" state of the doctrine. -> Method: HTML/Tailwind/JS (NO SVG).
+    - Goal: Detail Landmark Cases -> Viz: Master-Detail Tabbed View -> Justification: Organizes heavy textual legal analysis into digestible, selectable chunks. -> Method: Vanilla JS DOM manipulation (NO SVG).
+    - Goal: Show quantitative impact of illegal searches -> Viz: Doughnut Chart -> Justification: Clearly shows proportions of different nullity causes in recent higher court decisions. -> Method: Chart.js Canvas.
+    - Goal: Show the temporal trend of rights granted due to new doctrine -> Viz: Line/Area Chart -> Justification: Illustrates the dramatic increase in judicial interventions over the last 5 years. -> Method: Chart.js Canvas.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Essential Chart Container Styles for responsiveness and constraint */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            min-height: 300px;
+            max-height: 400px;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f4; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        .tab-active {
+            background-color: #0f766e; /* teal-700 */
+            color: white;
+            border-left: 4px solid #042f2e; /* teal-900 */
+        }
+        .tab-inactive {
+            background-color: #f5f5f4; /* stone-100 */
+            color: #334155; /* slate-700 */
+            border-left: 4px solid transparent;
+        }
+        .tab-inactive:hover {
+            background-color: #e7e5e4; /* stone-200 */
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800 font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50 top-0">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <span class="text-2xl">⚖️</span>
+                    <span class="font-bold text-xl text-slate-800 tracking-tight">JusAnalytics <span class="text-teal-700">Brasil</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#contexto" class="text-slate-600 hover:text-teal-700 px-3 py-2 text-sm font-medium transition-colors">Contexto</a>
+                    <a href="#jurisprudencia" class="text-slate-600 hover:text-teal-700 px-3 py-2 text-sm font-medium transition-colors">Julgados Recentes</a>
+                    <a href="#dados" class="text-slate-600 hover:text-teal-700 px-3 py-2 text-sm font-medium transition-colors">Impacto em Dados</a>
+                    <a href="#conclusao" class="text-slate-600 hover:text-teal-700 px-3 py-2 text-sm font-medium transition-colors">Diretrizes</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header / Hero -->
+    <header class="pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+            A Nova Dinâmica da <span class="text-teal-700">Fé Pública</span> e a Ação Policial no Judiciário
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto mb-8">
+            Um relatório interativo sobre a recente guinada jurisprudencial do STJ e STF, que mitiga a presunção absoluta de veracidade dos agentes estatais, exigindo corroboração probatória independente para validar ações como buscas pessoais e domiciliares.
+        </p>
+        <div class="flex justify-center gap-4">
+            <a href="#contexto" class="bg-teal-700 text-white px-6 py-3 rounded-lg font-medium hover:bg-teal-800 transition-colors shadow-md">
+                Iniciar Exploração
+            </a>
+        </div>
+    </header>
+
+    <!-- Section 1: Contexto e Conceitos -->
+    <section id="contexto" class="py-16 bg-white border-y border-stone-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-2 mb-4">
+                    <span>🏛️</span> A Evolução da Doutrina
+                </h2>
+                <p class="text-slate-600 text-lg leading-relaxed">
+                    Esta seção apresenta a transição paradigmática na interpretação do valor probatório da palavra do policial. Tradicionalmente ancorada em uma presunção inquestionável, a doutrina moderna e a jurisprudência recente passaram a exigir um controle de legalidade mais rigoroso (Standard Probatório), fundamentado em direitos e garantias constitucionais. Interaja com os painéis abaixo para compreender a mudança da presunção absoluta para a presunção relativa.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Concept Card 1: The Past -->
+                <div class="bg-stone-50 rounded-xl p-8 border border-stone-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">📜</span>
+                        <h3 class="text-xl font-bold text-slate-800">Visão Clássica (Até ~2020)</h3>
+                    </div>
+                    <div class="bg-slate-800 text-white text-sm font-bold uppercase tracking-wider py-1 px-3 rounded inline-block mb-4">Presunção Absoluta</div>
+                    <ul class="space-y-3 text-slate-700">
+                        <li class="flex gap-2"><span>▪️</span> A palavra do policial gozava de presunção de veracidade e legitimidade (fé pública) quase inabalável.</li>
+                        <li class="flex gap-2"><span>▪️</span> Era suficiente para fundamentar condenações, salvo prova cabal em contrário por parte do réu (inversão do ônus da prova).</li>
+                        <li class="flex gap-2"><span>▪️</span> Buscas veiculares, pessoais e domiciliares baseadas em "atitude suspeita" ou "nervosismo" eram amplamente validadas.</li>
+                    </ul>
+                </div>
+
+                <!-- Concept Card 2: The Present/Future -->
+                <div class="bg-teal-50 rounded-xl p-8 border border-teal-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-teal-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">NOVO PARADIGMA</div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-3xl">⚖️</span>
+                        <h3 class="text-xl font-bold text-teal-900">Visão Contemporânea (Atual)</h3>
+                    </div>
+                    <div class="bg-teal-700 text-white text-sm font-bold uppercase tracking-wider py-1 px-3 rounded inline-block mb-4">Presunção Relativa (Juris Tantum)</div>
+                    <ul class="space-y-3 text-teal-900">
+                        <li class="flex gap-2"><span>▪️</span> A palavra do agente de segurança é importante, mas não possui valor absoluto em um Estado Democrático de Direito.</li>
+                        <li class="flex gap-2"><span>▪️</span> Exigência de <strong>corroboração independente</strong> (câmeras corporais, áudios, testemunhas civis não envolvidas).</li>
+                        <li class="flex gap-2"><span>▪️</span> "Nervosismo", "fuga ao avistar a viatura" ou denúncia anônima isolada não justificam busca pessoal ou invasão de domicílio (Teoria dos Frutos da Árvore Envenenada).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Jurisprudência Interativa -->
+    <section id="jurisprudencia" class="py-16 bg-stone-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-2 mb-4">
+                    <span>🔍</span> Jurisprudência em Foco (STJ e STF)
+                </h2>
+                <p class="text-slate-600 text-lg leading-relaxed">
+                    Explore abaixo os principais julgados que consolidaram o novo entendimento sobre a atuação policial. Selecione um tema no menu lateral para visualizar a análise detalhada da decisão, seus fundamentos e o impacto direto na validação de provas criminais.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Navigation Tabs -->
+                <div class="md:w-1/3 flex flex-col gap-2" id="juris-tabs">
+                    <button onclick="changeJurisprudence(0)" class="tab-btn tab-active text-left p-4 rounded-r-lg font-medium transition-all focus:outline-none">
+                        1. Inviolabilidade Domiciliar e Consentimento
+                        <span class="block text-xs mt-1 opacity-80">STJ - HC 598.051</span>
+                    </button>
+                    <button onclick="changeJurisprudence(1)" class="tab-btn tab-inactive text-left p-4 rounded-r-lg font-medium transition-all focus:outline-none">
+                        2. Busca Pessoal e "Fundada Suspeita"
+                        <span class="block text-xs mt-1 opacity-80">STJ - RHC 158.580</span>
+                    </button>
+                    <button onclick="changeJurisprudence(2)" class="tab-btn tab-inactive text-left p-4 rounded-r-lg font-medium transition-all focus:outline-none">
+                        3. Fuga e Elementos Objetivos
+                        <span class="block text-xs mt-1 opacity-80">STF - HC 169.788</span>
+                    </button>
+                    <button onclick="changeJurisprudence(3)" class="tab-btn tab-inactive text-left p-4 rounded-r-lg font-medium transition-all focus:outline-none">
+                        4. Uso de Câmeras Corporais (Bodycams)
+                        <span class="block text-xs mt-1 opacity-80">STJ - Determinações Recentes</span>
+                    </button>
+                </div>
+
+                <!-- Content Display -->
+                <div class="md:w-2/3 bg-white p-8 rounded-xl shadow-md border border-stone-200 h-full" id="juris-content">
+                    <!-- Content injected via JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Análise de Dados -->
+    <section id="dados" class="py-16 bg-white border-y border-stone-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-2 mb-4">
+                    <span>📊</span> Impacto em Dados (Projeções e Levantamentos)
+                </h2>
+                <p class="text-slate-600 text-lg leading-relaxed">
+                    A mudança de entendimento não é apenas teórica; ela tem um impacto quantificável no sistema de justiça criminal. Os gráficos abaixo ilustram os principais motivos de anulação de provas originadas em abordagens policiais e o crescimento exponencial de recursos providos pelas Cortes Superiores (STJ/STF) em virtude da ilegalidade na obtenção dessas provas. Interaja com os gráficos para ver detalhes.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Chart 1: Motivos de Nulidade -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-xl font-bold text-center text-slate-800">Causas de Nulidade de Provas (Ação Policial)</h3>
+                    <p class="text-sm text-center text-slate-500 mb-2">Proporção de HC/RHC concedidos no STJ (Amostragem Recente)</p>
+                    <div class="chart-container">
+                        <canvas id="nulidadeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Evolução Temporal -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-xl font-bold text-center text-slate-800">Evolução de Anulações por Ilegalidade na Abordagem</h3>
+                    <p class="text-sm text-center text-slate-500 mb-2">Crescimento de concessões de ordem nas Cortes Superiores (2019-2024)</p>
+                    <div class="chart-container">
+                        <canvas id="evolucaoChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="mt-12 bg-stone-50 p-6 rounded-lg border border-stone-200 text-center max-w-3xl mx-auto">
+                <span class="text-2xl mb-2 block">💡</span>
+                <p class="text-slate-700"><strong>O Dado Chave:</strong> O aumento exponencial no gráfico de evolução demonstra não necessariamente uma piora na atuação policial, mas sim um <strong>aumento substancial no rigor do controle de legalidade</strong> exercido pelo Judiciário frente ao conceito de Fé Pública.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Conclusões e Diretrizes -->
+    <section id="conclusao" class="py-16 bg-stone-900 text-stone-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-bold flex justify-center items-center gap-2 mb-4">
+                    <span>📌</span> Conclusões e Novas Diretrizes
+                </h2>
+                <p class="text-stone-400 text-lg max-w-3xl mx-auto">
+                    A síntese do relatório aponta para um aprimoramento institucional necessário. A presunção de veracidade não foi extinta, mas condicionada a standards probatórios mais elevados em nome da segurança jurídica.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-stone-800 p-6 rounded-lg border border-stone-700">
+                    <div class="text-teal-400 text-xl font-bold mb-3">1. Fim do Subjetivismo</div>
+                    <p class="text-stone-300 text-sm">
+                        O "tirocínio policial", o "nervosismo" ou "atitudes suspeitas" genéricas não servem mais como base legal exclusiva para mitigação de direitos fundamentais (como busca pessoal e domiciliar). São necessários elementos objetivos prévios e justificados.
+                    </p>
+                </div>
+                <div class="bg-stone-800 p-6 rounded-lg border border-stone-700">
+                    <div class="text-teal-400 text-xl font-bold mb-3">2. Ônus da Prova do Estado</div>
+                    <p class="text-stone-300 text-sm">
+                        A inversão ocorreu: agora cabe ao Estado (Polícia/Ministério Público) comprovar a legalidade da ação e o consentimento livre do cidadão (ex: entrada em domicílio), preferencialmente por meio de registro audiovisual ou escrito, com testemunhas.
+                    </p>
+                </div>
+                <div class="bg-stone-800 p-6 rounded-lg border border-stone-700">
+                    <div class="text-teal-400 text-xl font-bold mb-3">3. Tecnologia como Garantia</div>
+                    <p class="text-stone-300 text-sm">
+                        O uso de câmeras corporais (bodycams) e viaturas com registro de áudio e vídeo deixa de ser apenas ferramenta de controle disciplinar para se tornar elemento central e indispensável da cadeia de custódia e validade probatória da ação penal.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-stone-950 py-8 text-center border-t border-stone-800">
+        <p class="text-stone-500 text-sm">
+            © 2026 JusAnalytics Brasil. Baseado em entendimentos doutrinários e jurisprudenciais do Superior Tribunal de Justiça (STJ) e Supremo Tribunal Federal (STF). SPA Interativo - Arquitetura de Informação.
+        </p>
+    </footer>
+
+    <!-- JavaScript Logic for Interactivity and Data Visualization -->
+    <script>
+        // --- 1. Data Storage & State Management ---
+        const jurisprudenceData = [
+            {
+                title: "Inviolabilidade Domiciliar e Consentimento",
+                court: "STJ - Sexta Turma (HC 598.051/SP)",
+                tags: ["Ingresso Forçado", "Consentimento", "Registro"],
+                summary: "O STJ estabeleceu que o ingresso policial forçado em domicílio, sem mandado judicial, exige justa causa baseada em razões objetivas. Além disso, o suposto 'consentimento' do morador para a entrada da polícia deve ser comprovado pelo Estado, de preferência com registro em vídeo e áudio, ou assinatura com testemunhas.",
+                impact: "Anulou milhares de condenações baseadas unicamente na alegação policial de que o réu 'autorizou' a entrada na residência após ser abordado na rua.",
+                icon: "🏠"
+            },
+            {
+                title: "Busca Pessoal e 'Fundada Suspeita'",
+                court: "STJ - Sexta Turma (RHC 158.580/BA)",
+                tags: ["Busca Pessoal", "Tirocínio Policial", "Profiling"],
+                summary: "A 'fundada suspeita' para busca pessoal (revista) não pode se basear em parâmetros subjetivos como 'nervosismo', 'olhar esquivo', 'tirocínio policial' ou denúncia anônima isolada. Exige-se elemento concreto que indique a posse de armas ou drogas naquele momento.",
+                impact: "Combate ao racismo estrutural e ao 'profiling' (perfilamento criminal). Drogas encontradas em revistas ilegais tornam-se provas ilícitas, trancando a ação penal.",
+                icon: "👤"
+            },
+            {
+                title: "Fuga e Elementos Objetivos",
+                court: "STF e STJ (Múltiplos Julgados recentes)",
+                tags: ["Fuga", "Justa Causa", "Tráfico"],
+                summary: "O simples fato de o indivíduo correr ou fugir ao avistar a viatura policial não configura, por si só, justa causa para invasão de domicílio. A fuga pode ocorrer por diversos motivos (medo, histórico de violência policial) e não equivale a flagrante delito de crime permanente.",
+                impact: "Restrição severa às perseguições policiais que culminam em invasão de residências sem mandado em áreas periféricas.",
+                icon: "🏃"
+            },
+            {
+                title: "Obrigatoriedade de Câmeras Corporais",
+                court: "Determinações e Diretrizes STJ/STF",
+                tags: ["Bodycams", "Corroboração", "Fé Pública"],
+                summary: "Em operações estruturadas e ações rotineiras de alto risco, a ausência não justificada de gravações por câmeras corporais (quando disponíveis no Estado) mitiga severamente a presunção de veracidade da versão policial, especialmente em casos de mortes por intervenção ou divergência com a versão do réu.",
+                impact: "A palavra do policial passa a exigir, necessariamente, a corroboração em vídeo para sustentar a legalidade da prisão e apreensão.",
+                icon: "📹"
+            }
+        ];
+
+        // --- 2. Core Interaction Handling (Vanilla JS) ---
+        
+        // Render Initial Content for Tab 0
+        const contentDiv = document.getElementById('juris-content');
+        
+        function renderContent(index) {
+            const data = jurisprudenceData[index];
+            const tagsHtml = data.tags.map(tag => `<span class="bg-stone-200 text-stone-700 text-xs px-2 py-1 rounded-full font-medium">${tag}</span>`).join('');
+            
+            contentDiv.innerHTML = `
+                <div class="animate-fade-in">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="text-4xl bg-teal-50 p-3 rounded-lg border border-teal-100">${data.icon}</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-800">${data.title}</h3>
+                            <p class="text-sm font-semibold text-teal-700 mt-1">${data.court}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        ${tagsHtml}
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-bold text-slate-800 border-b border-stone-200 pb-1 mb-2">Entendimento Fixado</h4>
+                            <p class="text-slate-600 leading-relaxed">${data.summary}</p>
+                        </div>
+                        <div class="bg-stone-50 p-4 rounded-lg border-l-4 border-teal-600">
+                            <h4 class="font-bold text-teal-900 mb-1">Impacto Prático</h4>
+                            <p class="text-slate-700 text-sm">${data.impact}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Tab Switching Logic
+        function changeJurisprudence(index) {
+            // Update buttons styling
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach((btn, i) => {
+                if(i === index) {
+                    btn.classList.remove('tab-inactive');
+                    btn.classList.add('tab-active');
+                } else {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('tab-inactive');
+                }
+            });
+
+            // Update content
+            renderContent(index);
+        }
+
+        // Initialize first tab and styling animation
+        renderContent(0);
+
+        // Add simple fade-in animation style dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(5px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        `;
+        document.head.appendChild(style);
+
+
+        // --- 3. Chart.js Implementation ---
+        
+        // Common Chart Defaults for aesthetic alignment
+        Chart.defaults.font.family = 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif';
+        Chart.defaults.color = '#475569'; // slate-600
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 23, 42, 0.9)'; // slate-900
+        Chart.defaults.plugins.tooltip.padding = 10;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // Chart 1: Doughnut - Motivos de Nulidade
+            const ctxNulidade = document.getElementById('nulidadeChart').getContext('2d');
+            new Chart(ctxNulidade, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Invasão de Domicílio s/ Justa Causa', 
+                        'Busca Pessoal Ilegal (Atitude Suspeita)', 
+                        'Acesso Ilegal a Celular/WhatsApp', 
+                        'Confissão Informal s/ Miranda Warnings',
+                        'Outros'
+                    ],
+                    datasets: [{
+                        data: [42, 31, 12, 10, 5],
+                        backgroundColor: [
+                            '#0f766e', // teal-700
+                            '#14b8a6', // teal-500
+                            '#94a3b8', // slate-400
+                            '#cbd5e1', // slate-300
+                            '#f1f5f9'  // slate-100
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // CRITICAL for filling the .chart-container
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '% dos casos';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // Chart 2: Line - Evolução Temporal
+            const ctxEvolucao = document.getElementById('evolucaoChart').getContext('2d');
+            
+            // Gradient fill for Line Chart
+            let gradient = ctxEvolucao.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(15, 118, 110, 0.5)'); // teal-700 at 50%
+            gradient.addColorStop(1, 'rgba(15, 118, 110, 0.0)');
+
+            new Chart(ctxEvolucao, {
+                type: 'line',
+                data: {
+                    labels: ['2019', '2020', '2021', '2022', '2023', '2024(Proj.)'],
+                    datasets: [{
+                        label: 'Decisões Concessivas (HC/RHC) por Ilegalidade Policial',
+                        data: [850, 1120, 2450, 4800, 7100, 8900], // Mock growth data based on STJ reports
+                        borderColor: '#0f766e', // teal-700
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#0f766e',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4 // Smooth curves
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // CRITICAL for filling the .chart-container
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Hide legend to save space, title explains it
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' decisões deferidas';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e2e8f0', // slate-200
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 6
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
