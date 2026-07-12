@@ -33,19 +33,18 @@ neurociência cognitiva, engenharia de dados (pós/PPC) e direito operacional.
 │   ├── CLAUDE.md          # (quando existir) governança de conteúdo do domínio
 │   ├── INDICE.md          # (quando existir) índice mestre com DAG de pré-requisitos
 │   └── disciplinas/       # um .md por disciplina
-├── outros/               # material-fonte bruto (.docx/.md) ainda não promovido a um domínio
-└── study/                # app React/Vite/Express isolado — ver seção própria
+└── old/                  # arquivo morto — ver seção "Pastas especiais"
+    ├── outros/            # material-fonte bruto (.docx/.md) já promovido ou sem uso atual
+    └── study/             # app React/Vite/Express isolado, arquivado — ver seção própria
 ```
 
 Stack: cada domínio é HTML estático + Tailwind via CDN + JS vanilla, sem build
 step. Não há bundler nem framework nos domínios — isso é intencional (abrir e
-funcionar via `file://` ou um `http.server` simples). A exceção é `study/`,
-que é um app separado com seu próprio stack (ver abaixo).
+funcionar via `file://` ou um `http.server` simples).
 
-**Este repositório não tem controle de versão (git) hoje.** Dado o volume de
-conteúdo gerado e a quantidade de arquivos editáveis por domínio, recomenda-se
-fortemente inicializar um repositório git antes de próximas rodadas grandes de
-geração/edição de conteúdo, para ter histórico e possibilidade de reverter.
+Este repositório usa git (inicializado nesta fase do projeto). Sempre revisar
+`git status`/`git diff` antes de commitar, e preferir commits temáticos
+separados a um único commit grande quando a mudança cobrir áreas distintas.
 
 ## Padrão de um domínio
 
@@ -107,31 +106,39 @@ completo, mas ainda assim devem ser sinalizadas ao usuário.
 
 **Regra de não-redundância:** cada conceito deve existir uma única vez dentro
 de um domínio, e idealmente uma única vez em todo o Atlas — antes de criar
-conteúdo sobre um tema, verificar se ele já é coberto em outro domínio (ex.:
-"Engenharia de Dados" aparece hoje em `software-engineer/`,
-`engenharia-de-dados-pos/` e em rascunhos soltos em `outros/`; ver backlog
-abaixo).
+conteúdo sobre um tema, verificar se ele já é coberto em outro domínio. Uma
+investigação já mapeou "Engenharia de Dados" em `software-engineer/` (Staff
+level) e `engenharia-de-dados-pos/` (PPC formal) como trilhas distintas por
+desenho, não redundância a consolidar (ver `engenharia-de-dados-pos/CLAUDE.md`,
+seção "Relação com `software-engineer/`"); os rascunhos-fonte soltos que
+tratavam do mesmo tema foram movidos para `old/outros/` (ver abaixo).
 
 ## Pastas especiais
 
-### `outros/`
+### `old/`
 
-Área de rascunho: ementas e material-fonte em `.docx`/`.md` ainda não
-transformados em um domínio publicável (sem `index.html`/`disciplinas/`
-próprios). Não é servida pelo hub. Ao promover um rascunho a domínio, seguir
-o "Padrão de um domínio" acima e depois avaliar se o arquivo-fonte em
-`outros/` deve ser removido ou mantido como referência histórica.
+Arquivo morto do Atlas: material divergente, já promovido, ou sem uso na fase
+atual do projeto, mantido apenas por valor histórico/de referência — não é
+servido pelo hub nem por nenhum domínio ativo. Nada em `old/` deve ser
+referenciado por `index.html`/`FILE_MAP` de um domínio publicado. Contém duas
+subpastas:
 
-### `study/`
-
-App separado (React + Vite + TypeScript + Express + SQLite, com
-`package.json`, `server.js`, `run.bat` próprios) chamado internamente
-"Roadmap interativo de Engenharia de Dados e IA". **Não está registrado em
-`projects.json`** e não segue o padrão estático do resto do Atlas. Também
-contém, soltos na mesma pasta, vários protótipos HTML/TSX sem relação direta
-com engenharia de dados (direito penal, jurisprudência, lógica, "engenheiro
-de IA") e scripts `scratch_*.cjs` de migração pontual. Tratar como
-experimental/legado até uma decisão explícita do usuário (ver backlog).
+- **`old/outros/`** — ementas e material-fonte em `.docx`/`.md`/`.ipynb` que
+  já foi promovido a um domínio publicado (conteúdo 100% incorporado,
+  confirmado por comparação estrutural) ou que é redundante/incompleto demais
+  para virar disciplina (ex.: o cluster de rascunhos soltos de Engenharia de
+  Dados/Ciência de Dados/ML, todos redundantes com `software-engineer/` ou sem
+  ementa formal). Também recebeu os protótipos HTML/notebook sem relação com
+  o Atlas que antes estavam soltos em `study/` (direito, jurisprudência,
+  lógica). Se um novo rascunho for adicionado aqui no futuro e depois
+  promovido a domínio, seguir o "Padrão de um domínio" acima e então mover o
+  arquivo-fonte correspondente para `old/outros/`.
+- **`old/study/`** — app separado (React + Vite + TypeScript + Express +
+  SQLite) chamado internamente "Roadmap interativo de Engenharia de Dados e
+  IA". Nunca esteve registrado em `projects.json` e não seguia o padrão
+  estático do resto do Atlas; arquivado por decisão explícita do usuário.
+  `old/study/run.bat` ainda funciona se o app precisar ser reativado, mas não
+  há expectativa de manutenção contínua enquanto estiver em `old/`.
 
 ## Estilo de conteúdo
 
@@ -178,51 +185,27 @@ com as próprias disciplinas.
 
 - Hub + domínios estáticos: `iniciar-servidor.bat` (sobe
   `python -m http.server 8000` na raiz e abre `http://localhost:8000`).
-- `study/`: `study/run.bat` (verifica Node, roda `npm install` se necessário,
-  depois `npm run dev`, expondo Vite em `http://localhost:5173` + backend
-  Express/SQLite em `:3001`).
+- `old/study/` (arquivado, ver "Pastas especiais"): `old/study/run.bat`
+  (verifica Node, roda `npm install` se necessário, depois `npm run dev`,
+  expondo Vite em `http://localhost:5173` + backend Express/SQLite em
+  `:3001`).
 
 ## Melhorias identificadas (backlog)
 
 Este é um levantamento vivo — atualizar conforme itens forem resolvidos ou
 novos forem encontrados. Nenhum destes itens deve ser executado sem seguir o
-"Fluxo obrigatório" acima e sem aprovação explícita do usuário, pois envolvem
-reorganização/remoção de arquivos em um repositório sem git.
+"Fluxo obrigatório" acima e sem aprovação explícita do usuário.
 
-1. **Sem controle de versão.** Inicializar git antes da próxima rodada de
-   geração de conteúdo em massa, para permitir revisão por diff e reversão.
-2. **6 de 8 domínios sem `CLAUDE.md`/`INDICE.md` próprios**
-   (`ciencia-do-gatilho`, `direito-operacional`, `doutrina-policial`,
-   `engenharia-armamento`, `engenharia-de-dados-pos`,
-   `neurociencia-cognitiva`). Isso significa que não há governança de
-   conteúdo nem DAG de pré-requisitos documentado para a maioria dos
-   domínios — só `direito-penal` e (parcialmente, via `data/index.json`)
-   `software-engineer` têm.
-3. **Possível redundância de "Engenharia de Dados" em 3-4 lugares**:
-   `software-engineer/` (projeto ativo, 73 disciplinas),
-   `engenharia-de-dados-pos/` (projeto ativo, 13 disciplinas, formato PPC/
-   Anhanguera), o app `study/` ("Roadmap interativo de Engenharia de Dados e
-   IA") e múltiplos rascunhos em `outros/` (`pos-Engenharia de Dados.md`,
-   `Engenharia de dados_.docx`, `Engenharia de Dados e Computação
-   Distribuída_.docx`, `Fundamentos de Engenharia de Dados Robustos.docx`,
-   entre outros). Vale decidir se são trilhas distintas por design (ex.:
-   Staff-level vs. PPC formal) ou se há sobreposição a consolidar.
-4. **`software-engineer/data_backup_fase3/`** parece um backup manual de uma
-   fase anterior — sem git, isso é a única rede de segurança daquele
-   conteúdo; não remover sem confirmar que não é mais necessário.
-   `software-engineer/atlas_de_engenharia_de_dados.legacy.html` tem o mesmo
-   problema (versão antiga mantida por nome de arquivo em vez de histórico
-   de versionamento).
-5. **`study/` desorganizado**: mistura o app de roadmap com protótipos HTML/
-   TSX de outros temas (jurisprudência, teoria do crime, lógica) e scripts
-   `scratch_*`. Decidir: arquivar, promover a domínio próprio, ou remover o
-   que estiver obsoleto.
-6. **Slugs de arquivo truncados** em vários domínios (ex.:
-   `ciencia-do-gatilho/disciplinas/D01.01-história-e-evolução-funcional-dos-sistem.md`)
-   — o slug corta no meio da palavra, provavelmente por limite de tamanho ao
-   gerar o nome do arquivo. Prejudica legibilidade e busca por nome. Corrigir
-   nome + a referência correspondente no `index.html`/`FILE_MAP` de cada
-   domínio junto, para não quebrar o fetch.
-7. **Contagens em `projects.json` não são verificadas automaticamente** —
+1. **Contagens em `projects.json` não são verificadas automaticamente** —
    `dominios`/`disciplinas` são digitados à mão e podem divergir do conteúdo
-   real de cada domínio à medida que ele evolui.
+   real de cada domínio à medida que ele evolui. Última verificação manual
+   (auditoria completa dos 8 domínios) não encontrou divergência.
+
+Itens já resolvidos nesta fase do projeto (histórico, não repetir): controle
+de versão git inicializado; os 8 domínios agora têm `CLAUDE.md`/`INDICE.md`
+próprios (ou `data/index.json` no caso de `software-engineer/`); a relação
+entre `software-engineer/` e `engenharia-de-dados-pos/` foi investigada e
+documentada como sobreposição intencional, não redundância; backups órfãos de
+`software-engineer/` (`data_backup_fase3/`, `.legacy.html`) removidos; os 54
+slugs de arquivo truncados/desatualizados em 5 domínios foram corrigidos;
+`outros/` e `study/` foram movidos para `old/` (ver "Pastas especiais").

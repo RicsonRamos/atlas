@@ -5,7 +5,7 @@
 Este é o ementário oficial (PPC — Projeto Pedagógico de Curso) de uma
 pós-graduação lato sensu em Engenharia de Dados, com base em disciplinas
 oficiais de instituição (Anhanguera) complementadas com conteúdo de mercado.
-Rascunho-fonte original: `outros/pos-Engenharia de Dados.md`. Nível de
+Rascunho-fonte original: `old/outros/pos-Engenharia de Dados.md`. Nível de
 formação: júnior sólido a pleno inicial — ver `CLAUDE.md` deste domínio para
 a distinção em relação a `software-engineer/` (trilha Staff/Principal, nível
 avançado).

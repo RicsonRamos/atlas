@@ -6,8 +6,8 @@ Manter o ementário deste domínio fiel ao **Projeto Pedagógico de Curso (PPC)*
 de uma pós-graduação lato sensu em Engenharia de Dados, com base nas
 disciplinas oficiais de instituição (Anhanguera) complementadas com conteúdo
 de mercado. O rascunho-fonte original está em
-`outros/pos-Engenharia de Dados.md`; a fonte de verdade para qualquer edição,
-porém, são os arquivos já promovidos em `disciplinas/`.
+`old/outros/pos-Engenharia de Dados.md`; a fonte de verdade para qualquer
+edição, porém, são os arquivos já promovidos em `disciplinas/`.
 
 Isto **não** é uma trilha Staff/Principal. É formação acadêmica formal de
 nível introdutório a intermediário (perfil de egresso declarado nas próprias
@@ -23,8 +23,9 @@ empresas como Google, Meta, Databricks ou Snowflake". `engenharia-de-dados-pos/`
 e `software-engineer/` **vão se sobrepor conceitualmente** — ambos tratam de
 Data Warehouse, Spark, cloud, NoSQL, governança, streaming etc. Isso é
 esperado e não deve ser "corrigido" fundindo os dois domínios: são públicos e
-profundidades diferentes por desenho (ver `CLAUDE.md` raiz, seção "Melhorias
-identificadas", item 3). Ao editar disciplinas aqui:
+profundidades diferentes por desenho (investigado e confirmado — ver
+`CLAUDE.md` raiz, seção "Melhorias identificadas", lista de itens já
+resolvidos). Ao editar disciplinas aqui:
 
 - Não copiar profundidade/rigor de `software-engineer/` para este domínio —
   isso descaracterizaria o PPC (que é formação de entrada, não avançada).
@@ -32,10 +33,10 @@ identificadas", item 3). Ao editar disciplinas aqui:
   `software-engineer/` — os domínios são trilhas independentes com públicos
   diferentes, cada um deve ser autocontido.
 - Ao criar conteúdo novo neste domínio, ainda assim checar se o tema já é
-  tratado em `software-engineer/` ou em `outros/` (regra de não-redundância
-  do `CLAUDE.md` raiz) para decidir conscientemente se a sobreposição é
-  proposital (nível introdutório vs. avançado do mesmo tema) ou acidental
-  (duplicação de conteúdo no mesmo nível).
+  tratado em `software-engineer/` ou em `old/outros/` (regra de
+  não-redundância do `CLAUDE.md` raiz) para decidir conscientemente se a
+  sobreposição é proposital (nível introdutório vs. avançado do mesmo tema)
+  ou acidental (duplicação de conteúdo no mesmo nível).
 
 ## Papel
 
@@ -102,7 +103,7 @@ diferença — não forçar D04.04 ao formato padrão de 11 seções.
 ## Inconsistências observadas
 
 Registradas aqui para não se perderem, seguindo a mesma lógica do backlog do
-`CLAUDE.md` raiz. Ao investigar cada uma contra `outros/pos-Engenharia de
+`CLAUDE.md` raiz. Ao investigar cada uma contra `old/outros/pos-Engenharia de
 Dados.md` (o rascunho-fonte), ficou claro que só uma delas era um defeito de
 promoção; as demais são lacunas do próprio PPC institucional, presentes
 já no rascunho-fonte — corrigi-las exigiria inventar conteúdo acadêmico
@@ -139,8 +140,8 @@ como gaps conhecidos do PPC original, não como bugs de arquivo:
    domínio quanto o padrão "sem emojis" do `CLAUDE.md` raiz. Removido; o
    arquivo agora termina em "atuar como Engenheiro de Dados em ambientes
    corporativos reais." O conteúdo removido continua disponível em
-   `outros/pos-Engenharia de Dados.md` para quem quiser reaproveitá-lo como
-   material de apoio extracurricular (não PPC).
+   `old/outros/pos-Engenharia de Dados.md` para quem quiser reaproveitá-lo
+   como material de apoio extracurricular (não PPC).
 5. **Habilidades ausente em D01.02 e D01.03.** Diferente das outras 11
    disciplinas do curso, `D01.02-banco-de-dados-relacional.md` (Disciplina 2
    no rascunho-fonte) e `D01.03-administração-de-banco-de-dados-dba.md`
@@ -168,7 +169,7 @@ domínio:
    também coberto em `software-engineer/`, ler a disciplina equivalente lá
    também).
 2. Identificar inconsistências: contra o restante do PPC (carga horária,
-   seções faltantes, pré-requisitos), contra `outros/pos-Engenharia de
+   seções faltantes, pré-requisitos), contra `old/outros/pos-Engenharia de
    Dados.md` (o rascunho original — divergências podem indicar erro de
    promoção, não decisão editorial), e contra `software-engineer/` (checar
    se a mudança cria sobreposição *acidental* de nível, não apenas conceitual
