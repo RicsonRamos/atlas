@@ -155,16 +155,27 @@ padrão em qualquer disciplina nova ou revisão:
   domínio)" quando for raiz.
 - `## Conteúdo programático` — sempre estruturado em três blocos:
   **Fundamentos** (premissa central), **Teoria** (mecanismos, modelos,
-  nomenclatura técnica) e **Aplicação prática** (uso operacional/clínico do
+  nomenclatura técnica, desenvolvidos com profundidade real — via
+  fisiológica/neural, parâmetro quantitativo, mecanismo causal — não apenas
+  nomear o conceito) e **Aplicação prática** (uso operacional/clínico do
   conteúdo teórico).
-- `## Casos práticos` — 2 vinhetas curtas aplicando o conteúdo a cenário
-  concreto (tático, clínico ou institucional).
-- `## Referências técnicas` — 2-3 obras, sempre com autor, título, edição e
-  ano.
-- `## Perguntas avançadas` — 2 perguntas abertas de nível
+- `## Casos práticos` — 3-4 vinhetas aplicando o conteúdo a cenário concreto
+  (tático, clínico ou institucional), incluindo ao menos uma vinheta
+  multivariável (múltiplos fatores fisiológicos/psicológicos/contextuais
+  concorrentes a diferenciar).
+- `## Referências técnicas` — 4-6 obras, sempre com autor, título, edição e
+  ano — priorizando literatura revisada por pares e livros-texto de
+  referência (ver "Critérios de rigor técnico"); nunca inventar título,
+  autor ou edição.
+- `## Estado da arte e debates em aberto` — 2-4 pontos distinguindo teoria
+  estabelecida (consenso científico) de modelo com suporte parcial, hipótese
+  de pesquisa ativa ou prática aplicada sem validação formal (ver
+  "Distinguir teoria estabelecida de hipótese" acima) — nunca apresentar
+  hipótese como fato consolidado.
+- `## Perguntas avançadas` — 2-3 perguntas abertas de nível
   pesquisa/instrutor/clínico, marcadas com o público-alvo entre parênteses
   quando aplicável.
-- `## Exercícios` — 2 tarefas que exigem produção (diagrama, protocolo,
+- `## Exercícios` — 3-4 tarefas que exigem produção (diagrama, protocolo,
   parecer, decomposição de tarefa), nunca pergunta de memorização.
 - `## Tags` — hashtags dos conceitos-chave da disciplina.
 - Apenas no capstone final da trilha (D06.02): seção adicional
