@@ -142,8 +142,9 @@ Priorizar STF, STJ e tribunais superiores, sempre no formato de tabela
 existentes.
 
 ## Doutrina policial/operacional
-- Modelos normativos de uso diferenciado da força (Fênix, Federal, padrão
-  ONU);
+- Modelos normativos de uso diferenciado da força (regulamentação federal —
+  Lei 13.060/2014, Decreto 12.341/2024, Portaria MJSP 855/2025 — e padrão
+  ONU, PBUFAF/1990);
 - doutrina de gerenciamento de crises;
 - ciências policiais aplicadas à dinâmica procedimental de rua.
 
@@ -161,20 +162,31 @@ mantida para qualquer disciplina nova ou revisão — é:
 - `## Objetivos`
 - `## Pré-requisitos` (texto explicativo, mesmo quando "Nenhum")
 - `## Conteúdo programático`, subdividido em **Fundamentos**, **Teoria** e
-  **Aplicação prática**
-- `## Casos práticos`
-- `## Jurisprudência` (tabela: Tribunal/Tema | Entendimento | Impacto)
-- `## Doutrina`
-- `## Legislação relacionada`
+  **Aplicação prática**, cada uma desenvolvida com profundidade doutrinária/
+  jurídica/operacional real (mecanismo, fundamento normativo, precedente
+  específico — não só nomear o tópico).
+- `## Casos práticos` — 3-4 casos, incluindo ao menos um multivariável
+  (múltiplas hipóteses/qualificações jurídicas concorrentes a diferenciar).
+- `## Jurisprudência` (tabela: Tribunal/Tema | Entendimento | Impacto) — 2-3
+  precedentes reais e verificáveis por disciplina.
+- `## Doutrina` — 3-4 referências reais, mais de uma corrente quando houver
+  divergência relevante.
+- `## Legislação relacionada` — dispositivos citados com precisão de artigo/
+  inciso/decreto, nunca aproximados.
 - `## Prática profissional`
+- `## Estado da arte e debates em aberto` — 2-4 pontos distinguindo doutrina/
+  jurisprudência consolidada de tese ainda em debate ou de prática
+  institucional variável entre corporações/jurisdições.
 - `## Questões avançadas` (algumas marcadas com área de aprofundamento entre
   parênteses, ex. *(magistratura)*, *(pesquisa/inteligência policial)*)
-- `## Exercícios`
+- `## Exercícios` — 3-4 exercícios de elaboração de parecer, memorial ou
+  protocolo, nunca memorização.
 - `## Tags`
 
 Não introduzir seções fora desse padrão sem necessidade clara — a
 uniformidade estrutural facilita o viewer (`index.html`) e a comparação entre
-disciplinas.
+disciplinas. Nunca inventar título de obra, número de dispositivo legal ou
+precedente jurisprudencial sem fonte verificável.
 
 ---
 
