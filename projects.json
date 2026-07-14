@@ -126,7 +126,7 @@
     "descricao": "Estudo dogmático e prático sobre a custódia de evidências digitais, crimes informáticos, LGPD, privacidade de dados e auditoria regulatória de algoritmos.",
     "url": "direito-digital/index.html",
     "dominios": 3,
-    "disciplinas": 3,
+    "disciplinas": 4,
     "cor": "rose",
     "icone": "🔒",
     "status": "ativo"
@@ -138,7 +138,7 @@
     "descricao": "Modelagem estatística espacial de crimes, geoestatística, detecção de hotspots com KDE e planejamento tático baseado em sistemas de informação geográfica.",
     "url": "criminologia-espacial/index.html",
     "dominios": 2,
-    "disciplinas": 2,
+    "disciplinas": 4,
     "cor": "amber",
     "icone": "🗺️",
     "status": "ativo"
@@ -150,7 +150,7 @@
     "descricao": "Estudo avançado de dinâmica de impacto hiperveloz, comportamento mecânico de novos compósitos blindados e modelagem de penetração física.",
     "url": "protecao-balistica/index.html",
     "dominios": 2,
-    "disciplinas": 2,
+    "disciplinas": 4,
     "cor": "emerald",
     "icone": "🛡️",
     "status": "ativo"

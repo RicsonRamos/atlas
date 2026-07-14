@@ -5,7 +5,7 @@
 ## Domínio 01 — Inteligência Analítica e Investigação de Dados
 | ID | Disciplina | Nível | Carga | Núcleo |
 |---|---|---|---|---|
-| D01.01 | Análise de Redes e Vínculos em Grafos | Foundation | 24-30h | Sim |
+| D01.01 | Análise de Redes Criminais e Vínculos em Grafos | Foundation | 24-30h | Sim |
 | D01.02 | OSINT Avançado e Coleta de Inteligência Digital | Intermediate | 24-30h | Sim |
 | D01.03 | NLP Forense e Mineração de Textos Policiais | Advanced (capstone) | 24-30h | Sim |
 
