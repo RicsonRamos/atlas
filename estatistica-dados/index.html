@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatística para Ciência de Dados em Python</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:wght@400;600;700&display=swap');
+
+        :root { 
+            --accent: #10b981; /* Emerald-500 */
+            --accent-hover: #059669; /* Emerald-600 */
+            --bg-dark: #0f172a; /* Slate-900 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #1e293b;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .serif { font-family: 'Source Serif 4', serif; }
+
+        .sidebar-item.active {
+            background-color: #fff;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            font-weight: 700;
+        }
+
+        .disc-item.active {
+            background-color: #ecfdf5;
+            color: #065f46;
+            font-weight: 700;
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        /* Estilo do conteúdo Markdown renderizado */
+        #renderedContent h1 { font-size: 1.85rem; font-weight: 800; margin-bottom: 0.5rem; color: #0f172a; }
+        #renderedContent h2 { font-size: 1.1rem; font-weight: 800; margin-top: 2rem; margin-bottom: 0.75rem; color: #065f46; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+        #renderedContent h3 { font-weight: 700; margin-top: 1.25rem; font-size: 1rem; color: #1e293b; }
+        #renderedContent p, #renderedContent li { line-height: 1.75; color: #334155; font-size: 0.925rem; }
+        #renderedContent ul, #renderedContent ol { margin-left: 1.25rem; margin-bottom: 1rem; }
+        #renderedContent li { margin-bottom: 0.35rem; list-style-type: disc; }
+        #renderedContent strong { color: #0f172a; font-weight: 700; }
+        #renderedContent em { color: #475569; }
+        #renderedContent pre { background-color: #1e293b; color: #f8fafc; padding: 1rem; border-radius: 0.75rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; margin: 1rem 0; }
+        #renderedContent code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background-color: #f1f5f9; padding: 0.15rem 0.35rem; border-radius: 0.25rem; color: #0f172a; }
+        #renderedContent pre code { background-color: transparent; padding: 0; color: inherit; }
+        #renderedContent hr { margin: 2rem 0; border: 0; border-top: 1px solid #e2e8f0; }
+        
+        .tab-btn.active {
+            border-bottom: 3px solid var(--accent);
+            color: #065f46;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+
+    <!-- Topbar Navigation -->
+    <nav class="h-16 border-b border-slate-200 bg-white flex items-center justify-between px-6 z-50 relative">
+        <div class="flex items-center gap-3">
+            <a href="../index.html" class="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:text-emerald-600 hover:bg-slate-100 transition-colors text-lg" title="Voltar ao hub">←</a>
+            <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-emerald-400 font-black text-lg shadow-lg">📊</div>
+            <div>
+                <h1 class="text-lg font-extrabold tracking-tight leading-none serif">Estatística para Ciência de Dados</h1>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Estatística Aplicada e Modelagem em Python</p>
+            </div>
+        </div>
+        <div class="relative w-1/3 max-w-md hidden md:block">
+            <input type="text" id="searchInput" placeholder="Buscar conceito, teste, distribuição..."
+                   class="w-full bg-slate-100 border-none rounded-full py-2 px-10 text-sm focus:ring-2 focus:ring-emerald-400 transition-all">
+            <span class="absolute left-4 top-2.5 opacity-40">🔍</span>
+        </div>
+        <div class="flex items-center gap-3 text-[10px] font-black text-slate-400 uppercase tracking-tighter">
+            <span class="bg-emerald-50 text-emerald-700 px-2 py-1 rounded border border-emerald-100">5 domínios</span>
+            <span class="bg-slate-100 px-2 py-1 rounded">11 disciplinas</span>
+        </div>
+    </nav>
+
+    <div class="flex h-[calc(100vh-64px)]">
+        <!-- Sidebar -->
+        <aside class="w-72 bg-slate-50 border-r border-slate-200 overflow-y-auto custom-scroll flex-shrink-0">
+            <div class="p-3 space-y-1" id="sidebarNav"></div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto custom-scroll p-6 bg-slate-100/50">
+            <div id="welcomeScreen" class="max-w-3xl mx-auto py-12">
+                <div class="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600">Formação Avançada</div>
+                <h2 class="text-3xl font-extrabold serif mb-4">Selecione uma disciplina de Estatística</h2>
+                <p class="text-slate-500 text-sm leading-relaxed mb-8 max-w-xl">Bem-vindo à trilha completa de Estatística aplicada à Ciência de Dados com Python. Navegue pelas disciplinas na barra lateral para ver o conteúdo curricular detalhado, código prático executável e acessar o laboratório interativo com exercícios e simuladores.</p>
+                <div id="domainOverview" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+            </div>
+
+            <!-- Tabbed Viewer of active discipline -->
+            <div id="disciplineView" class="hidden max-w-4xl mx-auto space-y-4">
+                <!-- Navigation Tabs -->
+                <div class="flex border-b border-slate-200 bg-white px-4 rounded-xl shadow-sm">
+                    <button id="tabStudy" onclick="switchTab('study')" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-500 hover:text-slate-800 transition-all border-b-3 border-transparent active">
+                        📖 Conteúdo de Estudo
+                    </button>
+                    <button id="tabLab" onclick="switchTab('lab')" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-500 hover:text-slate-800 transition-all border-b-3 border-transparent flex items-center gap-1.5">
+                        ⚡ Laboratório Interativo
+                    </button>
+                </div>
+
+                <!-- Tab: Study Content (Markdown rendered) -->
+                <div id="studyContainer" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+                    <div id="renderedContent"></div>
+                </div>
+
+                <!-- Tab: Lab & Interactive Exercises -->
+                <div id="labContainer" class="hidden space-y-6">
+                    <!-- Simulator Section (Dynamic based on selected discipline) -->
+                    <div id="simulatorCard" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2 border-b pb-3 border-slate-100">
+                            <span>🎮</span> Simulador Estatístico Visual
+                        </h3>
+                        <div id="simulatorContent">
+                            <!-- Inserido dinamicamente via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Quiz Section -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2 border-b pb-3 border-slate-100">
+                            <span>📝</span> Quiz de Fixação e Conceitos
+                        </h3>
+                        <div id="quizContent">
+                            <!-- Inserido dinamicamente via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script de Aplicação -->
+    <script>
+        const DOMINIOS = [
+            { id: "D01", titulo: "Estatística Descritiva e Exploratória", disciplinas: [
+                ["D01.01", "Medidas de Tendência Central, Dispersão e Forma"],
+                ["D01.02", "Análise Gráfica e Visualização de Distribuições"]
+            ]},
+            { id: "D02", titulo: "Teoria da Probabilidade e Distribuições", disciplinas: [
+                ["D02.01", "Probabilidade Condicional, Teorema de Bayes e Variáveis Aleatórias"],
+                ["D02.02", "Distribuições de Probabilidade e Teorema Central do Limite"]
+            ]},
+            { id: "D03", titulo: "Inferência Estatística e Testes de Hipóteses", disciplinas: [
+                ["D03.01", "Amostragem, Estimação e Intervalos de Confiança"],
+                ["D03.02", "Testes de Hipóteses Paramétricos"],
+                ["D03.03", "Testes de Hipóteses Não-Paramétricos"]
+            ]},
+            { id: "D04", titulo: "Correlação e Modelagem de Regressão", disciplinas: [
+                ["D04.01", "Regressão Linear Simples e Múltipla"],
+                ["D04.02", "Regressão Logística e Modelos Lineares Generalizados"]
+            ]},
+            { id: "D05", titulo: "Estatística Avançada e Inferência Causal", disciplinas: [
+                ["D05.01", "Métodos Multivariados e Redução de Dimensionalidade"],
+                ["D05.02", "Testes A/B, Múltiplos Testes e Causalidade"]
+            ]}
+        ];
+
+        const FILE_MAP = {
+            "D01.01": "D01.01-medidas-de-tendencia-central-dispersao-e-forma.md",
+            "D01.02": "D01.02-analise-grafica-e-visualizacao-de-distribuicoes.md",
+            "D02.01": "D02.01-probabilidade-condicional-teorema-de-bayes-e-variaveis-aleatorias.md",
+            "D02.02": "D02.02-distribuicoes-de-probabilidade-e-teorema-central-do-limite.md",
+            "D03.01": "D03.01-amostragem-estimacao-e-intervalos-de-confianca.md",
+            "D03.02": "D03.02-testes-de-hipoteses-parametricos.md",
+            "D03.03": "D03.03-testes-de-hipoteses-nao-parametricos.md",
+            "D04.01": "D04.01-regressao-linear-simples-e-multipla.md",
+            "D04.02": "D04.02-regressao-logistica-e-modelos-lineares-generalizados.md",
+            "D05.01": "D05.01-metodos-multivariados-e-reducao-de-dimensionalidade.md",
+            "D05.02": "D05.02-testes-ab-multiplos-testes-e-causalidade.md"
+        };
+
+        // Banco de Dados do Quiz Interativo
+        const QUIZ_DATA = {
+            "D01.01": [
+                {
+                    q: "Qual a medida de tendência central ideal quando os dados apresentam alta assimetria e presença de outliers extremos?",
+                    o: ["Média Aritmética", "Mediana", "Moda"],
+                    c: 1,
+                    e: "A mediana é a melhor escolha, pois é robusta a valores discrepantes extremos (outliers). Ela representa o ponto central (50º percentil) e não é influenciada pelo valor dos extremos, ao contrário da média."
+                },
+                {
+                    q: "Por que aplicamos a Correção de Bessel (dividindo por n-1 em vez de n) ao calcular a variância amostral?",
+                    o: ["Para simplificar os cálculos matemáticos", "Para tornar o estimador não-viesado, corrigindo a subestimação sistemática da variância populacional", "Para remover a interferência da curtose na dispersão"],
+                    c: 1,
+                    e: "Usar 'n-1' corrige o viés que ocorre porque a média amostral tende a estar mais próxima dos dados da amostra do que a verdadeira média populacional, o que subestimaria a variância real."
+                }
+            ],
+            "D01.02": [
+                {
+                    q: "Em um gráfico Quantil-Quantil (Q-Q Plot), se os pontos formam um padrão de curva ascendente acima da reta teórica na extremidade direita, o que isso sugere?",
+                    o: ["A amostra possui cauda direita mais longa (assimetria positiva) que a distribuição normal teórica", "Os dados são perfeitamente homogêneos", "Há forte multicolinearidade entre as variáveis explicativas"],
+                    c: 0,
+                    e: "Desvios sistemáticos acima da reta diagonal na ponta direita indicam que os quantis empíricos são maiores que os esperados para uma distribuição normal, apontando para assimetria positiva (cauda longa à direita)."
+                }
+            ],
+            "D02.01": [
+                {
+                    q: "No Teorema de Bayes, se temos um teste médico de diagnóstico para uma doença muito rara, mesmo que a sensibilidade do teste seja de 99%, um resultado positivo frequentemente resulta em uma probabilidade real baixa de ter a doença. Por que isso ocorre?",
+                    o: ["Porque a sensibilidade foi medida incorretamente", "Devido à baixíssima probabilidade a priori (prevalência) da doença na população geral", "Porque a probabilidade condicional é sempre menor que 50%"],
+                    c: 1,
+                    e: "Como a doença é extremamente rara, os falsos positivos gerados na população majoritariamente saudável superam amplamente os verdadeiros positivos gerados na população doente (efeito da baixa taxa-base)."
+                }
+            ],
+            "D02.02": [
+                {
+                    q: "Qual a condição fundamental estabelecida pelo Teorema Central do Limite (TCL) para a distribuição da média amostral?",
+                    o: ["A população de origem deve ser obrigatoriamente Gaussiana", "As variáveis coletadas devem ser independentes e identicamente distribuídas (i.i.d.) com média e desvio padrão finitos", "O tamanho da amostra (n) deve ser no máximo igual a 30"],
+                    c: 1,
+                    e: "O TCL exige que as variáveis reamostradas sejam independentes e venham da mesma distribuição (i.i.d.) com média e variância finitas. À medida que n cresce (geralmente n >= 30), a distribuição da média converge para a normal."
+                }
+            ],
+            "D03.01": [
+                {
+                    q: "Qual a interpretação correta de um Intervalo de Confiança frequentista de 95%?",
+                    o: ["Existe 95% de probabilidade de o parâmetro real estar contido especificamente dentro deste intervalo calculado", "Se repetirmos o procedimento de amostragem e cálculo de intervalo 100 vezes, aproximadamente 95 desses intervalos conterão o parâmetro populacional real", "Temos 95% de certeza que a média da próxima amostra coletada será igual à média amostral atual"],
+                    c: 1,
+                    e: "Na estatística frequentista, o parâmetro populacional é fixo (mas desconhecido). O intervalo é que varia a cada amostra. Logo, 95% de nível de confiança refere-se à taxa de sucesso de longo prazo do processo gerador de intervalos."
+                }
+            ],
+            "D03.02": [
+                {
+                    q: "O que é o poder estatístico (1 - β) de um teste de hipóteses?",
+                    o: ["A probabilidade de rejeitar a hipótese nula quando ela é falsa (detectar um efeito real)", "A probabilidade de rejeitar a hipótese nula quando ela é verdadeira (falso positivo)", "A sensibilidade de um algoritmo de classificação linear"],
+                    c: 0,
+                    e: "O poder estatístico representa a capacidade do teste de rejeitar H0 quando de fato existe um efeito real a ser detectado. Aumentar o tamanho amostral é a forma mais comum de elevar o poder de um teste."
+                }
+            ],
+            "D03.03": [
+                {
+                    q: "Qual teste não-paramétrico deve ser selecionado para avaliar se existe diferença estatisticamente significativa entre dois grupos independentes com dados ordinais (feedbacks de 1 a 5 estrelas)?",
+                    o: ["Teste t de Student de amostras independentes", "Teste de Postos Sinalizados de Wilcoxon", "Teste de Mann-Whitney U"],
+                    c: 2,
+                    e: "O teste de Mann-Whitney U é o teste não-paramétrico projetado para comparar a distribuição de postos de dois grupos independentes, sendo o substituto ideal do teste t clássico."
+                }
+            ],
+            "D04.01": [
+                {
+                    q: "Em regressão linear múltipla, o que ocorre ao adicionarmos variáveis explicativas irrelevantes ao modelo?",
+                    o: ["O R-quadrado ajustado aumenta artificialmente", "O R-quadrado bruto aumenta (ou permanece estável), mas o R-quadrado ajustado diminui ao penalizar a inclusão de parâmetros inúteis", "O erro padrão dos coeficientes diminui"],
+                    c: 1,
+                    e: "O R-quadrado bruto sempre cresce com preditores adicionais. O R-quadrado ajustado introduz uma penalidade pelo número de graus de liberdade do modelo, caindo se o novo preditor não trouxer aumento real de poder explicativo."
+                }
+            ],
+            "D04.02": [
+                {
+                    q: "Se um modelo de regressão logística binary estimou o coeficiente de uma variável contínua como β = 0,693, qual a interpretação em termos de chances (Odds)?",
+                    o: ["Para cada acréscimo de 1 unidade no preditor, a probabilidade do desfecho cresce 69,3%", "Para cada acréscimo de 1 unidade no preditor, a Razão de Chances (Odds Ratio) do evento é de e^0,693 ≈ 2.0 (as chances de ocorrência dobram)", "O preditor reduz as chances do evento acontecer pela metade"],
+                    c: 1,
+                    e: "Para interpretar o coeficiente da regressão logística, aplicamos a função exponencial (e^β). Como e^0,693 ≈ 2,0, o Odds Ratio é 2, ou seja, as chances do evento ocorrer dobram para cada incremento de 1 unidade na variável."
+                }
+            ],
+            "D05.01": [
+                {
+                    q: "Por que a padronização das variáveis (z-score) é crucial antes da execução da Análise de Componentes Principais (PCA)?",
+                    o: ["Para forçar os dados a seguirem uma distribuição normal perfeita", "Porque o PCA é sensível à escala; variáveis com magnitudes numéricas maiores dominariam a variação, distorcendo os autovalores", "Para eliminar outliers automaticamente da amostra"],
+                    c: 1,
+                    e: "Como o PCA busca eixos de variação máxima, variáveis com variância absoluta alta devido a unidades maiores (ex.: faturamento anual em milhões vs. idade em dezenas) ditariam sozinhas a direção dos componentes se não fossem normalizadas."
+                }
+            ],
+            "D05.02": [
+                {
+                    q: "Na análise de múltiplos testes (ex.: comparar 50 métricas num teste A/B), por que é necessário aplicar a correção de Benjamini-Hochberg (FDR) em vez do teste t convencional com α = 0.05?",
+                    o: ["Para aumentar o poder estatístico do teste", "Para controlar a inflação do erro Tipo I, pois ao rodar 50 testes independentes a probabilidade acumulada de encontrar pelo menos um falso positivo ao acaso é altíssima", "Para garantir que a distribuição de p-valores siga o CLT"],
+                    c: 1,
+                    e: "Sem correção, a taxa de falsos positivos da família de testes infla exponencialmente. Ao rodar 50 testes com alpha de 5%, a chance de pelo menos uma descoberta falsa aleatória é de cerca de 92%. A correção de FDR de Benjamini-Hochberg equilibra falsos positivos com poder estatístico."
+                }
+            ]
+        };
+
+        let currentActiveDiscipline = null;
+        let activeTab = 'study';
+        let mdCache = {};
+        let currentQuizIndex = 0;
+        let activeChart = null;
+
+        function initSidebar() {
+            const nav = document.getElementById('sidebarNav');
+            nav.innerHTML = DOMINIOS.map((d, di) => `
+                <div class="domain-block mb-3">
+                    <button onclick="toggleDomain(${di})" class="sidebar-item w-full flex items-center gap-2 p-2.5 rounded-lg text-left transition-all hover:bg-slate-100">
+                        <span class="w-6 h-6 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center text-[10px] font-black shrink-0">${di+1}</span>
+                        <span class="text-[11px] font-black uppercase tracking-tight text-slate-700 flex-1 leading-snug">${d.titulo}</span>
+                        <span id="chevron-${di}" class="text-slate-400 text-[10px] transition-transform">▼</span>
+                    </button>
+                    <div id="disc-list-${di}" class="pl-3 mt-1 space-y-0.5 border-l border-slate-200 ml-3">
+                        ${d.disciplinas.map(([id, nome]) => `
+                            <button onclick="selectDiscipline('${id}')" data-disc-id="${id}"
+                                class="disc-item w-full text-left px-3 py-1.5 rounded-md text-[12px] text-slate-500 hover:bg-emerald-50 hover:text-emerald-800 transition-colors flex items-start gap-1.5">
+                                <span class="mono text-[9px] text-slate-400 font-bold shrink-0 mt-0.5">${id}</span>
+                                <span class="leading-snug">${nome}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDomainOverview() {
+            const el = document.getElementById('domainOverview');
+            el.innerHTML = DOMINIOS.map((d, idx) => `
+                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:border-emerald-300 transition-all cursor-pointer" onclick="toggleDomain(${idx}); document.getElementById('disc-list-${idx}').scrollIntoView({behavior: 'smooth'});">
+                    <div class="text-[9px] font-black text-emerald-600 uppercase tracking-widest mb-1">MÓDULO 0${idx+1}</div>
+                    <div class="text-[13px] font-bold text-slate-800 leading-snug mb-2">${d.titulo}</div>
+                    <div class="text-[10px] text-slate-400 font-bold uppercase">${d.disciplinas.length} disciplinas registras</div>
+                </div>
+            `).join('');
+        }
+
+        function toggleDomain(idx) {
+            const list = document.getElementById(`disc-list-${idx}`);
+            const chev = document.getElementById(`chevron-${idx}`);
+            list.classList.toggle('hidden');
+            if(list.classList.contains('hidden')) {
+                chev.style.transform = 'rotate(-90deg)';
+            } else {
+                chev.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        async function selectDiscipline(id) {
+            currentActiveDiscipline = id;
+            document.querySelectorAll('.disc-item').forEach(b => b.classList.toggle('active', b.dataset.discId === id));
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('disciplineView').classList.remove('hidden');
+
+            const container = document.getElementById('renderedContent');
+            container.innerHTML = `<div class="flex items-center gap-2 text-slate-400 text-sm"><span class="animate-spin">🔄</span> Carregando conteúdo programático...</div>`;
+
+            try {
+                let md = mdCache[id];
+                if (!md) {
+                    const filename = FILE_MAP[id];
+                    md = await fetch(`disciplinas/${filename}`).then(r => {
+                        if (!r.ok) throw new Error('HTTP ' + r.status);
+                        return r.text();
+                    });
+                    mdCache[id] = md;
+                }
+                container.innerHTML = marked.parse(md);
+            } catch (err) {
+                container.innerHTML = `<p class="text-rose-500 text-sm font-semibold">Erro ao carregar (${err.message}). Por favor, execute o projeto utilizando um servidor HTTP local (exemplo: python -m http.server ou rodando o executável do hub).</p>`;
+            }
+
+            // Resetar laboratório interativo para esta disciplina
+            currentQuizIndex = 0;
+            loadQuiz(id);
+            loadSimulator(id);
+
+            // Sempre voltar para a aba de estudo ao trocar de disciplina
+            switchTab('study');
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            const btnStudy = document.getElementById('tabStudy');
+            const btnLab = document.getElementById('tabLab');
+            const containerStudy = document.getElementById('studyContainer');
+            const containerLab = document.getElementById('labContainer');
+
+            if (tab === 'study') {
+                btnStudy.classList.add('active');
+                btnLab.classList.remove('active');
+                containerStudy.classList.remove('hidden');
+                containerLab.classList.add('hidden');
+            } else {
+                btnStudy.classList.remove('active');
+                btnLab.classList.add('active');
+                containerStudy.classList.add('hidden');
+                containerLab.classList.remove('hidden');
+                // Trigar redimensionamento de canvas se houver Chart.js ativo
+                if (activeChart) {
+                    setTimeout(() => activeChart.resize(), 100);
+                }
+            }
+        }
+
+        // --- SISTEMA DE QUIZ ---
+        function loadQuiz(id) {
+            const container = document.getElementById('quizContent');
+            const questions = QUIZ_DATA[id] || QUIZ_DATA["D01.01"]; // Fallback para D01.01 se não houver
+
+            const qObj = questions[currentQuizIndex % questions.length];
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        <span>Questão ${currentQuizIndex + 1} de ${questions.length}</span>
+                        <span class="text-emerald-600">Nível: Médio-Avançado</span>
+                    </div>
+                    <p class="text-[14px] font-bold text-slate-800 leading-relaxed">${qObj.q}</p>
+                    <div class="space-y-2">
+                        ${qObj.o.map((opt, i) => `
+                            <button onclick="checkAnswer(${i}, ${qObj.c}, '${qObj.e.replace(/'/g, "\\'")}')" 
+                                class="quiz-opt-btn w-full text-left p-3.5 border border-slate-200 rounded-xl text-xs font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between group">
+                                <span>${opt}</span>
+                                <span class="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-[10px] font-bold text-slate-400 group-hover:border-slate-400">${String.fromCharCode(65 + i)}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="quizFeedback" class="hidden p-4 rounded-xl border text-xs leading-relaxed transition-all"></div>
+                    <div class="flex justify-between items-center pt-2">
+                        <button onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg ${currentQuizIndex === 0 ? 'opacity-40 cursor-not-allowed' : ''}" ${currentQuizIndex === 0 ? 'disabled' : ''}>← Anterior</button>
+                        <button onclick="nextQuestion()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg">Próxima →</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(selected, correct, explanation) {
+            const btns = document.querySelectorAll('.quiz-opt-btn');
+            const feedback = document.getElementById('quizFeedback');
+
+            btns.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === correct) {
+                    btn.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-800');
+                    btn.querySelector('span:last-child').innerHTML = '✓';
+                    btn.querySelector('span:last-child').className = 'w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold';
+                } else if (i === selected) {
+                    btn.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-800');
+                    btn.querySelector('span:last-child').innerHTML = '✗';
+                    btn.querySelector('span:last-child').className = 'w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center text-[10px] font-bold';
+                }
+            });
+
+            feedback.classList.remove('hidden');
+            if (selected === correct) {
+                feedback.className = "p-4 rounded-xl border border-emerald-200 bg-emerald-50/50 text-emerald-800 text-xs leading-relaxed";
+                feedback.innerHTML = `<strong>✨ Resposta Correta!</strong><br class="mb-1">${explanation}`;
+            } else {
+                feedback.className = "p-4 rounded-xl border border-rose-200 bg-rose-50/50 text-rose-800 text-xs leading-relaxed";
+                feedback.innerHTML = `<strong>❌ Resposta Incorreta!</strong><br class="mb-1">${explanation}`;
+            }
+        }
+
+        function nextQuestion() {
+            const questions = QUIZ_DATA[currentActiveDiscipline] || QUIZ_DATA["D01.01"];
+            currentQuizIndex = (currentQuizIndex + 1) % questions.length;
+            loadQuiz(currentActiveDiscipline);
+        }
+
+        function prevQuestion() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                loadQuiz(currentActiveDiscipline);
+            }
+        }
+
+
+        // --- CARREGADOR DE SIMULADORES E GRÁFICOS ---
+        function loadSimulator(id) {
+            const container = document.getElementById('simulatorContent');
+            const simCard = document.getElementById('simulatorCard');
+            simCard.classList.remove('hidden');
+
+            if (id === 'D02.02') {
+                // Simulador do Teorema Central do Limite (TCL)
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div class="md:col-span-4 space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Distribuição de Origem:</label>
+                                <select id="cltDist" class="w-full text-xs bg-white border border-slate-300 rounded p-1.5 font-semibold">
+                                    <option value="exp">Exponencial (Assimétrica)</option>
+                                    <option value="uni">Uniforme (Plana)</option>
+                                    <option value="bim">Bimodal (Dois Picos)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Tamanho da Amostra (n): <span id="nVal" class="text-emerald-600 font-extrabold">30</span></label>
+                                <input type="range" id="cltN" min="2" max="100" value="30" oninput="document.getElementById('nVal').innerText = this.value" class="w-full accent-emerald-500">
+                            </div>
+                            <button onclick="runCLTSimulation()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition-all shadow-md">Executar 1.000 Reamostragens</button>
+                        </div>
+                        <div class="md:col-span-8">
+                            <div class="h-64 w-full">
+                                <canvas id="cltChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => runCLTSimulation(), 100);
+            } 
+            else if (id === 'D05.02') {
+                // Simulador de Teste A/B e Poder Estatístico
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div class="md:col-span-4 space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Conversão Base (A):</label>
+                                <input type="number" id="abConvA" value="5.0" step="0.1" class="w-full text-xs border border-slate-300 rounded p-1 font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Efeito Mínimo Detectável (MDE %):</label>
+                                <input type="number" id="abMde" value="0.8" step="0.1" class="w-full text-xs border border-slate-300 rounded p-1 font-semibold">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Poder (1-β):</label>
+                                    <select id="abPower" class="w-full text-xs border border-slate-300 rounded p-1 font-semibold">
+                                        <option value="0.80">80%</option>
+                                        <option value="0.90">90%</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Signif. (α):</label>
+                                    <select id="abAlpha" class="w-full text-xs border border-slate-300 rounded p-1 font-semibold">
+                                        <option value="0.05">5%</option>
+                                        <option value="0.01">1%</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button onclick="runABSimulation()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition-all shadow-md">Simular Experimento</button>
+                        </div>
+                        <div class="md:col-span-8 space-y-4">
+                            <div id="abResults" class="p-3 bg-white border border-slate-200 rounded-lg text-xs leading-relaxed space-y-1">
+                                <strong>Resultados do Experimento:</strong> Aguardando clique de simulação...
+                            </div>
+                            <div class="h-44 w-full">
+                                <canvas id="abChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => runABSimulation(), 100);
+            } 
+            else if (id === 'D04.01') {
+                // Simulador de OLS Regressão Linear
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div class="md:col-span-4 space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Inclinação Teórica (β1): <span id="slopeVal" class="text-emerald-600 font-extrabold">1.5</span></label>
+                                <input type="range" id="olsSlope" min="-3" max="3" step="0.1" value="1.5" oninput="document.getElementById('slopeVal').innerText = this.value" class="w-full accent-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Grau de Ruído (σ): <span id="noiseVal" class="text-emerald-600 font-extrabold">2.0</span></label>
+                                <input type="range" id="olsNoise" min="0.1" max="5" step="0.1" value="2.0" oninput="document.getElementById('noiseVal').innerText = this.value" class="w-full accent-emerald-500">
+                            </div>
+                            <button onclick="runOLSSimulation()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition-all shadow-md">Gerar Amostra e Ajustar OLS</button>
+                        </div>
+                        <div class="md:col-span-8 space-y-3">
+                            <div id="olsMetrics" class="text-xs font-semibold text-slate-600 flex justify-between bg-white p-2 border rounded-lg">
+                                <span>Equação Ajustada: --</span>
+                                <span>R²: --</span>
+                                <span>p-valor: --</span>
+                            </div>
+                            <div class="h-56 w-full">
+                                <canvas id="olsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => runOLSSimulation(), 100);
+            } 
+            else {
+                // Sem simulador específico, esconde o card do simulador e deixa apenas o quiz
+                simCard.classList.add('hidden');
+            }
+        }
+
+        // --- CÓDIGO DA SIMULAÇÃO: TCL ---
+        function runCLTSimulation() {
+            const distType = document.getElementById('cltDist').value;
+            const n = parseInt(document.getElementById('cltN').value);
+
+            const numSims = 1000;
+            const means = [];
+
+            // Gerar 1000 reamostragens
+            for (let i = 0; i < numSims; i++) {
+                let sum = 0;
+                for (let j = 0; j < n; j++) {
+                    if (distType === 'exp') {
+                        // Exponencial com média = 10
+                        sum += -10 * Math.log(1 - Math.random());
+                    } else if (distType === 'uni') {
+                        // Uniforme [0, 20] (média = 10)
+                        sum += Math.random() * 20;
+                    } else if (distType === 'bim') {
+                        // Bimodal: mistura de normais N(4, 1.5) e N(16, 1.5) (média global = 10)
+                        if (Math.random() < 0.5) {
+                            sum += (Math.random() + Math.random() + Math.random() - 1.5) * 1.5 + 4;
+                        } else {
+                            sum += (Math.random() + Math.random() + Math.random() - 1.5) * 1.5 + 16;
+                        }
+                    }
+                }
+                means.push(sum / n);
+            }
+
+            // Agrupar médias amostrais em Bins para o Histograma
+            const min = Math.min(...means);
+            const max = Math.max(...means);
+            const numBins = 20;
+            const binWidth = (max - min) / numBins;
+            const labels = [];
+            const counts = Array(numBins).fill(0);
+
+            for (let i = 0; i < numBins; i++) {
+                const binStart = min + i * binWidth;
+                const binEnd = binStart + binWidth;
+                labels.push(((binStart + binEnd) / 2).toFixed(2));
+            }
+
+            means.forEach(val => {
+                let binIdx = Math.floor((val - min) / binWidth);
+                if (binIdx >= numBins) binIdx = numBins - 1;
+                counts[binIdx]++;
+            });
+
+            // Destruir gráfico anterior se houver
+            if (activeChart) activeChart.destroy();
+
+            const ctx = document.getElementById('cltChart').getContext('2d');
+            activeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Frequência de Médias Amostrais',
+                        data: counts,
+                        backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                        borderColor: 'rgb(16, 185, 129)',
+                        borderWidth: 1,
+                        barPercentage: 1.0,
+                        categoryPercentage: 1.0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: `Distribuição Empírica das Médias Amostrais (1.000 simulações de n=${n})`, font: { size: 12, weight: 'bold' } }
+                    },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { size: 8 } } },
+                        y: { title: { display: true, text: 'Frequência', font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        // --- CÓDIGO DA SIMULAÇÃO: TESTE A/B ---
+        function runABSimulation() {
+            const pA = parseFloat(document.getElementById('abConvA').value) / 100;
+            const mdeVal = parseFloat(document.getElementById('abMde').value) / 100;
+            const power = parseFloat(document.getElementById('abPower').value);
+            const alpha = parseFloat(document.getElementById('abAlpha').value);
+
+            const pB = pA + mdeVal;
+
+            // 1. Calcular o tamanho amostral estimado por variante (fórmula clássica para proporções)
+            // Z_1-α/2
+            const z_alpha = alpha === 0.05 ? 1.96 : 2.58;
+            // Z_1-β
+            const z_beta = power === 0.80 ? 0.84 : 1.28;
+
+            const p_avg = (pA + pB) / 2;
+            const n_teorico = Math.ceil(
+                ((z_alpha + z_beta) ** 2 * (pA * (1 - pA) + pB * (1 - pB))) / (mdeVal ** 2)
+            );
+
+            // 2. Simular as moedas
+            let sucessoA = 0;
+            let sucessoB = 0;
+            for(let i = 0; i < n_teorico; i++) {
+                if (Math.random() < pA) sucessoA++;
+                if (Math.random() < pB) sucessoB++;
+            }
+
+            const taxaA_emp = sucessoA / n_teorico;
+            const taxaB_emp = sucessoB / n_teorico;
+
+            // 3. Teste Z de duas proporções
+            const p_amalgamado = (sucessoA + sucessoB) / (2 * n_teorico);
+            const se = Math.sqrt(p_amalgamado * (1 - p_amalgamado) * (2 / n_teorico));
+            const z_stat = (taxaB_emp - taxaA_emp) / se;
+            
+            // p-valor aproximado usando aproximação normal (função aproximada de erro)
+            const p_valor = 2 * (1 - normalCDF(Math.abs(z_stat)));
+            const significante = p_valor < alpha;
+
+            // Margens de erro para barras de erro
+            const meA = z_alpha * Math.sqrt((taxaA_emp * (1 - taxaA_emp)) / n_teorico);
+            const meB = z_alpha * Math.sqrt((taxaB_emp * (1 - taxaB_emp)) / n_teorico);
+
+            // Exibir resultados em texto
+            const resBox = document.getElementById('abResults');
+            resBox.innerHTML = `
+                <div><strong>Amostra Necessária (por variante):</strong> <span class="mono">${n_teorico.toLocaleString()}</span> usuários</div>
+                <div class="grid grid-cols-2 gap-2 mt-1">
+                    <div><strong>Conversão A (Controle):</strong> ${(taxaA_emp*100).toFixed(2)}% (${sucessoA}/${n_teorico})</div>
+                    <div><strong>Conversão B (Tratamento):</strong> ${(taxaB_emp*100).toFixed(2)}% (${sucessoB}/${n_teorico})</div>
+                </div>
+                <div class="mt-2 pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                    <span>Estatística Z: <span class="mono">${z_stat.toFixed(3)}</span> | p-valor: <strong class="mono ${p_valor < alpha ? 'text-emerald-600' : 'text-slate-600'}">${p_valor.toFixed(5)}</strong></span>
+                    <span class="px-2 py-0.5 rounded font-bold uppercase text-[9px] ${significante ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-500 border border-slate-200'}">
+                        ${significante ? '✓ Significativo!' : '✗ Inconclusivo'}
+                    </span>
+                </div>
+            `;
+
+            // Atualizar Gráfico
+            if (activeChart) activeChart.destroy();
+            const ctx = document.getElementById('abChart').getContext('2d');
+            activeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Controle (A)', 'Tratamento (B)'],
+                    datasets: [{
+                        data: [taxaA_emp * 100, taxaB_emp * 100],
+                        backgroundColor: ['#64748b', '#10b981'],
+                        borderColor: ['#475569', '#047857'],
+                        borderWidth: 1.5,
+                        barThickness: 45
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Taxas de Conversão Observadas (%) e Intervalos de Confiança 95%', font: { size: 11, weight: 'bold' } }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            title: { display: true, text: 'Conversão (%)', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Função de distribuição cumulativa normal aproximada
+        function normalCDF(x) {
+            const t = 1 / (1 + 0.2316419 * Math.abs(x));
+            const d = 0.3989423 * Math.exp(-x * x / 2);
+            const prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            return x >= 0 ? 1 - prob : prob;
+        }
+
+        // --- CÓDIGO DA SIMULAÇÃO: REGRESSÃO OLS ---
+        function runOLSSimulation() {
+            const beta1 = parseFloat(document.getElementById('olsSlope').value);
+            const noise = parseFloat(document.getElementById('olsNoise').value);
+            const beta0 = 5.0; // Intercepto fixo
+
+            const n = 50;
+            const X = [];
+            const Y = [];
+
+            // Gerar dados
+            for (let i = 0; i < n; i++) {
+                const xVal = Math.random() * 10;
+                // Gerar ruído usando Box-Muller transform para obter distribuição normal
+                const u1 = Math.random();
+                const u2 = Math.random();
+                const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+                const yVal = beta0 + beta1 * xVal + z0 * noise;
+                X.push(xVal);
+                Y.push(yVal);
+            }
+
+            // Calcular OLS analítico
+            const xMean = X.reduce((a, b) => a + b, 0) / n;
+            const yMean = Y.reduce((a, b) => a + b, 0) / n;
+
+            let num = 0;
+            let den = 0;
+            for (let i = 0; i < n; i++) {
+                num += (X[i] - xMean) * (Y[i] - yMean);
+                den += (X[i] - xMean) ** 2;
+            }
+
+            const estimatedBeta1 = num / den;
+            const estimatedBeta0 = yMean - estimatedBeta1 * xMean;
+
+            // Calcular R²
+            let ssRes = 0;
+            let ssTot = 0;
+            for (let i = 0; i < n; i++) {
+                const pred = estimatedBeta0 + estimatedBeta1 * X[i];
+                ssRes += (Y[i] - pred) ** 2;
+                ssTot += (Y[i] - yMean) ** 2;
+            }
+            const r2 = 1 - (ssRes / ssTot);
+
+            // Estatística F e P-valor (simplificado)
+            const msModel = ssTot - ssRes;
+            const msResid = ssRes / (n - 2);
+            const fStat = msModel / msResid;
+            
+            // Atualizar cabeçalho de métricas
+            document.getElementById('olsMetrics').innerHTML = `
+                <span>Equação: <strong>Y = ${estimatedBeta0.toFixed(2)} + ${estimatedBeta1.toFixed(2)} * X</strong></span>
+                <span>R²: <strong class="text-emerald-600">${r2.toFixed(3)}</strong></span>
+                <span>Estatística F: <strong class="mono">${fStat.toFixed(2)}</strong></span>
+            `;
+
+            // Gerar pontos da linha de regressão
+            const linePoints = [
+                { x: 0, y: estimatedBeta0 },
+                { x: 10, y: estimatedBeta0 + estimatedBeta1 * 10 }
+            ];
+
+            // Formatar dados para scatter chart do Chart.js
+            const scatterData = X.map((x, i) => ({ x: x, y: Y[i] }));
+
+            if (activeChart) activeChart.destroy();
+            const ctx = document.getElementById('olsChart').getContext('2d');
+            activeChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Pontos Amostrais',
+                            data: scatterData,
+                            backgroundColor: 'rgba(16, 185, 129, 0.6)',
+                            borderColor: 'rgb(16, 185, 129)',
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'Linha OLS Ajustada',
+                            data: linePoints,
+                            type: 'line',
+                            borderColor: '#3b82f6',
+                            borderWidth: 2,
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { type: 'linear', position: 'bottom', title: { display: true, text: 'X (Variável Explicativa)', font: { size: 10 } } },
+                        y: { title: { display: true, text: 'Y (Variável Resposta)', font: { size: 10 } } }
+                    },
+                    plugins: {
+                        legend: { display: true, labels: { font: { size: 9 } } }
+                    }
+                }
+            });
+        }
+
+
+        // --- CONFIGURAÇÃO INICIAL E BUSCA ---
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.disc-item').forEach(btn => {
+                const match = term.length < 2 || btn.textContent.toLowerCase().includes(term);
+                btn.style.display = match ? '' : 'none';
+                if (term.length >= 2 && match) {
+                    btn.closest('[id^="disc-list-"]').classList.remove('hidden');
+                }
+            });
+        });
+
+        window.onload = () => {
+            initSidebar();
+            renderDomainOverview();
+            // Abrir primeiro domínio por padrão
+            toggleDomain(0);
+        };
+    </script>
+</body>
+</html>

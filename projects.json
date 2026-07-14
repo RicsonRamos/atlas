@@ -94,5 +94,18 @@
     "cor": "rose",
     "icone": "⚔️",
     "status": "ativo"
+  },
+  {
+    "id": "estatistica-dados",
+    "titulo": "Estatística para Ciência de Dados",
+    "subtitulo": "Estatística Aplicada e Modelagem em Python",
+    "descricao": "Trilha completa de Estatística aplicada à Ciência de Dados com Python: estatística descritiva, inferência, distribuições, testes de hipóteses, regressão e inferência causal com simuladores interativos.",
+    "url": "estatistica-dados/index.html",
+    "dominios": 5,
+    "disciplinas": 11,
+    "cor": "emerald",
+    "icone": "📊",
+    "status": "ativo"
   }
 ]
+
