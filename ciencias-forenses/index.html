@@ -270,7 +270,10 @@
             }
 
             try {
-                const filename = FILE_MAP[id];
+                let filename = FILE_MAP[id];
+                if (filename.endsWith('.md')) {
+                    filename = filename.slice(0, -3);
+                }
                 const response = await fetch(`disciplinas/${filename}.md`);
                 if (!response.ok) throw new Error('HTTP ' + response.status);
                 const md = await response.text();
