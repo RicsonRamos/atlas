@@ -62,6 +62,7 @@ graph TD
     EIXO2 --> N4[N4 Ciencias Forenses]
     EIXO2 --> N5[N5 Psicologia Criminal]
     EIXO2 --> T08[T08 Neurociencia Cognitiva e Tatica]
+    EIXO2 --> SPP[SPP Seg. Publica Baseada em Evidencias]
     EIXO2 --> LEG2[Legado Direito Penal + Operacional]
 
     EIXO3 --> T05[T05 Protecao Balistica]
@@ -70,6 +71,7 @@ graph TD
 
     TRANSV --> N6[N6 Etica e Governanca de IA]
     TRANSV --> N7[N7 Visualizacao de Dados]
+    TRANSV --> MET[MET Metodologia de Pesquisa]
 ```
 
 **Convenção de IDs (nova):** cada disciplina passa a usar prefixo de trilha + número sequencial — ex.: `EST-04`, `ML-07`, `FOR-03`. Isso elimina colisões de `D01` entre trilhas e facilita o grafo de pré-requisitos no `projects.json`. O campo legado `Dxx` permanece como *alias* no cabeçalho durante a migração.
@@ -126,6 +128,11 @@ graph TD
 
 #### EST-21 · Modelos Hierárquicos e Multinível 🆕
 - Efeitos fixos vs. aleatórios, *shrinkage*, aninhamento, ICC.
+
+#### EST-22 · Econometria 🆕
+- **Modelagem de dados em painel** — efeitos fixos, efeitos aleatórios, estimador de primeiras diferenças.
+- **Modelos estruturais e GMM** — Método dos Momentos Generalizado (GMM), equações simultâneas, identificação e sobreidentificação (teste de Sargan/Hansen).
+- **Ponte causal-séries temporais** — modelos VAR causais, teste de causalidade de Granger, cointegração e VEC (Vector Error Correction).
 
 ### 🤖 N1 · Machine Learning e IA Aplicada 🆕 *(NOVA TRILHA)*
 *Ponte entre Estatística (T01) e Inteligência Analítica (T02). ~11 disciplinas. Simuladores sugeridos: fronteira de decisão interativa, curva ROC/AUC ao vivo, gradient descent visual.*
@@ -335,6 +342,11 @@ graph TD
 #### DIG-13 · Segurança Ofensiva Ética — Metodologia e Governança 🆕
 - Escopo e autorização legal, metodologias (PTES/OWASP), gestão de vulnerabilidades e *disclosure* responsável, *red vs. blue team* (nível de governança e ciclo de defesa — sem conteúdo operacional de exploração).
 
+#### DIG-14 · GRC e ISO/IEC 27001 🆕
+- **Governança, Risco e Conformidade (GRC)** — frameworks de GRC em segurança da informação, modelagem de ameaças e apetite ao risco.
+- **Normas ISO/IEC 27001 e 27002** — estrutura do SGSI (Sistema de Gestão de Segurança da Informação), controles de segurança, declaração de aplicabilidade (SoA).
+- **Auditoria de conformidade** — planejamento e execução de auditorias internas, conformidade regulatória (LGPD/cyber-segurança), tratamento de não-conformidades.
+
 ---
 
 ### 🗺️ T04 · Criminologia Espacial e Geoprocessamento (GIS) — *expandida*
@@ -364,7 +376,12 @@ graph TD
 - Imagens de satélite, índices (NDVI), *raster* vs. *vetor*, integração multi-fonte.
 
 #### GEO-12 · Mobilidade Urbana e Oportunidade Criminal 🆕
-- Redes de transporte, fluxo populacional, *big data* de mobilidade, exposição espacial.
+- Redes de transporte, fluxo populacional, *big data* de mobilidade, exposure espacial.
+
+#### GEO-13 · Sensoriamento, Drones e Vídeo-análise 🆕
+- **Sensoriamento remoto com RPAs** — fotogrametria aérea, geração de modelos digitais de elevação (MDE) e ortomosaicos para reconstituição espacial de cenas.
+- **Vídeo-análise analítica** — processamento de feed de câmeras, contagem de fluxo, OCR de placas e calibração de câmeras de monitoramento urbano.
+- **Cadeia de custódia de vídeo** — autenticação hash de arquivos de câmeras corporais (bodycams) e CFTV, metadados de vídeo e prevenção de adulterações.
 
 ---
 
@@ -423,6 +440,11 @@ graph TD
 #### FOR-11 · Perícia em Acidentes de Trânsito
 - Cinemática do impacto, vestígios de frenagem, reconstrução de colisão, cálculo de velocidade.
 
+#### FOR-12 · Sensoriamento, Drones e Vídeo-análise 🆕
+- **Reconstituição 3D por drones** — nuvens de pontos fotogramétricas de locais de acidente ou crime, georreferenciamento de vestígios macroscópicos.
+- **Análise pericial de vídeo** — autenticidade de vídeo (verificação de edição/deepfake), realce de imagens de baixa qualidade, detecção de movimento e cronometragem de quadros.
+- **Custódia digital de provas de vídeo** — aplicação de hash criptográfico na captura de bodycams e gravação CFTV, proteção contra vazamentos e quebra de custódia.
+
 ---
 
 ### 🧩 N5 · Psicologia Criminal e Análise Comportamental 🆕 *(NOVA TRILHA)*
@@ -470,6 +492,34 @@ graph TD
 
 #### NEU-28 · Psicofisiologia da Performance 🆕
 - HRV, biofeedback, controle respiratório, regulação autonômica, resiliência.
+
+### 🚔 SPP · Segurança Pública Baseada em Evidências e Políticas Públicas 🆕 *(NOVA TRILHA)*
+*Eixo II. Camada de DECISÃO que falta acima do nível tático. ~5 disciplinas. Pré-requisitos cruzados: T04 (criminologia espacial) e T02 (inteligência).*
+
+#### SPP-01 · Evidence-Based Policing
+- **Fundamentos de EBP** — história, conceitos de policiamento baseado em evidências (Sherman), a matriz de policiamento baseado em evidências (Center for Evidence-Based Crime Policy).
+- **Hierarquia de evidências em segurança** — ensaios controlados aleatórios (RCTs) vs. estudos observacionais, o papel das revisões sistemáticas de policiamento.
+- **Implementação e resistência tática** — transição da experiência/tradição para a tomada de decisão orientada por dados científicos, transposição de evidências para o policiamento de patrulha e policiamento comunitário.
+
+#### SPP-02 · Avaliação de Impacto de Intervenções
+- **Desenhos experimentais (RCTs)** — aleatorização em segurança pública, ensaios de policiamento de hot-spots, desafios éticos e operacionais da aleatorização policial.
+- **Desenhos quase-experimentais** — Diferenças-em-Diferenças (DiD), regressão descontínua (RDD), pareamento por escore de propensão (propensity score matching - PSM) aplicados a políticas de segurança.
+- **Construção do contrafactual** — o que teria acontecido com a taxa de criminalidade sem a intervenção, controle de deslocamento do crime e difusão de benefícios.
+
+#### SPP-03 · Análise Custo-Benefício em Segurança
+- **Valoração econômica do crime** — custos tangíveis e intangíveis do crime para as vítimas, sistema de justiça criminal e sociedade.
+- **Modelagem de custo-benefício** — estimativa de ROI (Retorno sobre Investimento) de programas de policiamento preventivo e repressivo, custo-efetividade comparativa de estratégias de redução de homicídios.
+- **Tomada de decisão sob restrição orçamentária** — alocação ótima de recursos policiais escassos, eficiência econômica na aquisição de tecnologias e efetivo policial.
+
+#### SPP-04 · Indicadores e Gestão Orientada a Dados
+- **Desenho de indicadores de desempenho** — métricas de atividade (tempo de resposta, prisões) vs. métricas de impacto (redução de vitimização, medo do crime, confiança pública).
+- **Dashboards de gestão estratégica** — design de salas de situação, fluxos de reporte COMPSTAT, governança de dados criminais em tempo real.
+- **Metas e incentivos alinhados** — desdobramento de metas de redução criminal, accountability de comandantes locais, prevenção de manipulação estatística de ocorrências.
+
+#### SPP-05 · Prevenção, Dissuasão Focada e Desenho de Políticas
+- **Teorias de dissuasão focada (focused deterrence)** — policiamento de agressores crônicos (pulling levers), intervenções focadas em gangues e mercados abertos de drogas.
+- **Policiamento de problemas (POP)** — o modelo SARA (Scanning, Analysis, Response, Assessment) aplicado a vulnerabilidades persistentes.
+- **Desenho e ciclo de políticas públicas** — formulação, monitoramento contínuo, avaliação de impacto ex-post e institucionalização de programas de prevenção.
 
 ---
 
@@ -594,6 +644,34 @@ graph TD
 #### VIZ-05 · Narrativa com Dados
 - Estrutura narrativa, *scrollytelling*, comunicação de incerteza, ética da visualização.
 
+### 📝 MET · Metodologia de Pesquisa Científica 🆕 *(NOVA TRILHA)*
+*Espinha metodológica do programa. Transversal aos três eixos. ~5 disciplinas.*
+
+#### MET-01 · Desenho de Pesquisa
+- **Abordagens metodológicas** — pesquisa qualitativa, quantitativa e métodos mistos (Creswell); definição e delimitação do problema de pesquisa.
+- **Hipóteses e variáveis** — formulação de hipóteses falseáveis (Popper), variáveis dependentes, independentes, moderadoras e de controle.
+- **Validade do desenho** — ameaças à validade interna (seleção, maturação, histórico) e validade externa (generalização ecológica e populacional).
+
+#### MET-02 · Revisão Sistemática e Meta-análise
+- **Diretriz PRISMA** — protocolo PRISMA para revisões sistemáticas; estratégias de busca em bases bibliográficas (Scopus, Web of Science, PubMed, SciELO).
+- **Processo de screening e seleção** — critérios de elegibilidade, fluxo de triagem, extração estruturada de dados e avaliação de viés de publicação (Funnel Plot).
+- **Tamanho de efeito (Effect Size)** — métricas (d de Cohen, g de Hedges, razão de chances - Odds Ratio), heterogeneidade amostral ($I^2$) e modelagem de efeitos fixos vs. efeitos aleatórios.
+
+#### MET-03 · Redação Científica e Normas
+- **Estrutura IMRaD** — anatomia de artigos de alto impacto: Introdução, Método, Resultados e Discussão (IMRaD); escrita concisa e rigor científico.
+- **Normas de formatação** — normas ABNT (associação de citações e referências) e estilo APA (American Psychological Association) para manuscritos acadêmicos.
+- **Ferramentas de citação** — uso de gerenciadores de referências bibliográficas (Zotero, Mendeley), integridade de metadados e gestão de bibliografias.
+
+#### MET-04 · Estatística para Pesquisa
+- **Análise de poder amostral** — cálculo do tamanho de amostra ótimo (G*Power) baseado no poder estatístico ($1 - \beta$) e tamanho de efeito esperado.
+- **Pré-registro e ciência aberta** — registro prévio de hipóteses e planos de análise (OSF - Open Science Framework) para mitigar viés de publicação.
+- **P-hacking e HARKing** — identificação de práticas de p-hacking (manipulação de variáveis para forçar $p < 0.05$), HARKing (hipotetização após os resultados serem conhecidos) e o papel da reprodutibilidade científica.
+
+#### MET-05 · Ética em Pesquisa
+- **Sistema CEP/CONEP** — o papel dos Comitês de Ética em Pesquisa e da Comissão Nacional de Ética em Pesquisa, submissão na Plataforma Brasil.
+- **Termo de Consentimento Livre e Esclarecido (TCLE)** — redação, aplicação, anonimização de participantes de pesquisa e ética com vulneráveis.
+- **Integridade científica** — prevenção de plágio, autoplágio, fabricação e falsificação de dados; atribuição correta de coautorias e transparência de conflitos de interesse.
+
 ---
 
 ## 6. Matriz de Correlação entre Trilhas (grafo de pré-requisitos)
@@ -628,6 +706,12 @@ graph LR
     LEGSW --> DIG
     LEGDIR[Legado Direito] --> DIG
     LEGDIR --> FOR
+    MET[MET Metodologia] --> EST
+    MET --> IAF
+    MET --> MAT
+    GEO --> SPP[SPP Politicas Publicas]
+    IAF --> SPP
+    SPP --> DPF
 ```
 
 **Leitura do grafo:** N1 (ML) emerge como *hub* central do Eixo I — depende de Estatística e alimenta MLOps, Inteligência e Forense. N4 (Forense) é o *hub* do Eixo II, recebendo insumos de ML, Materiais e Armamento e entregando para Doutrina Policial. N6 (Ética) e N7 (Visualização) são conectores transversais que tocam ambos os eixos.
@@ -671,6 +755,22 @@ graph TD
 - **Busca federada** — índice único cruzando as 17 trilhas por conceito/tag, não só por nome.
 - **D3.js** — para os simuladores de grafo (T02) e geoespaciais (T04) que o Chart.js não cobre bem.
 
+### Camada de Avaliação e Aprendizagem (v2.0)
+Especificação conceitual para implementação de features de avaliação de aprendizagem:
+- **Banco de Questões**: Cada disciplina conterá um conjunto de testes de múltipla escolha estruturados em seu arquivo de metadados, definindo perguntas, alternativas, resposta correta e justificativa teórica.
+- **Algoritmo de Repetição Espaçada (SM-2)**: Sistema de estudo ativo. Após o aluno responder uma questão, ele classifica sua dificuldade de resposta de 0 a 5. O sistema recalcula o intervalo de revisão ($I$) usando a lógica clássica do SM-2:
+  - Fator de Facilidade ($EF'$) modificado por: $EF' = f(EF, q)$ onde $q$ é a qualidade da resposta de 0 a 5.
+  - Intervalos subsequentes aumentados se a resposta for correta, ou reiniciados se houver erro ($q < 3$).
+- **Rastreamento de Progresso**: Controle local de progresso armazenado via `localStorage` do navegador para registrar disciplinas concluídas, pontuação acumulada em questionários e histórico de datas de revisão.
+- **Trilhas Guiadas (Percursos)**: Percursos formativos unificados que cruzam múltiplas trilhas curriculares para formar perfis profissionais integrados:
+  - *Percurso "Analista Forense de Dados"*: Estatística (`EST`) ──> Machine Learning (`ML`) ──> Inteligência Analítica (`IAF`) ──> Ciências Forenses (`FOR`).
+  - *Percurso "Gestor de Segurança Evidências"*: Estatística (`EST`) ──> Modelagem e Simulação (`SIM`) ──> Criminologia Espacial (`GEO`) ──> Segurança Pública Baseada em Evidências (`SPP`).
+  - *Percurso "Arquiteto de IA Responsável"*: Machine Learning (`ML`) ──> MLOps (`OPS`) ──> Direito Digital (`DIG`) ──> Ética e Governança de IA (`GOV`).
+- **Campos adicionais em `projects.json` v2**:
+  - `questoes`: Array contendo IDs das questões associadas à trilha.
+  - `percursos`: Lista de percursos formativos transversais a que o projeto pertence.
+  - `progresso`: Objeto para persistência local de taxa de conclusão e escore do aluno.
+
 ### Novos simuladores sugeridos (por trilha)
 | Trilha | Simulador interativo |
 |---|---|
@@ -698,10 +798,10 @@ graph TD
 
 | Eixo | Trilhas | Disciplinas (est.) |
 |---|---|---|
-| I · Quantitativo/Tecnológico | 6 (T01, N1, N2, T09, N3, +Legado SW) | ~140 |
-| II · Jurídico-Operacional/Forense | 8 (T02, T03, T04, T06, N4, N5, T08, +Legado Direito) | ~150 |
+| I · Quantitativo/Tecnológico | 6 (T01, N1, N2, T09, N3, +Legado SW) | ~141 |
+| II · Jurídico-Operacional/Forense | 9 (T02, T03, T04, T06, N4, N5, T08, SPP, +Legado Direito) | ~157 |
 | III · Engenharia Física Aplicada | 3 (T05, T07, N8) | ~45 |
-| Transversais | 2 (N6, N7) | ~11 |
-| **Total** | **17 ativas + legadas reintegradas** | **~330 disciplinas** |
+| Transversais | 3 (N6, N7, MET) | ~16 |
+| **Total** | **21 ativas + legadas reintegradas** | **~359 disciplinas** |
 
 > **Próximo passo recomendado:** começar pela **Fase 2 (trilha N1 · Machine Learning)** — é a maior lacuna do Atlas hoje e a que melhor conecta a Estatística existente ao restante do ecossistema. Posso gerar os arquivos `.md` completos das primeiras disciplinas (padrão de 14 elementos) quando quiser.
