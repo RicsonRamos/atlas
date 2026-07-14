@@ -17,11 +17,8 @@
 | FOR-10 | Perícia de Incêndios e Explosões | Intermediate | 24-30h | Não |
 | FOR-11 | Perícia em Acidentes de Trânsito | Advanced (capstone) | 24-30h | Sim |
 
-## DAG de dependências
-```
-FOR-09 ──> FOR-01 ──> FOR-02 ──> FOR-03 ──> FOR-06 ──> FOR-07 ──> FOR-08 ──> FOR-11
-  │                                                                           ▲
-  └──> FOR-04 ──> FOR-05 ─────────────────────────────────────────────────────┘
-  │
-  └──> FOR-10
-```
+## Dependências
+
+As disciplinas não possuem pré-requisitos formais entre si (conforme declarado nos cabeçalhos dos arquivos) — cada perícia é uma especialidade autônoma. Ordem de estudo recomendada: iniciar por FOR-09 (Local de Crime e Vestígios, transversal a todas) e FOR-01 (Medicina Legal), concluindo em FOR-11 (capstone, que integra cinemática, vestígios e laudo).
+
+Pré-requisitos externos da trilha (ver `projects.json`): `machine-learning`, `engenharia-armamento`, `protecao-balistica`.

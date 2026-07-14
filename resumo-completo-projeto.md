@@ -73,7 +73,7 @@ Este documento atua como o mapa de referência e governança geral do projeto, c
 
 ## 3. Diretrizes de Governança Curricular (CLAUDE.md)
 
-Para manter a uniformidade e o padrão stricto sensu, toda disciplina inserida ou modificada no Atlas deve seguir rigorosamente o padrão de **13 elementos estruturais**:
+Para manter a uniformidade e o padrão stricto sensu, toda disciplina inserida ou modificada no Atlas deve seguir rigorosamente o padrão de **14 elementos estruturais**:
 
 1. **Cabeçalho**: Contendo ID, Domínio pedagógico, Carga horária, Nível e Pré-requisitos.
 2. **Ementa**: Parágrafo denso delimitando o escopo teórico-prático do curso.

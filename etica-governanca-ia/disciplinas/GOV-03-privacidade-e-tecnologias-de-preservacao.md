@@ -7,7 +7,7 @@
 **Selo de Escopo:** 🟢 Aberto
 
 ## Ementa
-Esta disciplina cobre de forma abrangente os aspectos teóricos, metodológicos e práticos fundamentais de Privacidade e Tecnologias de Preservação (PETs). Explora a fundamentação científica e os marcos conceituais do tema: Privacidade diferencial (ponte com DE), *federated learning*, anonimização, *kanonymity*/ldiversity.. Aborda a aplicação prática de técnicas, ferramentas e metodologias para a resolução de problemas reais do domínio.
+Esta disciplina cobre de forma abrangente os aspectos teóricos, metodológicos e práticos fundamentais de Privacidade e Tecnologias de Preservação (PETs). Explora a fundamentação científica e os marcos conceituais do tema: Privacidade diferencial (ponte com DE), *federated learning*, anonimização, *k*-anonymity e *l*-diversity. Aborda a aplicação prática de técnicas, ferramentas e metodologias para a resolução de problemas reais do domínio.
 
 ## Objetivos
 1. Compreender e formular os conceitos fundamentais de Privacidade e Tecnologias de Preservação (PETs).
@@ -21,7 +21,7 @@ Nenhum (disciplina de entrada da trilha ou introdutória).
 
 **Fundamentos** — Introdução a Privacidade e Tecnologias de Preservação (PETs); conceitos fundamentais e terminologia padrão; histórico de desenvolvimento científico e prático na área.
 
-**Teoria** — Modelagem matemática, teorias científicas de base ou marcos conceituais relativos a Privacidade diferencial (ponte com DE), *federated learning*, anonimização, *kanonymity*/ldiversity.. Aprofundamento conceitual nos mecanismos e na literatura de referência.
+**Teoria** — Modelagem matemática, teorias científicas de base ou marcos conceituais relativos a Privacidade diferencial (ponte com DE), *federated learning*, anonimização, *k*-anonymity e *l*-diversity. Aprofundamento conceitual nos mecanismos e na literatura de referência.
 
 **Aplicação prática** — Implementação de rotinas e exercícios de fixação voltados à análise, simulação ou perícia de Privacidade e Tecnologias de Preservação (PETs) em cenários operacionais.
 

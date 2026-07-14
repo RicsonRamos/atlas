@@ -64,7 +64,7 @@
     "eixo": "II · Jurídico-Operacional e Forense",
     "prefixo": "GAT",
     "escopo": "Conceitual/Acadêmico",
-    "prereqs": [],
+    "prereqs": ["neurociencia-cognitiva"],
     "simuladores": []
   },
   {
@@ -81,7 +81,7 @@
     "eixo": "II · Jurídico-Operacional e Forense",
     "prefixo": "DPF",
     "escopo": "Aberto",
-    "prereqs": ["direito-penal"],
+    "prereqs": ["direito-penal", "ciencias-forenses", "neurociencia-cognitiva"],
     "simuladores": []
   },
   {
@@ -166,7 +166,7 @@
     "eixo": "II · Jurídico-Operacional e Forense",
     "prefixo": "IAF",
     "escopo": "Aberto",
-    "prereqs": ["machine-learning"],
+    "prereqs": ["machine-learning", "direito-digital"],
     "simuladores": ["GRAFOS"]
   },
   {
@@ -200,7 +200,7 @@
     "eixo": "II · Jurídico-Operacional e Forense",
     "prefixo": "GEO",
     "escopo": "Aberto",
-    "prereqs": ["modelagem-simulacao"],
+    "prereqs": ["modelagem-simulacao", "inteligencia-analitica"],
     "simuladores": ["KDE_LISA"]
   },
   {
