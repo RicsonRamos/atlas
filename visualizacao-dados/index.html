@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização de Dados e Storytelling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:wght@400;600;700&display=swap');
+
+        :root { --accent: #10b981; } /* Emerald-500 */
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #1e1b16;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .serif { font-family: 'Source Serif 4', serif; }
+
+        .sidebar-item.active {
+            background-color: #fff;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            font-weight: 700;
+        }
+
+        .disc-item.active {
+            background-color: #ecfdf5;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #d6d3cb; border-radius: 10px; }
+
+        #renderedContent h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: 0.25rem; color: #1e1b16; }
+        #renderedContent h2 { font-size: 1.15rem; font-weight: 800; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.8rem; border-bottom: 2px solid #e5e3dc; padding-bottom: 0.5rem; }
+        #renderedContent h3 { font-weight: 700; margin-top: 1rem; }
+        #renderedContent p, #renderedContent li { line-height: 1.75; color: #3f3a33; font-size: 0.925rem; }
+        #renderedContent ul, #renderedContent ol { margin-left: 1.25rem; margin-bottom: 1rem; }
+        #renderedContent li { margin-bottom: 0.35rem; }
+        #renderedContent strong { color: #1e1b16; font-weight: 700; }
+        #renderedContent table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.85rem; }
+        #renderedContent th { background: #ecfdf5; color: var(--accent); text-align: left; padding: 0.6rem 0.8rem; font-weight: 800; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; }
+        #renderedContent td { padding: 0.6rem 0.8rem; border-top: 1px solid #ece9e1; vertical-align: top; }
+        #renderedContent em { color: #6b6459; }
+        #renderedContent pre { background-color: #1e293b; color: #f8fafc; padding: 1rem; border-radius: 0.75rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; margin: 1rem 0; }
+        #renderedContent code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; background-color: #f1f5f9; padding: 0.15rem 0.35rem; border-radius: 0.25rem; color: #1e1b16; }
+        #renderedContent pre code { background-color: transparent; padding: 0; color: inherit; }
+        #renderedContent hr { display: none; }
+    </style>
+</head>
+<body class="overflow-hidden">
+
+    <nav class="h-16 border-b border-[#e5e3dc] bg-white flex items-center justify-between px-6 z-50 relative">
+        <div class="flex items-center gap-3">
+            <a href="../index.html" class="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:text-emerald-500 hover:bg-slate-100 transition-colors text-lg" title="Voltar ao hub">←</a>
+            <div class="w-10 h-10 bg-[#1e1b16] rounded-xl flex items-center justify-center text-emerald-400 font-black text-lg shadow-lg">📊</div>
+            <div>
+                <h1 class="text-lg font-extrabold tracking-tight leading-none serif">Visualização de Dados e Storytelling</h1>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Comunicação Visual e Storytelling Analítico</p>
+            </div>
+        </div>
+        <div class="relative w-1/3 max-w-md hidden md:block">
+            <input type="text" id="searchInput" placeholder="Buscar disciplina, gráfico, conceito..."
+                   class="w-full bg-slate-100 border-none rounded-full py-2 px-10 text-sm focus:ring-2 focus:ring-emerald-400 transition-all">
+            <span class="absolute left-4 top-2.5 opacity-40">🔍</span>
+        </div>
+        <div class="flex items-center gap-3 text-[10px] font-black text-slate-400 uppercase tracking-tighter">
+            <span class="bg-slate-100 px-2 py-1 rounded">1 domínio</span>
+            <span class="bg-slate-100 px-2 py-1 rounded">5 disciplinas</span>
+        </div>
+    </nav>
+
+    <div class="flex h-[calc(100vh-64px)]">
+        <aside class="w-72 bg-[#f1efe9] border-r border-[#e5e3dc] overflow-y-auto custom-scroll flex-shrink-0">
+            <div class="p-3 space-y-1" id="sidebarNav"></div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto custom-scroll p-8 bg-[#f8f7f4]">
+            <div id="welcomeScreen" class="max-w-3xl mx-auto">
+                <div class="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">Índice mestre</div>
+                <h2 class="text-3xl font-extrabold serif mb-4">Selecione uma disciplina</h2>
+                <p class="text-slate-500 text-sm leading-relaxed mb-8 max-w-xl">Trilha transversal sobre Visualização de Dados e Storytelling. Cobre a gramática dos gráficos, design de dashboards interativos, cartografia geoespacial, visualização de redes/grafos e técnicas de narrativa analítica.</p>
+                <div id="domainOverview" class="grid grid-cols-1 gap-3"></div>
+            </div>
+
+            <div id="disciplineView" class="hidden max-w-3xl mx-auto">
+                <div id="renderedContent" class="bg-white rounded-2xl border border-[#e5e3dc] shadow-sm p-8"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const DOMINIOS = [
+            { id: "D01", titulo: "Visualização de Dados e Storytelling Analítico", disciplinas: [
+                ["VIZ-01", "Gramática dos Gráficos"],
+                ["VIZ-02", "Design de Dashboards"],
+                ["VIZ-03", "Visualização Geoespacial"],
+                ["VIZ-04", "Visualização de Redes e Grafos"],
+                ["VIZ-05", "Narrativa com Dados"]
+            ]}
+        ];
+
+        const FILE_MAP = {
+            "VIZ-01": "VIZ-01-gramatica-dos-graficos",
+            "VIZ-02": "VIZ-02-design-de-dashboards",
+            "VIZ-03": "VIZ-03-visualizacao-geoespacial",
+            "VIZ-04": "VIZ-04-visualizacao-de-redes-e-grafos",
+            "VIZ-05": "VIZ-05-narrativa-com-dados"
+        };
+
+        const mdCache = {};
+
+        function initSidebar() {
+            const nav = document.getElementById('sidebarNav');
+            nav.innerHTML = DOMINIOS.map((d, di) => `
+                <div class="domain-block">
+                    <button onclick="toggleDomain(${di})" class="sidebar-item domain-toggle w-full flex items-center gap-2 p-3 rounded-lg text-left transition-all group">
+                        <span class="w-7 h-7 rounded-md bg-white border border-[#e5e3dc] flex items-center justify-center text-[10px] font-black shrink-0">${d.id.slice(1)}</span>
+                        <span class="text-[11px] font-black uppercase tracking-tight text-slate-600 flex-1 leading-snug">${d.titulo}</span>
+                        <span class="chevron-${di} text-slate-300 text-[10px] transition-transform">▼</span>
+                    </button>
+                    <div id="disc-list-${di}" class="pl-4 pb-2 space-y-0.5">
+                        ${d.disciplinas.map(([id, nome]) => `
+                            <button onclick="selectDiscipline('${id}')" data-disc-id="${id}"
+                                class="disc-item w-full text-left px-3 py-2 rounded-md text-[12px] text-slate-500 hover:bg-white transition-colors flex items-center gap-2">
+                                <span class="mono text-[9px] text-slate-400">${id}</span>
+                                <span class="leading-snug">${nome}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDomainOverview() {
+            const el = document.getElementById('domainOverview');
+            el.innerHTML = DOMINIOS.map(d => `
+                <div class="bg-white border border-[#e5e3dc] rounded-xl p-4">
+                    <div class="text-[9px] font-black text-emerald-700 uppercase tracking-widest mb-1">${d.id}</div>
+                    <div class="text-[12px] font-bold text-slate-700 leading-snug mb-2">${d.titulo}</div>
+                    <div class="text-[10px] text-slate-400 font-bold uppercase">${d.disciplinas.length} disciplinas</div>
+                </div>
+            `).join('');
+        }
+
+        function toggleDomain(idx) {
+            const list = document.getElementById(`disc-list-${idx}`);
+            list.classList.toggle('hidden');
+        }
+
+        async function selectDiscipline(id) {
+            document.querySelectorAll('.disc-item').forEach(b => b.classList.toggle('active', b.dataset.discId === id));
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('disciplineView').classList.remove('hidden');
+
+            const container = document.getElementById('renderedContent');
+            container.innerHTML = `<p class="text-slate-400 text-sm">Carregando...</p>`;
+
+            try {
+                let md = mdCache[id];
+                if (!md) {
+                    const filename = `${FILE_MAP[id]}.md`;
+                    md = await fetch(`disciplinas/${filename}`).then(r => {
+                        if (!r.ok) throw new Error('HTTP ' + r.status);
+                        return r.text();
+                    });
+                    mdCache[id] = md;
+                }
+                container.innerHTML = marked.parse(md);
+                
+                renderMathInElement(container, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError : false
+                });
+            } catch (err) {
+                container.innerHTML = `<p class="text-rose-500 text-sm">Não foi possível carregar esta disciplina (${err.message}). Verifique se está acessando via servidor local (http://), não diretamente pelo arquivo.</p>`;
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.disc-item').forEach(btn => {
+                const match = term.length < 2 || btn.textContent.toLowerCase().includes(term);
+                btn.style.display = match ? '' : 'none';
+                if (term.length >= 2 && match) {
+                    btn.closest('[id^="disc-list-"]').classList.remove('hidden');
+                }
+            });
+        });
+
+        initSidebar();
+        renderDomainOverview();
+        toggleDomain(0);
+    </script>
+</body>
+</html>
