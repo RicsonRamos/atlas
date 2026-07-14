@@ -43,7 +43,7 @@
         }
 
         .topic-card.open .topic-expansion {
-            max-height: 20000px;
+            max-height: 30000px;
             opacity: 1;
             padding-bottom: 1.5rem;
         }
@@ -223,8 +223,16 @@
                     </button>
                     <div class="topic-expansion">
                         <div class="px-6 pb-6 pt-5 border-t border-slate-100 bg-slate-50/30">
-                            <div class="markdown-content" id="content-${id}">
-                                <p class="text-slate-400 text-xs">Carregando conteúdo programático...</p>
+                            <!-- Grid Estruturado do Atlas -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6" id="grid-top-${id}"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-8" id="grid-bottom-${id}"></div>
+                            
+                            <!-- Conteúdo Detalhado Completo -->
+                            <div class="pt-6 border-t border-slate-200">
+                                <h6 class="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-[0.18em]">Conteúdo Detalhado e Códigos</h6>
+                                <div class="markdown-content" id="content-${id}">
+                                    <p class="text-slate-400 text-xs">Carregando conteúdo programático...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -253,8 +261,13 @@
 
         async function loadDisciplineContent(id) {
             const container = document.getElementById(`content-${id}`);
+            const gridTop = document.getElementById(`grid-top-${id}`);
+            const gridBottom = document.getElementById(`grid-bottom-${id}`);
+
             if (mdCache[id]) {
-                container.innerHTML = mdCache[id];
+                container.innerHTML = mdCache[id].html;
+                gridTop.innerHTML = mdCache[id].topHtml;
+                gridBottom.innerHTML = mdCache[id].bottomHtml;
                 renderMath(container);
                 return;
             }
@@ -267,13 +280,163 @@
                 const response = await fetch(`disciplinas/${filename}.md`);
                 if (!response.ok) throw new Error('HTTP ' + response.status);
                 const md = await response.text();
+                
+                // 1. Renderizar o Markdown completo
                 const html = marked.parse(md);
-                mdCache[id] = html;
+                
+                // 2. Parsear as seções para o grid estruturado
+                const parsed = parseMarkdownToSections(md);
+                
+                const topHtml = `
+                    ${renderList("Pré-requisitos", parsed.prereqs, "bg-blue-400")}
+                    ${renderList("Objetivos", parsed.objetivos, "bg-amber-500")}
+                    ${renderList("Prática esperada", parsed.pratica, "bg-emerald-500")}
+                `;
+                
+                const bottomHtml = `
+                    ${renderList("Teoria", parsed.teoria, "bg-slate-400")}
+                    ${renderList("Algoritmos e técnicas", parsed.algoritmos, "bg-indigo-400")}
+                    ${renderList("Livros", parsed.livros, "bg-amber-500")}
+                    ${renderList("Papers e referências", parsed.papers, "bg-rose-400")}
+                    ${renderList("Ferramentas", parsed.ferramentas, "bg-cyan-500")}
+                    ${renderList("Entrevista Staff", parsed.entrevista, "bg-violet-500")}
+                    ${renderList("Projetos", parsed.projetos, "bg-emerald-500")}
+                    ${renderList("Exercícios", parsed.exercicios, "bg-slate-500")}
+                    ${renderList("Estado da arte e debates", parsed.debates, "bg-orange-500")}
+                `;
+
+                mdCache[id] = { html, topHtml, bottomHtml };
+                
                 container.innerHTML = html;
+                gridTop.innerHTML = topHtml;
+                gridBottom.innerHTML = bottomHtml;
+                
                 renderMath(container);
             } catch (err) {
                 container.innerHTML = `<p class="text-rose-500 text-xs font-semibold">Erro ao carregar (${err.message}). Acesse por servidor HTTP local.</p>`;
             }
+        }
+
+        function parseMarkdownToSections(md) {
+            const sections = {};
+            const parts = md.split(/
+##\s+/);
+            
+            // Extrair pre-requisitos da intro/metadados
+            const intro = parts[0];
+            const prereqMatch = intro.match(/\*\*Pré-requisitos:\*\*\s*(.*)/i);
+            const prereqsMeta = prereqMatch ? [prereqMatch[1].trim()] : [];
+
+            // Limpar seções
+            parts.forEach(part => {
+                const lines = part.split('
+');
+                const title = lines[0].trim().toLowerCase();
+                const content = lines.slice(1).join('
+').trim();
+                sections[title] = content;
+            });
+
+            const getSectionItems = (keys) => {
+                for (let k of keys) {
+                    if (sections[k]) return extractListOrParagraph(sections[k]);
+                }
+                return [];
+            };
+
+            // Mapeamentos para as 12 seções estruturadas
+            const prereqs = getSectionItems(['pré-requisitos', 'pre-requisitos']);
+            const objetivos = getSectionItems(['objetivos']);
+            const pratica = getSectionItems(['prática profissional', 'pratica profissional', 'prática esperada']);
+            
+            // Separar Teoria e Algoritmos do conteúdo programático se houver
+            let teoria = [];
+            let algoritmos = [];
+            const progContent = sections['conteúdo programático'] || sections['conteudo programatico'] || '';
+            if (progContent) {
+                const teorMatch = progContent.match(/\*\*Teoria\*\*\s*—\s*([^
+]+)/i) || progContent.match(/\*\*Teoria Estatística\*\*\s*—\s*([^
+]+)/i);
+                if (teorMatch) teoria = teorMatch[1].split(';').map(s => s.trim());
+                
+                const algMatch = progContent.match(/\*\*Algoritmos e técnicas\*\*\s*—\s*([^
+]+)/i) || progContent.match(/\*\*Implementação\*\*\s*—\s*([^
+]+)/i) || progContent.match(/\*\*Aplicação prática\*\*\s*—\s*([^
+]+)/i) || progContent.match(/\*\*Implementação em Python\*\*\s*—\s*([^
+]+)/i);
+                if (algMatch) algoritmos = algMatch[1].split(';').map(s => s.trim());
+            }
+
+            const livros = getSectionItems(['doutrina / referências técnicas', 'doutrina / referencias tecnicas', 'referências bibliográficas', 'referencias bibliograficas', 'referencias', 'referências']);
+            const papers = getSectionItems(['doutrina / referências técnicas', 'doutrina / referencias tecnicas']);
+            
+            // Extrair ferramentas das tags ou do texto
+            const tagsContent = sections['tags'] || '';
+            const ferramentas = tagsContent.split('#').map(t => t.trim()).filter(t => t.length > 0);
+
+            const entrevista = getSectionItems(['questões avançadas', 'questoes avancadas', 'questões teóricas', 'questoes teoricas', 'questões']);
+            const projetos = getSectionItems(['casos práticos', 'casos praticos', 'projetos']);
+            const exercicios = getSectionItems(['exercícios', 'exercicios', 'exercícios práticos', 'exercicios praticos']);
+            const debates = getSectionItems(['estado da arte e debates em aberto', 'estado da arte e debates', 'estado da arte']);
+
+            return {
+                prereqs: prereqs.length ? prereqs : (prereqsMeta.length ? prereqsMeta : ["Nenhum"]),
+                objetivos,
+                pratica: pratica.length ? pratica : ["Implementação de algoritmos e exercícios de fixação."],
+                teoria: teoria.length ? teoria : ["Estudo dos fundamentos teóricos do módulo."],
+                algoritmos: algoritmos.length ? algoritmos : ["Implementação e otimização de rotinas em Python/linguagem correspondente."],
+                livros: livros.slice(0, 3),
+                papers: papers.slice(3, 6).length ? papers.slice(3, 6) : ["Consulte referências adicionais no conteúdo detalhado."],
+                ferramentas: ferramentas.length ? ferramentas : ["Python", "Git"],
+                entrevista,
+                projetos,
+                exercicios,
+                debates
+            };
+        }
+
+        function extractListOrParagraph(text) {
+            if (!text) return [];
+            
+            // 1. Tentar extrair lista estruturada (- ou *)
+            const lines = text.split('
+');
+            const items = [];
+            lines.forEach(l => {
+                const trimmed = l.trim();
+                if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
+                    items.push(trimmed.replace(/^[-*]\s+/, ''));
+                } else if (/^\d+\.\s+/.test(trimmed)) {
+                    items.push(trimmed.replace(/^\d+\.\s+/, ''));
+                }
+            });
+            
+            if (items.length > 0) return items;
+
+            // 2. Se for texto corrido, separar por ponto e vírgula ou parágrafos curtos
+            return text
+                .replace(/\*\* [^*]+\*\*\s*—/g, '') // Limpar tags em negrito
+                .split(/[;\.]/)
+                .map(s => s.trim())
+                .filter(s => s.length > 10 && !s.startsWith('#'));
+        }
+
+        function renderList(title, items, marker = "bg-slate-300") {
+            if (!items || !items.length) return "";
+
+            return `
+                <section class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:border-[var(--primary)]/20 transition-all flex flex-col">
+                    <h6 class="text-[10px] font-black uppercase text-slate-400 mb-3 tracking-[0.18em]">$Ética e Governança de IA</h6>
+                    <ul class="space-y-2">
+                        ${items.map(item => `
+                            <li class="flex gap-2 text-[11px] leading-relaxed text-slate-600">
+                                <span class="w-1.5 h-1.5 rounded-full ${marker} mt-1.5 shrink-0"></span>
+                                <span>${item}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </section>
+            `;
         }
 
         function renderMath(el) {
