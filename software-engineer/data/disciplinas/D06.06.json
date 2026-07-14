@@ -46,7 +46,8 @@
   ],
   "livros": [
     "Sadalage & Fowler, NoSQL Distilled",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Petrov, Database Internals: A Deep Dive into How Distributed Data Systems Work, O'Reilly, 2019"
   ],
   "papers_fundamentais": [
     "Chang et al., Bigtable, 2006",
@@ -63,14 +64,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como escolher partition key em DynamoDB?",
-    "Por que Spanner consegue SQL distribuído com consistência forte?"
+    "Por que Spanner consegue SQL distribuído com consistência forte?",
+    "Explique como implementar rate limiting distribuído com consistência eventual e quais são os trade-offs de precisão"
   ],
   "projetos_reais": [
-    "Matriz de decisão entre NoSQL, distributed SQL e warehouse para três workloads"
+    "Matriz de decisão entre NoSQL, distributed SQL e warehouse para três workloads",
+    "Projetar um sistema de coordenação distribuída para schema migrations em um data lakehouse multi-tenant"
   ],
   "exercicios": [
     "Modelar tabela wide-column por query",
-    "Analisar hotspot de chave de partição"
+    "Analisar hotspot de chave de partição",
+    "Modelar a probabilidade de split-brain em um cluster de 5 nós com different failure modes (crash, network partition, Byzantine)"
   ],
   "tags": [
     "NoSQL",
@@ -78,5 +82,9 @@
     "Distributed SQL",
     "Bigtable",
     "Dynamo"
+  ],
+  "debates_estado_arte": [
+    "Service mesh para comunicação entre componentes de dados: benefícios de observabilidade vs. overhead de latência",
+    "Distributed tracing em pipelines de dados (OpenTelemetry): desafios de correlação entre batch jobs e streaming"
   ]
 }

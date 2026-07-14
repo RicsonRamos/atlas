@@ -40,11 +40,12 @@
   "protocolos": [],
   "livros": [
     "NIST AI Risk Management Framework",
-    "Chip Huyen, Designing Machine Learning Systems"
+    "Chip Huyen, Designing Machine Learning Systems",
+    "Russell & Norvig, Artificial Intelligence: A Modern Approach, 4th ed., Pearson, 2020"
   ],
   "papers_fundamentais": [
     "Bender et al., On the dangers of stochastic parrots, 2021",
-    "Perez et al., Red Teaming Language Models, 2022"
+    "Ouyang, Wu, Jiang et al., Training language models to follow instructions with human feedback (InstructGPT), NeurIPS 2022"
   ],
   "ferramentas": [
     "OpenAI Evals",
@@ -55,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "LLM-as-judge é confiável sozinho?",
-    "Como mitigar prompt injection em RAG?"
+    "Como mitigar prompt injection em RAG?",
+    "Explique como implementar guardrails para LLMs em produção (input/output validation, toxicity detection, PII filtering) e quais são as limitações"
   ],
   "projetos_reais": [
-    "Suite de avaliação e red teaming para assistente RAG interno"
+    "Suite de avaliação e red teaming para assistente RAG interno",
+    "Projetar um framework de avaliação de LLMs com benchmarks automatizados, human evaluation e red-teaming para uma aplicação corporativa"
   ],
   "exercicios": [
     "Criar dataset de ataques",
-    "Medir groundedness e toxicidade"
+    "Medir groundedness e toxicidade",
+    "Implementar um pipeline de avaliação de LLM que meça factual accuracy, toxicity, bias e latência em um dataset de avaliação controlado"
   ],
   "tags": [
     "LLM Eval",
@@ -70,5 +74,9 @@
     "Red Teaming",
     "PII",
     "Model Risk"
+  ],
+  "debates_estado_arte": [
+    "Avaliação de LLMs: benchmarks estáticos vs. avaliação dinâmica (arena, A/B testing) e o problema de data contamination",
+    "Governança de IA generativa: responsabilidade, auditabilidade e compliance regulatório (EU AI Act) para sistemas baseados em LLMs"
   ]
 }

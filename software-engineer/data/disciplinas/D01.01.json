@@ -73,14 +73,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Explique SAT vs SMT e quando usar cada um em validação de dados",
-    "Como provar que um job de reprocessamento é idempotente?"
+    "Como provar que um job de reprocessamento é idempotente?",
+    "Como TLA+ pode ser usado para especificar invariantes de consistência em pipelines de dados distribuídos com exactly-once semantics?"
   ],
   "projetos_reais": [
-    "Criar um motor de regras para contratos de dados com verificação por SMT"
+    "Criar um motor de regras para contratos de dados com verificação por SMT",
+    "Especificar em TLA+ o protocolo de commit de um pipeline de ingestão com deduplicação e verificar com o TLC model checker"
   ],
   "exercicios": [
     "Converter políticas de acesso em CNF e DNF",
-    "Provar por dedução natural propriedades simples de filtros SQL"
+    "Provar por dedução natural propriedades simples de filtros SQL",
+    "Modelar em lógica de primeira ordem as constraints de um esquema de data contract e verificar satisfatibilidade com Z3"
   ],
   "tags": [
     "SAT",
@@ -88,5 +91,10 @@
     "Z3",
     "TLA+",
     "Regras"
+  ],
+  "debates_estado_arte": [
+    "Viabilidade de verificação formal em pipelines de dados industriais: custo de especificação vs. benefício de garantias formais em ambientes de alta velocidade de mudança",
+    "Limites práticos do model checking simbólico em espaços de estado combinatórios de workflows de dados com milhares de tasks",
+    "SAT/SMT como backend de otimizadores de consulta: integração de solvers formais em query planners modernos (ex.: Z3 no Cosette)"
   ]
 }

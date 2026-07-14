@@ -52,12 +52,14 @@
   ],
   "livros": [
     "Katz & Lindell, Introduction to Modern Cryptography",
-    "Menezes, van Oorschot & Vanstone, Handbook of Applied Cryptography"
+    "Menezes, van Oorschot & Vanstone, Handbook of Applied Cryptography",
+    "Paar & Pelzl, Understanding Cryptography, Springer, 2010"
   ],
   "papers_fundamentais": [
     "Rivest, Shamir & Adleman, A method for obtaining digital signatures, 1978",
     "Merkle, A digital signature based on a conventional encryption function, 1987",
-    "Biryukov, Dinu & Khovratovich, Argon2, 2016"
+    "Biryukov, Dinu & Khovratovich, Argon2, 2016",
+    "Flajolet & Sedgewick, An introduction to the analysis of algorithms, 1996"
   ],
   "ferramentas": [
     "OpenSSL",
@@ -68,14 +70,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Hash é criptografia reversível?",
-    "Como rotação de chaves afeta dados históricos?"
+    "Como rotação de chaves afeta dados históricos?",
+    "Analise a complexidade amortizada de operações de compactação em LSM-trees e seu impacto em write amplification"
   ],
   "projetos_reais": [
-    "Manifesto assinado para datasets com verificação de integridade e proveniência"
+    "Manifesto assinado para datasets com verificação de integridade e proveniência",
+    "Implementar benchmarks comparativos de B-tree vs. LSM-tree vs. hash index com análise formal de complexidade para diferentes workloads (OLTP, OLAP, time-series)"
   ],
   "exercicios": [
     "Comparar bcrypt e Argon2",
-    "Construir uma Merkle tree para partições de dados"
+    "Construir uma Merkle tree para partições de dados",
+    "Derivar a complexidade de busca em uma skip list e compará-la com B-tree em termos de cache efficiency"
   ],
   "tags": [
     "Hashing",
@@ -83,5 +88,9 @@
     "PKI",
     "Merkle",
     "KMS"
+  ],
+  "debates_estado_arte": [
+    "Learned indexes (modelo de ML como índice) vs. estruturas de dados clássicas: trade-offs de latência, espaço e adaptabilidade",
+    "Write amplification em LSM-trees: estratégias de compactação (leveled, tiered, FIFO) e seus trade-offs formais"
   ]
 }

@@ -40,10 +40,12 @@
   "livros": [
     "Evans, Domain-Driven Design",
     "Gamma et al., Design Patterns",
-    "Martin, Clean Architecture"
+    "Martin, Clean Architecture",
+    "Humble & Farley, Continuous Delivery, Addison-Wesley, 2010"
   ],
   "papers_fundamentais": [
-    "Parnas, On the criteria to be used in decomposing systems into modules, 1972"
+    "Parnas, On the criteria to be used in decomposing systems into modules, 1972",
+    "Forsgren, Humble & Kim, Accelerate: The Science of Lean Software and DevOps, 2018"
   ],
   "ferramentas": [
     "FastAPI",
@@ -54,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como evoluir um conector sem quebrar consumidores?",
-    "Quando Strategy é melhor que if/else?"
+    "Quando Strategy é melhor que if/else?",
+    "Como implementar canary deployment para pipelines de dados com validação estatística de qualidade antes de promoção?"
   ],
   "projetos_reais": [
-    "Framework de conectores plugáveis para fontes batch e streaming"
+    "Framework de conectores plugáveis para fontes batch e streaming",
+    "Construir um pipeline de CI/CD completo para um projeto dbt com testes de contrato, validação de schema e deploy blue-green"
   ],
   "exercicios": [
     "Refatorar ETL procedural para arquitetura hexagonal",
-    "Versionar uma API com compatibilidade"
+    "Versionar uma API com compatibilidade",
+    "Projetar uma estratégia de rollback para uma migração de schema em um data lakehouse com zero downtime"
   ],
   "tags": [
     "DDD",
@@ -69,5 +74,9 @@
     "OpenAPI",
     "Protobuf",
     "Modularidade"
+  ],
+  "debates_estado_arte": [
+    "Trunk-based development vs. GitFlow para equipes de data engineering: velocidade de entrega vs. estabilidade",
+    "Testing em pipelines de dados: determinismo, mocks de fontes externas e o problema de reprodutibilidade de dados reais"
   ]
 }

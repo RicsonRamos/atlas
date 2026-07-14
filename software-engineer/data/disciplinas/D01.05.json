@@ -57,7 +57,8 @@
     "Golub & Van Loan, Matrix Computations"
   ],
   "papers_fundamentais": [
-    "Halko, Martinsson & Tropp, Finding structure with randomness, 2011"
+    "Halko, Martinsson & Tropp, Finding structure with randomness, 2011",
+    "Chazelle, The discrepancy method: randomness and complexity, Cambridge University Press, 2000"
   ],
   "ferramentas": [
     "NumPy",
@@ -68,14 +69,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que normalização muda busca vetorial?",
-    "Explique SVD para redução dimensional em linguagem de engenharia"
+    "Explique SVD para redução dimensional em linguagem de engenharia",
+    "Demonstre como a desigualdade de Chernoff é usada para dimensionar o número de partições em um shuffle distribuído com garantia de balanceamento"
   ],
   "projetos_reais": [
-    "Criar uma pipeline de embeddings com PCA, ANN e avaliação de recall"
+    "Criar uma pipeline de embeddings com PCA, ANN e avaliação de recall",
+    "Projetar e avaliar um amostrador estratificado para validação estatística de qualidade de dados em tabelas com bilhões de registros"
   ],
   "exercicios": [
     "Calcular autovetores em matriz pequena",
-    "Comparar matrizes densas e esparsas em memória"
+    "Comparar matrizes densas e esparsas em memória",
+    "Calcular o número mínimo de amostras necessárias para estimar a taxa de nulos em uma coluna com erro relativo de 5% e confiança de 99%"
   ],
   "tags": [
     "SVD",
@@ -83,5 +87,9 @@
     "Tensores",
     "Sparse",
     "Embeddings"
+  ],
+  "debates_estado_arte": [
+    "Amostragem adaptativa vs. fixa em data profiling: trade-offs de custo computacional e precisão estatística",
+    "Distribuições de cauda pesada em dados reais: limitações de modelos gaussianos e alternativas robustas para engenharia de dados"
   ]
 }

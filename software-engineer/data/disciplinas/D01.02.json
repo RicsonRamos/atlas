@@ -48,7 +48,8 @@
     "Abiteboul, Hull & Vianu, Foundations of Databases"
   ],
   "papers_fundamentais": [
-    "Codd, A relational model of data for large shared data banks, 1970"
+    "Codd, A relational model of data for large shared data banks, 1970",
+    "Abiteboul & Vianu, Datalog extensions for database queries and updates, PODS 1991"
   ],
   "ferramentas": [
     "SQL",
@@ -58,14 +59,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que JOIN é produto cartesiano filtrado?",
-    "Como relações de ordem aparecem em governança e lineage?"
+    "Como relações de ordem aparecem em governança e lineage?",
+    "Demonstre por que a composição de JOINs é associativa mas não comutativa em termos de custo de execução, usando a definição formal de produto cartesiano filtrado"
   ],
   "projetos_reais": [
-    "Implementar um avaliador mínimo de álgebra relacional sobre CSVs"
+    "Implementar um avaliador mínimo de álgebra relacional sobre CSVs",
+    "Construir um verificador de lattice de permissões RBAC para um data lakehouse, provando propriedades de monotonicidade e completude"
   ],
   "exercicios": [
     "Provar propriedades de equivalência em deduplicação",
-    "Desenhar um lattice de privilégios para um domínio de dados"
+    "Desenhar um lattice de privilégios para um domínio de dados",
+    "Provar que a projeção sobre um JOIN natural é equivalente ao semi-join usando axiomas da álgebra relacional"
   ],
   "tags": [
     "Conjuntos",
@@ -73,5 +77,9 @@
     "Funções",
     "Lattice",
     "Álgebra Relacional"
+  ],
+  "debates_estado_arte": [
+    "Limitações da álgebra relacional clássica para expressar operações de janela (window functions) e extensões necessárias",
+    "Cálculo relacional vs. Datalog: expressividade, decidibilidade e aplicações em query languages modernas"
   ]
 }

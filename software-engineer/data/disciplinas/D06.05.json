@@ -40,13 +40,15 @@
     "two-phase-commit-sink"
   ],
   "livros": [
-    "Hueske & Kalavri, Stream Processing with Apache Flink",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Hueske & Kalavri, Stream Processing with Apache Flink, O'Reilly, 2019",
+    "Akidau, Chernyak & Lax, Streaming Systems, O'Reilly, 2018"
   ],
   "papers_fundamentais": [
     "Chandy & Lamport, Distributed snapshots, 1985",
     "Akidau et al., The Dataflow Model, 2015",
-    "Carbone et al., Apache Flink, 2015"
+    "Carbone et al., Apache Flink, 2015",
+    "Renesse & Altinbuken, Paxos made moderately complex, ACM Computing Surveys, 2015"
   ],
   "ferramentas": [
     "Flink",
@@ -56,14 +58,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como watermark decide completude?",
-    "Exactly-once entre Kafka e lakehouse exige o quê?"
+    "Exactly-once entre Kafka e lakehouse exige o quê?",
+    "Compare particionamento por hash, range e consistent hashing em termos de data skew, rebalancing e locality para workloads analíticos"
   ],
   "projetos_reais": [
-    "Pipeline Flink com estado, checkpoint, replay e sink transacional"
+    "Pipeline Flink com estado, checkpoint, replay e sink transacional",
+    "Implementar um sistema de particionamento adaptativo que detecta hot partitions e rebalanceia automaticamente"
   ],
   "exercicios": [
     "Simular evento atrasado",
-    "Quebrar e recuperar checkpoint"
+    "Quebrar e recuperar checkpoint",
+    "Calcular a probabilidade de skew em consistent hashing com N nós e K virtual nodes usando análise probabilística"
   ],
   "tags": [
     "Flink",
@@ -71,5 +76,9 @@
     "State",
     "Checkpoint",
     "Exactly-once"
+  ],
+  "debates_estado_arte": [
+    "Static vs. dynamic partitioning em data lakehouse: trade-offs de metadata overhead e query performance",
+    "Adaptive query execution (AQE) e repartitioning dinâmico: quando o runtime deve sobrescrever decisões do optimizer"
   ]
 }

@@ -47,7 +47,8 @@
     "Stanley, Enumerative Combinatorics"
   ],
   "papers_fundamentais": [
-    "Graham, Knuth & Patashnik, Concrete Mathematics, 1989"
+    "Graham, Knuth & Patashnik, Concrete Mathematics, 1989",
+    "Cobham, The intrinsic computational difficulty of functions, 1965"
   ],
   "ferramentas": [
     "Python itertools",
@@ -56,19 +57,26 @@
   ],
   "perguntas_entrevista_staff": [
     "Use inclusão-exclusão para estimar duplicidade entre fontes",
-    "Como indução ajuda a provar correção de uma DAG?"
+    "Como indução ajuda a provar correção de uma DAG?",
+    "Explique como a hierarquia de complexidade (P, NP, PSPACE) se aplica à otimização de consultas em bancos de dados distribuídos"
   ],
   "projetos_reais": [
-    "Simulador de cardinalidade de combinações de partições e dimensões"
+    "Simulador de cardinalidade de combinações de partições e dimensões",
+    "Implementar e comparar algoritmos exatos e aproximados para o problema de particionamento de dados (NP-hard) em clusters Spark"
   ],
   "exercicios": [
     "Resolver recorrências de jobs recursivos",
-    "Aplicar casa dos pombos a colisões de hash"
+    "Aplicar casa dos pombos a colisões de hash",
+    "Demonstrar que o problema de join ordering ótimo com n tabelas é NP-hard por redução ao TSP"
   ],
   "tags": [
     "Indução",
     "Combinatória",
     "Recorrências",
     "DAGs"
+  ],
+  "debates_estado_arte": [
+    "Complexidade parametrizada e sua aplicação em otimizadores de consulta: quando a intratabilidade teórica não impede soluções práticas",
+    "Impacto de algoritmos de aproximação em decisões de engenharia de dados: particionamento, scheduling e alocação de recursos"
   ]
 }

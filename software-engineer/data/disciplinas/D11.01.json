@@ -40,13 +40,14 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Jurafsky & Martin, Speech and Language Processing",
-    "Goodfellow, Bengio & Courville, Deep Learning"
+    "Goodfellow, Bengio & Courville, Deep Learning",
+    "Jurafsky & Martin, Speech and Language Processing, 3rd ed., Prentice Hall, 2023",
+    "Tunstall, von Werra & Wolf, Natural Language Processing with Transformers, O'Reilly, 2022"
   ],
   "papers_fundamentais": [
-    "Vaswani et al., Attention Is All You Need, 2017",
     "Devlin et al., BERT, 2018",
-    "Brown et al., Language Models are Few-Shot Learners, 2020"
+    "Brown et al., Language Models are Few-Shot Learners, 2020",
+    "Vaswani, Shazeer, Parmar et al., Attention is all you need, NeurIPS 2017"
   ],
   "ferramentas": [
     "tiktoken",
@@ -56,14 +57,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que tokenização afeta custo?",
-    "O que embedding representa e o que não representa?"
+    "O que embedding representa e o que não representa?",
+    "Explique como self-attention e multi-head attention computam representações contextuais e qual é a complexidade computacional O(n²d)"
   ],
   "projetos_reais": [
-    "Explorador de tokens e embeddings para corpus empresarial"
+    "Explorador de tokens e embeddings para corpus empresarial",
+    "Implementar um pipeline de geração de embeddings com sentence-transformers, avaliando diferentes modelos e estratégias de pooling"
   ],
   "exercicios": [
     "Calcular similaridade entre embeddings",
-    "Medir tokens por tipo de documento"
+    "Medir tokens por tipo de documento",
+    "Calcular os parâmetros e FLOPs de uma camada de self-attention dados d_model, n_heads e sequence_length"
   ],
   "tags": [
     "Transformers",
@@ -71,5 +75,9 @@
     "Embeddings",
     "Attention",
     "Tokenization"
+  ],
+  "debates_estado_arte": [
+    "Eficiência de atenção: linear attention, flash attention, sparse attention como alternativas ao O(n²) do self-attention padrão",
+    "Embeddings estáticos vs. contextuais: quando word2vec/GloVe ainda superam transformers para tarefas específicas de dados"
   ]
 }

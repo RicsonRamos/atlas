@@ -38,11 +38,13 @@
   "protocolos": [],
   "livros": [
     "Beyer et al., Site Reliability Engineering",
-    "Burns, Designing Distributed Systems"
+    "Burns, Designing Distributed Systems",
+    "Wittig & Wittig, Amazon Web Services in Action, 3rd ed., Manning, 2023"
   ],
   "papers_fundamentais": [
     "Google, BeyondCorp, 2014",
-    "AWS Well-Architected Framework"
+    "AWS Well-Architected Framework",
+    "Verma, Pedrosa, Korupolu, Oppenheimer, Tune & Wilkes, Large-scale cluster management at Google with Borg, EuroSys 2015"
   ],
   "ferramentas": [
     "AWS",
@@ -53,14 +55,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que egress muda arquitetura?",
-    "Como separar ambientes sem duplicar tudo?"
+    "Como separar ambientes sem duplicar tudo?",
+    "Compare as estratégias de multi-cloud vs. cloud-agnostic vs. cloud-native para plataformas de dados em termos de custo, complexidade e vendor lock-in"
   ],
   "projetos_reais": [
-    "Blueprint cloud para plataforma de dados com rede privada e IAM mínimo"
+    "Blueprint cloud para plataforma de dados com rede privada e IAM mínimo",
+    "Projetar uma arquitetura de plataforma de dados cloud-native com separação de compute/storage, auto-scaling e disaster recovery multi-region"
   ],
   "exercicios": [
     "Modelar IAM de domínio",
-    "Calcular custo de egress entre regiões"
+    "Calcular custo de egress entre regiões",
+    "Calcular o TCO (Total Cost of Ownership) de uma plataforma de dados comparando on-premise, cloud IaaS e cloud managed services"
   ],
   "tags": [
     "Cloud",
@@ -68,5 +73,9 @@
     "VPC",
     "KMS",
     "Egress"
+  ],
+  "debates_estado_arte": [
+    "Managed services vs. open-source self-hosted para dados: custo operacional vs. controle e portabilidade",
+    "Serverless para data engineering (Lambda, Cloud Functions, serverless Spark): quando a abstração de infraestrutura compensa a perda de controle"
   ]
 }

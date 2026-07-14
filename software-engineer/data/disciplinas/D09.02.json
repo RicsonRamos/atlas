@@ -40,11 +40,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Hightower, Burns & Beda, Kubernetes: Up and Running",
-    "Burns, Designing Distributed Systems"
+    "Burns, Designing Distributed Systems",
+    "Burns, Beda & Hightower, Kubernetes: Up & Running, 3rd ed., O'Reilly, 2022",
+    "Ibryam & Huß, Kubernetes Patterns: Reusable Elements for Designing Cloud-Native Applications, 2nd ed., O'Reilly, 2023"
   ],
   "papers_fundamentais": [
-    "Burns et al., Borg, Omega, and Kubernetes, 2016"
+    "Burns, Grant, Oppenheimer, Brewer & Wilkes, Borg, Omega, and Kubernetes, ACM Queue, 2016",
+    "Verma, Pedrosa, Korupolu, Oppenheimer, Tune & Wilkes, Large-scale cluster management at Google with Borg, EuroSys 2015"
   ],
   "ferramentas": [
     "Kubernetes",
@@ -55,14 +57,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Operator é só Helm chart?",
-    "Como requests e limits afetam custo e estabilidade?"
+    "Como requests e limits afetam custo e estabilidade?",
+    "Explique como Kubernetes Operators (ex.: Spark Operator, Flink Operator, Strimzi) automatizam o lifecycle management de workloads de dados"
   ],
   "projetos_reais": [
-    "Cluster local com operadores de Spark e Flink, quotas e network policies"
+    "Cluster local com operadores de Spark e Flink, quotas e network policies",
+    "Implementar um Kubernetes Operator customizado para gerenciar o lifecycle de jobs de processamento de dados com auto-scaling e retry policies"
   ],
   "exercicios": [
     "Criar CRD simples",
-    "Diagnosticar pod OOMKilled"
+    "Diagnosticar pod OOMKilled",
+    "Projetar a estratégia de resource requests/limits, node affinity e priority classes para um cluster Kubernetes compartilhado entre workloads batch e streaming"
   ],
   "tags": [
     "Kubernetes",
@@ -70,5 +75,9 @@
     "Helm",
     "Scheduling",
     "CRD"
+  ],
+  "debates_estado_arte": [
+    "Kubernetes como plataforma universal para dados vs. plataformas especializadas (Databricks, Snowflake): flexibilidade vs. produtividade",
+    "Bare metal Kubernetes vs. managed Kubernetes (EKS, GKE, AKS) para workloads de dados: controle vs. complexidade operacional"
   ]
 }

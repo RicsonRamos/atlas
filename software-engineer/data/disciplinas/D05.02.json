@@ -40,10 +40,12 @@
   "protocolos": [],
   "livros": [
     "Narkhede, Shapira & Palino, Kafka: The Definitive Guide",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017",
+    "Reis & Housley, Fundamentals of Data Engineering, O'Reilly, 2022"
   ],
   "papers_fundamentais": [
-    "Pat Helland, Life beyond distributed transactions, 2007"
+    "Pat Helland, Life beyond distributed transactions, 2007",
+    "Kreps, Narkhede & Rao, Kafka: A distributed messaging system for log processing, NetDB 2011"
   ],
   "ferramentas": [
     "Debezium",
@@ -54,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como evitar evento perdido durante snapshot inicial?",
-    "Backward compatibility é suficiente para todos os consumidores?"
+    "Backward compatibility é suficiente para todos os consumidores?",
+    "Explique como Kafka garante ordering, at-least-once delivery e idempotência de produtores, e quando exactly-once semantics é realmente possível"
   ],
   "projetos_reais": [
-    "CDC completo Postgres -> Kafka -> Lakehouse com evolução de schema"
+    "CDC completo Postgres -> Kafka -> Lakehouse com evolução de schema",
+    "Implementar um sistema de ingestão com Kafka Connect, schema evolution (Avro + Schema Registry) e dead letter queue para eventos malformados"
   ],
   "exercicios": [
     "Quebrar e corrigir schema Avro",
-    "Implementar outbox transacional"
+    "Implementar outbox transacional",
+    "Calcular o número ótimo de partições Kafka para um tópico dado throughput target, tamanho médio de mensagem e consumer lag aceitável"
   ],
   "tags": [
     "CDC",
@@ -69,5 +74,9 @@
     "Schema Registry",
     "Outbox",
     "Avro"
+  ],
+  "debates_estado_arte": [
+    "Kafka vs. Pulsar vs. Redpanda: trade-offs de arquitetura (append log vs. segmented log, JVM vs. C++)",
+    "Log compaction vs. retention-based cleanup: implicações para CDC e tabelas de snapshot em streaming"
   ]
 }

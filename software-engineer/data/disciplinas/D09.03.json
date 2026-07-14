@@ -40,11 +40,13 @@
   "protocolos": [],
   "livros": [
     "Brikman, Terraform: Up & Running",
-    "Humble & Farley, Continuous Delivery"
+    "Humble & Farley, Continuous Delivery",
+    "Morris, Infrastructure as Code, 2nd ed., O'Reilly, 2020"
   ],
   "papers_fundamentais": [
     "HashiCorp Terraform architecture docs",
-    "Open Policy Agent papers and docs"
+    "Open Policy Agent papers and docs",
+    "Beyer, Jones, Petoff & Murphy, Site Reliability Engineering: How Google Runs Production Systems, O'Reilly, 2016"
   ],
   "ferramentas": [
     "Terraform",
@@ -56,14 +58,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que state é sensível?",
-    "Como lidar com drift emergencial?"
+    "Como lidar com drift emergencial?",
+    "Compare Terraform, Pulumi e CDK em termos de expressividade, state management e integração com pipelines de dados"
   ],
   "projetos_reais": [
-    "Plataforma lakehouse provisionada por Terraform e GitOps"
+    "Plataforma lakehouse provisionada por Terraform e GitOps",
+    "Implementar uma stack de data platform completa com IaC (Terraform/Pulumi), GitOps (ArgoCD) e ambientes efêmeros para testing"
   ],
   "exercicios": [
     "Criar módulo reutilizável",
-    "Bloquear bucket público via policy"
+    "Bloquear bucket público via policy",
+    "Projetar um pipeline de CI/CD para infraestrutura de dados com plan review, drift detection e rollback automatizado"
   ],
   "tags": [
     "Terraform",
@@ -71,5 +76,9 @@
     "OPA",
     "State",
     "Drift"
+  ],
+  "debates_estado_arte": [
+    "Declarative IaC (Terraform) vs. imperative IaC (Pulumi, CDK): trade-offs de previsibilidade e expressividade",
+    "GitOps para infraestrutura de dados: limitações do modelo pull-based para recursos stateful (bancos de dados, clusters)"
   ]
 }

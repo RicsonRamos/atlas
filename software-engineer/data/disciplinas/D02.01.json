@@ -37,7 +37,8 @@
   "protocolos": [],
   "livros": [
     "Bryant & O'Hallaron, Computer Systems: A Programmer's Perspective",
-    "Patterson & Hennessy, Computer Organization and Design"
+    "Patterson & Hennessy, Computer Organization and Design: The Hardware/Software Interface, 6th ed., Morgan Kaufmann, 2020",
+    "Hennessy & Patterson, Computer Architecture: A Quantitative Approach, 6th ed., Morgan Kaufmann, 2017"
   ],
   "papers_fundamentais": [
     "Drepper, What every programmer should know about memory, 2007",
@@ -52,14 +53,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que Parquet melhora scan analítico?",
-    "Como cache miss vira custo de cloud?"
+    "Como cache miss vira custo de cloud?",
+    "Explique como a hierarquia de cache (L1/L2/L3) e NUMA topology afetam o throughput de operações de hash join em bancos de dados in-memory"
   ],
   "projetos_reais": [
-    "Benchmark de layout row vs column com análise de cache"
+    "Benchmark de layout row vs column com análise de cache",
+    "Realizar profiling de um job de processamento de dados com perf/VTune para identificar cache misses e otimizar data layout"
   ],
   "exercicios": [
     "Medir throughput de arrays contíguos e listas de objetos",
-    "Identificar gargalos por flamegraph"
+    "Identificar gargalos por flamegraph",
+    "Calcular o impacto teórico de cache miss rate no throughput de um pipeline de scan sequencial vs. acesso aleatório"
   ],
   "tags": [
     "CPU",
@@ -67,5 +71,9 @@
     "SIMD",
     "NUMA",
     "Vetorização"
+  ],
+  "debates_estado_arte": [
+    "Hardware-conscious vs. hardware-oblivious database design: trade-offs de portabilidade e performance",
+    "Impacto de CXL (Compute Express Link) e disaggregated memory em arquiteturas de bancos de dados modernos"
   ]
 }

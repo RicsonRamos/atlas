@@ -38,12 +38,14 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Chip Huyen, Designing Machine Learning Systems",
-    "Reis & Housley, Fundamentals of Data Engineering"
+    "Reis & Housley, Fundamentals of Data Engineering",
+    "Huyen, Designing Machine Learning Systems, O'Reilly, 2022",
+    "Gift & Deza, Practical MLOps, O'Reilly, 2021"
   ],
   "papers_fundamentais": [
     "Feast project papers and design docs",
-    "Uber Michelangelo feature platform articles"
+    "Uber Michelangelo feature platform articles",
+    "Polyzotis, Roy, Whang & Zinkevich, Data lifecycle challenges in production machine learning, SIGMOD Record, 2018"
   ],
   "ferramentas": [
     "Feast",
@@ -54,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como point-in-time correctness evita fraude estatística?",
-    "Quando online store é necessário?"
+    "Quando online store é necessário?",
+    "Explique como feature stores resolvem o problema de training-serving skew e quais são os trade-offs de online vs. offline feature computation"
   ],
   "projetos_reais": [
-    "Feature store para scoring online com materialização e freshness SLO"
+    "Feature store para scoring online com materialização e freshness SLO",
+    "Implementar uma feature store com materialização batch e serving online de baixa latência usando Feast + Redis"
   ],
   "exercicios": [
     "Criar as-of join",
-    "Simular treino-serving skew"
+    "Simular treino-serving skew",
+    "Projetar o modelo de dados de uma feature store que suporte point-in-time correct joins para evitar data leakage"
   ],
   "tags": [
     "Feature Store",
@@ -69,5 +74,9 @@
     "Point-in-time",
     "Freshness",
     "Online Store"
+  ],
+  "debates_estado_arte": [
+    "Feature stores centralizadas vs. feature computation no serving path: latência vs. consistência vs. custo de compute",
+    "Feature engineering manual vs. automated feature engineering (AutoML): quando a expertise humana supera a automação"
   ]
 }

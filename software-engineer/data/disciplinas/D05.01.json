@@ -38,11 +38,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Kleppmann, Designing Data-Intensive Applications",
-    "Hueske & Kalavri, Stream Processing with Apache Flink"
+    "Hueske & Kalavri, Stream Processing with Apache Flink",
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017",
+    "Reis & Housley, Fundamentals of Data Engineering, O'Reilly, 2022"
   ],
   "papers_fundamentais": [
-    "Akidau et al., The Dataflow Model, 2015"
+    "Kreps, Questioning the Lambda Architecture, 2014",
+    "Akidau, Bradshaw, Chambers et al., The Dataflow Model: a practical approach to balancing correctness, latency, and cost in massive-scale, unbounded, out-of-order data processing, VLDB 2015"
   ],
   "ferramentas": [
     "Flink",
@@ -53,14 +55,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Quando micro-batch é suficiente?",
-    "O que exactly-once realmente significa?"
+    "O que exactly-once realmente significa?",
+    "Compare CDC (Change Data Capture), polling e webhooks como estratégias de ingestão em termos de latência, consistência e complexidade operacional"
   ],
   "projetos_reais": [
-    "Pipeline com batch, streaming e replay sobre a mesma fonte"
+    "Pipeline com batch, streaming e replay sobre a mesma fonte",
+    "Projetar uma arquitetura de ingestão unificada (batch + streaming) com CDC, schema registry e dead letter queue para um data lakehouse"
   ],
   "exercicios": [
     "Simular late events",
-    "Criar checkpoint reprocessável"
+    "Criar checkpoint reprocessável",
+    "Modelar o throughput máximo de um pipeline de ingestão CDC considerando taxa de mudanças, tamanho de batch e latência de rede"
   ],
   "tags": [
     "Batch",
@@ -68,5 +73,9 @@
     "Watermarks",
     "Checkpoint",
     "Replay"
+  ],
+  "debates_estado_arte": [
+    "Lambda vs. Kappa architecture: simplificação operacional vs. complexidade de garantir consistência em um único runtime",
+    "Real-time vs. near-real-time vs. micro-batch: quando a latência sub-segundo realmente importa para decisões de negócio"
   ]
 }

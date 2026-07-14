@@ -44,11 +44,13 @@
   "protocolos": [],
   "livros": [
     "Goetz, Java Concurrency in Practice",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Herlihy & Shavit, The Art of Multiprocessor Programming, 2nd ed., Morgan Kaufmann, 2020"
   ],
   "papers_fundamentais": [
     "Hewitt, Bishop & Steiger, A universal modular actor formalism, 1973",
-    "Blumofe & Leiserson, Scheduling multithreaded computations by work stealing, 1999"
+    "Blumofe & Leiserson, Scheduling multithreaded computations by work stealing, 1999",
+    "Dean & Ghemawat, MapReduce: Simplified data processing on large clusters, OSDI 2004"
   ],
   "ferramentas": [
     "asyncio",
@@ -59,14 +61,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Concorrência é o mesmo que paralelismo?",
-    "Como backpressure evita queda em cascata?"
+    "Como backpressure evita queda em cascata?",
+    "Compare os modelos de concorrência (threads, coroutines, actors) e seus trade-offs para pipelines de processamento de dados em alta throughput"
   ],
   "projetos_reais": [
-    "Ingestor concorrente com filas, retry, rate limit e backpressure"
+    "Ingestor concorrente com filas, retry, rate limit e backpressure",
+    "Implementar um mini-framework de processamento paralelo com work-stealing scheduler e comparar throughput com thread pool estático"
   ],
   "exercicios": [
     "Criar e corrigir uma race condition",
-    "Medir latência sob diferentes pools"
+    "Medir latência sob diferentes pools",
+    "Modelar com a lei de Amdahl o speedup máximo teórico de um pipeline de ETL com 30% de código serial"
   ],
   "tags": [
     "Async",
@@ -74,5 +79,9 @@
     "Atores",
     "Backpressure",
     "Race Conditions"
+  ],
+  "debates_estado_arte": [
+    "Green threads vs. OS threads para I/O concorrente em runtimes de dados: Go goroutines, Java virtual threads, Python asyncio",
+    "Correctness de programas concorrentes: limitações de testing vs. verificação formal (ex.: TSAN, model checking)"
   ]
 }

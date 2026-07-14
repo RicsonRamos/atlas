@@ -52,7 +52,8 @@
   ],
   "papers_fundamentais": [
     "Benjamini & Hochberg, Controlling the false discovery rate, 1995",
-    "Rubin, Estimating causal effects of treatments, 1974"
+    "Rubin, Estimating causal effects of treatments, 1974",
+    "Tarjan, Depth-first search and linear graph algorithms, SIAM Journal on Computing, 1972"
   ],
   "ferramentas": [
     "R",
@@ -63,14 +64,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como evitar falso positivo em dezenas de métricas?",
-    "Explique causalidade para uma decisão de produto"
+    "Explique causalidade para uma decisão de produto",
+    "Como a detecção de ciclos em grafos dirigidos é usada para validar DAGs de orquestração e prevenir deadlocks em pipelines?"
   ],
   "projetos_reais": [
-    "Framework de avaliação A/B para mudanças em plataforma de dados"
+    "Framework de avaliação A/B para mudanças em plataforma de dados",
+    "Implementar um sistema de análise de linhagem de dados usando algoritmos de grafos (alcançabilidade, componentes conectados, ordenação topológica)"
   ],
   "exercicios": [
     "Calcular intervalo de confiança de latência",
-    "Aplicar Bonferroni e FDR em múltiplos testes"
+    "Aplicar Bonferroni e FDR em múltiplos testes",
+    "Provar que a ordenação topológica de um DAG de tasks é única se e somente se existe um caminho hamiltoniano no DAG"
   ],
   "tags": [
     "Inferência",
@@ -78,5 +82,9 @@
     "GLM",
     "Causalidade",
     "FDR"
+  ],
+  "debates_estado_arte": [
+    "Grafos de conhecimento vs. catálogos relacionais para modelagem de metadados: escalabilidade e expressividade de consultas de linhagem",
+    "Algoritmos de grafos em sistemas distribuídos: comunicação vs. computação em particionamento de grafos massivos (ex.: PowerGraph, Pregel)"
   ]
 }

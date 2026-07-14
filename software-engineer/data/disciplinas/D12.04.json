@@ -53,14 +53,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Qual métrica você recusaria usar?",
-    "Como transformar incidente em melhoria sistêmica?"
+    "Como transformar incidente em melhoria sistêmica?",
+    "Como definir e medir métricas de engenharia (DORA metrics, lead time, deployment frequency) para uma equipe de data engineering?"
   ],
   "projetos_reais": [
-    "Programa de métricas DORA/SPACE com revisão mensal de plataforma"
+    "Programa de métricas DORA/SPACE com revisão mensal de plataforma",
+    "Implementar um dashboard de métricas de engenharia de dados com DORA metrics, error budget tracking e incident retrospective log"
   ],
   "exercicios": [
     "Escrever postmortem sem culpa",
-    "Definir guardrails contra métrica vaidosa"
+    "Definir guardrails contra métrica vaidosa",
+    "Conduzir uma análise post-mortem de um incidente de dados (data loss, pipeline failure) seguindo o formato blameless de SRE"
   ],
   "tags": [
     "DORA",
@@ -68,5 +71,9 @@
     "Postmortem",
     "MTTR",
     "Culture"
+  ],
+  "debates_estado_arte": [
+    "DORA metrics para data engineering: adaptação necessária (data freshness SLOs, schema drift rate) vs. métricas originais de software delivery",
+    "Blameless culture vs. accountability: equilibrando aprendizado com responsabilidade em incidentes de dados"
   ]
 }

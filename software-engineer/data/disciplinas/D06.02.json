@@ -45,12 +45,13 @@
   ],
   "livros": [
     "Lynch, Distributed Algorithms",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Ongaro & Ousterhout, In Search of an Understandable Consensus Algorithm (Raft), USENIX ATC 2014"
   ],
   "papers_fundamentais": [
-    "Lamport, Paxos Made Simple, 2001",
-    "Ongaro & Ousterhout, In Search of an Understandable Consensus Algorithm, 2014",
-    "Gilbert & Lynch, Brewer's conjecture and the feasibility of consistent systems, 2002"
+    "Gilbert & Lynch, Brewer's conjecture and the feasibility of consistent systems, 2002",
+    "Lamport, Paxos made simple, ACM SIGACT News, 2001",
+    "Ongaro & Ousterhout, In search of an understandable consensus algorithm, USENIX ATC 2014"
   ],
   "ferramentas": [
     "etcd",
@@ -60,14 +61,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Raft resolve CAP?",
-    "Por que 2PC bloqueia?"
+    "Por que 2PC bloqueia?",
+    "Compare Paxos, Raft e ZAB em termos de liveness, safety e complexidade de implementação para metadata services em data lakehouse"
   ],
   "projetos_reais": [
-    "Visualizador de Raft com eleição, append entries e partição"
+    "Visualizador de Raft com eleição, append entries e partição",
+    "Implementar o protocolo Raft em uma linguagem de sistemas e demonstrar leader election, log replication e safety"
   ],
   "exercicios": [
     "Seguir um log Raft manualmente",
-    "Comparar 2PC e consenso"
+    "Comparar 2PC e consenso",
+    "Provar que o protocolo Raft garante safety (no two leaders in the same term) usando invariantes formais"
   ],
   "tags": [
     "CAP",
@@ -75,5 +79,9 @@
     "Raft",
     "Paxos",
     "Consensus"
+  ],
+  "debates_estado_arte": [
+    "Consensus as a service (etcd, ZooKeeper) vs. embedded consensus (raft em cada nó): trade-offs de latência e operação",
+    "Leaderless replication (Dynamo-style) vs. leader-based consensus: quando cada modelo é preferível para dados de alta throughput"
   ]
 }

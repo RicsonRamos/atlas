@@ -42,11 +42,12 @@
   "protocolos": [],
   "livros": [
     "Dwork & Roth, The Algorithmic Foundations of Differential Privacy",
-    "NIST Privacy Framework"
+    "NIST Privacy Framework",
+    "Sweeney, k-Anonymity: A model for protecting privacy, International Journal of Uncertainty, 2002"
   ],
   "papers_fundamentais": [
-    "Dwork, Differential privacy, 2006",
-    "Sweeney, k-anonymity, 2002"
+    "Sweeney, k-anonymity, 2002",
+    "Dwork, Differential privacy, ICALP 2006"
   ],
   "ferramentas": [
     "BigQuery policy tags",
@@ -57,14 +58,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Mascaramento resolve reidentificação?",
-    "Como atender deleção em lakehouse imutável?"
+    "Como atender deleção em lakehouse imutável?",
+    "Compare k-anonimidade, l-diversidade e differential privacy em termos de garantias formais e aplicabilidade a datasets analíticos"
   ],
   "projetos_reais": [
-    "Classificador PII com políticas de acesso e retenção automatizadas"
+    "Classificador PII com políticas de acesso e retenção automatizadas",
+    "Implementar um pipeline de anonimização com differential privacy para um dataset de analytics, medindo o trade-off entre privacy budget (epsilon) e utilidade"
   ],
   "exercicios": [
     "Criar matriz de finalidade vs dado",
-    "Aplicar k-anonymity em dataset pequeno"
+    "Aplicar k-anonymity em dataset pequeno",
+    "Calcular o epsilon necessário para garantir (epsilon, delta)-differential privacy em uma query de contagem com sensibilidade 1"
   ],
   "tags": [
     "LGPD",
@@ -72,5 +76,9 @@
     "PII",
     "Masking",
     "Retention"
+  ],
+  "debates_estado_arte": [
+    "Differential privacy em analytics corporativo: viabilidade prática com privacy budgets finitos vs. utilidade dos dados",
+    "LGPD/GDPR e direito ao esquecimento em data lakehouse: tombstones, crypto-shredding e impacto em table formats"
   ]
 }

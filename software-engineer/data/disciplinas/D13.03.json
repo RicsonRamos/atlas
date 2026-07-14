@@ -38,7 +38,9 @@
   ],
   "protocolos": [],
   "livros": [
-    "Aggarwal, Recommender Systems: The Textbook"
+    "Aggarwal, Recommender Systems: The Textbook, Springer, 2016",
+    "Ricci, Rokach, Shapira & Kantor, Recommender Systems Handbook, 2nd ed., Springer, 2015",
+    "Jannach, Zanker, Felfernig & Friedrich, Recommender Systems: An Introduction, Cambridge University Press, 2010"
   ],
   "papers_fundamentais": [
     "Koren, Bell & Volinsky, Matrix Factorization Techniques for Recommender Systems, 2009",
@@ -51,14 +53,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como mitigar o problema de partida fria sem sacrificar relevância para usuários estabelecidos?",
-    "Por que NDCG é preferível a acurácia simples para avaliar ranking de recomendação?"
+    "Por que NDCG é preferível a acurácia simples para avaliar ranking de recomendação?",
+    "Compare collaborative filtering, content-based filtering e hybrid approaches em termos de cold start, escalabilidade e serendipidade"
   ],
   "projetos_reais": [
-    "Sistema de recomendação híbrido (conteúdo + colaborativo) com avaliação offline por NDCG e MRR"
+    "Sistema de recomendação híbrido (conteúdo + colaborativo) com avaliação offline por NDCG e MRR",
+    "Implementar um sistema de recomendação com two-tower architecture, retrieval com ANN e ranking com cross-features, end-to-end com serving online"
   ],
   "exercicios": [
     "Implementar fatoração de matriz via ALS em dataset de avaliações",
-    "Calcular NDCG e Recall@K para dois modelos de recomendação concorrentes"
+    "Calcular NDCG e Recall@K para dois modelos de recomendação concorrentes",
+    "Derivar a fatoração matricial por ALS (Alternating Least Squares) e analisar sua complexidade em termos de número de usuários, itens e fatores"
   ],
   "tags": [
     "RecSys",
@@ -66,5 +71,9 @@
     "MatrixFactorization",
     "NDCG",
     "ColdStart"
+  ],
+  "debates_estado_arte": [
+    "Deep learning para recomendação (Two-Tower, DCN, DLRM) vs. métodos clássicos (ALS, BPR): quando a complexidade de modelos profundos se justifica",
+    "LLMs como sistemas de recomendação: viabilidade de usar LLMs para recommendation vs. modelos especializados"
   ]
 }

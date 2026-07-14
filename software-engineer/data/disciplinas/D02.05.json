@@ -39,10 +39,12 @@
   "protocolos": [],
   "livros": [
     "Tanenbaum & Bos, Modern Operating Systems",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Arpaci-Dusseau & Arpaci-Dusseau, Operating Systems: Three Easy Pieces, Arpaci-Dusseau Books, 2018"
   ],
   "papers_fundamentais": [
-    "Rosenblum & Ousterhout, The design and implementation of a log-structured file system, 1992"
+    "Rosenblum & Ousterhout, The design and implementation of a log-structured file system, 1992",
+    "Ghemawat, Gobioff & Leung, The Google File System, SOSP 2003"
   ],
   "ferramentas": [
     "fio",
@@ -53,14 +55,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que small files matam performance no lake?",
-    "O que zero-copy economiza?"
+    "O que zero-copy economiza?",
+    "Compare JVM (GC), Rust (ownership) e C++ (RAII) como runtimes para engines de processamento de dados em termos de latência de cauda e throughput"
   ],
   "projetos_reais": [
-    "Benchmark de leitura Parquet com diferentes tamanhos de arquivo"
+    "Benchmark de leitura Parquet com diferentes tamanhos de arquivo",
+    "Realizar profiling de garbage collection em uma aplicação Spark/Flink e otimizar configurações de GC para reduzir pausas de cauda"
   ],
   "exercicios": [
     "Medir page cache cold vs warm",
-    "Analisar spill de sort local"
+    "Analisar spill de sort local",
+    "Modelar o impacto de diferentes estratégias de GC (G1, ZGC, Shenandoah) na latência p99 de um serviço de serving de features"
   ],
   "tags": [
     "I/O",
@@ -68,5 +73,9 @@
     "Zero-copy",
     "NVMe",
     "Small Files"
+  ],
+  "debates_estado_arte": [
+    "Managed runtimes (JVM) vs. systems languages (Rust, C++) para engines de dados: produtividade vs. controle de memória",
+    "WebAssembly como runtime para UDFs em data lakehouse: isolamento, segurança e performance vs. abordagens nativas"
   ]
 }

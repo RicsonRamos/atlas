@@ -35,11 +35,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "DAMA-DMBOK",
-    "Reis & Housley, Fundamentals of Data Engineering"
+    "Reis & Housley, Fundamentals of Data Engineering",
+    "DAMA International, DAMA-DMBOK: Data Management Body of Knowledge, 2nd ed., Technics Publications, 2017",
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017"
   ],
   "papers_fundamentais": [
-    "Halevy et al., Enterprise information integration, 2005"
+    "Halevy et al., Enterprise information integration, 2005",
+    "Halevy, Korn, Noy, Olston, Polyzotis, Roy & Whang, Goods: Organizing Google's datasets, SIGMOD 2016"
   ],
   "ferramentas": [
     "DataHub",
@@ -50,14 +52,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que tabela sem dono é risco?",
-    "Como calcular impacto de breaking change?"
+    "Como calcular impacto de breaking change?",
+    "Explique como construir um grafo de linhagem automatizado em um data lakehouse com múltiplos engines e transformações dbt"
   ],
   "projetos_reais": [
-    "Catálogo com lineage de coluna e score de criticidade"
+    "Catálogo com lineage de coluna e score de criticidade",
+    "Implementar um catálogo de dados com linhagem automática, classificação de PII por ML e busca semântica por embeddings"
   ],
   "exercicios": [
     "Traçar métrica até origem",
-    "Detectar downstream afetado por renomeação"
+    "Detectar downstream afetado por renomeação",
+    "Projetar o modelo de dados de um catálogo de metadados que suporte linhagem em nível de coluna com versionamento temporal"
   ],
   "tags": [
     "Metadata",
@@ -65,5 +70,9 @@
     "DataHub",
     "OpenLineage",
     "Impact Analysis"
+  ],
+  "debates_estado_arte": [
+    "Linhagem estática (parse de SQL) vs. linhagem dinâmica (runtime tracing): trade-offs de completude e overhead",
+    "Catálogos centralizados vs. federados em arquiteturas data mesh: consistência de metadados vs. autonomia de domínios"
   ]
 }

@@ -41,12 +41,13 @@
     "gossip"
   ],
   "livros": [
-    "Kleppmann, Designing Data-Intensive Applications",
-    "Tanenbaum & van Steen, Distributed Systems"
+    "Tanenbaum & van Steen, Distributed Systems",
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017",
+    "Petrov, Database Internals: A Deep Dive into How Distributed Data Systems Work, O'Reilly, 2019"
   ],
   "papers_fundamentais": [
     "Karger et al., Consistent hashing and random trees, 1997",
-    "DeCandia et al., Dynamo, 2007"
+    "DeCandia, Hastorun, Jampani et al., Dynamo: Amazon's highly available key-value store, SOSP 2007"
   ],
   "ferramentas": [
     "Cassandra",
@@ -57,14 +58,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como evitar hot partition?",
-    "Por que virtual node reduz movimento em scaling?"
+    "Por que virtual node reduz movimento em scaling?",
+    "Explique o espectro de modelos de consistência (linearizabilidade, sequential, causal, eventual) e como cada um se manifesta em sistemas de dados reais"
   ],
   "projetos_reais": [
-    "Simulador visual de sharding com hashing consistente"
+    "Simulador visual de sharding com hashing consistente",
+    "Implementar um sistema de quorum reads/writes com tunable consistency (R + W > N) e demonstrar as anomalias possíveis"
   ],
   "exercicios": [
     "Medir distribuição de chaves",
-    "Planejar split de partição quente"
+    "Planejar split de partição quente",
+    "Provar que R + W > N garante read-your-writes consistency mas não linearizabilidade em um sistema quorum-based"
   ],
   "tags": [
     "Sharding",
@@ -72,5 +76,9 @@
     "Replication",
     "Quorum",
     "Gossip"
+  ],
+  "debates_estado_arte": [
+    "PACELC theorem vs. CAP theorem: por que latência é tão importante quanto partição na decisão de consistência",
+    "Causal consistency como sweet spot pragmático entre eventual e strong consistency para sistemas de dados globais"
   ]
 }

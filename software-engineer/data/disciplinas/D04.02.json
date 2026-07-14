@@ -46,11 +46,13 @@
   ],
   "livros": [
     "Hellerstein, Stonebraker & Hamilton, Architecture of a Database System",
-    "Petrov, Database Internals"
+    "Petrov, Database Internals",
+    "Ramakrishnan & Gehrke, Database Management Systems, 3rd ed., McGraw-Hill, 2002"
   ],
   "papers_fundamentais": [
     "Mohan et al., ARIES, 1992",
-    "O'Neil et al., The Log-Structured Merge-Tree, 1996"
+    "O'Neil et al., The Log-Structured Merge-Tree, 1996",
+    "Graefe, Query evaluation techniques for large databases, ACM Computing Surveys, 1993"
   ],
   "ferramentas": [
     "PostgreSQL",
@@ -61,14 +63,17 @@
   ],
   "perguntas_entrevista_staff": [
     "B+ Tree ou LSM para escrita intensa?",
-    "Como MVCC muda vacuum e storage?"
+    "Como MVCC muda vacuum e storage?",
+    "Compare os trade-offs de hash join vs. sort-merge join vs. nested loop join para diferentes distribuições de dados e tamanhos de tabela"
   ],
   "projetos_reais": [
-    "Mini storage engine com WAL, índice simples e recovery"
+    "Mini storage engine com WAL, índice simples e recovery",
+    "Implementar um mini query optimizer com estimativa de cardinalidade baseada em histogramas e join ordering por programação dinâmica"
   ],
   "exercicios": [
     "Interpretar plano com índice composto",
-    "Simular compaction em LSM"
+    "Simular compaction em LSM",
+    "Analisar um plano de execução PostgreSQL e identificar operações com estimativa de cardinalidade incorreta, propondo correções via ANALYZE e hints"
   ],
   "tags": [
     "B+ Tree",
@@ -76,5 +81,9 @@
     "WAL",
     "MVCC",
     "ACID"
+  ],
+  "debates_estado_arte": [
+    "Learned query optimizers (neo, Bao) vs. otimizadores baseados em regras e custo: robustez e adaptabilidade",
+    "Pushdown de predicados e agregações em data lakehouse: limites de otimização em formatos colunares abertos"
   ]
 }

@@ -41,11 +41,13 @@
   "protocolos": [],
   "livros": [
     "Graefe, Query Evaluation Techniques for Large Databases",
-    "Petrov, Database Internals"
+    "Petrov, Database Internals",
+    "Hellerstein, Stonebraker & Hamilton, Architecture of a Database System, Now Publishers, 2007"
   ],
   "papers_fundamentais": [
     "Selinger et al., Access path selection in a relational database management system, 1979",
-    "Armbrust et al., Spark SQL, 2015"
+    "Armbrust et al., Spark SQL, 2015",
+    "O'Neil, Cheng, Gawlick & O'Neil, The log-structured merge-tree (LSM-tree), Acta Informatica, 1996"
   ],
   "ferramentas": [
     "Spark UI",
@@ -55,14 +57,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como estatística ruim quebra CBO?",
-    "O que fazer com data skew em join grande?"
+    "O que fazer com data skew em join grande?",
+    "Compare B-tree e LSM-tree storage engines em termos de read amplification, write amplification e space amplification para workloads OLTP e OLAP"
   ],
   "projetos_reais": [
-    "Laboratório de planos de execução com datasets enviesados"
+    "Laboratório de planos de execução com datasets enviesados",
+    "Implementar um mini storage engine com WAL, memtable (skip list) e SSTable com compactação, medindo write amplification"
   ],
   "exercicios": [
     "Forçar e comparar estratégias de join",
-    "Medir efeito de predicate pushdown"
+    "Medir efeito de predicate pushdown",
+    "Calcular o write amplification de uma LSM-tree com leveled compaction dados L0 flush size, fanout ratio e número de levels"
   ],
   "tags": [
     "CBO",
@@ -70,5 +75,9 @@
     "Broadcast",
     "Shuffle",
     "Skew"
+  ],
+  "debates_estado_arte": [
+    "Disaggregated storage vs. shared-nothing para cloud-native databases: Aurora, AlloyDB, Neon vs. CockroachDB, TiDB",
+    "Buffer pool management em era de NVMe: o buffer pool ainda é necessário quando storage é quase tão rápido quanto DRAM?"
   ]
 }

@@ -39,12 +39,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Reis & Housley, Fundamentals of Data Engineering",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Reis & Housley, Fundamentals of Data Engineering, O'Reilly, 2022",
+    "Petrov, Database Internals: A Deep Dive into How Distributed Data Systems Work, O'Reilly, 2019"
   ],
   "papers_fundamentais": [
     "Thusoo et al., Hive, 2009",
-    "Armbrust et al., Lakehouse, 2021"
+    "Armbrust, Ghodsi, Xin et al., Lakehouse: A new generation of open platforms that unify data warehousing and advanced analytics, CIDR 2021"
   ],
   "ferramentas": [
     "S3",
@@ -55,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que partição demais piora?",
-    "Como data skipping reduz I/O?"
+    "Como data skipping reduz I/O?",
+    "Compare os trade-offs de Parquet vs. ORC vs. Arrow IPC em termos de compressão, predicate pushdown e performance de scan para workloads analíticos"
   ],
   "projetos_reais": [
-    "Benchmark de layout lakehouse com small files, compaction e clustering"
+    "Benchmark de layout lakehouse com small files, compaction e clustering",
+    "Projetar e avaliar uma estratégia de particionamento e compactação de arquivos Parquet para minimizar small file problem e maximizar query performance"
   ],
   "exercicios": [
     "Escolher partição para três consultas",
-    "Medir efeito de compactação"
+    "Medir efeito de compactação",
+    "Calcular o impacto de row group size e page size na eficiência de predicate pushdown em Parquet"
   ],
   "tags": [
     "Object Storage",
@@ -70,5 +74,9 @@
     "Compaction",
     "Data Skipping",
     "File Sizing"
+  ],
+  "debates_estado_arte": [
+    "Parquet vs. formatos emergentes (Lance, Vortex): trade-offs de backwards compatibility vs. otimizações modernas",
+    "Object storage (S3, GCS) como storage layer universal: limitações de latência e operações atômicas vs. custo e escalabilidade"
   ]
 }

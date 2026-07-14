@@ -40,12 +40,14 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Kleppmann, Designing Data-Intensive Applications",
-    "White, Hadoop: The Definitive Guide"
+    "White, Hadoop: The Definitive Guide",
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017",
+    "Narkhede, Shapira & Palino, Kafka: The Definitive Guide, 2nd ed., O'Reilly, 2021"
   ],
   "papers_fundamentais": [
     "Melnik et al., Dremel, 2010",
-    "Vohra, Apache Parquet, 2016"
+    "Vohra, Apache Parquet, 2016",
+    "Terry, Prabhakaran, Kotla et al., Consistency-based service level agreements for cloud storage, SOSP 2013"
   ],
   "ferramentas": [
     "parquet-tools",
@@ -56,14 +58,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que Parquet é ruim para escrita linha-a-linha?",
-    "Quando Avro é melhor que Protobuf?"
+    "Quando Avro é melhor que Protobuf?",
+    "Explique como garantir idempotência end-to-end em um pipeline que cruza Kafka, Spark e um data lakehouse com Iceberg"
   ],
   "projetos_reais": [
-    "Benchmark de formato e compressão por workload analítico"
+    "Benchmark de formato e compressão por workload analítico",
+    "Projetar e implementar um sistema de deduplicação e exactly-once delivery usando transações Kafka + Iceberg atomic commits"
   ],
   "exercicios": [
     "Inspecionar metadados Parquet",
-    "Medir predicate pushdown"
+    "Medir predicate pushdown",
+    "Modelar as condições sob as quais um pipeline CDC pode perder ou duplicar registros e propor invariantes de correção"
   ],
   "tags": [
     "Parquet",
@@ -71,5 +76,9 @@
     "ORC",
     "Zstd",
     "Encoding"
+  ],
+  "debates_estado_arte": [
+    "Exactly-once semantics: mito ou realidade? Distinção entre exactly-once processing e exactly-once delivery em sistemas distribuídos",
+    "Idempotency keys vs. transações distribuídas: abordagens pragmáticas para consistência em pipelines multi-hop"
   ]
 }

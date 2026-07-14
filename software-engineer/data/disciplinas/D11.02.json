@@ -45,11 +45,12 @@
   "protocolos": [],
   "livros": [
     "Manning, Raghavan & Schütze, Introduction to Information Retrieval",
-    "Jurafsky & Martin, Speech and Language Processing"
+    "Jurafsky & Martin, Speech and Language Processing",
+    "Bruch, Foundations of Vector Retrieval, Springer, 2024"
   ],
   "papers_fundamentais": [
-    "Malkov & Yashunin, HNSW, 2018",
-    "Johnson, Douze & Jégou, Billion-scale similarity search with GPUs, 2017"
+    "Johnson, Douze & Jégou, Billion-scale similarity search with GPUs, IEEE Transactions on Big Data, 2019",
+    "Malkov & Yashunin, Efficient and robust approximate nearest neighbor using hierarchical navigable small world graphs, IEEE TPAMI, 2018"
   ],
   "ferramentas": [
     "FAISS",
@@ -61,14 +62,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Recall 100% é necessário em RAG?",
-    "Como filtrar por ACL sem vazar contexto?"
+    "Como filtrar por ACL sem vazar contexto?",
+    "Compare HNSW, IVF-PQ e ScaNN em termos de recall, latência e consumo de memória para busca aproximada em bilhões de vetores"
   ],
   "projetos_reais": [
-    "Benchmark de vector search com HNSW, filtros e busca híbrida"
+    "Benchmark de vector search com HNSW, filtros e busca híbrida",
+    "Implementar um benchmark comparativo de bancos vetoriais (Milvus, Weaviate, Qdrant, pgvector) para um caso de uso de busca semântica de documentos"
   ],
   "exercicios": [
     "Medir recall@k",
-    "Comparar cosseno e dot product"
+    "Comparar cosseno e dot product",
+    "Calcular o trade-off de recall vs. latência para diferentes configurações de HNSW (M, efConstruction, efSearch)"
   ],
   "tags": [
     "HNSW",
@@ -76,5 +80,9 @@
     "pgvector",
     "Hybrid Search",
     "ANN"
+  ],
+  "debates_estado_arte": [
+    "Bancos vetoriais especializados vs. extensões vetoriais de bancos existentes (pgvector): simplicidade vs. performance dedicada",
+    "Hybrid search (keyword + vector): estratégias de fusão de scores (RRF, weighted sum) e quando cada abordagem supera a outra"
   ]
 }

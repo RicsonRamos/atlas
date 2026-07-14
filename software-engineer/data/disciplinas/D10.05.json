@@ -43,11 +43,13 @@
   ],
   "livros": [
     "Goodfellow, Bengio & Courville, Deep Learning",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Hoefler, Alistarh, Ben-Nun, Dryden & Peste, Sparsity in deep learning: Pruning and growth for efficient inference and training in neural networks, JMLR, 2021"
   ],
   "papers_fundamentais": [
     "Li et al., Scaling distributed machine learning with the parameter server, 2014",
-    "Micikevicius et al., Mixed precision training, 2017"
+    "Micikevicius et al., Mixed precision training, 2017",
+    "Rajbhandari, Rasley, Rber & He, ZeRO: Memory optimizations toward training trillion parameter models, SC 2020"
   ],
   "ferramentas": [
     "PyTorch",
@@ -58,14 +60,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Batch maior sempre melhora throughput?",
-    "Quando quantização prejudica métrica?"
+    "Quando quantização prejudica métrica?",
+    "Compare data parallelism, model parallelism, pipeline parallelism e tensor parallelism para treino distribuído de modelos grandes"
   ],
   "projetos_reais": [
-    "Benchmark de inferência com batching, quantização e GPU"
+    "Benchmark de inferência com batching, quantização e GPU",
+    "Implementar treino distribuído de um modelo com DeepSpeed/FSDP e analisar o trade-off entre comunicação e compute scaling"
   ],
   "exercicios": [
     "Calcular memória de batch",
-    "Comparar FP32 e mixed precision"
+    "Comparar FP32 e mixed precision",
+    "Calcular o throughput teórico de treino distribuído dados número de GPUs, batch size, communication bandwidth e compute FLOPS"
   ],
   "tags": [
     "GPU",
@@ -73,5 +78,9 @@
     "Distributed Training",
     "Quantization",
     "Batching"
+  ],
+  "debates_estado_arte": [
+    "Scaling laws para treino de modelos: até quando escalar compute/dados/parâmetros melhora performance previsivamente?",
+    "GPU vs. TPU vs. aceleradores customizados (Trainium, Gaudi): fragmentação do ecossistema vs. otimização específica"
   ]
 }

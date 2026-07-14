@@ -36,10 +36,12 @@
   "protocolos": [],
   "livros": [
     "Brown, The C4 Model for Visualising Software Architecture",
-    "Larson, Staff Engineer"
+    "Larson, Staff Engineer",
+    "Brown, Software Architecture for Developers, Leanpub, 2021"
   ],
   "papers_fundamentais": [
-    "Kruchten, The 4+1 View Model of Architecture, 1995"
+    "Kruchten, The 4+1 View Model of Architecture, 1995",
+    "Tyree & Akerman, Architecture decisions: Demystifying architecture, IEEE Software, 2005"
   ],
   "ferramentas": [
     "Structurizr",
@@ -50,14 +52,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Quando ADR é melhor que reunião?",
-    "Como evitar diagrama que envelhece em uma semana?"
+    "Como evitar diagrama que envelhece em uma semana?",
+    "Como estruturar um RFC (Request for Comments) técnico para uma migração de plataforma de dados que afeta múltiplas equipes?"
   ],
   "projetos_reais": [
-    "Repositório docs-as-code com RFCs, ADRs e C4 versionados"
+    "Repositório docs-as-code com RFCs, ADRs e C4 versionados",
+    "Produzir um RFC completo para migração de data warehouse para lakehouse, incluindo análise de impacto, riscos, rollback plan e timeline"
   ],
   "exercicios": [
     "Reescrever decisão vaga como ADR",
-    "Criar C4 container diagram"
+    "Criar C4 container diagram",
+    "Criar um ADR (Architecture Decision Record) para a escolha entre Iceberg, Delta Lake e Hudi, documentando contexto, decisão e consequências"
   ],
   "tags": [
     "RFC",
@@ -65,5 +70,9 @@
     "C4",
     "Docs-as-code",
     "Communication"
+  ],
+  "debates_estado_arte": [
+    "Documentação arquitetural como código (ADRs versionados no Git) vs. wikis e documentos ad-hoc: manutenibilidade e adoção",
+    "C4 model vs. UML vs. diagramas informais para comunicação técnica: expressividade vs. acessibilidade para diferentes audiências"
   ]
 }

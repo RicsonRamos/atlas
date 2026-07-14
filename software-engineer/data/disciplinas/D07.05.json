@@ -38,12 +38,14 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Reis & Housley, Fundamentals of Data Engineering",
-    "DAMA-DMBOK"
+    "DAMA-DMBOK",
+    "Reis & Housley, Fundamentals of Data Engineering, O'Reilly, 2022",
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017"
   ],
   "papers_fundamentais": [
     "Apache Iceberg REST catalog specification",
-    "Project Nessie technical documentation"
+    "Project Nessie technical documentation",
+    "Armbrust, Ghodsi, Xin et al., Lakehouse: A new generation of open platforms that unify data warehousing and advanced analytics, CIDR 2021"
   ],
   "ferramentas": [
     "Hive Metastore",
@@ -54,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Catálogo é só lista de tabelas?",
-    "Como evitar conflito entre Spark e Trino?"
+    "Como evitar conflito entre Spark e Trino?",
+    "Explique como catálogos de metadados (Hive Metastore, Nessie, Unity Catalog) gerenciam transações multi-engine e quais são os riscos de inconsistência"
   ],
   "projetos_reais": [
-    "Catálogo versionado para ambientes dev/stage/prod com políticas"
+    "Catálogo versionado para ambientes dev/stage/prod com políticas",
+    "Implementar um catálogo de metadados com versionamento Git-like (branching de dados) usando Nessie e Iceberg"
   ],
   "exercicios": [
     "Simular conflito de commit",
-    "Definir namespace por domínio"
+    "Definir namespace por domínio",
+    "Modelar os cenários de conflito quando dois engines (Spark e Trino) escrevem concorrentemente na mesma tabela Iceberg via catálogo compartilhado"
   ],
   "tags": [
     "Catalog",
@@ -69,5 +74,9 @@
     "Unity",
     "Nessie",
     "Governance"
+  ],
+  "debates_estado_arte": [
+    "Open catalog standards (Iceberg REST Catalog) vs. proprietary catalogs (Unity Catalog, AWS Glue): interoperabilidade vs. integração vertical",
+    "Data versioning (Nessie, lakeFS) como primitiva de engenharia: reprodutibilidade de ML pipelines vs. overhead de armazenamento"
   ]
 }

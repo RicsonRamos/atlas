@@ -40,12 +40,13 @@
   "protocolos": [],
   "livros": [
     "Stonebraker & Hellerstein, Readings in Database Systems",
-    "Petrov, Database Internals"
+    "Petrov, Database Internals",
+    "Wanderman-Milne & Li, Trino: The Definitive Guide, O'Reilly, 2022"
   ],
   "papers_fundamentais": [
-    "Sethi et al., Presto: SQL on everything, 2019",
     "Richardson et al., Apache Arrow, 2017",
-    "Pedreira et al., Velox, 2022"
+    "Pedreira et al., Velox, 2022",
+    "Sethi, Ganguly, Borthakur et al., Presto: SQL on Everything, ICDE 2019"
   ],
   "ferramentas": [
     "Trino",
@@ -57,14 +58,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Quando federação vira gargalo?",
-    "O que Arrow padroniza na memória?"
+    "O que Arrow padroniza na memória?",
+    "Compare MPP engines (Trino, Presto) com Spark SQL em termos de modelo de execução, fault tolerance e adequação para queries ad-hoc vs. ETL"
   ],
   "projetos_reais": [
-    "Query federada com pushdown mensurado por fonte"
+    "Query federada com pushdown mensurado por fonte",
+    "Projetar e avaliar uma arquitetura de query federation com Trino sobre múltiplas fontes (Iceberg, PostgreSQL, Kafka) com query pushdown otimizado"
   ],
   "exercicios": [
     "Comparar query com e sem pushdown",
-    "Inspecionar batches Arrow"
+    "Inspecionar batches Arrow",
+    "Analisar o impacto de vectorized execution (batch-oriented) vs. row-oriented execution na performance de scan e aggregation"
   ],
   "tags": [
     "Trino",
@@ -72,5 +76,9 @@
     "DuckDB",
     "Pushdown",
     "Vectorization"
+  ],
+  "debates_estado_arte": [
+    "Query engines especializados vs. engines federados: quando a especialização (DuckDB para local, Trino para distribuído) supera a generalização",
+    "Compilação JIT (Photon, Velox) vs. interpretação vetorizada em query engines: trade-offs de latência de startup e throughput"
   ]
 }

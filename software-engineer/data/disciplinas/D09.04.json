@@ -36,12 +36,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Beyer et al., Site Reliability Engineering",
-    "Nygard, Release It!"
+    "Nygard, Release It!",
+    "Beyer, Jones, Petoff & Murphy, Site Reliability Engineering, O'Reilly, 2016",
+    "Blank-Edelman, Seeking SRE: Conversations About Running Production Systems at Scale, O'Reilly, 2018"
   ],
   "papers_fundamentais": [
     "Beyer et al., Site Reliability Engineering, 2016",
-    "Basiri et al., Chaos engineering, 2016"
+    "Nygard, Release It! Design and Deploy Production-Ready Software, 2nd ed., Pragmatic Bookshelf, 2018"
   ],
   "ferramentas": [
     "Prometheus",
@@ -52,14 +53,17 @@
   ],
   "perguntas_entrevista_staff": [
     "RTO e RPO são decisão técnica ou de negócio?",
-    "Como testar backup sem confiança cega?"
+    "Como testar backup sem confiança cega?",
+    "Explique como implementar chaos engineering para pipelines de dados e quais são os failure modes mais críticos a testar"
   ],
   "projetos_reais": [
-    "Game day de plataforma de dados com relatório de gaps"
+    "Game day de plataforma de dados com relatório de gaps",
+    "Projetar e executar um exercício de chaos engineering em uma plataforma de dados, testando failover de Kafka, perda de nós Spark e corrupção de metadados"
   ],
   "exercicios": [
     "Definir SLO de catálogo",
-    "Restaurar metadados em ambiente isolado"
+    "Restaurar metadados em ambiente isolado",
+    "Calcular o RPO e RTO de diferentes estratégias de disaster recovery (active-active, active-passive, backup-restore) para um data lakehouse"
   ],
   "tags": [
     "SRE",
@@ -67,5 +71,9 @@
     "RTO",
     "RPO",
     "Chaos"
+  ],
+  "debates_estado_arte": [
+    "SRE para dados vs. SRE para aplicações: diferenças fundamentais em definição de SLOs, error budgets e incident response",
+    "Resiliência por design (idempotência, retry, circuit breaker) vs. resiliência por redundância (replicação, multi-region): custo vs. complexidade"
   ]
 }

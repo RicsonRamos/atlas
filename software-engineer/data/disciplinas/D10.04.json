@@ -39,11 +39,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Chip Huyen, Designing Machine Learning Systems",
-    "Sculley et al., Hidden Technical Debt in ML Systems"
+    "Sculley et al., Hidden Technical Debt in ML Systems",
+    "Huyen, Designing Machine Learning Systems, O'Reilly, 2022",
+    "Gift & Deza, Practical MLOps, O'Reilly, 2021"
   ],
   "papers_fundamentais": [
-    "Gama et al., A survey on concept drift adaptation, 2014"
+    "Gama et al., A survey on concept drift adaptation, 2014",
+    "Breck, Cai, Nielsen, Salib & Sculley, The ML test score: A rubric for ML production readiness and technical debt reduction, IEEE BigData, 2017"
   ],
   "ferramentas": [
     "KServe",
@@ -54,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Data drift sempre exige retreino?",
-    "Como monitorar modelo sem label imediato?"
+    "Como monitorar modelo sem label imediato?",
+    "Explique os diferentes tipos de drift (data drift, concept drift, prediction drift) e como detectá-los em produção com testes estatísticos"
   ],
   "projetos_reais": [
-    "Serviço de inferência com monitoramento de drift e latência"
+    "Serviço de inferência com monitoramento de drift e latência",
+    "Implementar um sistema de monitoramento de drift com detecção automática (PSI, KS test, ADWIN) e alerting integrado ao pipeline de retreino"
   ],
   "exercicios": [
     "Calcular PSI",
-    "Simular degradação sem label"
+    "Simular degradação sem label",
+    "Calcular o Population Stability Index (PSI) para duas distribuições de features e interpretar o resultado em termos de drift significance"
   ],
   "tags": [
     "KServe",
@@ -69,5 +74,9 @@
     "Inference",
     "Evidently",
     "Monitoring"
+  ],
+  "debates_estado_arte": [
+    "Drift detection vs. performance monitoring: quando a distribuição muda sem afetar métricas de negócio e vice-versa",
+    "Monitoramento de modelos de ML vs. monitoramento de software tradicional: diferenças fundamentais em SLIs, SLOs e alerting"
   ]
 }

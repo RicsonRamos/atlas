@@ -183,6 +183,7 @@
                 ...(t.perguntas_entrevista_staff || []),
                 ...(t.projetos_reais || []),
                 ...(t.exercicios || []),
+                ...(t.debates_estado_arte || []),
                 ...(t.tags || [])
             ].join(' ').toLowerCase();
         }
@@ -191,7 +192,8 @@
             "objetivos", "pratica_esperada", "teoria", "algoritmos_tecnicas",
             "arquiteturas", "estruturas_dados", "modelos_matematicos", "protocolos",
             "livros", "papers_fundamentais", "ferramentas",
-            "perguntas_entrevista_staff", "projetos_reais", "exercicios", "tags"
+            "perguntas_entrevista_staff", "projetos_reais", "exercicios",
+            "debates_estado_arte", "tags"
         ];
 
         function countTopicItems(t) {
@@ -299,6 +301,7 @@
                                 ${renderList("Entrevista Staff", t.perguntas_entrevista_staff, "bg-violet-500")}
                                 ${renderList("Projetos", t.projetos_reais, "bg-emerald-500")}
                                 ${renderList("Exercícios", t.exercicios, "bg-slate-500")}
+                                ${renderList("Estado da arte e debates", t.debates_estado_arte, "bg-orange-500")}
                             </div>
 
                             <div class="mt-6">

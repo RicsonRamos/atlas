@@ -40,7 +40,8 @@
     "Larson, Staff Engineer"
   ],
   "papers_fundamentais": [
-    "Ford, Parsons & Kua, Evolutionary Architecture, 2017"
+    "Ford, Parsons & Kua, Evolutionary Architecture, 2017",
+    "Kang, Bazzan, Ghose et al., Architecture trade-off analysis: method and findings, IEEE Software, 2000"
   ],
   "ferramentas": [
     "ADR",
@@ -51,14 +52,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como decidir entre centralizar e federar?",
-    "Qual trade-off você aceitaria e monitoraria?"
+    "Qual trade-off você aceitaria e monitoraria?",
+    "Como um Staff Engineer avalia e comunica trade-offs arquiteturais (custo vs. latência vs. consistência) para stakeholders não-técnicos?"
   ],
   "projetos_reais": [
-    "Estratégia de modernização de plataforma com fases, riscos e métricas"
+    "Estratégia de modernização de plataforma com fases, riscos e métricas",
+    "Conduzir uma análise ATAM (Architecture Tradeoff Analysis Method) de uma plataforma de dados e produzir um relatório de trade-offs com recomendações"
   ],
   "exercicios": [
     "Criar ADR com alternativas reais",
-    "Definir fitness functions para arquitetura"
+    "Definir fitness functions para arquitetura",
+    "Elaborar um decision matrix ponderada para escolha de arquitetura de dados (lakehouse vs. data warehouse vs. data mesh) para um cenário corporativo"
   ],
   "tags": [
     "Architecture",
@@ -66,5 +70,9 @@
     "Strategy",
     "ADR",
     "Roadmap"
+  ],
+  "debates_estado_arte": [
+    "Arquitetura evolutiva vs. big upfront design para plataformas de dados: adaptabilidade vs. coerência de longo prazo",
+    "Fitness functions para arquitetura de dados: como medir continuamente a saúde de decisões arquiteturais"
   ]
 }

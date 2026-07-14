@@ -39,11 +39,13 @@
   "protocolos": [],
   "livros": [
     "Kerrisk, The Linux Programming Interface",
-    "Arpaci-Dusseau, Operating Systems: Three Easy Pieces"
+    "Arpaci-Dusseau, Operating Systems: Three Easy Pieces",
+    "Love, Linux Kernel Development, 3rd ed., Addison-Wesley, 2010"
   ],
   "papers_fundamentais": [
     "Kerrisk, The Linux Programming Interface, 2010",
-    "Merkel, Docker: lightweight Linux containers, 2014"
+    "Merkel, Docker: lightweight Linux containers, 2014",
+    "Barroso, Clidaras & Hölzle, The datacenter as a computer: an introduction to the design of warehouse-scale machines, 2013"
   ],
   "ferramentas": [
     "strace",
@@ -54,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "O que um namespace isola?",
-    "Como um limite de cgroup afeta Spark executor?"
+    "Como um limite de cgroup afeta Spark executor?",
+    "Compare io_uring, epoll e AIO em termos de overhead de syscall e throughput para workloads de I/O intensivo em data pipelines"
   ],
   "projetos_reais": [
-    "Laboratório de container mínimo com isolamento de CPU, memória e rede"
+    "Laboratório de container mínimo com isolamento de CPU, memória e rede",
+    "Implementar um benchmark comparando diferentes estratégias de I/O (mmap, pread, io_uring) para leitura de arquivos Parquet"
   ],
   "exercicios": [
     "Rastrear syscalls de um leitor Parquet",
-    "Simular OOM em container controlado"
+    "Simular OOM em container controlado",
+    "Calcular o overhead de context switch para diferentes frequências de syscall em um pipeline de ingestão de alta throughput"
   ],
   "tags": [
     "Kernel",
@@ -69,5 +74,9 @@
     "Namespaces",
     "eBPF",
     "I/O"
+  ],
+  "debates_estado_arte": [
+    "Kernel bypass (DPDK, SPDK) para data-intensive workloads: quando eliminar o kernel do caminho de dados faz sentido",
+    "eBPF para observabilidade de pipelines de dados: instrumentação sem overhead vs. complexidade operacional"
   ]
 }

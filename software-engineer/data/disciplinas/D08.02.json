@@ -37,11 +37,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Dehghani, Data Mesh",
-    "Reis & Housley, Fundamentals of Data Engineering"
+    "Reis & Housley, Fundamentals of Data Engineering",
+    "Dehghani, Data Mesh: Delivering Data-Driven Value at Scale, O'Reilly, 2022",
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017"
   ],
   "papers_fundamentais": [
-    "Dehghani, Data Mesh principles, 2019-2022"
+    "Dehghani, Data Mesh principles, 2019-2022",
+    "Dehghani, How to move beyond a monolithic data lake to a distributed data mesh, Martin Fowler blog, 2019"
   ],
   "ferramentas": [
     "Protobuf",
@@ -52,14 +54,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Contrato de dados é só schema?",
-    "Como negociar breaking change entre domínios?"
+    "Como negociar breaking change entre domínios?",
+    "Como implementar data contracts com validação automatizada no CI/CD e quais são os mecanismos de enforcement (break build, alerting, blocking)?"
   ],
   "projetos_reais": [
-    "Portal de contratos com validação automática em PR"
+    "Portal de contratos com validação automática em PR",
+    "Projetar um sistema de data contracts com schema registry, validação semântica e SLOs de qualidade por domínio"
   ],
   "exercicios": [
     "Definir contrato semântico para métrica de receita",
-    "Criar teste de compatibilidade"
+    "Criar teste de compatibilidade",
+    "Definir um data contract completo (schema, SLOs, ownership, lineage) para um dataset crítico e implementar validação automatizada"
   ],
   "tags": [
     "Data Contracts",
@@ -67,5 +72,9 @@
     "Ownership",
     "Schema",
     "Data Mesh"
+  ],
+  "debates_estado_arte": [
+    "Data contracts como interface vs. como contrato legal: enforcement técnico vs. organizacional",
+    "Centralização vs. federação de ownership de dados: data mesh genuíno vs. descentralização sem governança"
   ]
 }

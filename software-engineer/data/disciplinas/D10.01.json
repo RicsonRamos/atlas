@@ -35,11 +35,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Chip Huyen, Designing Machine Learning Systems",
-    "Treveil et al., Introducing MLOps"
+    "Treveil et al., Introducing MLOps",
+    "Huyen, Designing Machine Learning Systems, O'Reilly, 2022",
+    "Gift & Deza, Practical MLOps, O'Reilly, 2021"
   ],
   "papers_fundamentais": [
-    "Sculley et al., Hidden technical debt in machine learning systems, 2015"
+    "Sculley, Holt, Golovin et al., Hidden technical debt in machine learning systems, NeurIPS 2015",
+    "Polyzotis, Roy, Whang & Zinkevich, Data lifecycle challenges in production machine learning, SIGMOD Record, 2018"
   ],
   "ferramentas": [
     "MLflow",
@@ -50,14 +52,17 @@
   ],
   "perguntas_entrevista_staff": [
     "O que torna um experimento reproduzível?",
-    "Como evitar leakage em feature temporal?"
+    "Como evitar leakage em feature temporal?",
+    "Explique os anti-patterns de MLOps descritos no paper de technical debt in ML systems e como mitigá-los em uma plataforma de dados"
   ],
   "projetos_reais": [
-    "Template de experimento versionado ponta a ponta"
+    "Template de experimento versionado ponta a ponta",
+    "Implementar um pipeline de ML end-to-end com experiment tracking (MLflow), versionamento de dados (DVC) e model registry"
   ],
   "exercicios": [
     "Reproduzir treino a partir de commit",
-    "Detectar leakage em dataset temporal"
+    "Detectar leakage em dataset temporal",
+    "Projetar o schema de um experiment tracking system que suporte versionamento de dados, código e hiperparâmetros com reprodutibilidade"
   ],
   "tags": [
     "MLflow",
@@ -65,5 +70,9 @@
     "Registry",
     "DVC",
     "Leakage"
+  ],
+  "debates_estado_arte": [
+    "MLOps como disciplina de engenharia de dados vs. disciplina de ML: quem é dono do pipeline de dados para ML?",
+    "Reprodutibilidade em ML: determinismo de treinamento, versionamento de dados e o desafio de ambientes GPU não determinísticos"
   ]
 }

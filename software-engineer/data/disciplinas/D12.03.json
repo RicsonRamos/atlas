@@ -43,7 +43,8 @@
     "Larson, An Elegant Puzzle"
   ],
   "papers_fundamentais": [
-    "Dehghani, Data Mesh principles, 2019-2022"
+    "Dehghani, Data Mesh principles, 2019-2022",
+    "Dehghani, Data Mesh: Delivering Data-Driven Value at Scale, O'Reilly, 2022"
   ],
   "ferramentas": [
     "Backstage",
@@ -54,14 +55,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Data Mesh sem plataforma vira o quê?",
-    "Como medir se produto de dados é bom?"
+    "Como medir se produto de dados é bom?",
+    "Quais são os pré-requisitos organizacionais e técnicos para uma adoção bem-sucedida de data mesh e quais são os anti-patterns mais comuns?"
   ],
   "projetos_reais": [
-    "Blueprint de plataforma self-service com scorecard de produto de dados"
+    "Blueprint de plataforma self-service com scorecard de produto de dados",
+    "Projetar uma plataforma de dados self-service com APIs de provisionamento, catálogo federado e governança computacional"
   ],
   "exercicios": [
     "Criar checklist de produto de dados",
-    "Mapear domínios e interfaces"
+    "Mapear domínios e interfaces",
+    "Mapear uma organização de dados centralizada para um modelo data mesh, identificando domínios, data products e contratos"
   ],
   "tags": [
     "Data Mesh",
@@ -69,5 +73,9 @@
     "Self-service",
     "Golden Path",
     "Team Topologies"
+  ],
+  "debates_estado_arte": [
+    "Data mesh como arquitetura vs. como organização: a transformação é fundamentalmente técnica ou organizacional?",
+    "Plataforma self-service: até que ponto abstrair complexidade de infraestrutura sem perder controle e observabilidade?"
   ]
 }

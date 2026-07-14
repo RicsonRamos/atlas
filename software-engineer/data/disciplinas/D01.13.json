@@ -39,11 +39,13 @@
   "livros": [
     "Pierce, Types and Programming Languages",
     "Bird & Wadler, Introduction to Functional Programming",
-    "Mac Lane, Categories for the Working Mathematician"
+    "Mac Lane, Categories for the Working Mathematician",
+    "Vitter, Algorithms and Data Structures for External Memory, Now Publishers, 2008"
   ],
   "papers_fundamentais": [
     "Moggi, Notions of computation and monads, 1991",
-    "Wadler, The essence of functional programming, 1992"
+    "Wadler, The essence of functional programming, 1992",
+    "Aggarwal & Vitter, The input/output complexity of sorting and related problems, Communications of the ACM, 1988"
   ],
   "ferramentas": [
     "Haskell",
@@ -54,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como tipos algébricos evitam estados inválidos?",
-    "Explique monad sem jargão usando pipeline com falhas"
+    "Explique monad sem jargão usando pipeline com falhas",
+    "Explique o modelo de I/O externo e como ele influencia o design de algoritmos de sort-merge join em bancos de dados"
   ],
   "projetos_reais": [
-    "Biblioteca de ETL funcional com composição, validação e erros tipados"
+    "Biblioteca de ETL funcional com composição, validação e erros tipados",
+    "Implementar um external merge sort com análise de I/O complexity e comparar com o sort nativo do Spark"
   ],
   "exercicios": [
     "Implementar Either/Result",
-    "Refatorar transformação mutável para função pura"
+    "Refatorar transformação mutável para função pura",
+    "Calcular o número ótimo de runs e passes para um external merge sort dado M bytes de memória e N bytes de dados"
   ],
   "tags": [
     "Tipos",
@@ -69,5 +74,9 @@
     "Monads",
     "FP",
     "Composição"
+  ],
+  "debates_estado_arte": [
+    "Cache-oblivious vs. cache-aware algorithms: quando ignorar a hierarquia de memória é vantajoso",
+    "Impacto de storage NVMe e persistent memory na relevância do modelo clássico de I/O externo"
   ]
 }

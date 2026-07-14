@@ -44,10 +44,12 @@
   "livros": [
     "Ramalho, Fluent Python",
     "Matsakis & Klock, The Rust Language, 2014",
-    "Odersky, Spoon & Venners, Programming in Scala"
+    "Odersky, Spoon & Venners, Programming in Scala",
+    "Fowler, Refactoring: Improving the Design of Existing Code, 2nd ed., Addison-Wesley, 2018"
   ],
   "papers_fundamentais": [
-    "Armbrust et al., Spark SQL, 2015"
+    "Armbrust et al., Spark SQL, 2015",
+    "Parnas, On the criteria to be used in decomposing systems into modules, Communications of the ACM, 1972"
   ],
   "ferramentas": [
     "Python",
@@ -59,14 +61,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Quando trocar pandas por Polars?",
-    "Como typing reduz incidentes de dados?"
+    "Como typing reduz incidentes de dados?",
+    "Como aplicar os princípios SOLID a pipelines de dados para garantir extensibilidade e testabilidade de transformações?"
   ],
   "projetos_reais": [
-    "SDK interno para ingestão com validação, typing e retries"
+    "SDK interno para ingestão com validação, typing e retries",
+    "Refatorar um pipeline de ETL monolítico em módulos testáveis aplicando inversão de dependência e injeção de configuração"
   ],
   "exercicios": [
     "Criar tipos para campos sensíveis",
-    "Comparar performance pandas, Polars e Spark local"
+    "Comparar performance pandas, Polars e Spark local",
+    "Identificar violações de SRP e OCP em um pipeline de dados real e propor refatoração com justificativa formal"
   ],
   "tags": [
     "Python",
@@ -74,5 +79,9 @@
     "Pydantic",
     "Polars",
     "Rust"
+  ],
+  "debates_estado_arte": [
+    "Functional data engineering vs. OOP: composição de transformações puras vs. herança em frameworks de pipeline",
+    "Monorepo vs. polyrepo para código de plataforma de dados: trade-offs de acoplamento, versionamento e CI/CD"
   ]
 }

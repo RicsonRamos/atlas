@@ -44,11 +44,12 @@
   "protocolos": [],
   "livros": [
     "Goodfellow, Bengio & Courville, Deep Learning",
-    "Chip Huyen, Designing Machine Learning Systems"
+    "Huyen, Designing Machine Learning Systems, O'Reilly, 2022",
+    "Tunstall, von Werra & Wolf, Natural Language Processing with Transformers, O'Reilly, 2022"
   ],
   "papers_fundamentais": [
-    "Kwon et al., Efficient Memory Management for Large Language Model Serving with PagedAttention, 2023",
-    "Dettmers et al., QLoRA, 2023"
+    "Dettmers et al., QLoRA, 2023",
+    "Kwon, Li, Zhuang et al., Efficient memory management for large language model serving with PagedAttention (vLLM), SOSP 2023"
   ],
   "ferramentas": [
     "vLLM",
@@ -59,14 +60,17 @@
   ],
   "perguntas_entrevista_staff": [
     "O que limita throughput: GPU, memória ou scheduler?",
-    "Quantização muda comportamento do modelo?"
+    "Quantização muda comportamento do modelo?",
+    "Compare vLLM, TGI e TensorRT-LLM em termos de throughput, latência e eficiência de memória para serving de LLMs"
   ],
   "projetos_reais": [
-    "Gateway de LLM com roteamento, limites, cache e métricas de custo"
+    "Gateway de LLM com roteamento, limites, cache e métricas de custo",
+    "Implementar um sistema de serving de LLM com batching contínuo, KV cache management e auto-scaling baseado em queue depth"
   ],
   "exercicios": [
     "Medir tokens/s por batch",
-    "Comparar FP16 e quantizado"
+    "Comparar FP16 e quantizado",
+    "Calcular o throughput máximo de serving de um LLM de 70B parâmetros dados memória GPU disponível, batch size e KV cache overhead"
   ],
   "tags": [
     "vLLM",
@@ -74,5 +78,9 @@
     "Quantization",
     "KV Cache",
     "Batching"
+  ],
+  "debates_estado_arte": [
+    "Quantização (GPTQ, AWQ, GGML) vs. distillation vs. pruning para redução de custo de inferência: trade-offs de qualidade",
+    "On-device inference vs. cloud serving para LLMs: privacidade e latência vs. capacidade de modelo"
   ]
 }

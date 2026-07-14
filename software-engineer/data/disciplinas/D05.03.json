@@ -40,11 +40,14 @@
   "protocolos": [],
   "livros": [
     "Karau & Warren, High Performance Spark",
-    "Humble & Farley, Continuous Delivery"
+    "Humble & Farley, Continuous Delivery",
+    "Chambers & Zaharia, Spark: The Definitive Guide, O'Reilly, 2018",
+    "Hueske & Kalavri, Stream Processing with Apache Flink, O'Reilly, 2019"
   ],
   "papers_fundamentais": [
     "Apache Airflow design documentation",
-    "Dagster asset-oriented orchestration essays"
+    "Dagster asset-oriented orchestration essays",
+    "Carbone, Katsifodimos, Ewen et al., Apache Flink: Stream and batch processing in a single engine, IEEE Data Engineering Bulletin, 2015"
   ],
   "ferramentas": [
     "Airflow",
@@ -55,14 +58,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como evitar DAG gigante e frágil?",
-    "Quando sensor vira gargalo?"
+    "Quando sensor vira gargalo?",
+    "Compare as garantias de consistência de Flink (checkpointing) vs. Spark Structured Streaming (micro-batch + WAL) para exactly-once processing"
   ],
   "projetos_reais": [
-    "Orquestração asset-based com lineage e testes de contrato"
+    "Orquestração asset-based com lineage e testes de contrato",
+    "Implementar um pipeline de streaming com watermarks, late data handling e session windows em Flink, medindo latência e throughput"
   ],
   "exercicios": [
     "Detectar ciclo em DAG",
-    "Planejar backfill de 2 anos com janelas"
+    "Planejar backfill de 2 anos com janelas",
+    "Modelar o impacto do intervalo de checkpoint na latência de recovery e no overhead de throughput em um job Flink"
   ],
   "tags": [
     "Airflow",
@@ -70,5 +76,9 @@
     "Backfill",
     "Lineage",
     "DAGs"
+  ],
+  "debates_estado_arte": [
+    "Stream-first vs. batch-first: o paradigma de streaming como superset de batch (Flink) vs. batch como caso especial otimizado (Spark)",
+    "Watermarks e completude de dados: o problema fundamental de decidir quando um window está completo em dados desordenados"
   ]
 }

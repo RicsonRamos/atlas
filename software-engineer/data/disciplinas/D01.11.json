@@ -46,11 +46,13 @@
   "livros": [
     "Hopcroft, Motwani & Ullman, Introduction to Automata Theory",
     "Aho, Lam, Sethi & Ullman, Compilers",
-    "Sipser, Introduction to the Theory of Computation"
+    "Sipser, Introduction to the Theory of Computation",
+    "Puterman, Markov Decision Processes: Discrete Stochastic Dynamic Programming, Wiley, 2005"
   ],
   "papers_fundamentais": [
     "Turing, On computable numbers, 1936",
-    "Church, An unsolvable problem of elementary number theory, 1936"
+    "Church, An unsolvable problem of elementary number theory, 1936",
+    "Baum & Petrie, Statistical inference for probabilistic functions of finite state Markov chains, The Annals of Mathematical Statistics, 1966"
   ],
   "ferramentas": [
     "ANTLR",
@@ -60,14 +62,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que regex não cobre todas as linguagens?",
-    "Como um otimizador transforma uma query SQL?"
+    "Como um otimizador transforma uma query SQL?",
+    "Como cadeias de Markov são usadas para modelar e prever padrões de acesso a dados em cache policies de storage engines?"
   ],
   "projetos_reais": [
-    "DSL mínima de qualidade de dados compilada para SQL"
+    "DSL mínima de qualidade de dados compilada para SQL",
+    "Modelar a progressão de estados de um pipeline de ingestão como cadeia de Markov e estimar probabilidades de falha e tempo médio de recuperação"
   ],
   "exercicios": [
     "Converter regex em autômato",
-    "Criar uma gramática para filtros declarativos"
+    "Criar uma gramática para filtros declarativos",
+    "Calcular a distribuição estacionária de uma cadeia de Markov representando estados de um job Spark (running, waiting, failed, succeeded)"
   ],
   "tags": [
     "Autômatos",
@@ -75,5 +80,9 @@
     "Compiladores",
     "Computabilidade",
     "SQL Planning"
+  ],
+  "debates_estado_arte": [
+    "Processos estocásticos vs. modelos determinísticos para SLA prediction em pipelines de dados: quando a aleatoriedade importa",
+    "Hidden Markov Models para detecção de anomalias em séries temporais de métricas de infraestrutura de dados"
   ]
 }

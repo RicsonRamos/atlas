@@ -37,10 +37,12 @@
   "protocolos": [],
   "livros": [
     "Beyer et al., Site Reliability Engineering",
-    "Majors, Fong-Jones & Miranda, Observability Engineering"
+    "Majors, Fong-Jones & Miranda, Observability Engineering",
+    "Gamma, Helm, Johnson & Vlissides, Design Patterns: Elements of Reusable Object-Oriented Software, Addison-Wesley, 1994"
   ],
   "papers_fundamentais": [
-    "Sigelman et al., Dapper, a large-scale distributed systems tracing infrastructure, 2010"
+    "Sigelman et al., Dapper, a large-scale distributed systems tracing infrastructure, 2010",
+    "Fowler, Patterns of Enterprise Application Architecture, Addison-Wesley, 2002"
   ],
   "ferramentas": [
     "OpenTelemetry",
@@ -52,14 +54,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Qual a diferença entre monitoramento e observabilidade?",
-    "Como evitar cardinalidade explosiva em métricas?"
+    "Como evitar cardinalidade explosiva em métricas?",
+    "Quais design patterns são mais relevantes para frameworks de orquestração de dados e por quê (Strategy, Template Method, Observer, Pipeline)?"
   ],
   "projetos_reais": [
-    "Painel de saúde de pipelines com SLOs e traces por execução"
+    "Painel de saúde de pipelines com SLOs e traces por execução",
+    "Implementar um SDK de pipeline de dados extensível usando Strategy pattern para transformações e Observer para monitoramento"
   ],
   "exercicios": [
     "Criar trace de ponta a ponta",
-    "Definir error budget para frescor de dados"
+    "Definir error budget para frescor de dados",
+    "Refatorar um pipeline procedural de ETL aplicando Chain of Responsibility e avaliar o impacto em testabilidade"
   ],
   "tags": [
     "Tracing",
@@ -67,5 +72,9 @@
     "OpenTelemetry",
     "Data Observability",
     "SLI"
+  ],
+  "debates_estado_arte": [
+    "Design patterns clássicos (GoF) vs. patterns funcionais (monads, functors) para composição de pipelines de dados",
+    "Framework lock-in em data engineering: custo de abstração vs. produtividade de frameworks opinados (Airflow, Dagster, Prefect)"
   ]
 }

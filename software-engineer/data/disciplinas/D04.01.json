@@ -35,11 +35,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Date, An Introduction to Database Systems",
-    "Garcia-Molina, Ullman & Widom, Database Systems"
+    "Garcia-Molina, Ullman & Widom, Database Systems",
+    "Date, An Introduction to Database Systems, 8th ed., Pearson, 2003",
+    "Celko, Joe Celko's SQL for Smarties: Advanced SQL Programming, 5th ed., Morgan Kaufmann, 2014"
   ],
   "papers_fundamentais": [
-    "Codd, A relational model of data for large shared data banks, 1970"
+    "Codd, A relational model of data for large shared data banks, 1970",
+    "Chamberlin & Boyce, SEQUEL: A structured English query language, ACM SIGFIDET, 1974"
   ],
   "ferramentas": [
     "PostgreSQL",
@@ -50,14 +52,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como NULL afeta anti-join?",
-    "Quando CTE vira barreira de otimização?"
+    "Quando CTE vira barreira de otimização?",
+    "Explique as implicações da semântica de três valores (3VL) de NULL em SQL para a corretude de anti-joins e NOT IN vs. NOT EXISTS"
   ],
   "projetos_reais": [
-    "Catálogo de padrões SQL para analytics engineering avançado"
+    "Catálogo de padrões SQL para analytics engineering avançado",
+    "Construir uma camada semântica (semantic layer) com métricas consistentes usando dbt e validar equivalência SQL das definições"
   ],
   "exercicios": [
     "Criar query com janela e grouping sets",
-    "Reescrever subquery correlacionada"
+    "Reescrever subquery correlacionada",
+    "Reescrever uma query com subquery correlacionada como lateral join e analisar a diferença no plano de execução"
   ],
   "tags": [
     "SQL",
@@ -65,5 +70,9 @@
     "CTE",
     "Relational Theory",
     "Metrics"
+  ],
+  "debates_estado_arte": [
+    "SQL como linguagem universal de dados vs. alternativas (Dataframe APIs, Malloy, PRQL): expressividade e ergonomia",
+    "Materialização incremental vs. recomputação completa: trade-offs de consistência e custo em semantic layers"
   ]
 }

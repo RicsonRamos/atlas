@@ -44,11 +44,13 @@
   "protocolos": [],
   "livros": [
     "Kimball & Ross, The Data Warehouse Toolkit",
-    "Linstedt & Olschimke, Building a Scalable Data Warehouse with Data Vault 2.0"
+    "Linstedt & Olschimke, Building a Scalable Data Warehouse with Data Vault 2.0",
+    "Weikum & Vossen, Transactional Information Systems: Theory, Algorithms and Practice of Concurrency Control and Recovery, Morgan Kaufmann, 2001"
   ],
   "papers_fundamentais": [
     "Linstedt, Data Vault overview, 2002",
-    "Kimball, Dimensional modeling techniques, 1996"
+    "Kimball, Dimensional modeling techniques, 1996",
+    "Berenson, Bernstein, Gray, Melton, O'Neil & O'Neil, A critique of ANSI SQL isolation levels, SIGMOD 1995"
   ],
   "ferramentas": [
     "dbt",
@@ -59,14 +61,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Quando Data Vault compensa o custo?",
-    "Como garantir uma métrica única entre times?"
+    "Como garantir uma métrica única entre times?",
+    "Explique as diferenças entre snapshot isolation, serializable snapshot isolation e strict serializability, incluindo as anomalias que cada um previne"
   ],
   "projetos_reais": [
-    "Warehouse de domínio com SCD2, Vault e camada semântica comparada"
+    "Warehouse de domínio com SCD2, Vault e camada semântica comparada",
+    "Implementar um detector de write skew em transações concorrentes usando análise de grafo de dependências"
   ],
   "exercicios": [
     "Modelar evento em fato transacional",
-    "Criar PIT table para Vault"
+    "Criar PIT table para Vault",
+    "Construir o grafo de serialização para um conjunto de transações concorrentes e determinar se o schedule é conflict-serializable"
   ],
   "tags": [
     "Kimball",
@@ -74,5 +79,9 @@
     "SCD",
     "Semantic Layer",
     "Metrics"
+  ],
+  "debates_estado_arte": [
+    "Deterministic databases (Calvin, BOHM) vs. optimistic concurrency control: trade-offs de throughput e latência",
+    "Transações distribuídas em data lakehouse: ACID em tabelas Iceberg/Delta vs. eventual consistency em data mesh"
   ]
 }

@@ -55,7 +55,8 @@
   "protocolos": [],
   "livros": [
     "Szeliski, Computer Vision: Algorithms and Applications",
-    "Goodfellow, Bengio & Courville, Deep Learning"
+    "Goodfellow, Bengio & Courville, Deep Learning, MIT Press, 2016",
+    "Prince, Understanding Deep Learning, MIT Press, 2023"
   ],
   "papers_fundamentais": [
     "Krizhevsky, Sutskever & Hinton, ImageNet Classification with Deep Convolutional Neural Networks, 2012",
@@ -71,14 +72,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Quando um Vision Transformer supera uma CNN em visão computacional, e quando não compensa o custo?",
-    "Como escolher entre detecção de estágio único e duplo para um sistema de produção com restrição de latência?"
+    "Como escolher entre detecção de estágio único e duplo para um sistema de produção com restrição de latência?",
+    "Compare as arquiteturas CNN (ResNet, EfficientNet) vs. Vision Transformers (ViT, DeiT) para tarefas de classificação em escala industrial"
   ],
   "projetos_reais": [
-    "Pipeline de detecção e rastreamento de objetos em vídeo com métricas de latência e precisão por câmera"
+    "Pipeline de detecção e rastreamento de objetos em vídeo com métricas de latência e precisão por câmera",
+    "Implementar um pipeline de visão computacional end-to-end com data augmentation, transfer learning e deploy com otimização TensorRT"
   ],
   "exercicios": [
     "Comparar SIFT/ORB com features aprendidas por CNN no mesmo dataset",
-    "Avaliar precisão e recall de um modelo YOLO em cenário de baixa luminosidade"
+    "Avaliar precisão e recall de um modelo YOLO em cenário de baixa luminosidade",
+    "Calcular o campo receptivo efetivo de uma rede convolucional com múltiplas camadas de diferentes kernel sizes e strides"
   ],
   "tags": [
     "ComputerVision",
@@ -86,5 +90,9 @@
     "YOLO",
     "VisionTransformer",
     "Segmentação"
+  ],
+  "debates_estado_arte": [
+    "CNNs vs. Vision Transformers: inductive bias vs. scale como determinante de performance para visão computacional",
+    "Foundation models para visão (SAM, CLIP, DINO): o paradigma de pre-training massivo substituirá arquiteturas task-specific?"
   ]
 }

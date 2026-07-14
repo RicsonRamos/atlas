@@ -52,11 +52,13 @@
   ],
   "livros": [
     "Stevens, TCP/IP Illustrated",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Kurose & Ross, Computer Networking: A Top-Down Approach, 8th ed., Pearson, 2021"
   ],
   "papers_fundamentais": [
     "Dean & Barroso, The Tail at Scale, 2013",
-    "Fielding, Architectural Styles and REST, 2000"
+    "Fielding, Architectural Styles and REST, 2000",
+    "Jacobson, Congestion avoidance and control, ACM SIGCOMM, 1988"
   ],
   "ferramentas": [
     "grpcurl",
@@ -67,14 +69,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que retry sem jitter causa incidente?",
-    "Quando gRPC é melhor que REST em plataforma de dados?"
+    "Quando gRPC é melhor que REST em plataforma de dados?",
+    "Explique como TCP congestion control (Reno, Cubic, BBR) afeta o throughput de transferências de dados em redes de datacenter"
   ],
   "projetos_reais": [
-    "Serviço gRPC de catálogo com tracing e mTLS local"
+    "Serviço gRPC de catálogo com tracing e mTLS local",
+    "Projetar e avaliar uma estratégia de serialização e compressão para transferência eficiente de dados entre microserviços (Protobuf vs. Arrow IPC vs. JSON)"
   ],
   "exercicios": [
     "Simular tail latency",
-    "Comparar JSON e Protobuf em payload grande"
+    "Comparar JSON e Protobuf em payload grande",
+    "Calcular o throughput máximo teórico de uma transferência de dados TCP considerando RTT, window size e bandwidth-delay product"
   ],
   "tags": [
     "TCP",
@@ -82,5 +87,9 @@
     "mTLS",
     "Tail Latency",
     "Retries"
+  ],
+  "debates_estado_arte": [
+    "RDMA e redes de alta performance para shuffle distribuído: impacto em latência de Spark/Flink vs. complexidade de deployment",
+    "gRPC vs. HTTP/3 vs. QUIC para comunicação entre componentes de plataformas de dados: trade-offs de latência e compatibilidade"
   ]
 }

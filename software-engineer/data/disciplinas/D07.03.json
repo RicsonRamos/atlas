@@ -40,11 +40,12 @@
   "protocolos": [],
   "livros": [
     "Reis & Housley, Fundamentals of Data Engineering",
-    "Karau & Warren, High Performance Spark"
+    "Karau & Warren, High Performance Spark",
+    "Chambers & Zaharia, Spark: The Definitive Guide, O'Reilly, 2018"
   ],
   "papers_fundamentais": [
-    "Armbrust et al., Delta Lake, 2020",
-    "Apache Hudi technical reports"
+    "Apache Hudi technical reports",
+    "Armbrust, Das, Torres et al., Delta Lake: High-performance ACID table storage over cloud object stores, VLDB 2020"
   ],
   "ferramentas": [
     "Delta Lake",
@@ -55,14 +56,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Delta log é banco de dados?",
-    "Quando MOR compensa?"
+    "Quando MOR compensa?",
+    "Compare as estratégias de compactação e merge-on-read vs. copy-on-write em Delta Lake e Hudi para diferentes workloads"
   ],
   "projetos_reais": [
-    "Comparativo CDC: Delta MERGE vs Hudi MOR em carga incremental"
+    "Comparativo CDC: Delta MERGE vs Hudi MOR em carga incremental",
+    "Implementar um benchmark comparando performance de upsert em Iceberg, Delta Lake e Hudi para um cenário de CDC com alta taxa de mudanças"
   ],
   "exercicios": [
     "Ler transaction log",
-    "Medir compaction em Hudi"
+    "Medir compaction em Hudi",
+    "Calcular o write amplification de copy-on-write vs. merge-on-read para diferentes proporções de registros atualizados por snapshot"
   ],
   "tags": [
     "Delta",
@@ -70,5 +74,9 @@
     "MERGE",
     "CDC",
     "Compaction"
+  ],
+  "debates_estado_arte": [
+    "Copy-on-write vs. merge-on-read: trade-offs de write amplification e read performance em workloads mistos",
+    "Universalidade de table formats: um formato único para OLTP + OLAP ou especialização por workload?"
   ]
 }

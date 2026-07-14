@@ -46,11 +46,13 @@
   ],
   "livros": [
     "Kleppmann, Designing Data-Intensive Applications",
-    "Lynch, Distributed Algorithms"
+    "Lynch, Distributed Algorithms",
+    "Coulouris, Dollimore, Kindberg & Blair, Distributed Systems: Concepts and Design, 5th ed., Pearson, 2011"
   ],
   "papers_fundamentais": [
     "Lamport, Time, clocks, and the ordering of events, 1978",
-    "Shapiro et al., Conflict-free replicated data types, 2011"
+    "Shapiro et al., Conflict-free replicated data types, 2011",
+    "Corbett, Dean, Epstein et al., Spanner: Google's globally-distributed database, OSDI 2012"
   ],
   "ferramentas": [
     "Riak concepts",
@@ -59,14 +61,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Vector clock escala para muitos nós?",
-    "Quando LWW perde informação de negócio?"
+    "Quando LWW perde informação de negócio?",
+    "Explique como o Google Spanner usa TrueTime para implementar external consistency sem sacrificar disponibilidade global"
   ],
   "projetos_reais": [
-    "Estado colaborativo simples com CRDT e conflitos explícitos"
+    "Estado colaborativo simples com CRDT e conflitos explícitos",
+    "Projetar um sistema de transações distribuídas com two-phase commit e demonstrar os cenários de falha (coordinator crash, participant crash)"
   ],
   "exercicios": [
     "Calcular happens-before em log distribuído",
-    "Implementar G-counter"
+    "Implementar G-counter",
+    "Modelar o overhead de latência de 2PC vs. Paxos commit para transações cross-shard em um banco distribuído"
   ],
   "tags": [
     "Lamport",
@@ -74,5 +79,9 @@
     "CRDT",
     "Causality",
     "HLC"
+  ],
+  "debates_estado_arte": [
+    "Two-phase commit vs. saga pattern para transações distribuídas em microserviços de dados: consistência vs. disponibilidade",
+    "Clock synchronization (TrueTime, HLC) como fundamento para consistência em bancos distribuídos: viabilidade fora do Google"
   ]
 }

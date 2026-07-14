@@ -37,11 +37,13 @@
   "protocolos": [],
   "livros": [
     "Reis & Housley, Fundamentals of Data Engineering",
-    "Beyer et al., Site Reliability Engineering"
+    "Beyer et al., Site Reliability Engineering",
+    "Storment & Fuller, Cloud FinOps, O'Reilly, 2019"
   ],
   "papers_fundamentais": [
     "FinOps Foundation, FinOps Framework",
-    "Forsgren, Humble & Kim, Accelerate, 2018"
+    "Forsgren, Humble & Kim, Accelerate, 2018",
+    "Agarwal, Kandula, Bruno, Wu, Stoica & Li, Re-optimizing data-parallel computing, NSDI 2012"
   ],
   "ferramentas": [
     "AWS Cost Explorer",
@@ -52,14 +54,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como provar economia sem degradar SLA?",
-    "Por que custo por query é métrica de produto?"
+    "Por que custo por query é métrica de produto?",
+    "Como implementar chargeback/showback para uma plataforma de dados multi-tenant e quais são os desafios de atribuição de custo compartilhado?"
   ],
   "projetos_reais": [
-    "FinOps dashboard com custo por domínio, pipeline e query"
+    "FinOps dashboard com custo por domínio, pipeline e query",
+    "Construir um sistema de FinOps para uma plataforma de dados com tagging automático, alertas de anomalia de custo e relatórios de chargeback por equipe"
   ],
   "exercicios": [
     "Identificar top 10 queries caras",
-    "Simular spot vs reserved"
+    "Simular spot vs reserved",
+    "Modelar o trade-off entre custo de compute (spot vs. on-demand vs. reserved) e SLA de um pipeline de dados crítico"
   ],
   "tags": [
     "FinOps",
@@ -67,5 +72,9 @@
     "Rightsizing",
     "Autoscaling",
     "Showback"
+  ],
+  "debates_estado_arte": [
+    "Spot/preemptible instances para workloads de dados: viabilidade com checkpointing vs. risco de interrupção para SLAs apertados",
+    "Custo como métrica de engenharia (cost per query, cost per GB processed): integração de FinOps no ciclo de desenvolvimento de pipelines"
   ]
 }

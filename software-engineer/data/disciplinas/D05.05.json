@@ -43,10 +43,12 @@
   ],
   "livros": [
     "Kleppmann, Designing Data-Intensive Applications",
-    "Nygard, Release It!"
+    "Nygard, Release It! Design and Deploy Production-Ready Software, 2nd ed., Pragmatic Bookshelf, 2018",
+    "Reis & Housley, Fundamentals of Data Engineering, O'Reilly, 2022"
   ],
   "papers_fundamentais": [
-    "Helland, Idempotence is not a medical condition, 2012"
+    "Helland, Idempotence is not a medical condition, 2012",
+    "Sadalage & Fowler, NoSQL Distilled, Addison-Wesley, 2012"
   ],
   "ferramentas": [
     "Kafka",
@@ -57,14 +59,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como provar que um backfill não duplica dados?",
-    "O que vai para DLQ e o que deve falhar o job?"
+    "O que vai para DLQ e o que deve falhar o job?",
+    "Compare Avro, Protobuf, Parquet e Arrow como formatos de serialização em termos de schema evolution, compressão e performance de leitura"
   ],
   "projetos_reais": [
-    "Framework de replay com idempotency keys, DLQ e auditoria"
+    "Framework de replay com idempotency keys, DLQ e auditoria",
+    "Implementar um schema registry com validação de compatibilidade (backward, forward, full) e integração com CI/CD"
   ],
   "exercicios": [
     "Criar teste de reprocessamento",
-    "Simular falha entre leitura e escrita"
+    "Simular falha entre leitura e escrita",
+    "Analisar os modos de compatibilidade de schema (backward, forward, full, none) e demonstrar com exemplos concretos quando cada um falha"
   ],
   "tags": [
     "Idempotência",
@@ -72,5 +77,9 @@
     "Replay",
     "Retries",
     "Circuit Breaker"
+  ],
+  "debates_estado_arte": [
+    "Schema-on-read vs. schema-on-write em data lakehouse: flexibilidade vs. integridade de dados em escala",
+    "Type systems para dados: tipagem estática em schemas (Protobuf, Avro) vs. tipagem gradual (JSON Schema com inferência)"
   ]
 }

@@ -41,10 +41,12 @@
   "protocolos": [],
   "livros": [
     "Katz & Lindell, Introduction to Modern Cryptography",
-    "DAMA-DMBOK"
+    "DAMA-DMBOK",
+    "Anderson, Security Engineering: A Guide to Building Dependable Distributed Systems, 3rd ed., Wiley, 2020"
   ],
   "papers_fundamentais": [
-    "Hu et al., Attribute-Based Access Control, NIST, 2014"
+    "Hu et al., Attribute-Based Access Control, NIST, 2014",
+    "Sandhu, Coyne, Feinstein & Youman, Role-based access control models, IEEE Computer, 1996"
   ],
   "ferramentas": [
     "Open Policy Agent",
@@ -55,14 +57,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Quando RBAC fica insuficiente?",
-    "Como aplicar least privilege em analytics self-service?"
+    "Como aplicar least privilege em analytics self-service?",
+    "Compare RBAC, ABAC e PBAC (Policy-Based Access Control) para governança de dados em um data lakehouse multi-tenant"
   ],
   "projetos_reais": [
-    "Motor de políticas ABAC para dados sensíveis com auditoria"
+    "Motor de políticas ABAC para dados sensíveis com auditoria",
+    "Implementar um sistema de controle de acesso fine-grained (row-level, column-level) para um data lakehouse usando políticas OPA (Open Policy Agent)"
   ],
   "exercicios": [
     "Escrever política OPA",
-    "Simular acesso por finalidade de uso"
+    "Simular acesso por finalidade de uso",
+    "Modelar um lattice de segurança (Bell-LaPadula) para classificação de dados em um ambiente com múltiplos níveis de confidencialidade"
   ],
   "tags": [
     "RBAC",
@@ -70,5 +75,9 @@
     "OPA",
     "Audit",
     "RLS"
+  ],
+  "debates_estado_arte": [
+    "Zero trust para dados: aplicabilidade de princípios de zero trust networking a acesso a datasets em plataformas analíticas",
+    "Policy-as-code para governança de dados: OPA, Cedar e o desafio de expressividade vs. auditabilidade de políticas"
   ]
 }

@@ -41,10 +41,12 @@
   "livros": [
     "Humble & Farley, Continuous Delivery",
     "Kim et al., The DevOps Handbook",
-    "Beyer et al., Site Reliability Engineering"
+    "Beyer et al., Site Reliability Engineering",
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017"
   ],
   "papers_fundamentais": [
-    "Forsgren, Humble & Kim, Accelerate, 2018"
+    "Forsgren, Humble & Kim, Accelerate, 2018",
+    "Richardson, Microservices Patterns, Manning, 2018"
   ],
   "ferramentas": [
     "GitHub Actions",
@@ -55,14 +57,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como fazer rollback de uma mudança de schema?",
-    "Por que artefato imutável importa?"
+    "Por que artefato imutável importa?",
+    "Compare event-driven architecture vs. request-response para integração entre serviços de dados em termos de acoplamento, latência e resiliência"
   ],
   "projetos_reais": [
-    "Esteira completa para DAG, modelos dbt, testes e deploy canário"
+    "Esteira completa para DAG, modelos dbt, testes e deploy canário",
+    "Projetar uma plataforma de dados interna (Internal Data Platform) com APIs de self-service, catálogo e governança como microserviços"
   ],
   "exercicios": [
     "Criar validação de PR para breaking changes",
-    "Simular rollback de materialização"
+    "Simular rollback de materialização",
+    "Desenhar o diagrama C4 (contexto, container, componente) de um sistema de ingestão de dados com CDC, streaming e batch"
   ],
   "tags": [
     "CI/CD",
@@ -70,5 +75,9 @@
     "Rollback",
     "Canary",
     "Artifacts"
+  ],
+  "debates_estado_arte": [
+    "Microserviços vs. monolito modular para plataformas de dados: complexidade operacional vs. escalabilidade independente",
+    "API-first data platforms: benefícios de contratos explícitos vs. overhead de manutenção de APIs versionadas"
   ]
 }

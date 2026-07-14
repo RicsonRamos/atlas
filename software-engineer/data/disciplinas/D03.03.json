@@ -37,10 +37,12 @@
   "livros": [
     "Beck, Test-Driven Development",
     "Humble & Farley, Continuous Delivery",
-    "Freeman & Pryce, Growing Object-Oriented Software"
+    "Freeman & Pryce, Growing Object-Oriented Software",
+    "Winters, Manshreck & Wright, Software Engineering at Google, O'Reilly, 2020"
   ],
   "papers_fundamentais": [
-    "Claessen & Hughes, QuickCheck, 2000"
+    "Claessen & Hughes, QuickCheck, 2000",
+    "Pollock, A brief guide to test-driven development, 2019"
   ],
   "ferramentas": [
     "pytest",
@@ -52,14 +54,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como testar pipeline sem copiar produção?",
-    "O que property-based testing encontra que exemplo fixo não encontra?"
+    "O que property-based testing encontra que exemplo fixo não encontra?",
+    "Como projetar uma suíte de testes para um pipeline de dados que garanta cobertura de edge cases sem depender de dados de produção?"
   ],
   "projetos_reais": [
-    "Harness de testes para transformação com golden datasets e fuzzing"
+    "Harness de testes para transformação com golden datasets e fuzzing",
+    "Implementar um framework de property-based testing para transformações SQL usando geração automática de datasets"
   ],
   "exercicios": [
     "Criar teste de contrato para schema Avro",
-    "Escrever propriedade para deduplicação idempotente"
+    "Escrever propriedade para deduplicação idempotente",
+    "Escrever testes de contrato para um pipeline dbt validando cardinalidade, unicidade e integridade referencial"
   ],
   "tags": [
     "pytest",
@@ -67,5 +72,9 @@
     "Hypothesis",
     "dbt tests",
     "Data Quality"
+  ],
+  "debates_estado_arte": [
+    "Property-based testing vs. testes unitários tradicionais para transformações de dados: cobertura vs. custo de manutenção",
+    "Data contracts como fronteira de teste: responsabilidade do produtor vs. do consumidor em arquiteturas data mesh"
   ]
 }

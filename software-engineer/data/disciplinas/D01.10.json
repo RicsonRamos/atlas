@@ -68,14 +68,15 @@
   ],
   "protocolos": [],
   "livros": [
-    "Diestel, Graph Theory",
     "West, Introduction to Graph Theory",
-    "Cormen et al., Introduction to Algorithms"
+    "Cormen et al., Introduction to Algorithms",
+    "West, Introduction to Graph Theory, 2nd ed., Pearson, 2000"
   ],
   "papers_fundamentais": [
     "Tarjan, Depth-first search and linear graph algorithms, 1972",
     "Page et al., The PageRank citation ranking, 1999",
-    "Ford & Fulkerson, Maximal flow through a network, 1956"
+    "Ford & Fulkerson, Maximal flow through a network, 1956",
+    "Berge, Graphs and Hypergraphs, North-Holland, 1973"
   ],
   "ferramentas": [
     "NetworkX",
@@ -86,14 +87,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como detectar ciclo em DAG de orquestração?",
-    "Explique Dijkstra vs Bellman-Ford em presença de pesos negativos"
+    "Explique Dijkstra vs Bellman-Ford em presença de pesos negativos",
+    "Explique como a teoria de matroides se aplica à otimização de join ordering em query planners"
   ],
   "projetos_reais": [
-    "Explorador de lineage com SCC, topological sort e impacto downstream"
+    "Explorador de lineage com SCC, topological sort e impacto downstream",
+    "Implementar um solver de programação linear para alocação ótima de recursos computacionais em clusters Spark/Flink"
   ],
   "exercicios": [
     "Implementar Union-Find",
-    "Calcular fluxo máximo em rede pequena"
+    "Calcular fluxo máximo em rede pequena",
+    "Formular o problema de balanceamento de partições como um programa linear inteiro e resolvê-lo com um solver"
   ],
   "tags": [
     "Grafos",
@@ -101,5 +105,9 @@
     "SCC",
     "Flow",
     "PageRank"
+  ],
+  "debates_estado_arte": [
+    "Otimização convexa vs. métodos heurísticos em auto-tuning de bancos de dados: quando a solução ótima é computacionalmente viável",
+    "Álgebra linear esparsa em sistemas de recomendação: escalabilidade de decomposição matricial para bilhões de interações"
   ]
 }

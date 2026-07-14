@@ -73,14 +73,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Explique Bayes aplicado a alertas de qualidade",
-    "Quando Poisson é melhor que Normal em eventos raros?"
+    "Quando Poisson é melhor que Normal em eventos raros?",
+    "Como a entropia condicional H(Y|X) pode ser usada para detectar dependências funcionais aproximadas em data profiling?"
   ],
   "projetos_reais": [
-    "Painel probabilístico de SLA com bootstrap e intervalos de previsão"
+    "Painel probabilístico de SLA com bootstrap e intervalos de previsão",
+    "Construir um sistema de detecção de anomalias baseado em divergência KL para monitoramento de drift em features de ML"
   ],
   "exercicios": [
     "Simular uma cadeia de Markov",
-    "Comparar MLE e MAP para taxa de erro"
+    "Comparar MLE e MAP para taxa de erro",
+    "Calcular a entropia de uma distribuição empírica de valores de uma coluna categórica e interpretar o resultado em termos de compressibilidade"
   ],
   "tags": [
     "Bayes",
@@ -88,5 +91,9 @@
     "MCMC",
     "Bootstrap",
     "KL"
+  ],
+  "debates_estado_arte": [
+    "Teoria da informação como fundamento para compressão de dados colunares: limites teóricos vs. taxa de compressão real em Parquet/ORC",
+    "Informação mútua como métrica de seleção de features: vantagens e limitações frente a métodos de importância baseados em gradiente"
   ]
 }

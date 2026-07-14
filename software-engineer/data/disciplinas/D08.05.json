@@ -39,10 +39,12 @@
   "protocolos": [],
   "livros": [
     "Reis & Housley, Fundamentals of Data Engineering",
-    "Majors et al., Observability Engineering"
+    "Majors et al., Observability Engineering",
+    "Moses & Vorley, Data Quality: The Accuracy Dimension, Morgan Kaufmann, 2002"
   ],
   "papers_fundamentais": [
-    "Schelter et al., Automating large-scale data quality verification, 2018"
+    "Schelter, Lange, Schmidt, Celikel, Biessmann & Grafberger, Automating large-scale data quality verification, VLDB 2018",
+    "Barr, Kenig, Mendelson & Kimelfeld, Automatic anomaly detection in data streams, PVLDB 2021"
   ],
   "ferramentas": [
     "Great Expectations",
@@ -53,14 +55,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Toda falha de qualidade deve acordar alguém?",
-    "Como definir freshness por caso de uso?"
+    "Como definir freshness por caso de uso?",
+    "Como definir SLOs (Service Level Objectives) para qualidade de dados e como implementar alerting baseado em burn rate?"
   ],
   "projetos_reais": [
-    "Sistema de SLOs de dados com burn rate e postmortem"
+    "Sistema de SLOs de dados com burn rate e postmortem",
+    "Construir um sistema de observabilidade de dados com detecção de anomalias, SLOs, alerting e dashboards de qualidade integrados ao catálogo"
   ],
   "exercicios": [
     "Criar check de drift de volume",
-    "Definir severidade para atraso de tabela crítica"
+    "Definir severidade para atraso de tabela crítica",
+    "Projetar uma suíte de validações de qualidade (completude, unicidade, freshness, distribuição) para um pipeline crítico com SLOs definidos"
   ],
   "tags": [
     "Data Quality",
@@ -68,5 +73,9 @@
     "Freshness",
     "Completeness",
     "Observability"
+  ],
+  "debates_estado_arte": [
+    "Data observability como disciplina independente vs. extensão de monitoring de infraestrutura: ferramentas especializadas vs. plataformas unificadas",
+    "Validação estatística de qualidade (detecção de drift, anomalias) vs. regras determinísticas: quando a complexidade adicional se justifica"
   ]
 }

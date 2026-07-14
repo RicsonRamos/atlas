@@ -39,11 +39,12 @@
   "protocolos": [],
   "livros": [
     "Treveil et al., Introducing MLOps",
-    "Humble & Farley, Continuous Delivery"
+    "Humble & Farley, Continuous Delivery",
+    "Gift & Deza, Practical MLOps, O'Reilly, 2021"
   ],
   "papers_fundamentais": [
-    "Baylor et al., TFX: A TensorFlow-Based Production-Scale ML Platform, 2017",
-    "Breck et al., The ML Test Score, 2017"
+    "Breck et al., The ML Test Score, 2017",
+    "Baylor, Breck, Cheng et al., TFX: A TensorFlow-based production-scale machine learning platform, KDD 2017"
   ],
   "ferramentas": [
     "Kubeflow",
@@ -54,14 +55,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Qual gate impede modelo pior em produção?",
-    "Como reverter modelo com schema novo?"
+    "Como reverter modelo com schema novo?",
+    "Compare as estratégias de deploy de modelos (shadow, canary, blue-green, multi-armed bandit) em termos de risco, tempo de validação e complexidade"
   ],
   "projetos_reais": [
-    "Pipeline ML com validação, registry, canary e rollback"
+    "Pipeline ML com validação, registry, canary e rollback",
+    "Implementar um pipeline de treino automatizado com validação de modelo (data validation, model validation, bias detection) antes de deploy"
   ],
   "exercicios": [
     "Criar componente reutilizável",
-    "Comparar modelo candidato contra baseline"
+    "Comparar modelo candidato contra baseline",
+    "Projetar uma estratégia de canary deployment para um modelo de ML com métricas de avaliação, thresholds de rollback e gradual traffic shifting"
   ],
   "tags": [
     "Kubeflow",
@@ -69,5 +73,9 @@
     "Canary",
     "Validation",
     "Registry"
+  ],
+  "debates_estado_arte": [
+    "Continuous training vs. periodic retraining: quando retreinar automaticamente melhora performance vs. quando introduz instabilidade",
+    "Model validation gates: testes estatísticos vs. regras heurísticas para decidir se um modelo é production-ready"
   ]
 }

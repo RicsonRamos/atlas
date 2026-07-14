@@ -43,10 +43,13 @@
     "kafka-wire-protocol"
   ],
   "livros": [
-    "Narkhede, Shapira & Palino, Kafka: The Definitive Guide"
+    "Narkhede, Shapira & Palino, Kafka: The Definitive Guide, 2nd ed., O'Reilly, 2021",
+    "Kleppmann, Designing Data-Intensive Applications, O'Reilly, 2017",
+    "Hueske & Kalavri, Stream Processing with Apache Flink, O'Reilly, 2019"
   ],
   "papers_fundamentais": [
-    "Kreps, Narkhede & Rao, Kafka: a Distributed Messaging System for Log Processing, 2011"
+    "Kreps, Narkhede & Rao, Kafka: A distributed messaging system for log processing, NetDB 2011",
+    "Wang, Balazinska, Halevy & Suciu, Streaming data processing: from parallelism to sessions, PVLDB 2021"
   ],
   "ferramentas": [
     "Kafka",
@@ -57,14 +60,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como ISR garante durabilidade sem sacrificar disponibilidade?",
-    "Por que aumentar partições depois de criar o tópico muda a chave de particionamento efetiva?"
+    "Por que aumentar partições depois de criar o tópico muda a chave de particionamento efetiva?",
+    "Compare Airflow, Dagster, Prefect e Temporal em termos de modelo de execução, testabilidade e suporte a dynamic DAGs"
   ],
   "projetos_reais": [
-    "Cluster Kafka com política de replicação, monitoramento de ISR e simulação de perda de broker"
+    "Cluster Kafka com política de replicação, monitoramento de ISR e simulação de perda de broker",
+    "Projetar uma plataforma de orquestração multi-tenant com isolamento de recursos, SLOs por pipeline e observabilidade centralizada"
   ],
   "exercicios": [
     "Calcular throughput máximo dado número de partições e réplicas",
-    "Diagnosticar rebalanceamento excessivo em consumer group"
+    "Diagnosticar rebalanceamento excessivo em consumer group",
+    "Modelar o scheduling ótimo de um DAG de tasks com dependências, prioridades e restrições de recursos usando programação linear"
   ],
   "tags": [
     "Kafka",
@@ -72,5 +78,9 @@
     "Partitions",
     "KRaft",
     "Exactly-once"
+  ],
+  "debates_estado_arte": [
+    "Orquestração declarativa (Dagster assets) vs. imperativa (Airflow DAGs): trade-offs de expressividade e manutenibilidade",
+    "Workflow engines (Temporal, Cadence) vs. DAG schedulers (Airflow) para pipelines de dados: durabilidade de estado vs. simplicidade"
   ]
 }

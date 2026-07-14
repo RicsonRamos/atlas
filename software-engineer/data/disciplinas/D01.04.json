@@ -50,7 +50,8 @@
   ],
   "papers_fundamentais": [
     "Karp, Reducibility among combinatorial problems, 1972",
-    "Cook, The complexity of theorem-proving procedures, 1971"
+    "Cook, The complexity of theorem-proving procedures, 1971",
+    "Alon, Matias & Szegedy, The space complexity of approximating the frequency moments, STOC 1996"
   ],
   "ferramentas": [
     "Python profiling",
@@ -60,14 +61,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Quando um problema de otimização de pipeline vira NP-Hard?",
-    "Explique amortização usando append em estruturas dinâmicas"
+    "Explique amortização usando append em estruturas dinâmicas",
+    "Compare Count-Min Sketch, HyperLogLog e Bloom Filter em termos de garantias probabilísticas, espaço e casos de uso em pipelines de dados"
   ],
   "projetos_reais": [
-    "Catálogo de complexidade para transformações comuns em SQL, Spark e Flink"
+    "Catálogo de complexidade para transformações comuns em SQL, Spark e Flink",
+    "Implementar um sistema de estimativa de cardinalidade para um query optimizer usando sketches probabilísticos com garantias formais de erro"
   ],
   "exercicios": [
     "Reduzir vertex cover para um problema de agendamento",
-    "Analisar custo de top-k exato vs aproximado"
+    "Analisar custo de top-k exato vs aproximado",
+    "Derivar a variância do estimador de Morris para contagem aproximada e comparar com contagem exata em termos de espaço"
   ],
   "tags": [
     "Big-O",
@@ -75,5 +79,9 @@
     "Reduções",
     "Aproximação",
     "Online Algorithms"
+  ],
+  "debates_estado_arte": [
+    "Learned statistics vs. sketches tradicionais: quando modelos de ML superam estruturas probabilísticas clássicas em estimativa de cardinalidade",
+    "Trade-off entre precisão e memória em streaming analytics: limites inferiores de espaço para problemas de frequência"
   ]
 }

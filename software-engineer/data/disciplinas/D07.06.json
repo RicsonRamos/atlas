@@ -50,12 +50,14 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Karau & Warren, High Performance Spark",
-    "Chambers & Zaharia, Spark: The Definitive Guide"
+    "Chambers & Zaharia, Spark: The Definitive Guide",
+    "Karau & Warren, High Performance Spark, O'Reilly, 2017",
+    "Damji, Lee, Wenig & Das, Learning Spark, 2nd ed., O'Reilly, 2020"
   ],
   "papers_fundamentais": [
     "Zaharia et al., Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing, 2012",
-    "Armbrust et al., Spark SQL: Relational Data Processing in Spark, 2015"
+    "Armbrust et al., Spark SQL: Relational Data Processing in Spark, 2015",
+    "Zaharia, Chowdhury, Franklin, Shenker & Stoica, Spark: cluster computing with working sets, HotCloud 2010"
   ],
   "ferramentas": [
     "Apache Spark",
@@ -65,14 +67,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que uma transformação wide força shuffle, e como isso aparece no plano de execução?",
-    "Como o AQE decide recoalescer partições em tempo de execução?"
+    "Como o AQE decide recoalescer partições em tempo de execução?",
+    "Explique como o Adaptive Query Execution (AQE) do Spark 3 otimiza shuffle partitions, skew joins e broadcast thresholds em runtime"
   ],
   "projetos_reais": [
-    "Diagnóstico de job Spark com data skew severo e reescrita para eliminar spill para disco"
+    "Diagnóstico de job Spark com data skew severo e reescrita para eliminar spill para disco",
+    "Realizar deep-dive de performance em um job Spark de produção: analisar Spark UI, identificar data skew, spill e GC pressure, e otimizar"
   ],
   "exercicios": [
     "Interpretar um DAG no Spark UI identificando stages e shuffle boundaries",
-    "Configurar particionamento para eliminar skew em join com chave enviesada"
+    "Configurar particionamento para eliminar skew em join com chave enviesada",
+    "Calcular o número ótimo de shuffle partitions dado o volume de dados, tamanho de executor e target partition size"
   ],
   "tags": [
     "Spark",
@@ -80,5 +85,9 @@
     "Catalyst",
     "Shuffle",
     "AQE"
+  ],
+  "debates_estado_arte": [
+    "Spark vs. engines nativos de nuvem (Photon, Velox): futuro do Spark como runtime vs. como API/optimizer",
+    "DataFrame API vs. SQL vs. Pandas API on Spark: trade-offs de expressividade, otimizabilidade e debugging"
   ]
 }

@@ -37,11 +37,13 @@
   "protocolos": [],
   "livros": [
     "Lynch, Distributed Algorithms",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Tanenbaum & Van Steen, Distributed Systems: Principles and Paradigms, 3rd ed., Pearson, 2017"
   ],
   "papers_fundamentais": [
-    "Fischer, Lynch & Paterson, Impossibility of distributed consensus, 1985",
-    "Herlihy & Wing, Linearizability, 1990"
+    "Herlihy & Wing, Linearizability, 1990",
+    "Lamport, Time, clocks, and the ordering of events in a distributed system, Communications of the ACM, 1978",
+    "Fischer, Lynch & Paterson, Impossibility of distributed consensus with one faulty process, JACM 1985"
   ],
   "ferramentas": [
     "Jepsen",
@@ -51,14 +53,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Por que timeout não prova falha?",
-    "Explique linearizabilidade com exemplo de saldo"
+    "Explique linearizabilidade com exemplo de saldo",
+    "Explique o resultado de impossibilidade FLP e suas implicações práticas para o design de sistemas de consenso em plataformas de dados"
   ],
   "projetos_reais": [
-    "Laboratório Jepsen-lite para fila ou KV store local"
+    "Laboratório Jepsen-lite para fila ou KV store local",
+    "Implementar um simulador de relógios lógicos (Lamport e vetoriais) para um sistema distribuído de ingestão de dados e visualizar causalidade"
   ],
   "exercicios": [
     "Simular partição de rede",
-    "Classificar anomalias de consistência"
+    "Classificar anomalias de consistência",
+    "Provar que relógios de Lamport capturam causalidade em apenas uma direção (e → e' implica L(e) < L(e'), mas não o inverso)"
   ],
   "tags": [
     "Fault Models",
@@ -66,5 +71,9 @@
     "Quorum",
     "Timeouts",
     "Jepsen"
+  ],
+  "debates_estado_arte": [
+    "Consistência forte vs. eventual em data lakehouse: quando linearizabilidade é necessária vs. quando eventual consistency é suficiente",
+    "CRDTs (Conflict-free Replicated Data Types) para resolução de conflitos em sistemas de dados geo-distribuídos"
   ]
 }

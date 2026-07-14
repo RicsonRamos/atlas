@@ -52,7 +52,8 @@
   ],
   "papers_fundamentais": [
     "Dantzig, Linear programming and extensions, 1963",
-    "Kingma & Ba, Adam: A method for stochastic optimization, 2014"
+    "Kingma & Ba, Adam: A method for stochastic optimization, 2014",
+    "Rivest, Shamir & Adleman, A method for obtaining digital signatures and public-key cryptosystems, Communications of the ACM, 1978"
   ],
   "ferramentas": [
     "OR-Tools",
@@ -62,14 +63,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como formular custo de cloud como programação linear?",
-    "Quando convexidade muda sua confiança no ótimo encontrado?"
+    "Quando convexidade muda sua confiança no ótimo encontrado?",
+    "Compare hashing criptográfico (SHA-256) e não-criptográfico (MurmurHash, xxHash) em termos de propriedades de segurança, performance e casos de uso em pipelines de dados"
   ],
   "projetos_reais": [
-    "Otimizador de escalonamento de workloads com restrições de SLA e custo"
+    "Otimizador de escalonamento de workloads com restrições de SLA e custo",
+    "Projetar um sistema de anonimização de PII com k-anonimidade e l-diversidade usando técnicas criptográficas (hashing, tokenização, cifração preservando formato)"
   ],
   "exercicios": [
     "Resolver problema simples pelo Simplex",
-    "Comparar SGD, Adam e coordinate descent"
+    "Comparar SGD, Adam e coordinate descent",
+    "Implementar e comparar o custo computacional de HMAC-SHA256 vs. AES-256-GCM para assinatura de registros em um pipeline de auditoria"
   ],
   "tags": [
     "Convexidade",
@@ -77,5 +81,9 @@
     "Integer Programming",
     "SGD",
     "Adam"
+  ],
+  "debates_estado_arte": [
+    "Criptografia pós-quântica e implicações para hashing de dados e assinaturas em data lakes de longo prazo",
+    "Computação sobre dados cifrados (homomorphic encryption, secure multi-party computation): viabilidade atual para analytics em dados sensíveis"
   ]
 }

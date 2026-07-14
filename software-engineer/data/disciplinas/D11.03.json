@@ -44,12 +44,13 @@
   "protocolos": [],
   "livros": [
     "Manning et al., Introduction to Information Retrieval",
-    "Jurafsky & Martin, Speech and Language Processing"
+    "Jurafsky & Martin, Speech and Language Processing",
+    "Auffarth, Generative AI with LangChain, Packt, 2023"
   ],
   "papers_fundamentais": [
-    "Lewis et al., Retrieval-Augmented Generation, 2020",
     "Karpukhin et al., Dense Passage Retrieval, 2020",
-    "Gao et al., RAG survey, 2023"
+    "Gao et al., RAG survey, 2023",
+    "Lewis, Perez, Piktus et al., Retrieval-augmented generation for knowledge-intensive NLP tasks, NeurIPS 2020"
   ],
   "ferramentas": [
     "LlamaIndex",
@@ -60,14 +61,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Chunk maior sempre melhora RAG?",
-    "Como provar que resposta está ancorada na fonte?"
+    "Como provar que resposta está ancorada na fonte?",
+    "Explique como a estratégia de chunking (fixed-size, semantic, recursive) afeta a qualidade de retrieval em RAG e quais métricas usar para avaliar"
   ],
   "projetos_reais": [
-    "RAG corporativo com ACL, citações, re-ranking e avaliação contínua"
+    "RAG corporativo com ACL, citações, re-ranking e avaliação contínua",
+    "Implementar um sistema RAG production-ready com chunking adaptativo, re-ranking cross-encoder, citation verification e evaluation framework"
   ],
   "exercicios": [
     "Comparar estratégias de chunking",
-    "Criar conjunto de perguntas douradas"
+    "Criar conjunto de perguntas douradas",
+    "Projetar e implementar um benchmark de avaliação de RAG medindo faithfulness, relevance e hallucination rate"
   ],
   "tags": [
     "RAG",
@@ -75,5 +79,9 @@
     "Re-ranking",
     "Groundedness",
     "Evaluation"
+  ],
+  "debates_estado_arte": [
+    "RAG vs. fine-tuning vs. long-context: quando cada abordagem é preferível para incorporar conhecimento em LLMs",
+    "Agentic RAG e multi-hop reasoning: limitações de pipelines retrieve-then-generate para queries que requerem inferência multi-step"
   ]
 }

@@ -42,7 +42,8 @@
     "Skelton & Pais, Team Topologies"
   ],
   "papers_fundamentais": [
-    "Larson, Staff Engineer interviews and archetypes"
+    "Larson, Staff Engineer interviews and archetypes",
+    "Larson, Staff Engineer: Leadership Beyond the Management Track, 2021"
   ],
   "ferramentas": [
     "RFC process",
@@ -52,14 +53,17 @@
   ],
   "perguntas_entrevista_staff": [
     "Como você age quando dois times têm incentivos opostos?",
-    "Como medir impacto sem contar PRs?"
+    "Como medir impacto sem contar PRs?",
+    "Como um Staff Engineer influencia decisões técnicas em equipes que não reportam a ele (influência sem autoridade formal)?"
   ],
   "projetos_reais": [
-    "Programa de arquitetura transversal com office hours, RFCs e scorecards"
+    "Programa de arquitetura transversal com office hours, RFCs e scorecards",
+    "Elaborar um plano de mentoria técnica para desenvolver um Senior Engineer em direção ao nível Staff, com objetivos mensuráveis e timeline"
   ],
   "exercicios": [
     "Mapear stakeholders de migração",
-    "Criar plano de mentoria para domínio crítico"
+    "Criar plano de mentoria para domínio crítico",
+    "Analisar um caso de execução transversal (cross-team initiative) e identificar os mecanismos de influência, comunicação e alinhamento usados"
   ],
   "tags": [
     "Influence",
@@ -67,5 +71,9 @@
     "Execution",
     "Stakeholders",
     "Technical Vision"
+  ],
+  "debates_estado_arte": [
+    "Staff Engineer como generalista vs. especialista profundo: qual perfil gera mais impacto em organizações de dados?",
+    "Individual contributor (IC) track vs. management track: sustentabilidade de carreira Staff/Principal em longo prazo"
   ]
 }

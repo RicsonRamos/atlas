@@ -39,11 +39,13 @@
   "modelos_matematicos": [],
   "protocolos": [],
   "livros": [
-    "Reis & Housley, Fundamentals of Data Engineering",
-    "Kleppmann, Designing Data-Intensive Applications"
+    "Kleppmann, Designing Data-Intensive Applications",
+    "Reis & Housley, Fundamentals of Data Engineering, O'Reilly, 2022",
+    "Chambers & Zaharia, Spark: The Definitive Guide, O'Reilly, 2018"
   ],
   "papers_fundamentais": [
-    "Ryan Blue et al., Apache Iceberg: An open table format, 2018-2020"
+    "Ryan Blue et al., Apache Iceberg: An open table format, 2018-2020",
+    "Armbrust, Das, Torres et al., Delta Lake: High-performance ACID table storage over cloud object stores, VLDB 2020"
   ],
   "ferramentas": [
     "Iceberg",
@@ -55,14 +57,17 @@
   ],
   "perguntas_entrevista_staff": [
     "O que hidden partitioning resolve?",
-    "Como Iceberg permite evolução de partição?"
+    "Como Iceberg permite evolução de partição?",
+    "Explique como Apache Iceberg implementa snapshot isolation usando metadata tree, manifest lists e manifest files"
   ],
   "projetos_reais": [
-    "Lakehouse Iceberg multi-engine com Spark e Trino"
+    "Lakehouse Iceberg multi-engine com Spark e Trino",
+    "Implementar um sistema de time travel queries e schema evolution em Iceberg com validação de consistência transacional"
   ],
   "exercicios": [
     "Inspecionar manifests",
-    "Executar rollback de snapshot"
+    "Executar rollback de snapshot",
+    "Analisar o overhead de metadata em Iceberg para uma tabela com 1M snapshots e propor estratégia de expiration"
   ],
   "tags": [
     "Iceberg",
@@ -70,5 +75,9 @@
     "Manifests",
     "Hidden Partitioning",
     "Time Travel"
+  ],
+  "debates_estado_arte": [
+    "Iceberg vs. Delta Lake vs. Hudi: convergência de features vs. diferenças arquiteturais fundamentais",
+    "Table format como commodity vs. diferenciador: quando a escolha do formato impacta decisões arquiteturais de longo prazo"
   ]
 }
