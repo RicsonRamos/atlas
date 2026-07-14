@@ -108,13 +108,9 @@ Apresentar:
 
 ---
 
-# Estrutura desejada
+# Estrutura desejada (Nível de Mestrado)
 
-Esta seção descreve a estrutura **realmente praticada** nas 32 disciplinas
-publicadas em `disciplinas/` — confirmada por auditoria em `D01.01` e
-`D05.01`/`D09.01` — e não uma lista aspiracional. Toda disciplina nova ou
-revisão deve seguir exatamente este formato de 12 elementos, nesta ordem,
-para manter uniformidade com o restante do domínio:
+Toda disciplina deste domínio deve seguir exatamente este formato de 13 elementos, nesta ordem, para manter uniformidade de alto nível técnico-acadêmico:
 
 Cabeçalho (logo após o título `# D{domínio}.{disciplina} — Nome`):
 - `**Domínio:**` número + nome do domínio pedagógico
@@ -123,31 +119,20 @@ Cabeçalho (logo após o título `# D{domínio}.{disciplina} — Nome`):
 - `**Pré-requisitos:**` nome completo + ID da(s) disciplina(s) antecedente(s)
 
 Corpo, nesta ordem:
-1. `## Ementa` — parágrafo denso cobrindo os grandes blocos de conteúdo.
-2. `## Objetivos` — lista de capacidades esperadas ao final da disciplina.
-3. `## Conteúdo programático` — subdividido em **Fundamentos**, **Teoria**,
-   **Legislação**, **Doutrina**, **Jurisprudência** e **Aplicação prática**
-   (todas como parágrafos em negrito dentro da mesma seção, não subtítulos
-   `###`).
-4. `## Casos práticos` — cenários concretos de análise/argumentação.
-5. `## Jurisprudência` — tabela `Tribunal/Tema | Entendimento | Impacto`.
-6. `## Doutrina` — obras de referência, autor/título.
-7. `## Legislação relacionada` — dispositivos citados por número/artigo.
-8. `## Prática profissional` — tarefas de atuação real (petição, parecer,
-   simulação).
-9. `## Questões avançadas` — perguntas abertas, cada uma podendo levar uma
-   marcação de perfil entre parênteses (ex.: *magistratura/MP*,
-   *advocacia criminal*, *concursos*).
-10. `## Exercícios` — tarefas que exigem redação, análise ou elaboração,
-    nunca memorização trivial.
-11. `## Tags` — hashtags dos conceitos centrais da disciplina.
+1. `## Ementa` — parágrafo denso cobrindo os grandes blocos de conteúdo. Incluir nota de escopo quando tangenciar outras trilhas (ex.: direito operacional ou doutrina policial).
+2. `## Objetivos` — exatamente 3 objetivos de aprendizagem verificáveis e específicos.
+3. `## Conteúdo programático` — subdividido em **Fundamentos**, **Teoria**, **Legislação**, **Doutrina**, **Jurisprudência** e **Aplicação prática** (todos como parágrafos em negrito dentro da mesma seção, não subtítulos `###`).
+4. `## Casos práticos` — 3 a 4 cenários concretos de análise/argumentação de alta complexidade jurídica. Deve incluir obrigatoriamente pelo menos **1 caso prático multivariável** (com intersecções de direito penal, processual penal e/ou constitucional, onde múltiplas variáveis concorrem para o problema ou sua resolução).
+5. `## Jurisprudência` — tabela `Tribunal/Tema | Entendimento | Impacto`. Priorizar teses fixadas pelo STF e STJ em repercussão geral, recursos repetitivos, controle concentrado ou súmulas vinculantes.
+6. `## Doutrina` — 3 a 5 obras de referência reais e completas (Autor, Título, Edição, Editora, Ano). É terminantemente proibido inventar ou fabricar livros, autores, editoras ou anos.
+7. `## Estado da arte e debates em aberto` — nova seção contendo de 2 a 4 pontos abordando debates teóricos atuais, divergências jurisprudenciais persistentes (STF vs. STJ), controle de convencionalidade (Corte IDH) ou propostas de reforma legislativa.
+8. `## Legislação relacionada` — dispositivos federais citados de forma específica por número e artigo.
+9. `## Prática profissional` — tarefas de atuação profissional real (redação de peças, pareceres técnicos, petições estratégicas).
+10. `## Questões avançadas` — 2 a 3 perguntas abertas complexas voltadas a carreiras jurídicas de alto nível (com perfil entre parênteses: *magistratura/MP*, *advocacia criminal*, *concursos*).
+11. `## Exercícios` — 3 a 4 exercícios práticos discursivos exigindo redação jurídica profunda, análise de precedentes ou elaboração de teses.
+12. `## Tags` — 3 a 4 hashtags temáticas.
 
-Não existe, nas disciplinas publicadas, seção própria de "Justificativa
-curricular", "Competências desenvolvidas", "Avaliação sugerida",
-"Bibliografia básica" ou "Bibliografia complementar" separadas de
-"Doutrina" — não introduzir essas seções sem alinhar antes com o usuário,
-já que isso mudaria a estrutura das 32 disciplinas existentes por
-consistência.
+Não existe, nas disciplinas publicadas, seção própria de "Justificativa curricular", "Competências desenvolvidas" ou "Avaliação sugerida" — não introduzir essas seções. A seção "Estado da arte e debates em aberto" é obrigatória para a qualificação ao nível de Mestrado.
 
 ---
 
