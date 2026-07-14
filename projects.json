@@ -4,7 +4,7 @@
     "titulo": "Engenharia de Software (Legado)",
     "subtitulo": "Atlas de Engenharia de Software — Staff Level",
     "descricao": "Arquitetura hexagonal, DDD, padrões de projeto, concorrência, microsserviços, CI/CD e infraestrutura de software de alta performance.",
-    "url": "software-engineer/index.html",
+    "url": "software-engineer/atlas_de_engenharia_de_dados.html",
     "dominios": 6,
     "disciplinas": 73,
     "cor": "amber",
