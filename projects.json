@@ -106,6 +106,54 @@
     "cor": "emerald",
     "icone": "📊",
     "status": "ativo"
+  },
+  {
+    "id": "inteligencia-analitica",
+    "titulo": "Inteligência Analítica e Forense de Dados",
+    "subtitulo": "Ciência de Dados Aplicada à Investigação",
+    "descricao": "Trilha avançada sobre análise de grafos de vínculos, mineração de textos forenses (NLP), OSINT e inteligência policial analítica com foco investigativo.",
+    "url": "inteligencia-analitica/index.html",
+    "dominios": 3,
+    "disciplinas": 3,
+    "cor": "indigo",
+    "icone": "🔍",
+    "status": "ativo"
+  },
+  {
+    "id": "direito-digital",
+    "titulo": "Direito Digital e Cibersegurança",
+    "subtitulo": "Garantias, Crimes Digitais e Regulação de IA",
+    "descricao": "Estudo dogmático e prático sobre a custódia de evidências digitais, crimes informáticos, LGPD, privacidade de dados e auditoria regulatória de algoritmos.",
+    "url": "direito-digital/index.html",
+    "dominios": 3,
+    "disciplinas": 3,
+    "cor": "rose",
+    "icone": "🔒",
+    "status": "ativo"
+  },
+  {
+    "id": "criminologia-espacial",
+    "titulo": "Criminologia Espacial e Geoprocessamento",
+    "subtitulo": "Análise Geoespacial do Crime (GIS)",
+    "descricao": "Modelagem estatística espacial de crimes, geoestatística, detecção de hotspots com KDE e planejamento tático baseado em sistemas de informação geográfica.",
+    "url": "criminologia-espacial/index.html",
+    "dominios": 2,
+    "disciplinas": 2,
+    "cor": "amber",
+    "icone": "🗺️",
+    "status": "ativo"
+  },
+  {
+    "id": "protecao-balistica",
+    "titulo": "Engenharia de Proteção Balística",
+    "subtitulo": "Ciência dos Materiais e Dinâmica de Impacto",
+    "descricao": "Estudo avançado de dinâmica de impacto hiperveloz, comportamento mecânico de novos compósitos blindados e modelagem de penetração física.",
+    "url": "protecao-balistica/index.html",
+    "dominios": 2,
+    "disciplinas": 2,
+    "cor": "emerald",
+    "icone": "🛡️",
+    "status": "ativo"
   }
 ]
 
