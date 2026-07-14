@@ -375,8 +375,7 @@
 
         function parseMarkdownToSections(md) {
             const sections = {};
-            const parts = md.split(/
-##\s+/);
+            const parts = md.split(/\n##\s+/);
             
             // Extrair pre-requisitos da intro/metadados
             const intro = parts[0];
@@ -385,11 +384,9 @@
 
             // Limpar seções
             parts.forEach(part => {
-                const lines = part.split('
-');
+                const lines = part.split('\n');
                 const title = lines[0].trim().toLowerCase();
-                const content = lines.slice(1).join('
-').trim();
+                const content = lines.slice(1).join('\n').trim();
                 sections[title] = content;
             });
 
@@ -410,16 +407,10 @@
             let algoritmos = [];
             const progContent = sections['conteúdo programático'] || sections['conteudo programatico'] || '';
             if (progContent) {
-                const teorMatch = progContent.match(/\*\*Teoria\*\*\s*—\s*([^
-]+)/i) || progContent.match(/\*\*Teoria Estatística\*\*\s*—\s*([^
-]+)/i);
+                const teorMatch = progContent.match(/\*\*Teoria\*\*\s*—\s*([^\n]+)/i) || progContent.match(/\*\*Teoria Estatística\*\*\s*—\s*([^\n]+)/i);
                 if (teorMatch) teoria = teorMatch[1].split(';').map(s => s.trim());
                 
-                const algMatch = progContent.match(/\*\*Algoritmos e técnicas\*\*\s*—\s*([^
-]+)/i) || progContent.match(/\*\*Implementação\*\*\s*—\s*([^
-]+)/i) || progContent.match(/\*\*Aplicação prática\*\*\s*—\s*([^
-]+)/i) || progContent.match(/\*\*Implementação em Python\*\*\s*—\s*([^
-]+)/i);
+                const algMatch = progContent.match(/\*\*Algoritmos e técnicas\*\*\s*—\s*([^\n]+)/i) || progContent.match(/\*\*Implementação\*\*\s*—\s*([^\n]+)/i) || progContent.match(/\*\*Aplicação prática\*\*\s*—\s*([^\n]+)/i) || progContent.match(/\*\*Implementação em Python\*\*\s*—\s*([^\n]+)/i);
                 if (algMatch) algoritmos = algMatch[1].split(';').map(s => s.trim());
             }
 
@@ -455,8 +446,7 @@
             if (!text) return [];
             
             // 1. Tentar extrair lista estruturada (- ou *)
-            const lines = text.split('
-');
+            const lines = text.split('\n');
             const items = [];
             lines.forEach(l => {
                 const trimmed = l.trim();
@@ -482,7 +472,7 @@
 
             return `
                 <section class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:border-[var(--primary)]/20 transition-all flex flex-col">
-                    <h6 class="text-[10px] font-black uppercase text-slate-400 mb-3 tracking-[0.18em]">$Engenharia de Armamento e Balística</h6>
+                    <h6 class="text-[10px] font-black uppercase text-slate-400 mb-3 tracking-[0.18em]">${title}</h6>
                     <ul class="space-y-2">
                         ${items.map(item => `
                             <li class="flex gap-2 text-[11px] leading-relaxed text-slate-600">
