@@ -181,14 +181,24 @@ revisadas:
 - `## Objetivos` — 3 objetivos de aprendizagem verificáveis.
 - `## Pré-requisitos` — repete/detalha o pré-requisito do cabeçalho.
 - `## Conteúdo programático` — sempre estruturado em três blocos:
-  **Fundamentos**, **Teoria**, **Aplicação prática**.
-- `## Casos práticos` — 2 cenários técnicos concretos.
-- `## Referências técnicas` — 2-3 obras/normas, sem repetir desnecessariamente
+  **Fundamentos**, **Teoria** (mecanismo físico/químico/mecânico, fórmula ou
+  norma nomeada — nunca apenas citar o conceito) e **Aplicação prática**.
+- `## Casos práticos` — 3-4 cenários técnicos concretos, incluindo ao menos
+  um caso multivariável (múltiplas variáveis técnicas concorrentes — ex.:
+  material, processo e geometria interagindo simultaneamente em uma falha).
+- `## Referências técnicas` — 3-5 obras/normas, sem repetir desnecessariamente
   o que já é notório do domínio (ver D08.02, que consolida a bibliografia
-  completa da trilha por ser a disciplina capstone final).
-- `## Perguntas avançadas` — 2 perguntas abertas, com marcação de área entre
+  completa da trilha por ser a disciplina capstone final); nunca inventar
+  título, autor, edição ou norma.
+- `## Estado da arte e debates em aberto` — 2-4 pontos distinguindo princípio
+  de engenharia/norma técnica consolidada de método com validação parcial,
+  controvérsia pericial ativa (ex.: debates sobre confiabilidade estatística
+  de confronto microbalístico) ou fronteira tecnológica em desenvolvimento
+  (ex.: novos materiais/processos ainda sem norma consolidada) — nunca
+  apresentar controvérsia ou hipótese como consenso técnico fechado.
+- `## Perguntas avançadas` — 2-3 perguntas abertas, com marcação de área entre
   parênteses (ex.: *(engenharia)*, *(perícia criminal)*, *(gunsmithing)*).
-- `## Exercícios` — 2 exercícios que exigem cálculo, diagnóstico ou
+- `## Exercícios` — 3-4 exercícios que exigem cálculo, diagnóstico ou
   elaboração técnica, nunca memorização trivial.
 - `## Tags` — 3-4 hashtags temáticas.
 
