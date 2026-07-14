@@ -101,4 +101,4 @@ print(f"Parâmetro de Rede Estimado (a): {parametro_a:.5f} nm ({parametro_a * 10
 - Para o caso da blindagem de Alumina trincada, descreva a sequência de operações para medir o parâmetro de rede e identificar a fase cristalográfica exata.
 
 ## Tags
-#CienciaDosMateriais #Cristalografia #LeiDeBragg #DifracaoDeRaiosX #DefeitosCristalinos #Martensita
+#CienciaMateriais #EngenhariaImpacto #Fisica

@@ -72,4 +72,4 @@ print("Execução da rotina com sucesso!")
 - Realize uma simulação manual de parâmetros operacionais com base nos tópicos cobertos no conteúdo programático.
 
 ## Tags
-#SIM #SIM #Ementa
+#Simulacao #Otimizacao #Modelagem

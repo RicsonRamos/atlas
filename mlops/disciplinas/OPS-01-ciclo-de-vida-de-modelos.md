@@ -126,4 +126,4 @@ print("Metadados salvos em 'models/run_metadata.json' com sucesso!")
 - Para o caso multivariável de recomendação de notícias, desenhe a arquitetura do banco de dados de logs para armazenar os hashes dos dados de entrada, parâmetros de treinamento e escores F1 obtidos.
 
 ## Tags
-#MLOps #Lifecyle #LinhagemDeDados #DVC #MLflow #Reprodutibilidade
+#MLOps #Pipeline #Producao

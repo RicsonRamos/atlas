@@ -107,4 +107,4 @@ for N in tamanhos_amostra:
 - Para o caso logístico multivariável, esboce o algoritmo (pseudocódigo) de propagação de tempo de tráfego integrando as três fontes de incerteza de rota.
 
 ## Tags
-#MonteCarlo #SimulacaoEstocastica #ReducaoDeVariavel #PropagacaoDeIncerteza #MetodosNumericos
+#Simulacao #Otimizacao #Modelagem

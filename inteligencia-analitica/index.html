@@ -279,7 +279,7 @@
                 const html = marked.parse(md);
                 
                 // 2. Parsear as seções para o grid estruturado
-                const parsed = parseMarkdownToSections(md);
+                const parsed = parseMarkdownToSections(id, md);
                 
                 const topHtml = `
                     ${renderList("Pré-requisitos", parsed.prereqs, "bg-blue-400")}
@@ -311,7 +311,7 @@
             }
         }
 
-        function parseMarkdownToSections(md) {
+        function parseMarkdownToSections(id, md) {
             const sections = {};
             const parts = md.split(/\n##\s+/);
             
@@ -357,7 +357,16 @@
             
             // Extrair ferramentas das tags ou do texto
             const tagsContent = sections['tags'] || '';
-            const ferramentas = tagsContent.split('#').map(t => t.trim()).filter(t => t.length > 0);
+            const prefix = id.split('-')[0].toLowerCase();
+            const ferramentas = [...new Set(
+                tagsContent.split('#')
+                    .map(t => t.trim())
+                    .filter(t => t.length > 0)
+                    .filter(t => {
+                        const low = t.toLowerCase();
+                        return low !== 'ementa' && low !== 'tags' && low !== prefix && low !== 'curso';
+                    })
+            )];
 
             const entrevista = getSectionItems(['questões avançadas', 'questoes avancadas', 'questões teóricas', 'questoes teoricas', 'questões']);
             const projetos = getSectionItems(['casos práticos', 'casos praticos', 'projetos']);

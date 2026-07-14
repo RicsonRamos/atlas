@@ -105,4 +105,4 @@ else:
 - Para o caso multivariável de estupros urbanos, elabore a planilha matricial de Jaccard comparando os 4 casos fictícios e definindo o agrupamento de autoria mais provável.
 
 ## Tags
-#PsicologiaCriminal #CriminalProfiling #AssinaturaComportamental #ModusOperandi #CaseLinkage #Staging
+#PerfilacaoCriminal #Psicopatologia #Forense

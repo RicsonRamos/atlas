@@ -101,4 +101,4 @@ print("Cenário B (Distribuição sob Deriva):", resultado_b)
 - Desenhe um grafo mostrando a jornada de um dado de entrada no pipeline: desde a inferência síncrona, salvamento do payload assíncrono em broker (Kafka), processamento estatístico diário (Spark) e visualização no Grafana.
 
 ## Tags
-#MonitoramentoML #DataDrift #ConceptDrift #PSI #TesteKS #Observabilidade #Evidently
+#MLOps #Pipeline #Producao

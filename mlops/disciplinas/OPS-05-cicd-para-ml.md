@@ -113,4 +113,4 @@ if __name__ == "__main__":
 - Para o caso multivariável de risco de crédito, esquematize o fluxograma detalhado da esteira mostrando as condições de aprovação ou rejeição de cada estágio (gateways de qualidade).
 
 ## Tags
-#CICD #MLOps #ContinuousTraining #ValidaçãoDeDados #GreatExpectations #CanaryDeployment #GitHubActions
+#MLOps #Pipeline #Producao

@@ -106,4 +106,4 @@ print(f"Tempo estimado desde o óbito: {ipm_horas:.2f} horas ({int(ipm_horas)}h 
 - Para o caso multivariável da floresta, elabore um esquema sequencial (linha do tempo) cruzando os tempos prováveis indicados pela temperatura, livores e rigidez.
 
 ## Tags
-#MedicinaLegal #Cronotanatognose #Tanatologia #Traumatologia #AlgorMortis #LaudoPericial
+#PericiaForense #Investigacao #LaudoTecnico

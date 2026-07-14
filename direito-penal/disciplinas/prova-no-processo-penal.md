@@ -72,4 +72,4 @@ print("Execução da rotina concluída com sucesso!")
 - Realize uma simulação manual de parâmetros operacionais com base nos tópicos cobertos no conteúdo programático.
 
 ## Tags
-#Curso #prova #Ementa
+#DireitoPenal #ProcessoPenal #PraticaCriminal

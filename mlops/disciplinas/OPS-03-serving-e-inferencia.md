@@ -122,4 +122,4 @@ if __name__ == "__main__":
 - Para o caso multivariável de validação de Pix, esquematize o diagrama de blocos mostrando os caminhos de chamada síncrona e persistência assíncrona dos metadados de inferência.
 
 ## Tags
-#ModelServing #FastAPI #Triton #ONNX #Quantizacao #Latencia #Throughput
+#MLOps #Pipeline #Producao

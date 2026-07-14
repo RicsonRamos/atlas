@@ -107,4 +107,4 @@ gerar_laudo_explicabilidade(valor_base, valores_shap, cliente_valores)
 - Para o caso multivariável de seguros sob o EU AI Act, desenhe um mapa mental detalhando os passos requeridos para a promoção de um modelo classificado como "Alto Risco" para o ambiente de produção.
 
 ## Tags
-#ModelGovernance #Explicabilidade #ValoresSHAP #ModelCards #ViésAlgorítmico #Compliance #EUAIAct #LGPD #DireitoDigital
+#MLOps #Pipeline #Producao

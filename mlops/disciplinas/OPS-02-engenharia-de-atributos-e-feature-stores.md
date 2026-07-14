@@ -102,4 +102,4 @@ print(dataset_treino)
 - Desenhe o diagrama lógico de fluxo de dados mostrando a escrita paralela na Feature Store offline (Parquet) e online (Redis) a partir de um barramento Kafka.
 
 ## Tags
-#FeatureStore #TrainingServingSkew #Feast #PointInTimeJoin #Redis #EngenhariaDeAtributos
+#MLOps #Pipeline #Producao

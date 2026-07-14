@@ -108,4 +108,4 @@ print(f" Score de Cosseno: {melhor_documento[0][2]}")
 - Para o caso multivariável jurídica, desenhe o diagrama de blocos do fluxo de requisição, demonstrando o papel do Cache Semântico, do Banco de Dados Vetorial, do Reranker e do validador de Guardrails.
 
 ## Tags
-#LLMOps #RAG #SimilaridadeDeCosseno #Embeddings #BancosVetoriais #LangChain #RAGAS #Guardrails
+#MLOps #Pipeline #Producao
