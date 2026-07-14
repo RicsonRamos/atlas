@@ -18,12 +18,12 @@ O Atlas 1.0 sofria de três problemas estruturais que esta revisão corrige:
 | Mudança | Antes (1.0) | Depois (2.0) |
 |---|---|---|
 | Eixos | 2 | **3** (+ Engenharia Física Aplicada) |
-| Trilhas ativas | 9 | **17** (9 expandidas + 8 novas) |
+| Trilhas ativas | 9 | **18 publicadas** (9 expandidas + 8 novas + Ciência do Gatilho integrada) + 2 propostas (SPP, MET) |
 | Trilhas legadas | 3 órfãs | 3 reintegradas e reorganizadas |
-| Disciplinas catalogadas | ~203 | **~330** (estimativa após expansão) |
-| Novas disciplinas propostas | — | **~127** |
+| Disciplinas catalogadas | ~203 | **337** (299 publicadas + 38 propostas de expansão) |
+| Novas disciplinas propostas | — | **38** (pós-consolidação da auditoria; eram ~127 antes da eliminação de redundâncias) |
 
-### As 8 novas trilhas
+### As novas trilhas (8 publicadas + 2 propostas)
 
 | # | Nova trilha | Eixo | Justificativa de correlação |
 |---|---|---|---|
@@ -35,6 +35,8 @@ O Atlas 1.0 sofria de três problemas estruturais que esta revisão corrige:
 | N6 | Ética, Governança e Responsabilidade em IA/Dados | Transversal | Fecha o ciclo LGPD/EU AI Act com auditoria algorítmica |
 | N7 | Visualização de Dados e Storytelling Analítico | Transversal | Fundamenta os componentes Chart.js/D3 da própria plataforma |
 | N8 | Ciência dos Materiais e Engenharia de Impacto | Físico Aplicado | Base física comum a Proteção Balística e Perícia |
+| SPP | Segurança Pública Baseada em Evidências *(proposta — não publicada)* | Jurídico-Forense | Camada de decisão/política pública acima do nível tático |
+| MET | Metodologia de Pesquisa Científica *(proposta — não publicada)* | Transversal | Espinha metodológica dos três eixos |
 
 
 ---
@@ -62,7 +64,8 @@ graph TD
     EIXO2 --> N4[N4 Ciencias Forenses]
     EIXO2 --> N5[N5 Psicologia Criminal]
     EIXO2 --> T08[T08 Neurociencia Cognitiva e Tatica]
-    EIXO2 --> SPP[SPP Seg. Publica Baseada em Evidencias]
+    EIXO2 --> GAT[GAT Ciencia do Gatilho]
+    EIXO2 --> SPP[SPP Seg. Publica Baseada em Evidencias - proposta]
     EIXO2 --> LEG2[Legado Direito Penal + Operacional]
 
     EIXO3 --> T05[T05 Protecao Balistica]
@@ -71,7 +74,7 @@ graph TD
 
     TRANSV --> N6[N6 Etica e Governanca de IA]
     TRANSV --> N7[N7 Visualizacao de Dados]
-    TRANSV --> MET[MET Metodologia de Pesquisa]
+    TRANSV --> MET[MET Metodologia de Pesquisa - proposta]
 ```
 
 **Convenção de IDs (nova):** cada disciplina passa a usar prefixo de trilha + número sequencial — ex.: `EST-04`, `ML-07`, `FOR-03`. Isso elimina colisões de `D01` entre trilhas e facilita o grafo de pré-requisitos no `projects.json`. O campo legado `Dxx` permanece como *alias* no cabeçalho durante a migração.
@@ -81,9 +84,9 @@ graph TD
 ## 2. EIXO I — Quantitativo e Tecnológico
 
 ### 📈 T01 · Estatística para Ciência de Dados em Python
-*Expansão: 11 → ~21 disciplinas. Domínios: Fundamentos → Inferência → Modelagem → Causalidade → Aplicação.*
+*Expansão: 11 → 20 disciplinas (pós-consolidação). Domínios: Fundamentos → Inferência → Modelagem → Causalidade → Aplicação.*
 
-**Disciplinas existentes (mantidas):** Probabilidade e Variáveis Aleatórias · Distribuições e Convergência (TCL) · Estimação Pontual e Intervalar · Testes de Hipótese Clássicos · Regressão Linear (OLS) · Testes A/B · ANOVA · Correlação e Associação · Estatística Descritiva Multidimensional · Simulação e Pseudoaleatoriedade · Introdução a `NumPy/SciPy/statsmodels`.
+**Disciplinas existentes (mantidas, IDs `D01.01–D05.02`):** Medidas de Tendência Central, Dispersão e Forma · Análise Gráfica e Visualização de Distribuições · Probabilidade Condicional, Teorema de Bayes e Variáveis Aleatórias · Distribuições de Probabilidade e TCL · Amostragem, Estimação e Intervalos de Confiança · Testes de Hipóteses Paramétricos · Testes de Hipóteses Não-Paramétricos · Regressão Linear Simples e Múltipla · Regressão Logística e GLM · Métodos Multivariados e Redução de Dimensionalidade · Testes A/B, Múltiplos Testes e Causalidade.
 
 #### EST-12 · Estatística Bayesiana e Inferência via MCMC 🆕
 - **Fundamentos bayesianos** — teorema de Bayes, priori/verossimilhança/posteriori, conjugação, priors informativos vs. não-informativos.
@@ -97,39 +100,30 @@ graph TD
 - **Volatilidade** — ARCH/GARCH, heterocedasticidade condicional.
 - **Previsão moderna** — Prophet, ETS, backtesting e janelas deslizantes.
 
-#### EST-14 · Análise Multivariada 🆕
-- **Redução de dimensionalidade** — PCA, análise fatorial, MDS, t-SNE/UMAP (conceitual).
-- **Agrupamento** — k-means, hierárquico, DBSCAN, GMM.
-- **Classificação clássica** — LDA/QDA, distância de Mahalanobis.
-
-#### EST-15 · Modelos Lineares Generalizados (GLM) 🆕
-- **Família exponencial** — funções de ligação, dispersão.
-- **Modelos** — logístico, Poisson, binomial negativo, quasi-verossimilhança.
-- **Diagnóstico** — deviance, resíduos, superdispersão.
-
-#### EST-16 · Inferência Causal 🆕
+#### EST-14 · Inferência Causal 🆕
+*(Aprofunda o recorte causal de `D05.02`; os métodos quase-experimentais daqui são pré-requisito de SPP-02.)*
 - **Estrutura** — DAGs, critério de *backdoor*, do-calculus (Pearl).
 - **Métodos observacionais** — *propensity score*, IPW, matching.
 - **Quase-experimentos** — Diferenças-em-Diferenças, Regressão Descontínua, Variáveis Instrumentais.
 
-#### EST-17 · Desenho de Experimentos (DOE) 🆕
+#### EST-15 · Desenho de Experimentos (DOE) 🆕
 - **Fatoriais** — completos, fracionados, confundimento.
 - **Superfície de resposta** — otimização, *central composite design*.
 - **Poder e tamanho amostral** — cálculo de poder, MDE.
 
-#### EST-18 · Métodos de Reamostragem 🆕
+#### EST-16 · Métodos de Reamostragem 🆕
 - Bootstrap (percentil, BCa), Jackknife, testes de permutação, validação por reamostragem.
 
-#### EST-19 · Estatística Robusta e Não-Paramétrica 🆕
+#### EST-17 · Estatística Robusta e Não-Paramétrica 🆕
 - M-estimadores, medianas/quantis, Wilcoxon/Mann-Whitney/Kruskal-Wallis, kernels de densidade (KDE).
 
-#### EST-20 · Análise de Sobrevivência 🆕
+#### EST-18 · Análise de Sobrevivência 🆕
 - Kaplan-Meier, log-rank, riscos proporcionais de Cox, censura e truncamento.
 
-#### EST-21 · Modelos Hierárquicos e Multinível 🆕
+#### EST-19 · Modelos Hierárquicos e Multinível 🆕
 - Efeitos fixos vs. aleatórios, *shrinkage*, aninhamento, ICC.
 
-#### EST-22 · Econometria 🆕
+#### EST-20 · Econometria 🆕
 - **Modelagem de dados em painel** — efeitos fixos, efeitos aleatórios, estimador de primeiras diferenças.
 - **Modelos estruturais e GMM** — Método dos Momentos Generalizado (GMM), equações simultâneas, identificação e sobreidentificação (teste de Sargan/Hansen).
 - **Ponte causal-séries temporais** — modelos VAR causais, teste de causalidade de Granger, cointegração e VEC (Vector Error Correction).
@@ -201,9 +195,9 @@ graph TD
 - *Model cards*, linhagem, auditoria, conformidade (ponte com N6).
 
 ### 🗄️ T09 · Engenharia de Dados (PPC) — *expandida*
-*13 → ~21 disciplinas. Mantém o núcleo teórico distribuído e ganha camada de plataforma moderna.*
+*13 → 17 disciplinas (pós-consolidação). PPC publicado de arquitetura de dados; ganha camada de plataforma moderna.*
 
-**Disciplinas existentes (mantidas):** Teoria da Computação Distribuída · Consenso (Raft/Paxos) · Teorema CAP e PACELC · Impossibilidade FLP · Relógios Lógicos e Vetoriais · Privacidade Diferencial · Modelos de Consistência · Tolerância a Falhas · Particionamento e Replicação · Transações Distribuídas (2PC/3PC/Saga) · MapReduce e Paralelismo · Teoria de Filas · Modelagem de Dados Fundamental.
+**Disciplinas existentes (mantidas, IDs `D01.01–D04.04`):** Modelagem e Arquitetura de Data Warehouse · Banco de Dados Relacional · Administração de Banco de Dados (DBA) · Governança de Dados · Big Data e Cloud Computing · Bancos Não-Relacionais (NoSQL) · Machine Learning (visão de engenharia — a teoria de modelos pertence à trilha N1) · Projeto de Processamento Distribuído · Tuning de Banco de Dados · Engenharia de Dados em Nuvem · DataOps, Orquestração e Automação · Data Mesh e Data Fabric · Projeto Final Integrador.
 
 #### DE-14 · Processamento em Streaming e Tempo Real 🆕
 - Kafka, semântica *exactly-once*, janelas (tumbling/sliding/session), *watermarks*, Flink/Spark Streaming.
@@ -211,23 +205,11 @@ graph TD
 #### DE-15 · Data Lakehouse e Formatos Abertos 🆕
 - Parquet/ORC, Apache Iceberg/Delta/Hudi, *time travel*, *schema evolution*, camadas medalhão.
 
-#### DE-16 · Modelagem Analítica 🆕
-- Modelagem dimensional (Kimball), Data Vault 2.0, *slowly changing dimensions*, *one big table*.
-
-#### DE-17 · Orquestração e Workflows 🆕
-- Airflow/Dagster/Prefect, DAGs, idempotência, *backfill*, dependências e *retries*.
-
-#### DE-18 · Data Mesh e Contratos de Dados 🆕
-- Domínios, *data products*, *data contracts*, federação de governança.
-
-#### DE-19 · Qualidade e Observabilidade de Dados 🆕
+#### DE-16 · Qualidade e Observabilidade de Dados 🆕
 - Great Expectations, testes de dados, linhagem, SLAs/SLOs de dados, detecção de anomalias em pipelines.
 
-#### DE-20 · Captura de Mudanças e Integração 🆕
+#### DE-17 · Captura de Mudanças e Integração 🆕
 - CDC (Debezium), ELT vs. ETL, *reverse ETL*, ingestão incremental.
-
-#### DE-21 · Bancos Distribuídos NoSQL/NewSQL 🆕
-- Modelos chave-valor/documento/coluna/grafo, Cassandra, sharding, Spanner/Cockroach (conceitual).
 
 ---
 
@@ -274,46 +256,37 @@ graph TD
 ## 3. EIXO II — Jurídico-Operacional e Forense
 
 ### 🔍 T02 · Inteligência Analítica e Forense de Dados — *expandida*
-*3 → ~13 disciplinas. Era a trilha mais subdimensionada; ganha o ciclo de inteligência completo.*
+*3 → 10 disciplinas (pós-consolidação). Era a trilha mais subdimensionada; ganha o ciclo de inteligência completo.*
 
-**Existentes (mantidas):** Análise de Redes e Centralidades (`NetworkX`) · Metadados Georreferenciados (`PIL/EXIF`) · Similaridade Textual TF-IDF/Cosseno.
+**Existentes (mantidas, IDs `D01.01–D01.03`):** Análise de Redes e Vínculos em Grafos (`NetworkX`) · OSINT Avançado e Coleta de Inteligência Digital · NLP Forense e Mineração de Textos Policiais (TF-IDF/cosseno).
 
 #### IAF-04 · Ciclo de Inteligência e Estrutura Analítica 🆕
 - Direção → coleta → processamento → análise → disseminação; requisitos de inteligência; níveis (estratégico/operacional/tático).
 
-#### IAF-05 · OSINT — Inteligência de Fontes Abertas 🆕
-- Fontes públicas, *footprinting*, geolocalização de imagens, verificação e *fact-checking* forense, cadeia de custódia de coleta aberta.
-
-#### IAF-06 · SOCMINT e Análise de Redes Sociais Criminais 🆕
+#### IAF-05 · SOCMINT e Análise de Redes Sociais Criminais 🆕
 - Grafos sociais, detecção de comunidades (Louvain), *key players*, difusão e influência.
 
-#### IAF-07 · Análise de Vínculos (Link Analysis) 🆕
-- Modelagem entidade-relacionamento, grafos de vínculo, temporalidade, visualização investigativa.
-
-#### IAF-08 · Blockchain Forensics e Rastreio de Criptoativos 🆕
+#### IAF-06 · Blockchain Forensics e Rastreio de Criptoativos 🆕
 - *Heurísticas de clustering* de carteiras, *taint analysis*, *mixers/tumblers* (conceito), *on-chain analytics*.
 
-#### IAF-09 · Detecção de Fraude e Anomalias 🆕
+#### IAF-07 · Detecção de Fraude e Anomalias 🆕
 - Regras vs. ML, *isolation forest*, Benford, redes de fraude, *feature engineering* transacional.
 
-#### IAF-10 · Análise de Registros de Comunicação (CDR/ERB) 🆕
+#### IAF-08 · Análise de Registros de Comunicação (CDR/ERB) 🆕
 - Metadados de chamadas, triangulação por ERB, mobilidade, correlação temporal (garantidas ressalvas legais → T03).
 
-#### IAF-11 · Text/Data Mining Forense 🆕
-- NER, extração de relações, tópicos (LDA), sumarização, análise de sentimento aplicada a investigação.
-
-#### IAF-12 · Fusão de Dados e Resolução de Entidades 🆕
+#### IAF-09 · Fusão de Dados e Resolução de Entidades 🆕
 - *Record linkage*, *deduplication*, *entity resolution* probabilística, ontologias.
 
-#### IAF-13 · Análise de Hipóteses Concorrentes (ACH) e Vieses 🆕
+#### IAF-10 · Análise de Hipóteses Concorrentes (ACH) e Vieses 🆕
 - Método de Heuer, vieses cognitivos do analista, matriz de evidências, *red teaming* analítico.
 
 ---
 
 ### 🔒 T03 · Direito Digital e Cibersegurança — *expandida*
-*4 → ~13 disciplinas.*
+*4 → 12 disciplinas (pós-consolidação).*
 
-**Existentes (mantidas):** Hash Forense por Blocos (`hashlib`) · Regex Parsers de Logs · Validador de Risco de IA (*EU AI Act*) · Proteção de Dados (base).
+**Existentes (mantidas, IDs `D02.01–D02.04`):** Criptoanálise e Cadeia de Custódia de Evidências Digitais (`hashlib`) · Crimes Cibernéticos e Invasão de Dispositivos na Jurisprudência · Governança, Privacidade e Auditoria Algorítmica de IA · Marco Regulatório da Segurança Digital e IA.
 
 #### DIG-05 · LGPD Avançada e Encarregado (DPO) 🆕
 - Bases legais, ANPD, relatório de impacto (RIPD), incidentes e notificação, transferência internacional.
@@ -322,6 +295,7 @@ graph TD
 - Neutralidade, responsabilidade de intermediários, guarda de registros, PL das Fake News (debate aberto).
 
 #### DIG-07 · Computação Forense 🆕
+*(Recorte técnico-pericial de aquisição e análise; a cadeia de custódia jurídica permanece em `D02.01`.)*
 - Aquisição forense (dead/live), *imaging*, forense mobile/cloud, *anti-forensics*, laudo pericial.
 
 #### DIG-08 · Resposta a Incidentes e SOC 🆕
@@ -331,18 +305,13 @@ graph TD
 - IoCs, TTPs, MITRE ATT&CK, *diamond model*, *kill chain*, atribuição.
 
 #### DIG-10 · Criptografia Aplicada 🆕
+*(Perspectiva construtiva de protocolos; complementa a criptoanálise de `D02.01`.)*
 - Simétrica/assimétrica, funções hash, assinatura digital, PKI/ICP-Brasil, TLS, *zero-knowledge* (conceito).
 
-#### DIG-11 · Crimes Cibernéticos e Cooperação Internacional 🆕
-- Lei 12.737, Convenção de Budapeste, MLAT, jurisdição transnacional, prova eletrônica além-fronteiras.
-
-#### DIG-12 · Governança e Regulação de IA 🆕
-- EU AI Act (categorias de risco), PL 2338/2023 (Brasil), *accountability* algorítmico, *sandbox* regulatório.
-
-#### DIG-13 · Segurança Ofensiva Ética — Metodologia e Governança 🆕
+#### DIG-11 · Segurança Ofensiva Ética — Metodologia e Governança 🆕
 - Escopo e autorização legal, metodologias (PTES/OWASP), gestão de vulnerabilidades e *disclosure* responsável, *red vs. blue team* (nível de governança e ciclo de defesa — sem conteúdo operacional de exploração).
 
-#### DIG-14 · GRC e ISO/IEC 27001 🆕
+#### DIG-12 · GRC e ISO/IEC 27001 🆕
 - **Governança, Risco e Conformidade (GRC)** — frameworks de GRC em segurança da informação, modelagem de ameaças e apetite ao risco.
 - **Normas ISO/IEC 27001 e 27002** — estrutura do SGSI (Sistema de Gestão de Segurança da Informação), controles de segurança, declaração de aplicabilidade (SoA).
 - **Auditoria de conformidade** — planejamento e execução de auditorias internas, conformidade regulatória (LGPD/cyber-segurança), tratamento de não-conformidades.
@@ -350,9 +319,11 @@ graph TD
 ---
 
 ### 🗺️ T04 · Criminologia Espacial e Geoprocessamento (GIS) — *expandida*
-*4 → ~12 disciplinas.*
+*4 → 8 disciplinas (pós-consolidação).*
 
-**Existentes (mantidas):** Distância Euclidiana e Buffers (`shapely/geopandas`) · Risk Terrain Modeling (RTM) · I de Moran Global (`PySAL`) · Fundamentos de GIS.
+**Existentes (mantidas, IDs `D03.01–D03.04`):** Análise Espacial de Crime e Hotspots com GIS · Geoestatística e Autocorrelação Espacial (I de Moran, `PySAL`) · Modelagem Espaço-Temporal e Predição Criminal · Inteligência Geoespacial para Segurança Pública.
+
+> 🔗 O recorte **ético** do policiamento preditivo é tratado em N6 (GOV-02/GOV-04); **sensoriamento por drones e vídeo-análise pericial** é trilha-dona N4 (FOR-12).
 
 #### GEO-05 · Criminologia Ambiental e CPTED 🆕
 - Prevenção pelo desenho urbano, vigilância natural, controle de acesso, territorialidade.
@@ -360,52 +331,31 @@ graph TD
 #### GEO-06 · Teoria das Atividades Rotineiras e Padrão Criminal 🆕
 - Triângulo do crime (alvo/ofensor/guardião), *awareness space*, *journey to crime*.
 
-#### GEO-07 · Análise de Hotspots (KDE) 🆕
-- Densidade de kernel, mapas de calor, *Getis-Ord Gi\**, LISA local.
-
-#### GEO-08 · Perfil Geográfico (Geographic Profiling) 🆕
+#### GEO-07 · Perfil Geográfico (Geographic Profiling) 🆕
 - Modelo de Rossmo, *distance decay*, âncora, priorização de suspeitos.
 
-#### GEO-09 · Policiamento Preditivo e Ética 🆕
-- PredPol/HunchLab (conceito), *feedback loops*, viés espacial, transparência (ponte com N6).
-
-#### GEO-10 · Análise Espaço-Temporal 🆕
-- Cubos espaço-tempo, *space-time scan* (SaTScan), emergência e persistência de hotspots.
-
-#### GEO-11 · Sensoriamento Remoto e Dados Geoespaciais 🆕
-- Imagens de satélite, índices (NDVI), *raster* vs. *vetor*, integração multi-fonte.
-
-#### GEO-12 · Mobilidade Urbana e Oportunidade Criminal 🆕
+#### GEO-08 · Mobilidade Urbana e Oportunidade Criminal 🆕
 - Redes de transporte, fluxo populacional, *big data* de mobilidade, exposure espacial.
-
-#### GEO-13 · Sensoriamento, Drones e Vídeo-análise 🆕
-- **Sensoriamento remoto com RPAs** — fotogrametria aérea, geração de modelos digitais de elevação (MDE) e ortomosaicos para reconstituição espacial de cenas.
-- **Vídeo-análise analítica** — processamento de feed de câmeras, contagem de fluxo, OCR de placas e calibração de câmeras de monitoramento urbano.
-- **Cadeia de custódia de vídeo** — autenticação hash de arquivos de câmeras corporais (bodycams) e CFTV, metadados de vídeo e prevenção de adulterações.
 
 ---
 
 ### 🚔 T06 · Doutrina Policial e Perícia Forense — *refinada*
-*19 disciplinas. Núcleo mantido; adicionadas 4 disciplinas de doutrina contemporânea e reposicionadas as periciais para N4.*
+*19 → 21 disciplinas (pós-consolidação). Núcleo mantido; adicionadas 2 disciplinas de doutrina contemporânea e reposicionadas as periciais para N4.*
+
+> 🔗 **Uso Diferenciado da Força** e **Gestão de Crises** são cobertos pelo legado Direito Operacional (`D04.01`, `D08.02`, `D06.02`) — não duplicados aqui.
 
 **Núcleo doutrinário mantido:** Cadeia de Custódia · Local de Crime (preservação) · Procedimentos Operacionais Padrão · Abordagem e Revista · Balística Forense (tradicional) · Fotografia Pericial · Táticas de Patrulha · Gestão de Ocorrências · entre outras.
 
-#### DPF-20 · Uso Diferenciado da Força — Doutrina 🆕
-- Modelos de continuum, proporcionalidade e legalidade, menor potencial ofensivo, prestação de contas.
-
-#### DPF-21 · Gestão de Crises e Negociação 🆕
-- Estabilização, comunicação de crise, comando e controle, tomada de decisão sob incerteza (ponte com T08).
-
-#### DPF-22 · Investigação Criminal Baseada em Evidências 🆕
+#### DPF-20 · Investigação Criminal Baseada em Evidências 🆕
 - Método hipotético-dedutivo, gestão de casos, *cold cases*, integração inteligência-investigação (ponte com T02).
 
-#### DPF-23 · Direitos Humanos e Policiamento 🆕
+#### DPF-21 · Direitos Humanos e Policiamento 🆕
 - Protocolos internacionais (Princípios de Minnesota), controle externo, accountability, policiamento orientado à comunidade.
 
 ---
 
 ### 🔬 N4 · Ciências Forenses (Perícia Criminal) 🆕 *(NOVA TRILHA)*
-*Núcleo pericial que estava disperso. ~11 disciplinas. Foco investigativo/post-facto e laudo técnico.*
+*Núcleo pericial que estava disperso. 12 disciplinas (11 publicadas + 1 proposta). Foco investigativo/post-facto e laudo técnico.*
 
 #### FOR-01 · Medicina Legal
 - Tanatologia, cronotanatognose, lesões e mecanismos, necropsia médico-legal, identificação.
@@ -440,7 +390,7 @@ graph TD
 #### FOR-11 · Perícia em Acidentes de Trânsito
 - Cinemática do impacto, vestígios de frenagem, reconstrução de colisão, cálculo de velocidade.
 
-#### FOR-12 · Sensoriamento, Drones e Vídeo-análise 🆕
+#### FOR-12 · Sensoriamento, Drones e Vídeo-análise 🆕 *(proposta; trilha-dona do tema — absorve a antiga GEO-13)*
 - **Reconstituição 3D por drones** — nuvens de pontos fotogramétricas de locais de acidente ou crime, georreferenciamento de vestígios macroscópicos.
 - **Análise pericial de vídeo** — autenticidade de vídeo (verificação de edição/deepfake), realce de imagens de baixa qualidade, detecção de movimento e cronometragem de quadros.
 - **Custódia digital de provas de vídeo** — aplicação de hash criptográfico na captura de bodycams e gravação CFTV, proteção contra vazamentos e quebra de custódia.
@@ -471,29 +421,14 @@ graph TD
 ---
 
 ### 🧠 T08 · Neurociência Cognitiva e Tática — *expandida*
-*22 → ~28 disciplinas. Já robusta; ganha aprofundamentos de psicofisiologia e decisão.*
+*22 → 23 disciplinas (pós-consolidação). Já robusta; estresse agudo, decisão sob pressão, percepção de ameaça e psicofisiologia da performance já existem no acervo (`D02.01`, `D02.02`, `D03.01`, `D05.01`, `D05.06`) — ganha apenas o tema inédito de sono/fadiga.*
 
 **Núcleo mantido:** Neuroanatomia Funcional · Sistema Nervoso Autônomo · Resposta ao Estresse (eixo HPA) · Percepção e Atenção · Memória · Sistema Visual · Fisiologia do Medo · entre outras.
 
-#### NEU-23 · Neurociência do Estresse Agudo e Ameaça à Vida 🆕
-- Cascata simpato-adrenal, taquicardia e limiares de desempenho, visão de túnel, exclusão auditiva.
-
-#### NEU-24 · Tomada de Decisão sob Pressão 🆕
-- Recognition-Primed Decision (Klein), sistema dual (Kahneman), heurísticas em campo, OODA loop.
-
-#### NEU-25 · Atenção, Percepção e Visão sob Ameaça 🆕
-- Cegueira por desatenção, *change blindness*, carga cognitiva, atenção seletiva.
-
-#### NEU-26 · Fadiga, Sono e Ritmo Circadiano 🆕
+#### NEU-23 · Fadiga, Sono e Ritmo Circadiano 🆕
 - Privação de sono e desempenho, turnos, débito de sono, recuperação.
 
-#### NEU-27 · Neuroplasticidade e Treinamento 🆕
-- Aprendizagem motora, automatização, *stress inoculation training*, transferência de treino.
-
-#### NEU-28 · Psicofisiologia da Performance 🆕
-- HRV, biofeedback, controle respiratório, regulação autonômica, resiliência.
-
-### 🚔 SPP · Segurança Pública Baseada em Evidências e Políticas Públicas 🆕 *(NOVA TRILHA)*
+### 🚔 SPP · Segurança Pública Baseada em Evidências e Políticas Públicas 🆕 *(NOVA TRILHA — proposta, ainda não publicada)*
 *Eixo II. Camada de DECISÃO que falta acima do nível tático. ~5 disciplinas. Pré-requisitos cruzados: T04 (criminologia espacial) e T02 (inteligência).*
 
 #### SPP-01 · Evidence-Based Policing
@@ -502,6 +437,7 @@ graph TD
 - **Implementação e resistência tática** — transição da experiência/tradição para a tomada de decisão orientada por dados científicos, transposição de evidências para o policiamento de patrulha e policiamento comunitário.
 
 #### SPP-02 · Avaliação de Impacto de Intervenções
+*(Aplica à segurança pública os métodos formalizados em EST-14 · Inferência Causal.)*
 - **Desenhos experimentais (RCTs)** — aleatorização em segurança pública, ensaios de policiamento de hot-spots, desafios éticos e operacionais da aleatorização policial.
 - **Desenhos quase-experimentais** — Diferenças-em-Diferenças (DiD), regressão descontínua (RDD), pareamento por escore de propensão (propensity score matching - PSM) aplicados a políticas de segurança.
 - **Construção do contrafactual** — o que teria acontecido com a taxa de criminalidade sem a intervenção, controle de deslocamento do crime e difusão de benefícios.
@@ -538,27 +474,17 @@ graph TD
 ## 4. EIXO III — Engenharia Física Aplicada
 
 ### 🛡️ T05 · Engenharia de Proteção Balística — *expandida*
-*4 → ~10 disciplinas. Foco defensivo: ciência de materiais de blindagem e normas.*
+*4 → 6 disciplinas (pós-consolidação). Foco defensivo: ciência de materiais de blindagem e normas.*
 
-**Existentes (mantidas):** Pressão de Choque por Impedância Acústica · Penetração por Modelo Hidrodinâmico (Tate-Alekseevskii) · Dinâmica de Impacto (base) · Materiais de Blindagem (introdução).
+**Existentes (mantidas, IDs `D04.01–D04.04`):** Dinâmica do Impacto Hiperveloz e Novos Compósitos · Simulação e Modelagem Computacional de Trajetória e Penetração (Tate-Alekseevskii, FEM/hidrocódigos, Johnson-Cook) · Materiais para Blindagem Balística · Ensaios, Normas e Avaliação de Desempenho (NIJ/NBR/V50).
 
-#### BAL-05 · Ciência dos Materiais de Blindagem 🆕
-- Fibras de aramida e UHMWPE, cerâmicos (alumina/carbeto), compósitos laminados, metais e ligas.
+> 🔗 A mecânica do dano fundamental (ondas de tensão, modos de falha, *strain rate*) é trilha-dona N8 (MAT-02/MAT-04).
 
-#### BAL-06 · Normas, Ensaios e Certificação 🆕
-- NIJ 0101.06/0101.07, ABNT NBR 15000, VPAM, protocolo V50, condicionamento ambiental.
-
-#### BAL-07 · Mecânica de Impacto e do Dano 🆕
-- Ondas de tensão, modos de falha, delaminação, dissipação de energia, *strain rate*.
-
-#### BAL-08 · Trauma por Trás da Blindagem (Backface) 🆕
+#### BAL-05 · Trauma por Trás da Blindagem (Backface) 🆕
 - Deformação em plastilina (BFS), critério de trauma, avaliação biomecânica (perspectiva de proteção).
 
-#### BAL-09 · Blindagem Veicular e Arquitetural 🆕
+#### BAL-06 · Blindagem Veicular e Arquitetural 🆕
 - Níveis de proteção, blindagem opaca/transparente, projeto de sistemas, requisitos normativos.
-
-#### BAL-10 · Simulação Numérica de Impacto 🆕
-- Métodos FEM/SPH, hidrocódigos, validação experimental, ponte com N3/SIM-07.
 
 ---
 
@@ -644,7 +570,7 @@ graph TD
 #### VIZ-05 · Narrativa com Dados
 - Estrutura narrativa, *scrollytelling*, comunicação de incerteza, ética da visualização.
 
-### 📝 MET · Metodologia de Pesquisa Científica 🆕 *(NOVA TRILHA)*
+### 📝 MET · Metodologia de Pesquisa Científica 🆕 *(NOVA TRILHA — proposta, ainda não publicada)*
 *Espinha metodológica do programa. Transversal aos três eixos. ~5 disciplinas.*
 
 #### MET-01 · Desenho de Pesquisa
@@ -691,6 +617,7 @@ graph LR
     DPF --> PSI[N5 Psicologia Criminal]
     NEU[T08 Neurociencia] --> PSI
     NEU --> DPF
+    NEU --> GAT[GAT Ciencia do Gatilho]
     DIG[T03 Ciberseguranca] --> IAF
     DIG --> GOV[N6 Etica e Governanca]
     ML --> GOV
@@ -700,21 +627,21 @@ graph LR
     SIM --> BAL
     BAL --> FOR
     ARM --> FOR
-    VIZ[N7 Visualizacao] --> EST
-    VIZ --> IAF
+    EST --> VIZ[N7 Visualizacao]
+    IAF --> VIZ
     LEGSW[Legado Eng. Software] --> DE
     LEGSW --> DIG
     LEGDIR[Legado Direito] --> DIG
     LEGDIR --> FOR
-    MET[MET Metodologia] --> EST
+    MET[MET Metodologia - proposta] --> EST
     MET --> IAF
     MET --> MAT
-    GEO --> SPP[SPP Politicas Publicas]
+    GEO --> SPP[SPP Politicas Publicas - proposta]
     IAF --> SPP
     SPP --> DPF
 ```
 
-**Leitura do grafo:** N1 (ML) emerge como *hub* central do Eixo I — depende de Estatística e alimenta MLOps, Inteligência e Forense. N4 (Forense) é o *hub* do Eixo II, recebendo insumos de ML, Materiais e Armamento e entregando para Doutrina Policial. N6 (Ética) e N7 (Visualização) são conectores transversais que tocam ambos os eixos.
+**Leitura do grafo:** N1 (ML) emerge como *hub* central do Eixo I — depende de Estatística e alimenta MLOps, Inteligência e Forense. N4 (Forense) é o *hub* do Eixo II, recebendo insumos de ML, Materiais e Armamento e entregando para Doutrina Policial. N6 (Ética) e N7 (Visualização) são conectores transversais que tocam ambos os eixos. GAT (Ciência do Gatilho) integra-se ao Eixo II como correlata de T08. SPP e MET permanecem propostas (sem pasta publicada) e não contam como trilhas ativas.
 
 ---
 
@@ -785,23 +712,49 @@ Especificação conceitual para implementação de features de avaliação de ap
 
 ## 9. Roadmap de Implementação
 
-1. **Fase 1 — Migração estrutural (2 sprints):** publicar `projects.json` v2, migrar IDs, reintegrar as 3 trilhas legadas ao mapa de governança.
-2. **Fase 2 — Eixo I de IA (prioritário):** criar N1 (ML), N2 (MLOps), N3 (Simulação) — maior lacuna atual e mais alinhado ao seu perfil de engenharia de dados.
-3. **Fase 3 — Densificação forense:** criar N4 (Forense) e N5 (Psicologia), expandir T02 e T03.
-4. **Fase 4 — Transversais:** N6 (Ética) e N7 (Visualização), que amarram todo o ecossistema.
-5. **Fase 5 — Eixo III:** consolidar N8 (Materiais) como base física de T05/T07, mantendo o selo `🟡 Conceitual`.
+1. **Fase 1 — Migração estrutural:** ✔ `projects.json` v2 publicado e legadas reintegradas; **pendente** a migração de IDs `Dxx → PREFIXO-NN` nas 12 trilhas 1.0/legadas.
+2. **Fase 2 — Eixo I de IA:** ✔ N1, N2 e N3 publicadas; **pendente** completar os 9 stubs de N1 (ML-02 a ML-10) no padrão de 14 elementos.
+3. **Fase 3 — Densificação forense:** ✔ N4 e N5 publicadas; expansões de T02/T03 permanecem como propostas consolidadas (IAF-04..10, DIG-05..12).
+4. **Fase 4 — Transversais:** ⚠ N6 e N7 publicadas apenas como stubs (11 ementas genéricas) — prioridade de densificação antes de qualquer disciplina nova.
+5. **Fase 5 — Eixo III:** ✔ N8 publicada; selos `🟡` aplicados aos cabeçalhos de T07, GAT e T05 (D04.01/02).
 6. **Auditoria contínua:** validação bibliográfica (§8 do padrão) e revisão do *Estado da Arte* a cada ciclo, dado o ritmo de IA.
 
 ---
 
 ## 10. Resumo Quantitativo Final
 
-| Eixo | Trilhas | Disciplinas (est.) |
-|---|---|---|
-| I · Quantitativo/Tecnológico | 6 (T01, N1, N2, T09, N3, +Legado SW) | ~141 |
-| II · Jurídico-Operacional/Forense | 9 (T02, T03, T04, T06, N4, N5, T08, SPP, +Legado Direito) | ~157 |
-| III · Engenharia Física Aplicada | 3 (T05, T07, N8) | ~45 |
-| Transversais | 3 (N6, N7, MET) | ~16 |
-| **Total** | **21 ativas + legadas reintegradas** | **~359 disciplinas** |
+| Eixo | Trilhas publicadas | Disciplinas publicadas | Propostas de expansão | Total planejado |
+|---|---|---|---|---|
+| I · Quantitativo/Tecnológico | 6 (T01, N1, N2, T09, N3, +Legado SW) | 122 | 13 (EST: 9 · DE: 4) | 135 |
+| II · Jurídico-Operacional/Forense | 10 (T02, T03, T04, T06, N4, N5, T08, GAT, +2 Legados Direito) | 129 | 23 (IAF: 7 · DIG: 8 · GEO: 4 · DPF: 2 · NEU: 1 · FOR: 1) | 152 |
+| III · Engenharia Física Aplicada | 3 (T05, T07, N8) | 37 | 2 (BAL) | 39 |
+| Transversais | 2 (N6, N7) | 11 | — | 11 |
+| Trilhas propostas | 2 (SPP, MET — sem pasta publicada) | 0 | 10 (SPP: 5 · MET: 5) | 10 |
+| **Total** | **21 publicadas + 2 propostas** | **299** | **48** | **347** |
 
-> **Próximo passo recomendado:** começar pela **Fase 2 (trilha N1 · Machine Learning)** — é a maior lacuna do Atlas hoje e a que melhor conecta a Estatística existente ao restante do ecossistema. Posso gerar os arquivos `.md` completos das primeiras disciplinas (padrão de 14 elementos) quando quiser.
+## 11. Registro de Decisões da Auditoria de Consolidação (14/07/2026)
+
+Nenhum conteúdo foi apagado sem realocação: as propostas abaixo foram **fundidas** em disciplinas já publicadas (que permanecem as donas do tema) ou **atribuídas** a uma única trilha.
+
+| Decisão | Proposta eliminada | Destino (dono do tema) |
+|---|---|---|
+| Fundir | EST-14 Multivariada · EST-15 GLM | `D05.01` · `D04.02` (T01) |
+| Fundir | IAF-05 OSINT · IAF-07 Vínculos · IAF-11 Text Mining | `D01.02` · `D01.01` · `D01.03` (T02) |
+| Fundir | DIG-11 Crimes Cibernéticos · DIG-12 Regulação IA | `D02.02` · `D02.03`+`D02.04` (T03) |
+| Fundir | GEO-07 Hotspots · GEO-10 Espaço-Temporal · GEO-11 Sensoriamento | `D03.01` · `D03.03` · `D03.04` (T04) |
+| Realocar | GEO-09 Policiamento Preditivo e Ética | predição em `D03.03` (T04); recorte ético em GOV-02/GOV-04 (N6) |
+| Atribuir | GEO-13 ≡ FOR-12 Sensoriamento/Drones/Vídeo | N4 (FOR-12, trilha-dona); T04 referencia |
+| Fundir | BAL-05 Materiais · BAL-06 Normas · BAL-10 Simulação | `D04.03` · `D04.04` · `D04.02` (T05) |
+| Realocar | BAL-07 Mecânica de Impacto e Dano | `D04.01` (T05) + MAT-02/MAT-04 (N8) |
+| Fundir | DE-16 Modelagem Analítica · DE-17 Orquestração · DE-18 Data Mesh · DE-21 NoSQL | `D01.01` · `D04.02` · `D04.03` · `D02.03` (T09) |
+| Realocar | DPF-20 Uso Diferenciado da Força · DPF-21 Gestão de Crises | Legado Direito Operacional (`D04.01`+`D08.02` · `D06.02`) |
+| Fundir | NEU-23 Estresse Agudo · NEU-24 Decisão sob Pressão · NEU-25 Atenção sob Ameaça · NEU-27 Neuroplasticidade · NEU-28 Psicofisiologia | `D03.01` · `D05.06` · `D02.01` · `D02.02`+`D05.02` · `D05.01` (T08) |
+| Diferenciar | DIG-07 e DIG-10 (vs. `D02.01`) · EST-14 Causal (vs. `D05.02`/SPP-02) · ML-07 (séries com ML) vs. EST-13 (séries clássicas) · GOV-03 PETs (formal) vs. T09 (implementação) | mantidas com nota de recorte |
+| Integrar | Ciência do Gatilho (GAT) ao Eixo II | correlata de T08 (pré-req: `neurociencia-cognitiva`) |
+| Marcar proposta | SPP · MET (sem pasta, fora de `projects.json`) | criação futura seguirá o "Padrão de um domínio" |
+
+**Renumerações aplicadas (De → Para):** EST-16..22 → EST-14..20 · IAF-06/08/09/10/12/13 → IAF-05..10 · DIG-13/14 → DIG-11/12 · GEO-08/12 → GEO-07/08 · BAL-08/09 → BAL-05/06 · DPF-22/23 → DPF-20/21 · NEU-26 → NEU-23 · DE-19/20 → DE-16/17.
+
+---
+
+> **Próximo passo recomendado:** completar as **20 disciplinas-stub já publicadas** (ML-02..10, GOV-01..06, VIZ-01..05) no padrão de 14 elementos — nenhuma disciplina nova deve ser criada antes disso.
