@@ -113,4 +113,4 @@ for epoca in range(2001):
 - Para o caso multivariável de triagem de laudos, especifique a matriz de custo de erro e a métrica de seleção de limiar de decisão.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#RedesNeurais #DeepLearning #Backpropagation #PyTorch

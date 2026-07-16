@@ -7,7 +7,7 @@
 **Selo de Escopo:** 🟢 Aberto
 
 ## Ementa
-Esta disciplina cobre a representação computacional da linguagem e os modelos de linguagem de grande porte (LLMs). Estuda tokenização (BPE/WordPiece), representações vetoriais estáticas (word2vec, GloVe) e contextuais. Aprofunda o mecanismo de atenção e a arquitetura Transformer (atenção multi-cabeça, codificação posicional, blocos encoder/decoder), base de BERT e da família GPT. Cobre os paradigmas de adaptação: *fine-tuning* supervisionado versus *prompting* (zero-shot, few-shot), e a arquitetura RAG (Retrieval-Augmented Generation) em nível conceitual — recuperação vetorial acoplada à geração. Aborda a avaliação de LLMs: benchmarks, avaliação humana, métricas de tarefas e o problema das alucinações. Discute aplicações analíticas e forenses de PLN em ligação com T02 (mineração de textos investigativos).
+Esta disciplina cobre a representação computacional da linguagem e os modelos de linguagem de grande porte (LLMs). Estuda tokenização (BPE/WordPiece), representações vetoriais estáticas (word2vec, GloVe) e contextuais. Aprofunda o mecanismo de atenção e a arquitetura Transformer (atenção multi-cabeça, codificação posicional, blocos encoder/decoder), base de BERT e da família GPT. Cobre os paradigmas de adaptação: *fine-tuning* supervisionado versus *prompting* (zero-shot, few-shot), e a arquitetura RAG (Retrieval-Augmented Generation) em nível conceitual — recuperação vetorial acoplada à geração. Aborda a avaliação de LLMs: benchmarks, avaliação humana, métricas de tarefas e o problema das alucinações. Discute aplicações analíticas e forenses de PLN em ligação com a trilha de Inteligência Analítica (mineração de textos investigativos).
 
 ## Objetivos
 1. Explicar a atenção escalonada por produto interno e o papel de cada componente do Transformer na modelagem de dependências de longo alcance.
@@ -68,7 +68,7 @@ print(f"[score={similaridades[melhor]:.3f}] {corpus[melhor]}")
 - **Caso 1**: Um chatbot jurídico responde com número de processo inexistente e ementa fabricada. Diagnosticar alucinação de modelo autorregressivo e propor arquitetura RAG com citação obrigatória da fonte recuperada.
 - **Caso 2**: Um classificador BERT de denúncias, ajustado com 300 exemplos, degrada em produção com gírias regionais. Discutir deslocamento de vocabulário, aumento de dados textuais e monitoramento de deriva (ligação com OPS-04).
 - **Caso 3**: A equipe compara fine-tuning de um modelo aberto contra prompting de API proprietária para sumarização de inquéritos. Estruturar a decisão por custo total, privacidade dos dados (LGPD) e reprodutibilidade do laudo.
-- **Caso 4 (Caso Multivariável)**: Projeto de mineração de comunicações apreendidas (T02/IAF) com NER, sumarização e busca semântica. Desenhar: (a) pipeline com anonimização prévia e trilha de auditoria; (b) avaliação com conjunto de teste rotulado por peritos e taxa de alucinação medida por verificação de fonte; (c) política de revisão humana obrigatória antes de qualquer peça processual; (d) registro de versão de modelo e prompts para reprodutibilidade pericial.
+- **Caso 4 (Caso Multivariável)**: Projeto de mineração de comunicações apreendidas (trilha de Inteligência Analítica) com NER, sumarização e busca semântica. Desenhar: (a) pipeline com anonimização prévia e trilha de auditoria; (b) avaliação com conjunto de teste rotulado por peritos e taxa de alucinação medida por verificação de fonte; (c) política de revisão humana obrigatória antes de qualquer peça processual; (d) registro de versão de modelo e prompts para reprodutibilidade pericial.
 
 ## Regulação Técnica e Jurisprudência
 | Tribunal ou Órgão/Tema | Entendimento / Norma | Impacto Prático |
@@ -109,4 +109,4 @@ print(f"[score={similaridades[melhor]:.3f}] {corpus[melhor]}")
 - Para o caso multivariável de comunicações apreendidas, redija o protocolo de medição de taxa de alucinação com verificação de fonte por amostragem estratificada.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#NLP #Transformers #LLM #RAG #Tokenizacao

@@ -98,4 +98,4 @@ print("Melhor escore ROC/AUC de Validação Cruzada:", busca.best_score_)
 - Para o caso multivariável da evasão escolar, desenhe o grafo de fluxo do pipeline de modelagem, desde o carregamento até o cálculo do F1-score final.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#Supervisionado #ViesVariancia #Regularizacao #ValidacaoCruzada #ScikitLearn

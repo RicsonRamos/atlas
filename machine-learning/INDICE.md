@@ -19,13 +19,11 @@
 
 ## DAG de dependências
 ```
-ML-01 ──> ML-03 ──> ML-04 ──> ML-05 ──> ML-10
-  │         │         │
-  └──> ML-02 │         └──> ML-06
-  │         │
-  └──> ML-07 └──> ML-08
-  │
-  └──> ML-09 ──> ML-11 (XAI)
+ML-01 ─┬─> ML-02
+       ├─> ML-03 ─┬─> ML-04 ─┬─> ML-05 ──> ML-10
+       │          └─> ML-08  └─> ML-06
+       ├─> ML-07
+       └─> ML-09 ──> ML-11 (XAI, capstone)
 ```
 
 ## Carga horária total

@@ -117,4 +117,4 @@ print(politica)
 - Para o caso das viaturas, escreva três formulações alternativas de recompensa e analise o comportamento perverso que cada uma pode induzir.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#AprendizadoPorReforco #MDP #QLearning #PoliticaOtima

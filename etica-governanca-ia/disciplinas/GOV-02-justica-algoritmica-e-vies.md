@@ -19,7 +19,7 @@ GOV-01 (princípios e matriz de custos como juízo de valor). Recomenda-se ML-01
 
 ## Conteúdo programático
 
-**Fundamentos** — O ciclo do viés: dados históricos refletem decisões passadas discriminatórias → o modelo aprende e reproduz → as decisões do modelo geram os dados futuros (feedback loop, ex.: policiamento preditivo — ponte com T04); atributos protegidos e seus proxies (CEP, escolaridade); a diferença entre remover o atributo (*fairness through unawareness*, ineficaz) e tratar a disparidade.
+**Fundamentos** — O ciclo do viés: dados históricos refletem decisões passadas discriminatórias → o modelo aprende e reproduz → as decisões do modelo geram os dados futuros (feedback loop, ex.: policiamento preditivo — ponte com a trilha de Criminologia Espacial); atributos protegidos e seus proxies (CEP, escolaridade); a diferença entre remover o atributo (*fairness through unawareness*, ineficaz) e tratar a disparidade.
 
 **Teoria** — Para grupos $A \in \{0, 1\}$, predição $\hat{Y}$ e desfecho $Y$:
 — **Paridade demográfica**: $P(\hat{Y}=1 \mid A=0) = P(\hat{Y}=1 \mid A=1)$;
@@ -71,7 +71,7 @@ print("— e vice-versa. Escolher a métrica de justiça é escolher o que igual
 - **Caso 1**: Um modelo de crédito não usa raça, mas usa CEP e histórico de consumo. Demonstrar a discriminação por proxy medindo disparidade de aprovação e reconstruindo a correlação proxy-atributo protegido.
 - **Caso 2**: Reproduzir a controvérsia COMPAS: dado um escore calibrado por grupo com prevalências distintas, calcular FPR/FNR por grupo e arbitrar tecnicamente o debate ProPublica × Northpointe.
 - **Caso 3**: Um RH implanta triagem automática treinada em contratações históricas de uma empresa com 85% de homens no quadro técnico. Mapear as fontes de viés (histórico, representação, medição) e propor o desenho de mitigação em cada etapa.
-- **Caso 4 (Caso Multivariável)**: Auditoria de equidade de um sistema de predição de reincidência para apoio a decisões cautelares. Desenhar: (a) escolha justificada da métrica primária de justiça dado o custo assimétrico do erro; (b) análise interseccional (grupo × faixa etária); (c) avaliação da licitude de limiares por grupo no ordenamento brasileiro; (d) monitoramento contínuo do feedback loop pós-implantação (ponte com GOV-05 e T04/GEO).
+- **Caso 4 (Caso Multivariável)**: Auditoria de equidade de um sistema de predição de reincidência para apoio a decisões cautelares. Desenhar: (a) escolha justificada da métrica primária de justiça dado o custo assimétrico do erro; (b) análise interseccional (grupo × faixa etária); (c) avaliação da licitude de limiares por grupo no ordenamento brasileiro; (d) monitoramento contínuo do feedback loop pós-implantação (ponte com GOV-05 e a trilha de Criminologia Espacial).
 
 ## Regulação Técnica e Jurisprudência
 | Tribunal ou Órgão/Tema | Entendimento / Norma | Impacto Prático |

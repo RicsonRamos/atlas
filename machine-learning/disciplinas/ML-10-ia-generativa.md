@@ -7,7 +7,7 @@
 **Selo de Escopo:** 🟢 Aberto
 
 ## Ementa
-Esta disciplina cobre os modelos que aprendem a distribuição dos dados para sintetizar novas amostras. Estuda as três famílias dominantes: autoencoders variacionais (VAE) e o limite inferior da evidência (ELBO); redes adversárias generativas (GAN) como jogo de minimax entre gerador e discriminador; e modelos de difusão, que aprendem a reverter um processo gradual de adição de ruído. Aborda geração condicional (classe, texto-para-imagem) e a avaliação de modelos generativos (FID, precisão/cobertura, avaliação humana). Discute os riscos: *deepfakes* e mídia sintética (ponte com N4 — perícia de autenticidade de vídeo, FOR-12), proveniência e marca d'água de conteúdo (C2PA), memorização de dados de treino e os litígios de direitos autorais — em ligação com N6 (GOV) e T03 (Direito Digital).
+Esta disciplina cobre os modelos que aprendem a distribuição dos dados para sintetizar novas amostras. Estuda as três famílias dominantes: autoencoders variacionais (VAE) e o limite inferior da evidência (ELBO); redes adversárias generativas (GAN) como jogo de minimax entre gerador e discriminador; e modelos de difusão, que aprendem a reverter um processo gradual de adição de ruído. Aborda geração condicional (classe, texto-para-imagem) e a avaliação de modelos generativos (FID, precisão/cobertura, avaliação humana). Discute os riscos: *deepfakes* e mídia sintética (ponte com a trilha de Ciências Forenses — perícia de autenticidade de vídeo), proveniência e marca d'água de conteúdo (C2PA), memorização de dados de treino e os litígios de direitos autorais — em ligação com as trilhas de Ética e Governança de IA e de Direito Digital.
 
 ## Objetivos
 1. Comparar VAEs, GANs e modelos de difusão quanto a objetivo de treino, estabilidade, qualidade e cobertura da distribuição gerada.
@@ -69,8 +69,8 @@ print("Na prática, a rede epsilon_theta(x_t, t) aprende a ESTIMAR esse ruído."
 
 ## Casos práticos
 - **Caso 1**: Uma GAN de rostos sintéticos para aumento de dados gera sempre as mesmas 12 fisionomias. Diagnosticar colapso de modos e comparar mitigação (minibatch discrimination) contra a migração para difusão.
-- **Caso 2**: Um modelo texto-para-imagem reproduz quase pixel a pixel uma fotografia de seu conjunto de treino. Discutir memorização, o ponto cego do FID e as implicações autorais (ligação com T03).
-- **Caso 3**: Um vídeo deepfake de autoridade pública circula em período eleitoral. Estruturar a resposta pericial: detecção por artefatos, verificação de proveniência (C2PA) e limites de confiabilidade do laudo (ligação com FOR-12).
+- **Caso 2**: Um modelo texto-para-imagem reproduz quase pixel a pixel uma fotografia de seu conjunto de treino. Discutir memorização, o ponto cego do FID e as implicações autorais (ligação com a trilha de Direito Digital).
+- **Caso 3**: Um vídeo deepfake de autoridade pública circula em período eleitoral. Estruturar a resposta pericial: detecção por artefatos, verificação de proveniência (C2PA) e limites de confiabilidade do laudo (ligação com a trilha de Ciências Forenses).
 - **Caso 4 (Caso Multivariável)**: Projeto de geração de dados sintéticos tabulares para compartilhamento interinstitucional de microdados sensíveis. Desenhar: (a) escolha de modelo generativo e métricas de fidelidade estatística; (b) avaliação de risco de reidentificação e ataques de inferência de pertencimento; (c) comparação com anonimização clássica e privacidade diferencial (ligação com GOV-03); (d) termos de uso e rotulagem do dataset como sintético.
 
 ## Regulação Técnica e Jurisprudência
@@ -103,7 +103,7 @@ print("Na prática, a rede epsilon_theta(x_t, t) aprende a ESTIMAR esse ruído."
 ## Questões Avançadas
 - Derive a forma fechada $q(x_t|x_0)$ do processo de difusão direto a partir da composição de passos gaussianos. *(pesquisa/matemática)*
 - Por que o discriminador ótimo da GAN leva o objetivo do gerador à divergência de Jensen-Shannon, e como isso explica gradientes fracos no início do treino? *(pesquisa)*
-- Detecção a posteriori de deepfake tende a uma corrida armamentista perdida? Compare tecnicamente com proveniência criptográfica na captura. *(pesquisa — ligação com FOR-12)*
+- Detecção a posteriori de deepfake tende a uma corrida armamentista perdida? Compare tecnicamente com proveniência criptográfica na captura. *(pesquisa — ligação com a trilha de Ciências Forenses)*
 
 ## Exercícios
 - Calcule $\bar{\alpha}_t$ para uma agenda linear com $T = 10$ e trace a curva de SNR correspondente.
@@ -112,4 +112,4 @@ print("Na prática, a rede epsilon_theta(x_t, t) aprende a ESTIMAR esse ruído."
 - Para o caso dos microdados sintéticos, desenhe o protocolo de ataque de inferência de pertencimento e o critério de aprovação para liberação do dataset.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#IAGenerativa #GAN #VAE #ModelosDeDifusao #Deepfakes

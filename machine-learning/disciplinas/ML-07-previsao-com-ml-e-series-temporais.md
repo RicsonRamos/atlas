@@ -116,4 +116,4 @@ print(f"Ganho relativo: {100 * (1 - np.mean(mae_modelo)/np.mean(mae_baseline)):.
 - Para o caso das chamadas 190, especifique quais variáveis exógenas estariam disponíveis às 18h do dia anterior e quais vazariam futuro.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#SeriesTemporais #Previsao #Backtesting #Sazonalidade

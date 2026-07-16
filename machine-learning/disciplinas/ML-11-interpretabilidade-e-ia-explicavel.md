@@ -125,4 +125,4 @@ print("Axioma de Eficiência verificado com sucesso!")
 - Para o caso multivariável de habitação social, elabore um esboço de laudo explicativo (Model Card) que mostre visualmente a distribuição global dos valores SHAP.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#XAI #Interpretabilidade #SHAP #LIME

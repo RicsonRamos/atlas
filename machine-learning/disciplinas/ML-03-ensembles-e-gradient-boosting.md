@@ -107,4 +107,4 @@ for i in top:
 - Para o caso de evasão fiscal, escreva o plano de validação temporal (janelas de treino/teste) e a justificativa da métrica PR-AUC sobre ROC-AUC.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#Ensembles #RandomForest #GradientBoosting #XGBoost

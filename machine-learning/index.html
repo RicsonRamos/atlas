@@ -225,7 +225,7 @@
                                 <span class="block font-extrabold text-slate-800 text-sm uppercase tracking-tight leading-snug break-words">${nome}</span>
                                 <div class="flex flex-wrap gap-1.5 mt-2">
                                     <span class="bg-slate-900 text-white px-2 py-0.5 rounded text-[9px] font-black uppercase mono">${id}</span>
-                                    <span class="bg-slate-50 text-slate-500 border border-slate-100 px-2 py-0.5 rounded text-[9px] font-black uppercase">Acadêmico</span>
+                                    <span class="bg-slate-50 text-slate-500 border border-slate-100 px-2 py-0.5 rounded text-[9px] font-black uppercase">Aberto</span>
                                 </div>
                             </div>
                         </div>
@@ -392,12 +392,12 @@
             return {
                 prereqs: prereqs.length ? prereqs : (prereqsMeta.length ? prereqsMeta : ["Nenhum"]),
                 objetivos,
-                pratica: pratica.length ? pratica : ["Implementação de algoritmos e exercícios de fixação."],
-                teoria: teoria.length ? teoria : ["Estudo dos fundamentos teóricos do módulo."],
-                algoritmos: algoritmos.length ? algoritmos : ["Implementação e otimização de rotinas em Python/linguagem correspondente."],
+                pratica,
+                teoria,
+                algoritmos,
                 livros: livros.slice(0, 3),
-                papers: papers.slice(3, 6).length ? papers.slice(3, 6) : ["Consulte referências adicionais no conteúdo detalhado."],
-                ferramentas: ferramentas.length ? ferramentas : ["Python", "Git"],
+                papers: papers.slice(3, 6),
+                ferramentas,
                 entrevista,
                 projetos,
                 exercicios,

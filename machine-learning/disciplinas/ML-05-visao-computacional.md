@@ -7,7 +7,7 @@
 **Selo de Escopo:** 🟢 Aberto
 
 ## Ementa
-Esta disciplina cobre o processamento e a interpretação automática de imagens por redes convolucionais. Estuda a operação de convolução discreta, mapas de atributos (*feature maps*), *pooling*, campos receptivos e o cálculo de dimensões de saída. Aborda as arquiteturas de referência (LeNet, VGG, ResNet e as conexões residuais que viabilizam profundidade extrema) e os paradigmas das tarefas visuais: classificação, detecção de objetos (família R-CNN e detectores de estágio único como YOLO, em nível conceitual) e segmentação semântica/de instância. Cobre aumento de dados (*data augmentation*) e transferência de aprendizado (*transfer learning*). Discute a aplicação forense e investigativa — reconhecimento de padrões, OCR e análise de imagens — em ligação com as trilhas N4 (Ciências Forenses) e T02 (Inteligência Analítica), incluindo seus limites de confiabilidade pericial.
+Esta disciplina cobre o processamento e a interpretação automática de imagens por redes convolucionais. Estuda a operação de convolução discreta, mapas de atributos (*feature maps*), *pooling*, campos receptivos e o cálculo de dimensões de saída. Aborda as arquiteturas de referência (LeNet, VGG, ResNet e as conexões residuais que viabilizam profundidade extrema) e os paradigmas das tarefas visuais: classificação, detecção de objetos (família R-CNN e detectores de estágio único como YOLO, em nível conceitual) e segmentação semântica/de instância. Cobre aumento de dados (*data augmentation*) e transferência de aprendizado (*transfer learning*). Discute a aplicação forense e investigativa — reconhecimento de padrões, OCR e análise de imagens — em ligação com as trilhas de Ciências Forenses e de Inteligência Analítica, incluindo seus limites de confiabilidade pericial.
 
 ## Objetivos
 1. Explicar a convolução como operação linear com compartilhamento de pesos e equivariância translacional, calculando dimensões de saída, campos receptivos e número de parâmetros.
@@ -71,7 +71,7 @@ print("Fórmula de dimensão de saída verificada.")
 - **Caso 1**: Um classificador de imagens médicas com 96% de acurácia falha em hospital com outro fabricante de scanner. Diagnosticar deslocamento de domínio (*domain shift*) e propor aumento de dados e validação multi-sítio.
 - **Caso 2**: Um sistema de OCR de placas veiculares apresenta taxa de erro 4 vezes maior à noite e sob chuva. Discutir estratificação da avaliação por condição de captura e o risco jurídico de autuação automática sem revisão.
 - **Caso 3**: Uma equipe treina um detector YOLO para armas em CFTV e observa falsos positivos sistemáticos com guarda-chuvas. Analisar viés de coocorrência do conjunto de treino e desenho de conjunto negativo difícil (*hard negatives*).
-- **Caso 4 (Caso Multivariável)**: Projeto pericial de comparação automática de imagens de câmeras corporais com padrões de referência. Desenhar: (a) pipeline com pré-processamento e transferência de aprendizado; (b) protocolo de validação com taxas de falso positivo/negativo estratificadas por resolução e iluminação; (c) limites do laudo — o sistema como triagem, nunca como prova autônoma (ligação com N4/FOR-12); (d) documentação de versão e semente para reprodutibilidade.
+- **Caso 4 (Caso Multivariável)**: Projeto pericial de comparação automática de imagens de câmeras corporais com padrões de referência. Desenhar: (a) pipeline com pré-processamento e transferência de aprendizado; (b) protocolo de validação com taxas de falso positivo/negativo estratificadas por resolução e iluminação; (c) limites do laudo — o sistema como triagem, nunca como prova autônoma (ligação com a trilha de Ciências Forenses); (d) documentação de versão e semente para reprodutibilidade.
 
 ## Regulação Técnica e Jurisprudência
 | Tribunal ou Órgão/Tema | Entendimento / Norma | Impacto Prático |
@@ -112,4 +112,4 @@ print("Fórmula de dimensão de saída verificada.")
 - Para o caso multivariável pericial, redija a seção de "limitações metodológicas" do laudo, cobrindo taxas de erro estratificadas e a vedação de uso como prova autônoma.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#VisaoComputacional #CNN #TransferLearning #DeteccaoDeObjetos

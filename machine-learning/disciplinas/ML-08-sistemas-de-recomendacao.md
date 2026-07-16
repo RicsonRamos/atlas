@@ -116,4 +116,4 @@ print(f"Baseline (média global) teste: "
 - Para o caso multivariável de capacitação, defina a métrica de disparidade de exposição entre unidades e o procedimento de auditoria mensal.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#SistemasDeRecomendacao #FiltragemColaborativa #FatoracaoDeMatrizes

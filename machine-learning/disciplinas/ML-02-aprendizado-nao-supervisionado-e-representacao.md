@@ -103,4 +103,4 @@ print("Escore médio (normais):", round(escores[:500].mean(), 3),
 - Para o caso multivariável de ocorrências criminais, escreva o pseudocódigo do pipeline completo, incluindo o tratamento de variáveis categóricas e a etapa de validação com especialista.
 
 ## Tags
-#MachineLearning #IA #DeepLearning
+#Clustering #DeteccaoDeAnomalias #Embeddings #KMeans #DBSCAN
